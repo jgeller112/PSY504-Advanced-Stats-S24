@@ -85,7 +85,7 @@ website:
 format:
   html:
     theme:
-      - litera
+      - cyborg
       - html/custom.scss
     toc: true
     highlight-style: monokai

@@ -4,14 +4,22 @@
     "href": "Assignments/index.html",
     "title": "Assignments",
     "section": "",
-    "text": "You will get the most out of this seminar if you (1) attend regularly, (2) engage with the readings, and (3) write thoughtfully.\nTo help you do all this successfully, there are three assignments for this course:\n\nMini presentation and discussion leading: Once during the semester, you will be responsible for preparing a presentation and leading the discussion for a class session. During the first day of class, I will provide a spreadsheet where you will select the week you want to be responsible for. Complete instructions and details for this assignment are here.\nLabs: Each week (Wednesday) we will have one corresponding lab exercise that will be started in class. The purpose is for you to get direct experience conducting the analyses that you learn. Each lab exercise will consist of several questions and will require R (will also accept Python) to answer the questions in a reproducible manner. All lab assignments must be reproducible (i.e., I can replicate the work you did without any errors). You may complete the labs by yourself or working with another person. If you work with another person, your work must obviously be your own.\n\nIdeally, you will finish labs in class. However, if you do not complete it in class, you can turn them in on Friday (due at 11:00 P.M.) Please let me know if you need an extension.\n\nTutorial: For your final project, you will create a tutorial explaining how to run a particular analysis in R. This will involve finding data or using your own data. The final project gives you a chance to pursue a specific method discussed in class and apply it to your own data.Complete instructions and details for this assignment are here."
+    "text": "You will get the most out of this seminar if you (1) attend regularly, (2) engage with the readings, and (3) write thoughtfully.\nTo help you do all this successfully, there are three assignments for this course:\n\nMini presentation and discussion leading: Once during the semester, you will be responsible for preparing a presentation and leading the discussion for a class session. During the first day of class, I will provide a spreadsheet where you will select the week you want to be responsible for. Complete instructions and details for this assignment are here.\nLabs: Each week (Wednesday) we will have one corresponding lab exercise that will be started in class. The purpose is for you to get direct experience conducting the analyses that you learn. Each lab exercise will consist of several questions and will require R (will also accept Python) to answer the questions in a reproducible manner. All lab assignments must be reproducible (i.e., I can replicate the work you did without any errors). You may complete the labs by yourself or working with another person. If you work with another person, your work must obviously be your own.\n\nIdeally, you will finish labs in class. However, if you do not complete it in class, you can turn them in on Friday (due at 11:00 P.M.) Please let me know if you need an extension.\n\nTutorial: For your final project, you will create a tutorial explaining how to run a particular analysis in R. This will involve finding data or using your own data. The final project gives you a chance to pursue a specific method discussed in class and apply it to your own data.Complete instructions and details for this assignment are here.",
+    "crumbs": [
+      "Overview",
+      "Assignments"
+    ]
   },
   {
     "objectID": "Assignments/index.html#exams",
     "href": "Assignments/index.html#exams",
     "title": "Assignments",
     "section": "Exams",
-    "text": "Exams\nThere are no exams! Read a bunch of things, write some things, participate in class. That’s it."
+    "text": "Exams\nThere are no exams! Read a bunch of things, write some things, participate in class. That’s it.",
+    "crumbs": [
+      "Overview",
+      "Assignments"
+    ]
   },
   {
     "objectID": "Assignments/presentation-discussion.html",
@@ -25,35 +33,35 @@
     "href": "Blog/nu-metal.html",
     "title": "Blog Example",
     "section": "",
-    "text": "It was recently announced that nu-metal pioneers, Korn, have partnered with a makeup company to turn their iconic 3rd record, Follow The Leader, into a color palette.\n\n\n\n\n\nInspired by this, I wanted to bring the world of nu-metal into R and the awesome visualization tool ggplot. Did anyone ask for this? No. Does anyone want this? Also no.\n\n\n\n\n\n\n\nI stumbled upon the R package paletter that allows you to take any picture and extract the optimized palette. It does this by using an unsupervised learning technique (k-means clustering).\nIt is pretty simple to use. I will show you how.\n\n\n\nFirst, you need to save the location of the image file:\n\nlibrary(here) # relative path\nlibrary(paletter) # package to\nlibrary(ggplot2)\n#extract color palette\n\nimage_path <- here::here(\"Blog\", \"images\", \"Korn.jpeg\")\n\n\nThen you can read that file into a function from the package\n\n# Get the color palette\ncolours_vector <- create_palette(image_path = image_path,                            number_of_colors =10,                           type_of_variable = \"categorical\")\n\n\n\n\n\n\n\nOnce you do this, it will output a list of hex codes corresponding to the most representative colors in the image.\nLet’s put the hex codes side by side with the album art:\n\n\n\n\n\nSo here we have a color palette associated with the album Follow The Leader. Let’s see how it looks on some data.\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[1:3])"
+    "text": "It was recently announced that nu-metal pioneers, Korn, have partnered with a makeup company to turn their iconic 3rd record, Follow The Leader, into a color palette.\n\n\n\n\n\nInspired by this, I wanted to bring the world of nu-metal into R and the awesome visualization tool ggplot. Did anyone ask for this? No. Does anyone want this? Also no.\n\n\n\n\n\n\n\nI stumbled upon the R package paletter that allows you to take any picture and extract the optimized palette. It does this by using an unsupervised learning technique (k-means clustering).\nIt is pretty simple to use. I will show you how.\n\n\n\nFirst, you need to save the location of the image file:\n\nlibrary(here) # relative path\nlibrary(paletter) # package to\nlibrary(ggplot2)\n#extract color palette\n\nimage_path &lt;- here::here(\"Blog\", \"images\", \"Korn.jpeg\")\n\n\nThen you can read that file into a function from the package\n\n# Get the color palette\ncolours_vector &lt;- create_palette(image_path = image_path,                            number_of_colors =10,                           type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOnce you do this, it will output a list of hex codes corresponding to the most representative colors in the image.\nLet’s put the hex codes side by side with the album art:\n\n\n\n\n\nSo here we have a color palette associated with the album Follow The Leader. Let’s see how it looks on some data.\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[1:3])"
   },
   {
     "objectID": "Blog/nu-metal.html#evanescence---fallen",
     "href": "Blog/nu-metal.html#evanescence---fallen",
     "title": "Blog Example",
     "section": "Evanescence - Fallen",
-    "text": "Evanescence - Fallen\nWake me up! I can’t wake up! Sorry. I am getting too pumped up for this.\n\n\n\n\n\n\nimage_path <-here::here(\"Blog\", \"images\",\"fallen1.jpeg\")\n\n\n# Get the color palette\ncolours_vector <- create_palette(image_path = image_path,                            number_of_colors =10,                            type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\n\n\n\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[1:3])"
+    "text": "Evanescence - Fallen\nWake me up! I can’t wake up! Sorry. I am getting too pumped up for this.\n\n\n\n\n\n\nimage_path &lt;-here::here(\"Blog\", \"images\",\"fallen1.jpeg\")\n\n\n# Get the color palette\ncolours_vector &lt;- create_palette(image_path = image_path,                            number_of_colors =10,                            type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[1:3])"
   },
   {
     "objectID": "Blog/nu-metal.html#limp-bizkit---significant-other",
     "href": "Blog/nu-metal.html#limp-bizkit---significant-other",
     "title": "Blog Example",
     "section": "Limp Bizkit - Significant Other",
-    "text": "Limp Bizkit - Significant Other\n\n\n\n\n\n\nimage_path <- here::here(\"Blog\", \"images\",\"LB.jpeg\")\n\n\n# Get the color palette\ncolours_vector <- create_palette(image_path = image_path,                            number_of_colors =10,                            type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[1:3])"
+    "text": "Limp Bizkit - Significant Other\n\n\n\n\n\n\nimage_path &lt;- here::here(\"Blog\", \"images\",\"LB.jpeg\")\n\n\n# Get the color palette\ncolours_vector &lt;- create_palette(image_path = image_path,                            number_of_colors =10,                            type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[1:3])"
   },
   {
     "objectID": "Blog/nu-metal.html#linkin-park---hybrid-theory",
     "href": "Blog/nu-metal.html#linkin-park---hybrid-theory",
     "title": "Blog Example",
     "section": "Linkin Park - Hybrid Theory",
-    "text": "Linkin Park - Hybrid Theory\n\n\n\n\n\n\nimage_path <- here::here(\"Blog\", \"images\",\"LP.jpeg\")\n\n\n# Get the color palette\ncolours_vector <- create_palette(image_path = image_path,                            number_of_colors =10,                            type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\n#|fig-align: \"center\"\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[1:3])"
+    "text": "Linkin Park - Hybrid Theory\n\n\n\n\n\n\nimage_path &lt;- here::here(\"Blog\", \"images\",\"LP.jpeg\")\n\n\n# Get the color palette\ncolours_vector &lt;- create_palette(image_path = image_path,                            number_of_colors =10,                            type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n#|fig-align: \"center\"\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[1:3])"
   },
   {
     "objectID": "Blog/nu-metal.html#slipknot---self-titled",
     "href": "Blog/nu-metal.html#slipknot---self-titled",
     "title": "Blog Example",
     "section": "Slipknot - Self-titled",
-    "text": "Slipknot - Self-titled\n\n\n\n\n\n\nimage_path <- here::here(\"Blog\", \"images\",\"slipknot.jpeg\")\n\n\ncolours_vector <- create_palette(image_path = image_path,                            number_of_colors =10,                            type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[3:6])"
+    "text": "Slipknot - Self-titled\n\n\n\n\n\n\nimage_path &lt;- here::here(\"Blog\", \"images\",\"slipknot.jpeg\")\n\n\ncolours_vector &lt;- create_palette(image_path = image_path,                            number_of_colors =10,                            type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[3:6])"
   },
   {
     "objectID": "about.html",
@@ -65,9 +73,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Advanced Statistics in Psychology",
+    "title": "\n            PSY 504: Advanced Statistics\n        ",
     "section": "",
-    "text": "PSY 504: Advanced Statistics\n        \n        \n            Advanced Statistical Methods in Psychology\n        \n        \n            PSYCH 504 • Spring 2023Princeton University\n        \n    \n    \n      \n        \n        \n        \n      \n    \n\n\n\n\nInstructor\n\n   Dr. Jason Geller\n   325 PSH\n   jg9120@princeton.edu\n   jgeller_phd\n   Schedule an appointment\n\n\n\nCourse details\n\n   MW\n   Janurary 31–April 25, 2023\n   10:00 AM –11:20 PM\n   A03\n\n\n\nContacting me\nE-mail is best way to get in contact with me. I will try to respond to all course-related e-mails within 24 hours (really), but also remember that life can be busy and chaotic for everyone (including me!), so if I don’t respond right away, don’t worry!"
+    "text": "PSY 504: Advanced Statistics\n        \n        \n            Advanced Statistical Methods in Psychology\n        \n        \n            PSYCH 504 • Spring 2024Princeton University\n        \n    \n    \n      \n        \n        \n        \n      \n    \n\n\n\n\n\nInstructor\n\n   Dr. Jason Geller\n   325 PSH\n   jg9120@princeton.edu\n   jgeller_phd\n   Schedule an appointment\n\n\n\nCourse details\n\n   MW\n   Janurary 30–April 24, 2024\n   10:00 AM –11:20 PM\n   A30\n\n\n\nContacting me\nE-mail is best way to get in contact with me. I will try to respond to all course-related e-mails within 24 hours (really), but also remember that life can be busy and chaotic for everyone (including me!), so if I don’t respond right away, don’t worry!"
   },
   {
     "objectID": "news/2022-08-08_important-r-stuff.html",
@@ -158,7 +166,10 @@
     "href": "schedule/03-week.html",
     "title": "Week 3",
     "section": "",
-    "text": "Baraldi, A. N., & Enders, C. K. (2010). An introduction to modern missing data analyses. Journal of School Psychology, 48(1), 5-37. doi:10.1016/j.jsp.2009.10.00]\nWhat are some common methods for handling missing data in statistical analyses?\nHow do different missing data mechanisms (e.g., missing completely at random, missing at random, missing not at random) impact the validity of statistical inferences?\nWhat are some potential limitations and drawbacks of using multiple imputation to handle missing data?\n\n\n\n\n\nQuantitude Podcast.S4E08 Missing Data: The New State Of The Art With Craig Enders\nQuantitude Podcast. S1E16: IF EPISODE=16 THEN EPISODE=-999"
+    "text": "Baraldi, A. N., & Enders, C. K. (2010). An introduction to modern missing data analyses. Journal of School Psychology, 48(1), 5-37. doi:10.1016/j.jsp.2009.10.00]\nWhat are some common methods for handling missing data in statistical analyses?\nHow do different missing data mechanisms (e.g., missing completely at random, missing at random, missing not at random) impact the validity of statistical inferences?\nWhat are some potential limitations and drawbacks of using multiple imputation to handle missing data?\n\n\n\n\n\nQuantitude Podcast.S4E08 Missing Data: The New State Of The Art With Craig Enders\nQuantitude Podcast. S1E16: IF EPISODE=16 THEN EPISODE=-999",
+    "crumbs": [
+      "Week 3"
+    ]
   },
   {
     "objectID": "schedule/03-week.html#after-class",
@@ -304,7 +315,10 @@
     "href": "schedule/index.html",
     "title": "Schedule",
     "section": "",
-    "text": "Here’s your roadmap for the semester!\n\n\n Readings should be completed before each class session\n\n\n Slides and other class materials will be added on the day of class\n\n\n Assignments are due at 11:00 P.M. on Friday (unless otherwise stated)\n\n\n\n\n\nWeek\nDate\nTopic\nContent\nClass\nLabs\n[]\n\n\n\n\n\n\n\n\n\n\n\n\n\n1\n1/30/23\nIntroduction\n\n\n\n\n\n\n\n2/1/23\nQuarto: Blogging\n\n\n\nJason\n\n\n2\n2/6/23\nRobust methods: Bootstrapping and permutation\n\n\n\nJason\n\n\n\n2/8/23\nLab 1\n\n\n\n\n\n\n3\n2/13/23\nMissing data\n\n\n\nSydney\n\n\n\n2/15/23\nLab 2\n\n\n\n\n\n\n4\n2/20/23\nPolytomous models: Ordinal regression\n\n\n\nNicole\n\n\n\n2/22/23\nLab 3\n\n\n\n\n\n\n5\n2/27/23\nPolytomous models: Multinomial regression\n\n\n\nHenna\n\n\n\n3/1/23\nLab 4\n\n\n\n\n\n\n6\n3/6/23\nPoisson regression/negative binomial\n\n\n\nSarah\n\n\n\n3/8/23\nLab 5\n\n\n\n\n\n\n7\nSpring Break\n\n\n\n\n\n\n\n8\n3/20/23\nBayesian analysis\n\n\n\nCody\n\n\n\n3/22/23\nLab 6\n\n\n\n\n\n\n9\n3/27/23\nMediation\n\n\n\nClaire\n\n\n\n3/29/23\nLab 7\n\n\n\n\n\n\n10\n4/3/23\nPath modeling/SEM\n\n\n\nJason\n\n\n\n4/5/23\n\n\n\n\nJason Tasukahara will Zoom in and talk about R package for SEM\n\n\n11\n4/10/23\nPrincipal components analysis/factor analysis\n\n\n\nBranson\n\n\n\n4/12/23\nLab 8\n\n\n\n\n\n\n12\n4/17/23\nUnsupervised learning: Clustering\n\n\n\nJamie\n\n\n\n4/19/23\nLab 9\n\n\n\n\n\n\n13\n4/24/23\nGEEs/Multilevel modeling\n\n\n\nKillian\n\n\n\n4/26/23\nLab 10\n\n\n\n\n\n\n14\nReading Week\n\n\n\n\n\n\n\n15\nFinals\nBlog posts due"
+    "text": "Here’s your roadmap for the semester!\n\n\n Readings should be completed before each class session\n\n\n Slides and other class materials will be added on the day of class\n\n\n Assignments are due at 11:00 P.M. on Friday (unless otherwise stated)\n\n\n\n\n\nWeek\nDate\nTopic\nContent\nClass\nLabs\n[]\n\n\n\n\n\n\n\n\n\n\n\n\n\n1\n1/30/23\nIntroduction\n\n\n\n\n\n\n\n2/1/23\nQuarto: Blogging\n\n\n\nJason\n\n\n2\n2/6/23\nRobust methods: Bootstrapping and permutation\n\n\n\nJason\n\n\n\n2/8/23\nLab 1\n\n\n\n\n\n\n3\n2/13/23\nMissing data\n\n\n\nSydney\n\n\n\n2/15/23\nLab 2\n\n\n\n\n\n\n4\n2/20/23\nPolytomous models: Ordinal regression\n\n\n\nNicole\n\n\n\n2/22/23\nLab 3\n\n\n\n\n\n\n5\n2/27/23\nPolytomous models: Multinomial regression\n\n\n\nHenna\n\n\n\n3/1/23\nLab 4\n\n\n\n\n\n\n6\n3/6/23\nPoisson regression/negative binomial\n\n\n\nSarah\n\n\n\n3/8/23\nLab 5\n\n\n\n\n\n\n7\nSpring Break\n\n\n\n\n\n\n\n8\n3/20/23\nBayesian analysis\n\n\n\nCody\n\n\n\n3/22/23\nLab 6\n\n\n\n\n\n\n9\n3/27/23\nMediation\n\n\n\nClaire\n\n\n\n3/29/23\nLab 7\n\n\n\n\n\n\n10\n4/3/23\nPath modeling/SEM\n\n\n\nJason\n\n\n\n4/5/23\n\n\n\n\nJason Tasukahara will Zoom in and talk about R package for SEM\n\n\n11\n4/10/23\nPrincipal components analysis/factor analysis\n\n\n\nBranson\n\n\n\n4/12/23\nLab 8\n\n\n\n\n\n\n12\n4/17/23\nUnsupervised learning: Clustering\n\n\n\nJamie\n\n\n\n4/19/23\nLab 9\n\n\n\n\n\n\n13\n4/24/23\nGEEs/Multilevel modeling\n\n\n\nKillian\n\n\n\n4/26/23\nLab 10\n\n\n\n\n\n\n14\nReading Week\n\n\n\n\n\n\n\n15\nFinals\nBlog posts due",
+    "crumbs": [
+      "Schedule"
+    ]
   },
   {
     "objectID": "schedule/schedule.html",
@@ -444,14 +458,14 @@
     "href": "schedule/02-week-logistic.html",
     "title": "Week 2",
     "section": "",
-    "text": "DeMaris, A. (1995). A tutorial in logistic regression. Journal of Marriage and the Family, 57, 956-968.\n\nWhen do you use logistic regression?\nWhy is it superior to ordinary least squares regression in this case?\nConceptually, how do you interpret the log odds from a logistic regression?\nWhat is an odds ratio?\nHow is logistic regression extended to include non-binary categorical dependent variables?\n\n\n\n\n\n\n Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd. \n\nCh. 3"
+    "text": "DeMaris, A. (1995). A tutorial in logistic regression. Journal of Marriage and the Family, 57, 956-968.\n\nWhen do you use logistic regression?\nWhy is it superior to ordinary least squares regression in this case?\nConceptually, how do you interpret the log odds from a logistic regression?\nWhat is an odds ratio?\nHow is logistic regression extended to include non-binary categorical dependent variables?\n\n\n\n\n\n\n Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.\n\nCh.3"
   },
   {
     "objectID": "schedule/02-week-logistic.html#before-class",
     "href": "schedule/02-week-logistic.html#before-class",
     "title": "Week 2",
     "section": "",
-    "text": "DeMaris, A. (1995). A tutorial in logistic regression. Journal of Marriage and the Family, 57, 956-968.\n\nWhen do you use logistic regression?\nWhy is it superior to ordinary least squares regression in this case?\nConceptually, how do you interpret the log odds from a logistic regression?\nWhat is an odds ratio?\nHow is logistic regression extended to include non-binary categorical dependent variables?\n\n\n\n\n\n\n Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd. \n\nCh. 3"
+    "text": "DeMaris, A. (1995). A tutorial in logistic regression. Journal of Marriage and the Family, 57, 956-968.\n\nWhen do you use logistic regression?\nWhy is it superior to ordinary least squares regression in this case?\nConceptually, how do you interpret the log odds from a logistic regression?\nWhat is an odds ratio?\nHow is logistic regression extended to include non-binary categorical dependent variables?\n\n\n\n\n\n\n Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.\n\nCh.3"
   },
   {
     "objectID": "schedule/05-week.html#before-class",
@@ -462,5 +476,236 @@
     "crumbs": [
       "Week 5"
     ]
+  },
+  {
+    "objectID": "schedule/13-week-robust.html",
+    "href": "schedule/13-week-robust.html",
+    "title": "Week 13",
+    "section": "",
+    "text": "Fox.J. (2008). Applied Regression Analysis and Generalized Linear Models. SAGE Publications Inc. Chapter 21: Bootstrapping Regression Models.\n\nWhen do you use a bootstrapping procedure? What purpose does it serve?\nHow is a bootstrapped sampling distribution generated?\nHow many bootstrap samples should you use?\nWhen should you bootstrap your actual data (“cases”) versus your prediction error (“residuals”)?\n\n Wilcox, R. R. (1998). How many discoveries have been lost by ignoring modern statistical methods?. American Psychologist, 53, 300—314.\n\nWhat are the statistical and theoretical problems associated with removing outliers?\nHow does skew affect your test?\nWhat are the solutions to these problems?\n\n LaFleur, B. J., & Greevy, R. A. (2009). Introduction to Permutation and Resampling-Based Hypothesis Tests. Journal of Clinical Child & Adolescent Psychology, 38(2), 286–294. https://doi.org/10.1080/15374410902740411\n\nHow do permutation tests differ from traditional statistical hypothesis tests?\nWhat assumptions underlie permutation tests?\nWhat steps underlie permutation tests?\nHow does the number of permutations affect the power and type I error rate of a permutation test?"
+  },
+  {
+    "objectID": "schedule/13-week-robust.html#before-class",
+    "href": "schedule/13-week-robust.html#before-class",
+    "title": "Week 13",
+    "section": "",
+    "text": "Fox.J. (2008). Applied Regression Analysis and Generalized Linear Models. SAGE Publications Inc. Chapter 21: Bootstrapping Regression Models.\n\nWhen do you use a bootstrapping procedure? What purpose does it serve?\nHow is a bootstrapped sampling distribution generated?\nHow many bootstrap samples should you use?\nWhen should you bootstrap your actual data (“cases”) versus your prediction error (“residuals”)?\n\n Wilcox, R. R. (1998). How many discoveries have been lost by ignoring modern statistical methods?. American Psychologist, 53, 300—314.\n\nWhat are the statistical and theoretical problems associated with removing outliers?\nHow does skew affect your test?\nWhat are the solutions to these problems?\n\n LaFleur, B. J., & Greevy, R. A. (2009). Introduction to Permutation and Resampling-Based Hypothesis Tests. Journal of Clinical Child & Adolescent Psychology, 38(2), 286–294. https://doi.org/10.1080/15374410902740411\n\nHow do permutation tests differ from traditional statistical hypothesis tests?\nWhat assumptions underlie permutation tests?\nWhat steps underlie permutation tests?\nHow does the number of permutations affect the power and type I error rate of a permutation test?"
+  },
+  {
+    "objectID": "schedule/13-week-robust.html#video",
+    "href": "schedule/13-week-robust.html#video",
+    "title": "Week 13",
+    "section": "Video",
+    "text": "Video"
+  },
+  {
+    "objectID": "schedule/13-week-robust.html#during-class",
+    "href": "schedule/13-week-robust.html#during-class",
+    "title": "Week 13",
+    "section": "During Class",
+    "text": "During Class\n\nWill go through this paper in class\n\nRousselet, G. A., Pernet, C. R., & Wilcox, R. R. (2021). The Percentile Bootstrap: A Primer With Step-by-Step Instructions in R. Advances in Methods and Practices in Psychological Science, 4(1), 2515245920911881. https://doi.org/10.1177/2515245920911881"
+  },
+  {
+    "objectID": "schedule/13-week-robust.html#after-class",
+    "href": "schedule/13-week-robust.html#after-class",
+    "title": "Week 13",
+    "section": "After Class",
+    "text": "After Class\n\n Kabacoff, R. I. (2022). *R* in Action*. Chapter 12."
+  },
+  {
+    "objectID": "schedule/11-week-sem.html",
+    "href": "schedule/11-week-sem.html",
+    "title": "Week 11",
+    "section": "",
+    "text": "McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.\nChapters 4 and 5\n\nWhat is the purpose of SEM and how does it differ from other types of statistical models?\nWhat are the key components of an SEM model, including latent variables, observed variables, and paths between variables?\nHow do you specify an SEM model, including selecting the appropriate measurement model and structural model?\nHow do you evaluate the fit (goodness) of an SEM model and what are some common fit indices used in SEM?\nHow do you interpret the results of a SEM analysis, including the path coefficients and factor loadings?\nWhat are some common assumptions of SEM and how can you assess whether these assumptions are met?\nHow do you handle missing data in SEM and what are the implications of missing data for SEM analysis?\nWhat are some common challenges and limitations of SEM and how can they be addressed?\nWhat are the best practices for reporting SEM results and how can you communicate your findings effectively?\n\n\n\n\n\nSEM basics\n\n\n\n\n\n\n SEM basics"
+  },
+  {
+    "objectID": "schedule/11-week-sem.html#before-class",
+    "href": "schedule/11-week-sem.html#before-class",
+    "title": "Week 11",
+    "section": "",
+    "text": "McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.\nChapters 4 and 5\n\nWhat is the purpose of SEM and how does it differ from other types of statistical models?\nWhat are the key components of an SEM model, including latent variables, observed variables, and paths between variables?\nHow do you specify an SEM model, including selecting the appropriate measurement model and structural model?\nHow do you evaluate the fit (goodness) of an SEM model and what are some common fit indices used in SEM?\nHow do you interpret the results of a SEM analysis, including the path coefficients and factor loadings?\nWhat are some common assumptions of SEM and how can you assess whether these assumptions are met?\nHow do you handle missing data in SEM and what are the implications of missing data for SEM analysis?\nWhat are some common challenges and limitations of SEM and how can they be addressed?\nWhat are the best practices for reporting SEM results and how can you communicate your findings effectively?\n\n\n\n\n\nSEM basics\n\n\n\n\n\n\n SEM basics"
+  },
+  {
+    "objectID": "schedule/09-week-bayes.html",
+    "href": "schedule/09-week-bayes.html",
+    "title": "Week 9",
+    "section": "",
+    "text": "Dienes, Z. (2008). Bayes and the probability hypotheses\n\nWhat is Bayes’ Theorem and how is it used in statistical analysis?\nHow does Bayesian statistical analysis differ from NHST?\nWhat affordances does Bayesian statistics provide that NHST does not?\nHow do Bayesian models incorporate prior knowledge or beliefs about the data?\nWhat are some advantages and disadvantages of using Bayesian statistical methods?\nHow do you make statistical inferences and predictions using Bayesian methods?\n\nJarosz, A. F., & Wiley, J. (2014). What Are the Odds? A Practical Guide to Computing and Reporting Bayes Factors. The Journal of Problem Solving, 7(1).\n\nWhat is a Bayes Factor?\nHow do you calculate them?\nHow do we interpret Bayes Factors?\n\n\n\n\n\n\n https://bookdown.org/marklhc/notes_bookdown/markov-chain-monte-carlo.html\n\nReally nice explanation of MCMC\n\n\n\n\n\n\n What is Bayes?\n\n\n\n\n\n\n Why use Bayes?"
+  },
+  {
+    "objectID": "schedule/09-week-bayes.html#before-class",
+    "href": "schedule/09-week-bayes.html#before-class",
+    "title": "Week 9",
+    "section": "",
+    "text": "Dienes, Z. (2008). Bayes and the probability hypotheses\n\nWhat is Bayes’ Theorem and how is it used in statistical analysis?\nHow does Bayesian statistical analysis differ from NHST?\nWhat affordances does Bayesian statistics provide that NHST does not?\nHow do Bayesian models incorporate prior knowledge or beliefs about the data?\nWhat are some advantages and disadvantages of using Bayesian statistical methods?\nHow do you make statistical inferences and predictions using Bayesian methods?\n\nJarosz, A. F., & Wiley, J. (2014). What Are the Odds? A Practical Guide to Computing and Reporting Bayes Factors. The Journal of Problem Solving, 7(1).\n\nWhat is a Bayes Factor?\nHow do you calculate them?\nHow do we interpret Bayes Factors?\n\n\n\n\n\n\n https://bookdown.org/marklhc/notes_bookdown/markov-chain-monte-carlo.html\n\nReally nice explanation of MCMC\n\n\n\n\n\n\n What is Bayes?\n\n\n\n\n\n\n Why use Bayes?"
+  },
+  {
+    "objectID": "schedule/09-week-bayes.html#after-class",
+    "href": "schedule/09-week-bayes.html#after-class",
+    "title": "Week 9",
+    "section": "After Class",
+    "text": "After Class\n\nJASP has some nice Bayesian implementations\n\nBayesian Regression in JASP"
+  },
+  {
+    "objectID": "schedule/05-week-ord.html",
+    "href": "schedule/05-week-ord.html",
+    "title": "Week 5",
+    "section": "",
+    "text": "The R package brms (which is a Bayesian data analysis package) is used in the papers below. While it is a Bayesian technique, the output is similar to a regression output.\n\n Liddell, T. M., & Kruschke, J. K. (2018). Analyzing ordinal data with metric models: What could possibly go wrong? Journal of Experimental Social Psychology, 79, 328–348. https://doi.org/10.1016/j.jesp.2018.08.009\n Bürkner P-C, Vuorre M. Ordinal Regression Models in Psychology: A Tutorial. Advances in Methods and Practices in Psychological Science. 2019;2(1):77-101. doi:10.1177/2515245918823199\n Veríssimo, J. (2021). Analysis of rating scales: A pervasive problem in bilingualism research and a solution with Bayesian ordinal models. Bilingualism: Language and Cognition, 24(5), 842-848. doi:10.1017/S1366728921000316\n\nDescribe what is meant by an ordinal variable\nDescribe how an ordinal variable can be represented using a latent continuous variable.\nWhat is cumulative probability?\nList some common applications of ordinal regression in your field\nHow do you interpret the coefficients in an ordinal regression model?\nWhat is the proportional odds assumption underlying ordinal regression?\n\n\n\n\n\n\n Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.\n\nCh.4"
+  },
+  {
+    "objectID": "schedule/05-week-ord.html#before-class",
+    "href": "schedule/05-week-ord.html#before-class",
+    "title": "Week 5",
+    "section": "",
+    "text": "The R package brms (which is a Bayesian data analysis package) is used in the papers below. While it is a Bayesian technique, the output is similar to a regression output.\n\n Liddell, T. M., & Kruschke, J. K. (2018). Analyzing ordinal data with metric models: What could possibly go wrong? Journal of Experimental Social Psychology, 79, 328–348. https://doi.org/10.1016/j.jesp.2018.08.009\n Bürkner P-C, Vuorre M. Ordinal Regression Models in Psychology: A Tutorial. Advances in Methods and Practices in Psychological Science. 2019;2(1):77-101. doi:10.1177/2515245918823199\n Veríssimo, J. (2021). Analysis of rating scales: A pervasive problem in bilingualism research and a solution with Bayesian ordinal models. Bilingualism: Language and Cognition, 24(5), 842-848. doi:10.1017/S1366728921000316\n\nDescribe what is meant by an ordinal variable\nDescribe how an ordinal variable can be represented using a latent continuous variable.\nWhat is cumulative probability?\nList some common applications of ordinal regression in your field\nHow do you interpret the coefficients in an ordinal regression model?\nWhat is the proportional odds assumption underlying ordinal regression?\n\n\n\n\n\n\n Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.\n\nCh.4"
+  },
+  {
+    "objectID": "schedule/04-week-MLM.html",
+    "href": "schedule/04-week-MLM.html",
+    "title": "Week 4",
+    "section": "",
+    "text": "McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.\n\nChapters 1 and 2\n\nWhat type of data would necessitate a multilevel analysis? Come up with an example not given in the paper.\nWhat are fixed and random effects? How do multilevel models and traditional regression differ in terms of fixed and random effects?\nHow can you statistically determine if your cases are not independent?\nWhat assumptions does MLM have?\nWhat is the difference between grand-mean and group mean centered data?\nWhat is the folly of trying to account for dependence by including level 2 data in an ordinary regression model?"
+  },
+  {
+    "objectID": "schedule/04-week-MLM.html#before-class",
+    "href": "schedule/04-week-MLM.html#before-class",
+    "title": "Week 4",
+    "section": "",
+    "text": "McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.\n\nChapters 1 and 2\n\nWhat type of data would necessitate a multilevel analysis? Come up with an example not given in the paper.\nWhat are fixed and random effects? How do multilevel models and traditional regression differ in terms of fixed and random effects?\nHow can you statistically determine if your cases are not independent?\nWhat assumptions does MLM have?\nWhat is the difference between grand-mean and group mean centered data?\nWhat is the folly of trying to account for dependence by including level 2 data in an ordinary regression model?"
+  },
+  {
+    "objectID": "schedule/02-week-MLM.html",
+    "href": "schedule/02-week-MLM.html",
+    "title": "Week 4",
+    "section": "",
+    "text": "McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.\n\nChapters 1 and 2\n\nWhat type of data would necessitate a multilevel analysis? Come up with an example not given in the paper.\nWhat are fixed and random effects? How do multilevel models and traditional regression differ in terms of fixed and random effects?\nHow can you statistically determine if your cases are not independent?\nWhat assumptions does MLM have?\nWhat is the difference between grand-mean and group mean centered data?\nWhat is the folly of trying to account for dependence by including level 2 data in an ordinary regression model?"
+  },
+  {
+    "objectID": "schedule/02-week-MLM.html#before-class",
+    "href": "schedule/02-week-MLM.html#before-class",
+    "title": "Week 4",
+    "section": "",
+    "text": "McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.\n\nChapters 1 and 2\n\nWhat type of data would necessitate a multilevel analysis? Come up with an example not given in the paper.\nWhat are fixed and random effects? How do multilevel models and traditional regression differ in terms of fixed and random effects?\nHow can you statistically determine if your cases are not independent?\nWhat assumptions does MLM have?\nWhat is the difference between grand-mean and group mean centered data?\nWhat is the folly of trying to account for dependence by including level 2 data in an ordinary regression model?"
+  },
+  {
+    "objectID": "schedule/03-week.html#before-class",
+    "href": "schedule/03-week.html#before-class",
+    "title": "Week 3",
+    "section": "",
+    "text": "Baraldi, A. N., & Enders, C. K. (2010). An introduction to modern missing data analyses. Journal of School Psychology, 48(1), 5-37. doi:10.1016/j.jsp.2009.10.00]\nWhat are some common methods for handling missing data in statistical analyses?\nHow do different missing data mechanisms (e.g., missing completely at random, missing at random, missing not at random) impact the validity of statistical inferences?\nWhat are some potential limitations and drawbacks of using multiple imputation to handle missing data?\n\n\n\n\n\nQuantitude Podcast.S4E08 Missing Data: The New State Of The Art With Craig Enders\nQuantitude Podcast. S1E16: IF EPISODE=16 THEN EPISODE=-999",
+    "crumbs": [
+      "Week 3"
+    ]
+  },
+  {
+    "objectID": "schedule/04-week-logistic.html",
+    "href": "schedule/04-week-logistic.html",
+    "title": "Week 4",
+    "section": "",
+    "text": "DeMaris, A. (1995). A tutorial in logistic regression. Journal of Marriage and the Family, 57, 956-968.\n\nWhen do you use logistic regression?\nWhy is it superior to ordinary least squares regression in this case?\nConceptually, how do you interpret the log odds from a logistic regression?\nWhat is an odds ratio?\nHow is logistic regression extended to include non-binary categorical dependent variables?\n\n\n\n\n\n\n Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.\n\nCh.3"
+  },
+  {
+    "objectID": "schedule/04-week-logistic.html#before-class",
+    "href": "schedule/04-week-logistic.html#before-class",
+    "title": "Week 4",
+    "section": "",
+    "text": "DeMaris, A. (1995). A tutorial in logistic regression. Journal of Marriage and the Family, 57, 956-968.\n\nWhen do you use logistic regression?\nWhy is it superior to ordinary least squares regression in this case?\nConceptually, how do you interpret the log odds from a logistic regression?\nWhat is an odds ratio?\nHow is logistic regression extended to include non-binary categorical dependent variables?\n\n\n\n\n\n\n Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.\n\nCh.3"
+  },
+  {
+    "objectID": "schedule/06-week-mult.html",
+    "href": "schedule/06-week-mult.html",
+    "title": "Week 6",
+    "section": "",
+    "text": "Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.\n\nCh.7\nDescribe the difference between a stratified versus a multinomial approach to modeling an outcome with more than two nominal categories.\nDescribe how you would interpret the odds ratio of an input variable for a given category in a stratified modeling approach.\nDescribe what is meant by the ‘reference’ of a multinomial logistic regression model with at least three nominal outcome categories.\nDescribe how you would interpret the odds ratio of an input variable for a given category in a multinomial modeling approach.\nGiven a multinomial logistic regression model with outcome categories A, B, C and D and reference category A, describe two ways to determine the coefficients of a multinomial logistic regression model with reference category C.\nDescribe a process for safely simplifying a multinomial logistic regression model by removing input variables."
+  },
+  {
+    "objectID": "schedule/06-week-mult.html#before-class",
+    "href": "schedule/06-week-mult.html#before-class",
+    "title": "Week 6",
+    "section": "",
+    "text": "Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.\n\nCh.7\nDescribe the difference between a stratified versus a multinomial approach to modeling an outcome with more than two nominal categories.\nDescribe how you would interpret the odds ratio of an input variable for a given category in a stratified modeling approach.\nDescribe what is meant by the ‘reference’ of a multinomial logistic regression model with at least three nominal outcome categories.\nDescribe how you would interpret the odds ratio of an input variable for a given category in a multinomial modeling approach.\nGiven a multinomial logistic regression model with outcome categories A, B, C and D and reference category A, describe two ways to determine the coefficients of a multinomial logistic regression model with reference category C.\nDescribe a process for safely simplifying a multinomial logistic regression model by removing input variables."
+  },
+  {
+    "objectID": "schedule/10-week-med.html",
+    "href": "schedule/10-week-med.html",
+    "title": "Week 10",
+    "section": "",
+    "text": "Baron, R. M., & Kenny, D. A. (1986). The moderator–mediator variable distinction in social psychological research: Conceptual, strategic, and statistical considerations. Journal of Personality and Social Psychology, 51, 1173-1182.\n\nWhat are the steps (i.e., equations, regression models) that comprise a mediation analysis?\nWhat are you looking to see in the output of these models to establish that mediation has occurred?\nHow do you test for the overall significance of a mediational model?\nWhat is the difference between a mediation and a moderation (i.e., how do the interpretations of each differ)?\n\n Zhao, X., Lynch, Jr., J. G., & Chen, Q. (2010). Reconsidering Baron and Kenny: Myths and truths about mediation analysis.. Journal of Consumer Research, 37, 197-206)\n\nIdentify at least three recommendations/assertions of Baron and Kenny (1986) that Zhao et al (2010) argue against. State Baron & Kenny’s reasoning behind the original assertion but also the reasoning of Zhao et al when arguing the recommendation is wrong.\nWhat are the five types of mediation and nonmediation?\nWhat type of mediation can tell you whether the mediator is consistent with the causal model?"
+  },
+  {
+    "objectID": "schedule/10-week-med.html#before-class",
+    "href": "schedule/10-week-med.html#before-class",
+    "title": "Week 10",
+    "section": "",
+    "text": "Baron, R. M., & Kenny, D. A. (1986). The moderator–mediator variable distinction in social psychological research: Conceptual, strategic, and statistical considerations. Journal of Personality and Social Psychology, 51, 1173-1182.\n\nWhat are the steps (i.e., equations, regression models) that comprise a mediation analysis?\nWhat are you looking to see in the output of these models to establish that mediation has occurred?\nHow do you test for the overall significance of a mediational model?\nWhat is the difference between a mediation and a moderation (i.e., how do the interpretations of each differ)?\n\n Zhao, X., Lynch, Jr., J. G., & Chen, Q. (2010). Reconsidering Baron and Kenny: Myths and truths about mediation analysis.. Journal of Consumer Research, 37, 197-206)\n\nIdentify at least three recommendations/assertions of Baron and Kenny (1986) that Zhao et al (2010) argue against. State Baron & Kenny’s reasoning behind the original assertion but also the reasoning of Zhao et al when arguing the recommendation is wrong.\nWhat are the five types of mediation and nonmediation?\nWhat type of mediation can tell you whether the mediator is consistent with the causal model?"
+  },
+  {
+    "objectID": "schedule/10-week-med.html#class",
+    "href": "schedule/10-week-med.html#class",
+    "title": "Week 10",
+    "section": "Class",
+    "text": "Class\n\nData we are using for class: Mediation Data"
+  },
+  {
+    "objectID": "schedule/10-week-med.html#after-class",
+    "href": "schedule/10-week-med.html#after-class",
+    "title": "Week 10",
+    "section": "After Class",
+    "text": "After Class\nignore moderation sections\nMediation in R"
+  },
+  {
+    "objectID": "schedule/10-week-med.html#want-to-read-more",
+    "href": "schedule/10-week-med.html#want-to-read-more",
+    "title": "Week 10",
+    "section": "Want to read more?",
+    "text": "Want to read more?\nFossum, J. L., & Montoya, A. K. (2021, December 7). When to Use Different Tests for Power Analysis and Data Analysis for Between-Subjects Mediation. https://doi.org/10.31234/osf.io/5tm2x"
+  },
+  {
+    "objectID": "schedule/12-week-fa.html",
+    "href": "schedule/12-week-fa.html",
+    "title": "Week 12",
+    "section": "",
+    "text": "James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An Introduction to Statistical Learning: With Applications in R. Springer.\n\nChapter 12 12.1-12.3\n\nPett, M. A., Lackey, N. R., & Sullivan, J. (2003). Chapter 1: An Overview of Factor Analyis. Making Sense of Factor Analysis: The Use of Factor Analysis for Instrument Development in Health Care Research (1st edition). SAGE Publications, Inc.\nGoretzko, D., Siemund, K., & Sterner, P. (2023). Evaluating Model Fit of Measurement Models in Confirmatory Factor Analysis. Educational and Psychological Measurement, 00131644231163813. https://doi.org/10.1177/00131644231163813\n Watkins, M. W. (2018). Exploratory Factor Analysis: A Guide to Best Practice. Journal of Black Psychology, 44(3), 219–246. https://doi.org/10.1177/0095798418771807"
+  },
+  {
+    "objectID": "schedule/12-week-fa.html#before-class",
+    "href": "schedule/12-week-fa.html#before-class",
+    "title": "Week 12",
+    "section": "",
+    "text": "James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An Introduction to Statistical Learning: With Applications in R. Springer.\n\nChapter 12 12.1-12.3\n\nPett, M. A., Lackey, N. R., & Sullivan, J. (2003). Chapter 1: An Overview of Factor Analyis. Making Sense of Factor Analysis: The Use of Factor Analysis for Instrument Development in Health Care Research (1st edition). SAGE Publications, Inc.\nGoretzko, D., Siemund, K., & Sterner, P. (2023). Evaluating Model Fit of Measurement Models in Confirmatory Factor Analysis. Educational and Psychological Measurement, 00131644231163813. https://doi.org/10.1177/00131644231163813\n Watkins, M. W. (2018). Exploratory Factor Analysis: A Guide to Best Practice. Journal of Black Psychology, 44(3), 219–246. https://doi.org/10.1177/0095798418771807"
+  },
+  {
+    "objectID": "schedule/12-week-fa.html#after-class",
+    "href": "schedule/12-week-fa.html#after-class",
+    "title": "Week 12",
+    "section": "After Class",
+    "text": "After Class\n\n Kabacoff, R. I. (2022). *R* in Action* Chapter 14\nhttps://rpubs.com/danmirman/plotting_factor_analysis"
+  },
+  {
+    "objectID": "Assignments/index.html#preparation",
+    "href": "Assignments/index.html#preparation",
+    "title": "Assignments",
+    "section": "",
+    "text": "You will get the most out of this seminar if you (1) attend regularly, (2) engage with the readings, and (3) write thoughtfully.\nTo help you do all this successfully, there are three assignments for this course:\n\nMini presentation and discussion leading: Once during the semester, you will be responsible for preparing a presentation and leading the discussion for a class session. During the first day of class, I will provide a spreadsheet where you will select the week you want to be responsible for. Complete instructions and details for this assignment are here.\nLabs: Each week (Wednesday) we will have one corresponding lab exercise that will be started in class. The purpose is for you to get direct experience conducting the analyses that you learn. Each lab exercise will consist of several questions and will require R (will also accept Python) to answer the questions in a reproducible manner. All lab assignments must be reproducible (i.e., I can replicate the work you did without any errors). You may complete the labs by yourself or working with another person. If you work with another person, your work must obviously be your own.\n\nIdeally, you will finish labs in class. However, if you do not complete it in class, you can turn them in on Friday (due at 11:00 P.M.) Please let me know if you need an extension.\n\nTutorial: For your final project, you will create a tutorial explaining how to run a particular analysis in R. This will involve finding data or using your own data. The final project gives you a chance to pursue a specific method discussed in class and apply it to your own data.Complete instructions and details for this assignment are here.",
+    "crumbs": [
+      "Overview",
+      "Assignments"
+    ]
+  },
+  {
+    "objectID": "Blog/nu-metal.html#paletteer",
+    "href": "Blog/nu-metal.html#paletteer",
+    "title": "Blog Example",
+    "section": "",
+    "text": "I stumbled upon the R package paletter that allows you to take any picture and extract the optimized palette. It does this by using an unsupervised learning technique (k-means clustering).\nIt is pretty simple to use. I will show you how."
+  },
+  {
+    "objectID": "Blog/nu-metal.html#korn---its-on",
+    "href": "Blog/nu-metal.html#korn---its-on",
+    "title": "Blog Example",
+    "section": "",
+    "text": "First, you need to save the location of the image file:\n\nlibrary(here) # relative path\nlibrary(paletter) # package to\nlibrary(ggplot2)\n#extract color palette\n\nimage_path &lt;- here::here(\"Blog\", \"images\", \"Korn.jpeg\")\n\n\nThen you can read that file into a function from the package\n\n# Get the color palette\ncolours_vector &lt;- create_palette(image_path = image_path,                            number_of_colors =10,                           type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOnce you do this, it will output a list of hex codes corresponding to the most representative colors in the image.\nLet’s put the hex codes side by side with the album art:\n\n\n\n\n\nSo here we have a color palette associated with the album Follow The Leader. Let’s see how it looks on some data.\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[1:3])"
   }
 ]

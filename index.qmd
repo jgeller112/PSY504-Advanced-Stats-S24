@@ -2,7 +2,7 @@
 title: "PSY 504: Advanced Statistics"
 subtitle: "Advanced Statistical Methods in Psychology"
 details: |
-  PSYCH 504  • Spring 2023<br>Princeton University
+  PSYCH 504  • Spring 2024<br>Princeton University
 sidebar: false
 toc: false
 page-layout: full
@@ -19,7 +19,7 @@ course-logo: /files/img/eval-hires.png
 
 -   {{< fa user >}}   [{{< var instructor.name >}}](%7B%7B%3C%20var%20instructor.url%20%3E%7D%7D)
 -   {{< fa university >}}   {{< var instructor.office >}}
--   {{< fa envelope >}}   <a href="mailto:{{< var instructor.email >}}">{{< var instructor.email >}}</a>
+-   {{< fa envelope >}}   [{{< var instructor.email >}}](%7B%7B%3C%20var%20instructor.email%20%3E%7D%7D)
 -   {{< fa brands twitter >}}   [{{< var instructor.twitter >}}](https://www.twitter.com/%7B%7B%3C%20var%20instructor.twitter%20%3E%7D%7D)
 -   {{< fa calendar-check >}}   [Schedule an appointment](%7B%7B%3C%20var%20instructor.appointment_url%20%3E%7D%7D)
 :::
