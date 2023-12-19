@@ -1,0 +1,145 @@
+---
+title: "Robust Methods Lab"
+format: html
+editor: visual
+execute: 
+  message: false
+---
+
+# Lab 1- Robust Methods
+
+## Instructions
+
+-   If you are fitting a model, display the model output in a neatly formatted table. (The `tidy` and `kable` functions can help!)
+
+-   If you are creating a plot, use clear labels for all axes, titles, etc.
+
+-   Commit and push your work to GitHub regularly, at least after each exercise. Write short and informative commit messages.
+
+-   When you're done, we should be able to knit the final version of the QMD in your GitHub as a HTML.
+
+    ```{r}
+    #| message: false
+    #| 
+    library(tidyverse)
+    library(robustbase) # star data
+    library(boot) # bootstrapping
+    library(correlation) # get different correlations
+    library(permuco) # run permutation tests
+    library(parameters) # SE
+    library(data.table) # fread 
+    library(infer) # sample_rep_n function
+    library(palmerpenguins) # penguins dataset
+
+
+    ```
+
+## Robust Correlations
+
+Use the `stars` data in `robustbase`. This data looks at the relationship between temperature at the surface of a star and the light intensity.
+
+1.  
+
+    ```{r}
+    stars<-robustbase::starsCYG
+    ```
+
+    a\. Plot the data and describe the pattern seen. What is Pearson's *r*?
+
+    b\. Re-run the correlation, but this time use the winsorized r (20%). Do this manually and then with the correlation::correlation function from `easystats`.
+
+    c\. Compare the correlations.
+
+## Bootstrapping and Permutations
+
+2.  For the following data: \[8.453532, 10.025041, 11.495339, 9.367600, 8.333229, 9.788753, 10.883344, 10.543059, 9.869095, 10.799819\]
+
+    a\. Bootstrap the mean (using the `boot` package) and plot the histogram with `ggplot2`
+
+    b\. Bootstrap the median (using the `boot` package) and plot the histogram with `ggplot2`
+
+    c\. For the mean bootstraps, plot the 95% Confidence Intervals (Percentile and BCa)
+
+    d\. For the median bootstraps, plot the 95% Confidence Intervals (Percentile and BCa)
+
+3.  You want to test whether the following paired samples are significantly different from one another: pre = \[22,25,17,24,16,29,20,23,19,20\], post = \[18,21,16,22,19,24,17,21,23,18\]. Often researchers would run a paired sampled t-test, but you are concerned the data does not follow a normal distribution.
+
+    a.  Calculate the paired differences, that is post - pre, which will result in a vector of paired differences (pdiff0 = post - pre)
+
+    b\. Calculate the mean of the paired differences (Xpdiff0)
+
+    c\. Subtract a) from b).
+
+    d\. Bootstrap c) with replacement (pdiff1) and plot the histogram with `ggplot2`.
+
+    e\. Calculate the 95% Confidence Intervals (BCa). What can you infer from this?
+
+    f\. Plot bootstrap mean along with 95% CIs (with `ggplot2`)
+
+    e\. Write up these results.
+
+4.  Pepper Joe measured the length and heat of 85 chili peppers. He wants to know if smaller peppers are hotter than longer peppers.
+
+    ```{r}
+    #read data.table to read in
+    chili<- fread("/Users/jasongeller/Documents/03-Robust_Methods/data/chillis.csv")
+    ```
+
+5.  Some species display sexual size dimorphism -- in which one sex is on average larger than the other. Such a pattern can tell us about the species\' ecology and mating habits. Do penguins display this sex difference in size? To start to answer thus, let\'s look at a subset of the palmerpenguins data set, which I\'ll call `my_penguins`.
+
+    ```{r}
+    my_penguins <- penguins %>% 
+      filter(species == "Adelie",
+             !is.na(sex), 
+             island == "Torgersen") 
+    my_penguins
+    ```
+
+a\. First let\'s visualize body size by sex
+
+a\. Let's give every penguin a participant number by adding a new column to `my_penguins`.
+
+b\. Calculate the original mean difference between sex
+
+c\. Permute the group labels (10000x)
+
+d\. Plot the Null-Hypothesis Distribution (NHD) for the Difference
+
+e\. Compare the Observed Mean Difference to the NHD (is *p* \< .05?)
+
+6.  Suppose a replication experiment was conducted to further examine the interaction effect between driving difficulty and conversation difficulty on driving errors in a driving simulator. In the replication, the researchers administered the same three levels of conversation difficulty; (1) control, (2) easy, (3) difficult (C, E, D) but assume that they added a third level of driving difficulty; (1) low, (2) moderate, (3) difficult (L, M, D). Assume the design was completely between subjects and conduct a factorial ANOVA to test the main effects of conversation and driving difficulty as well as the interaction effect. The DV is the number of errors committed in the driving simulator.
+
+    a\. Check assumptions:
+
+    ```{r}
+    library(tidyverse)
+    fac_data<-read_csv("https://raw.githubusercontent.com/jgeller112/psy503-psych_stats/master/static/assignment/data/fact_final.csv")
+
+
+    ```
+
+    b\. Run a permutation test (ANOVA)
+
+    c\. Follow-up any significant main effects or interactions from the permutation test (hint: bootstrapping).
+
+## Robust Linear Models
+
+7.  Suppose we have the following data frame in R that contains information on the hours studied and exam score received by 20 students in some class:
+
+```{r}
+df <- data.frame(hours=c(1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4,
+                         4, 5, 5, 5, 6, 6, 7, 7, 8),
+                 score=c(67, 68, 74, 70, 71, 75, 80, 70, 84, 72,
+                         88, 75, 95, 75, 99, 78, 99, 65, 96, 70))
+
+```
+
+a\. Use the [lm()](https://www.statology.org/lm-function-in-r/) function to fit a regression model in R that uses **hours** as the predictor variable and **score** as the response variable
+
+b\. Interpret the results
+
+c\. Check heteroskedasticity assumption (include the plot).
+
+d\. Rerun the lm you saved above, but with robust standard errors now
+
+e\. What differences do you notice between the regular regression and the regression with robust SEs applied?

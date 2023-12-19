@@ -1,0 +1,24 @@
+---
+title: "Ordinal_Lab"
+editor: visual
+---
+
+1.  Construct a model to determine how the data provided may help explain the `performance_group` of a manager by following these steps:
+
+    -   Convert the outcome variable to an ordered factor of increasing performance.
+
+    -   Convert input variables to categorical factors as appropriate.
+
+    -   Run a proportional odds logistic regression model against all relevant input variables
+
+    -   Calculate the odds ratios for your simplified model and write an interpretation of them
+
+    -   Estimate the fit of the simplified model using a variety of metrics and perform tests to determine if the model is a good fit for the data.
+
+    -   Construct new outcome variables and use a stratified binomial approach to determine if the proportional odds assumption holds for your simplified model. Are there any input variables for which you may be concerned that the assumption is violated?
+
+    -   Use the Brant test to support or reject the hypothesis that the proportional odds assumption holds for your simplified model
+
+    -   Create a figure showing probability of performance across your IVs of interest
+
+    -   Write a full APA report on your model

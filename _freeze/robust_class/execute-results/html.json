@@ -1,0 +1,14 @@
+{
+  "hash": "e9083bca864381cfe1e11ba076ef2eaf",
+  "result": {
+    "markdown": "---\ntitle: \"Robust_Notes\"\neditor: visual\n---\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(boot) # package dedicated to bootstrap methods\nlibrary(simpleboot) #\n```\n\n::: {.cell-output .cell-output-stderr}\n```\nSimple Bootstrap Routines (1.1-7)\n```\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nn <- 6 # sample size\nsamp <- 1:n\nsamp\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 1 2 3 4 5 6\n```\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nset.seed(21) # for reproducible results\nboot_samp <- sample(samp, size = n, replace = TRUE) # sample with replacement\nboot_samp\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 1 3 1 2 5 3\n```\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\n# for reproducible results\nboot_samp <- sample(samp, size = n, replace = TRUE) # sample with replacement\nboot_samp\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 3 4 2 6 6 6\n```\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nboot_samp <- sample(samp, size = n, replace = TRUE) # sample with replacement\nboot_samp\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 3 6 2 3 4 5\n```\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nx=c(1,5,6,7,8,9)\nindices=c(2,2,3)\n\nx[indices]\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 5 5 6\n```\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nset.seed(666)\n# define the function that will be used to calculate the mean\n# can be extended to other statistics\nmean_fun = function(data, indices) {\n  return(mean(data[indices])) #indices to do bootstrapping\n}\n# use boot to bootstrap means 1000 times (R)\n#input is df, function for mean, and # of boot samples\nresults = boot(samp, mean_fun, R=1000)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\n#bias is bootstrapped sample mean - sample mean\n\nresults\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n\nORDINARY NONPARAMETRIC BOOTSTRAP\n\n\nCall:\nboot(data = samp, statistic = mean_fun, R = 1000)\n\n\nBootstrap Statistics :\n    original  bias    std. error\nt1*      3.5  0.0335   0.7032939\n```\n:::\n:::\n\n\nBias = sample mean - bootstrapped mean\n\noriginal = sample mean\n\nstd.error (precision)\n\n# permutations\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

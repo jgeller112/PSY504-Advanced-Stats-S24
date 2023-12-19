@@ -1,0 +1,232 @@
+---
+title: "Lab1-Missing_Data"
+format: html
+editor: visual
+---
+
+# Lab 2 - Missing Data
+
+    ```{r, warning = F, message = F}
+    library(tidyverse)
+    library(GGally)
+    library(mice)
+    library(naniar)
+    library(finalfit)
+    ```
+
+1.  Read in Data
+
+Load the `brandsma` data from the **mice** package. Execute `?brandsma` to get a sense of the variables and where the data come from. Then make a subset of the `brandsma` data that contains the four variables `pup`, `iqv`, `ses`, `lpr` and `lpo`. Name that subset `d`.
+
+```{r}
+
+d <- brandsma %>%
+  select(pup, iqv, ses, lpr, lpo)
+
+```
+
+2.  Look at yo data (how many missing NAs total? Per variable?)
+
+```{r}
+
+d %>%
+  skimr::skim() 
+
+
+vis_miss(d)
+
+```
+
+3.  Missing data patterns with `md.pattern()`
+    -   Use the `naniar fucntion plot_pattern()` function to do a missing data pattern analysis. Adjust the code from lecture to do a similar analysis with variables `iqv`, `ses`, `lpr` and `lpo`. Run the code both ways, with `plot = FALSE` and `plot = TRUE`.
+
+    -   In a sentence or two, tell me how many cases showed the most popular pattern and describe to me what that pattern is.
+
+    -   Also, according to the `md.pattern()` results, which variable had the largest number of missing observations?
+4.  Missing data dummies
+
+All variables in `d` have missing observations, with the exception of `pup`, the participant id number. In lecture and in the text, we learned that we can make dummy variables to indicate whether we have missingness in a given column. So let's do that:
+
+-   Make four dummy variables named `r_iqv` through `r_lpo`. \* Code `r_iqv` such that it is a zero when `is.na(iqv)` and a one when `iqv` has an observed value. In the same way, make `r_ses` be the missing data dummy for `ses`, and so on.
+-   Save these four dummy variables in the `d` data set.
+
+```{r}
+
+```
+
+4.Missing data patterns with `plot_pattern()`
+
+-   Use the `naniar function plot_pattern()` function to do a missing data pattern analysis. Adjust the code from lecture to do a similar analysis with variables `iqv`, `ses`, `lpr` and `lpo`. Run the code both ways, with `plot = FALSE` and `plot = TRUE`.
+
+-   In a sentence or two, tell me how many cases showed the most popular pattern and describe to me what that pattern is.
+
+-   Also, according to the `plot_pattern()` results, which variable had the largest number of missing observations?
+
+-   What pattern do you see in the missing data?
+
+5\. Missing data patterns with your `r` dummies
+
+The `md.pattern()` function is very slick and easy to use. But you should also know how to use your data wrangling skills to perform such an analysis by hand. Follow along and I'll show you how.
+
+1.  Subset the `d` data so it only contains the `pup` identifiers and the four `r` dummy variables.
+
+```{r}
+my_md_pattern <- d %>%
+  transmute(pup,  iqv_r=ifelse(is.na(iqv), 1, 0), ses_r=ifelse(is.na(ses), 1, 0), lpr_r=ifelse(is.na(lpr), 1, 0), lpo_r=ifelse(is.na(lpo), 1, 0)) %>%
+  dplyr::count(iqv_r, ses_r, lpr_r, lpo_r, sort=TRUE)
+```
+
+2.  Within the `count()` function, simultaneously count up the rows by all four of your `r` dummy variables. Also, make sure the results are sorted by setting `sort = TRUE`. If you're confused by this, take a look at the third example here (https://dplyr.tidyverse.org/reference/count.html), which counted by two variables. You'll just be extending to four variables.
+
+3.  Save the results as `my_md_pattern` and show the results.
+
+*Tip*: If you are successful, you will have a tibble with 11 rows and five columns. The rightmost column will be named `n`. If you look above, the results of this exercise should match up closely with the `md.pattern()` from the previous section.
+
+## 6. Missing data plot
+
+Run the code I've provided, below. If you are successful, it will return a nice missing data pattern plot. I recommend spending some time going through that code to make sure you fully understand what it's doing.
+
+```{r}
+my_md_pattern %>% 
+  mutate(pattern = str_c("pattern ", letters[1:11], ". (n = ", n, ")")) %>% 
+  pivot_longer(cols = c(-n, -pattern)) %>% 
+  mutate(observed = factor(value),
+         pattern = fct_rev(pattern)) %>% 
+  
+  ggplot(aes(x = name, y = pattern)) +
+  geom_tile(aes(fill = observed)) +
+  geom_text(aes(label = observed, color = observed)) +
+  scale_fill_viridis_d(option = "D", end = .7) +
+  scale_color_manual(values = c("grey90", "black"), breaks = NULL) +
+  scale_x_discrete(NULL, expand = c(0, 0), position = "top") +
+  scale_y_discrete(NULL, expand = c(0, 0)) +
+  ggtitle("Missing data patterns") +
+  theme(axis.text.y = element_text(hjust = 0),
+        axis.ticks = element_blank())
+
+```
+
+# 7. Missing Mechanism
+
+-   Using what we learned in class, can you determine if the missingness in `d` is MAR or MCAR? How? Show me.
+
+```{r}
+library(finalfit)
+
+explanatory = c("iqv", "ses", "lpr")
+dependent = "lpo" 
+
+d %>%
+  missing_pairs(dependent, explanatory) 
+
+d %>%
+  missing_compare(dependent, explanatory)
+   # mice function visualize data
+```
+
+## 7. Listwise deletion
+
+-   Get rid of all the NAs
+
+-   Run a lm model based on complete cases and assign it to `lm_listwise`
+
+```{r}
+
+```
+
+-   Interpret these results
+
+## 8. Mean Impute
+
+-   Impute the missing data with the mean for each missing variable (set m = 1).
+
+-   Use `mice::complete()` to get the full dataset
+
+-   Run the lm model again and store it as `mean_missing`
+
+```{=html}
+<!-- -->
+```
+-   Interpret these results
+
+## 9. Regression imputation
+
+-   Impute the missing data with a regression approach (set m = 1).
+
+-   Save the analysis as `regression_lm`
+
+-   Use complete() to get the dataset
+
+-   Run the lm model again and store it as `lm_missing`
+
+## 8. Inspect
+
+It may not look like it, but we went along with a lot of default settings with that last bit of code and we made at least one major goof. Let's inspect the damage.
+
+-   Use the `str()` function to get an overview of the contents in your `imp1` object.
+
+-   You may have noticed there's a lot of stuff in there. Let's take a more focused look by executing `imp1$method`.
+
+-   With the last two bullets in mind, notice how we used the `pup` variable in the imputation formulas. Since `pup` is just a participant id number, this is a really bad idea. We're injecting random noise into our data.
+
+-   Also notice that we used all four `r` dummy variables in the imputation formulas and we even had imputation formulas for the dummy variables themselves. This is also a really bad idea. I know the definition of what a variable is is getting a little hazy, here. But hopefully you are building an intuition that the four `r` dummy variables are different in nature from the original variables they were based on.
+
+**Tip**. You're not really doing or interpreting anything in this section. Just make sure you include your code so I know you followed along.
+
+9.  Let's use `mice()` again, but with a few improvements:
+
+-   In our data statement, enter in `select(d, iqv:lpo)` instead of `d`.
+
+-   Add the setting `method = "norm"`, which uses a Bayesian regression method that presumes the variables are all continuous--which they are.
+
+-   Also, to make the next exercise easier, set `m = 5`, which will result in 5 imputed data sets.
+
+Save the results as `imp2`. Then inspect `imp2$method`, `imp2$predictorMatrix`, `imp2$formulas`, and `imp2$loggedEvents`. Show me all that code.
+
+## 10. Check the data
+
+Since we've been working so hard to make those imputed data sets, we may as well take a look at them. If you're tricky, you can actually directly extract the imputed data sets from the `imp2` object by hand. But there's an easier way. The `mice::complete()` function will do that for you. If you execute `complete(imp2, action = "long")`, you will get all four imputed data sets stacked vertically on one another in the long data format. Do this and save the results as `d_imp`.
+
+You'll notice our `d_imp` has two new columns. The`.imp` column tells you which imputation number is it. The `.id` column tells you which row number the data is from.
+
+With your `d_imp` data, make a scatter plot with `lpr` on the x-axis, `lpo` on the y-axis, and faceted by `.imp`. To deal with the overplotting, I recommend you adjust the `size` and `alpha` settings within `geom_point()`. Since you've been learning about how to beautify your **ggplot2** figures, feel free to pretty up the visualization in other ways. Make yourself proud.
+
+```{r}
+
+
+```
+
+## 12. More imputation EDA
+
+Since our sample size is so large, it might be difficult to see the differences among the four imputed data sets with a scatter plot. Descriptive statistics might be more helpful, here. Group the `d_imp` data by `.imp` and then use the `summarise()` function to compute:
+
+-   the mean of `lpo`,
+-   the standard deviation of `lpo`, and
+-   the correlation between `lpo` and `lpr`.
+
+If you do this right, you'll get four similar--but slightly different--values for each of those descriptive statistics.
+
+## 13. Fit the model(s)
+
+Using the code in class, run `mice` to fit a model with multiple imputated data sets
+
+-   Now follow the next step, corresponding to `with()` line. The regression model you are fitting is `lpo ~ lpr`. Save the results as `fit`.
+
+## 14. What is `fit`?
+
+We should demystify what we just did. Execute `fit %>% str(max.level = 1)` to get a sense of the structure of our `fit` object. You'll see it is composed of four upper-level sections. The first two sections, `call` and `call1` provide metadata on the linear model(s) you fit and the imputation method you used in the data. The third section `nmis` simply lists the number of missing values in each of the variables in the imputed data sets. The fourth section `analyses` contains the results from the regression models for to each of the imputed data sets. Since we have four imputed data sets in this example, the `analyses` section is a list of four fit objects. If we had imputed 20 data sets, this would be a list of 20 fit objects instead.
+
+I know I haven't really asked you to do much, here. Just show the code I told you to execute.
+
+## 15. Summarize the results from your multiplie imputation regression model
+
+-   Run the final model and save it as `pooled_fit`
+
+-   Now execute `pooled_fit %>% str(max.level = 1)` to get a sense of what your `pooled_fit` object even is.
+
+-   Finally, execute `summary(pooled_fit, conf.int = TRUE)` to get your pooled summary. These are the summary results you'd report in a paper.
+
+-   Compare these results to the listwise deletion, mean, and regression imputation results above. What differences do you notice?
+
+```{r}
+```

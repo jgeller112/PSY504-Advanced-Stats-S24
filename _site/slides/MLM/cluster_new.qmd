@@ -1,0 +1,643 @@
+---
+title: "Introduction to Clustering (with R)"
+subtitle: "Princeton University"
+author: "Jason Geller, PH.D."
+date: 'Updated:`r Sys.Date()`'
+footer: "PSY 504: Advanced Statistics"
+format: 
+  revealjs:
+    theme: psy504.css
+    multiplex: true
+    transition: fade
+    slide-number: true
+    incremental: false 
+    chalkboard: true
+execute:
+  freeze: auto
+  echo: true
+  message: false
+  warning: false
+  fig-align: "center"
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r}
+#| echo: false
+#| 
+library(parameters)
+library(effectsize) 
+library(papaja)
+library(tidyverse)
+library(performance)
+library(see)
+library(equatiomatic)
+library(kableExtra)
+library(broom)
+library(report)
+library(emmeans)
+library(flextable)
+library(huxtable)
+library(skimr)
+library(mediation)
+library(JSmediation)
+library(MeMoBootR)
+library(papaja)
+library(tidyverse)
+library(processR)
+library(broom)
+library(ggdist)
+library(semPlot)
+library(pacman)
+library(factoextra)
+library(corrplot)
+```
+
+## Clustering
+
+::: columns
+::: {.column width="50%"}
+-   Unsupervised learning
+
+    -   No labels/or correct answer
+
+    -   Goal: find structure
+
+        -   Clustering or Dimensionality Reduction
+:::
+
+::: {.column width="50%"}
+![](images/clust_diagram.png){width="523"}
+
+(Chelsea Parlett-Pelleriti)
+:::
+:::
+
+## Goal of clustering?
+
+::: columns
+::: {.column width="50%"}
+-   Given a set of data points, each described by a set of attributes, find clusters such that:
+
+    -   Intra-cluster similarity is maximized
+
+    -   Inter-cluster similarity is minimized
+:::
+
+::: {.column width="50%"}
+![](images/typ_cluster.png){fig-align="center"}
+:::
+:::
+
+## Two types of clustering
+
+-   Hierarchical (agglomerative): Create a hierarchical decomposition of the set of objects using some criterion
+
+-   Partitional (k-means): Construct various partitions (k) and then evaluate them by some criterion
+
+![](images/clust.png){fig-align="center"}
+
+## Hierarchical relationships
+
+-   Bottom-Up (agglomerative) clustering: Starting with each item in its own cluster, find the best pair to merge into a new cluster. Repeat until all clusters are fused together
+
+![](images/bottom.png){fig-align="center"}
+
+## Hierarchical steps
+
+![](images/hi_steps.png){fig-align="center" width="900"}
+
+## Distance metrics
+
+![](images/manveu.webp){fig-align="center" width="531"}
+
+-   Euclidean
+
+$$d = \sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$$
+
+-   Manhattan
+
+$$d = |x2 - x1| + |y2 - y1|$$
+
+## Linkage
+
+-   How close clusters are to one another
+
+![](images/linkage_all.PNG){fig-align="center"}
+
+## Linkage
+
+-   Wards
+
+    -   Uses sum of squares to join clusters
+
+![](images/wards_pic.png){fig-align="center"}
+
+## Hierarchical steps
+
+-   Calculate a distance matrix which contains distances between every pair
+
+    ::: callout-important
+    -   Preprocessing:
+
+        -   Rows are observations and columns are variables
+
+        -   Standardize variables (if not on same scale)
+
+        -   No missing data
+    :::
+
+|             |          |           |             |
+|-------------|----------|-----------|-------------|
+| **Student** | **Math** | **Music** | **Biology** |
+| StudentA    | 2        | 3         | 2           |
+| StudentB    | 1        | 3         | 2           |
+| StudentC    | 1        | 2         | 1           |
+| StudentD    | 2        | 4         | 4           |
+| StudentE    | 3        | 4         | 3           |
+
+## Hierarchical steps
+
+```{r}
+
+students <- data.frame(
+  Student = c("StudentA", "StudentB", "StudentC", "StudentD", "StudentE"),
+  Math = c(2, 1, 1, 2, 3),
+  Music = c(3, 3, 2, 4, 4),
+  Biology = c(2, 2, 1, 4, 3)
+)
+
+rownames(students) <- students$Student # make row names speaker
+
+diststudents <- dist(students, method = "euclidian") # create a distance matrix
+
+diststudents
+
+```
+
+## Hierarchical steps
+
+-   Find two points closest together
+
+```{r}
+students2 <- matrix(c(1.5, 3, 2, 1,  2,  1, 2,  4,  4, 3,  4,  3),
+  nrow = 4, byrow = T)
+students2 <- as.data.frame(students2)
+rownames(students2) <- c("Cluster1", "StudentC", "StudentD", "StudentE")
+diststudents2 <- dist(students2, method = "euclidian")
+
+diststudents2
+
+```
+
+## Hierarchical steps
+
+```{r}
+students3 <- matrix(c(1.5,3,2,1,2,1,2.5,4,3.5),
+                    nrow = 3, byrow = T)
+students3 <- as.data.frame(students3)
+rownames(students3) <- c("Cluster1", "StudentC", "Cluster2")
+diststudents3 <- dist(students3, 
+                      method = "euclidian")
+
+diststudents3
+
+```
+
+## Hierarchical steps
+
+![](images/IMG_2443.JPG){fig-align="center"}
+
+## Hierarchical steps
+
+![](images/IMG_2442.JPG){fig-align="center"}
+
+## Hierarchical steps
+
+![](images/IMG_2443.JPG){fig-align="center"}
+
+## Hierarchical steps
+
+![](images/IMG_2444.JPG){fig-align="center"}
+
+## Hierarchical steps
+
+![](images/IMG_2447.JPG){fig-align="center"}
+
+## Hierarchical steps
+
+![](images/IMG_2448.JPG){fig-align="center"}
+
+## Hierarchical steps
+
+![](images/IMG_2449.JPG){fig-align="center"}
+
+## Hierarchical steps
+
+![](images/IMG_2450.JPG){fig-align="center"}
+
+## Reading a dendrogram
+
+::: columns
+::: {.column width="50%"}
+![](images/dend1.jpg){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+<br>
+
+<br>
+
+![](images/dend2.jpg){fig-align="center"}
+:::
+:::
+
+-   Height (y-axis):
+
+    -   Similarity (distance)
+
+-   x-axis: not meaningful (just arranged to look pretty)
+
+## Cutting a dendrogram
+
+![](images/dend3.jpg){fig-align="center" width="622"}
+
+## HAC in action
+
+::: columns
+::: {.column width="50%"}
+-   *N* = 84
+
+-   The talkers included three American English regional dialects (New England dialect, the Southern dialect), three international English dialects (British English, Australian English, and Africaans), and nine nonnative accents (Mandarin, Korean, and Japanese from East Asia, Bengali, Gujarati, and Urdu from South Asia, and Indonesian, Tagalog, and Thai from Southeast Asia)
+:::
+
+::: {.column width="50%"}
+```{r}
+p_load(factoextra, dendextend, easystats)
+
+clust_data = read_csv("https://raw.githubusercontent.com/jgeller112/clustering_project/main/data/class_wide_1.csv")
+
+clust_data <- dplyr::select(clust_data, -...1, -`54`) # remove extra col sub 54 has weird formatting
+
+clust_data <- as.data.frame(clust_data)
+
+rownames(clust_data) <- clust_data$speaker # make row 
+
+clust_data <- dplyr::select(clust_data,-speaker) # remove extra col sub 54 has weird formatting
+
+
+
+```
+:::
+:::
+
+## HAC in action
+
+-   Calculate distance matrix
+
+    ```{r}
+
+    dist_mat <- clust_data %>% 
+      dist(., method="euclidean")
+
+    dist_mat
+
+    ```
+
+## HAC in action
+
+```{r}
+
+#hclust from stats package
+hclust_avg <- hclust(dist_mat, method = 'ward.D2')
+
+plot(hclust_avg, cex = 0.6, hang = -1)
+
+```
+
+## Determine optimal \# clusters
+
+## Elbow method
+
+$$
+minimize\Bigg(\sum^k_{k=1}W(C_k)\Bigg) 
+$$
+
+-   Optimal cluster size $C_k$ where within-cluster sum of squares (*W*) is minimized
+
+## Silhouette
+
+-   Measure of how good your clusters are (-1, 1)
+    -   Cohesion $a(i)$
+
+    -   Separability $b(i)$
+
+$$
+s(i) = \frac{b(i)-a(i)}{max{(a(i), b(i))}}
+$$
+
+![](images/sila.png){fig-align="center" width="381"}
+
+![](images/silb.png){fig-align="center" width="450"}
+
+## Gap
+
+-   Compares total within-cluster variation for different values of k (number of clusters) with the expected variation if the data were randomly distributed (null)
+
+$$
+Gap_n(k) = E^*_n{log(W_k)} - log(W_k)
+$$
+
+## Determine optimal \# clusters
+
+```{r}
+# Plot cluster results
+p1 <- fviz_nbclust(clust_data, FUN = hcut, method = "wss", 
+                   k.max = 10) +
+  ggtitle("(A) Elbow method")
+p2 <- fviz_nbclust(clust_data, FUN = hcut, method = "silhouette", 
+                   k.max = 10) +
+  ggtitle("(B) Silhouette method")
+
+p3 <- fviz_nbclust(clust_data, FUN = hcut, method = "gap_stat", 
+                   k.max = 10, nboot=100) +
+  ggtitle("(C) Gap statistic")
+```
+
+## Determine optimal \# clusters
+
+```{r}
+# Display plots side by side
+gridExtra::grid.arrange(p1, p2,p3,  nrow = 1)
+```
+
+## Determine optimal \# clusters
+
+-   Bootstrapping
+
+```{r}
+#| fig-align: center
+#| 
+ 
+#easystats
+n <- n_clusters_hclust(clust_data, standardize=FALSE, distance_method = "euclidian", hclust_method = "ward.D2",  iterations = 500)
+
+plot(n)
+```
+
+## Visualize clusters
+
+```{r}
+#| fig.align: center
+
+fviz_dend(x = hclust_avg, cex = 0.8, lwd = 0.8, k = 2,
+          rect = TRUE, 
+          rect_border = "gray", 
+          rect_fill = FALSE)
+
+
+```
+
+## Visualize clusters
+
+```{r}
+fviz_dend( hclust_avg, cex = 0.8, lwd = 0.8, k = 2,
+                 rect = TRUE,
+                 k_colors = "jco",
+                 rect_border = "jco",
+                 rect_fill = TRUE,
+                 type = "circular")
+```
+
+## Goodness of fit
+
+```{r}
+
+hclust_avg <- hcut(dist_mat,k=2)
+fviz_silhouette(hclust_avg)
+```
+
+## Interpretation
+
+```{r}
+#| fig-align: center
+fviz_dend(x = hclust_avg, cex = 0.8, lwd = 0.8, k = 4,
+          rect = TRUE, 
+          rect_border = "gray", 
+          rect_fill = FALSE)
+
+```
+
+-   Cluster 1: English
+
+-   Cluster 2: Non-English
+
+## Pros and cons: HAC
+
+-   Pros:
+
+    -   Show all possible linkage between clusters
+
+        -   Understand the data much better
+
+    -   No need to preset any cluster values
+
+-   Cons:
+
+    -   Subjective
+
+    -   Scaleability (can be computationally intensive with lots of data)
+
+## K-means
+
+1.  Choose k random points to be cluster center
+2.  For each data point, assign it to the cluster whose center is closest
+3.  Recalculate centers
+4.  Repeat 2 and 3 until:
+    -   Cluster membership does not change
+    -   Centers change only a tiny amount
+
+## K-means
+
+![](images/step1.png){fig-align="center"}
+
+## K-means
+
+![](images/Screen%20Shot%202023-04-11%20at%2012.37.59%20PM.png){fig-align="center"}
+
+## K-means
+
+![](images/kmeans-3.png){fig-align="center"}
+
+## K-means
+
+![](images/kmeans.gif){fig-align="center"}
+
+## K-means in action
+
+```{r}
+
+data("iris") #read in data
+# Remove species column (5) and scale the data
+
+# easystats scale
+iris.scaled <- datawizard::standardize(iris[, -5])
+```
+
+-   Iris dataset
+
+    -   We know there are 3 distinct type of flowers
+
+![](images/iris.png){width="897"}
+
+## EDA
+
+```{r}
+#| echo: false
+#| 
+
+library(ggpubr)
+scat1 <- ggpubr::ggscatter(iris, x = "Sepal.Length", y="Sepal.Width", shape = "Species", color = "Species", palette = "lancet", size = 2, alpha = 0.6) + stat_smooth(method=lm, se=FALSE, colour="black")
+xdens1 <- ggdensity(iris, "Sepal.Length", colour = "Species", fill = "Species", palette = "lancet")
+ydens1 <- ggdensity(iris, "Sepal.Width", colour = "Species", fill = "Species", palette = "lancet") + ggpubr::rotate()
+
+ggarrange(xdens1, NULL, scat1, ydens1, nrow=2, ncol=2, align = "hv", widths = c(2,1), heights = c(1,2), common.legend = TRUE)
+
+
+```
+
+## EDA
+
+```{r}
+#| echo: false
+#| fig.align: center
+scat2 <- ggpubr::ggscatter(iris, x = "Petal.Length", y="Petal.Width", shape = "Species", color = "Species", palette = "lancet", size = 2, alpha = 0.6) + stat_smooth(method=lm, se=FALSE, colour="black")
+xdens2 <- ggdensity(iris, "Petal.Length", colour = "Species", fill = "Species", palette = "lancet")
+ydens2 <- ggdensity(iris, "Petal.Width", colour = "Species", fill = "Species", palette = "lancet") + ggpubr::rotate()
+ggarrange(xdens2, NULL, scat2, ydens2, nrow = 2, ncol = 2, align = "hv", widths = c(2,1), heights = c(1,2), common.legend = TRUE)
+
+
+
+```
+
+## Clustering
+
+::: columns
+::: {.column width="50%"}
+```{r}
+km.res <- kmeans(iris.scaled, 3)
+
+km.res
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+
+cluster_analysis(iris.scaled, n=3, method="kmeans") %>%
+  plot()
+```
+:::
+:::
+
+## Visualizing clusters
+
+```{r}
+fviz_cluster(km.res,iris.scaled)
+
+```
+
+## Determining Clusters
+
+```{r}
+# Plot cluster results
+p1 <- fviz_nbclust(iris.scaled,kmeans, method = "wss") +
+  ggtitle("(A) Elbow method")
+p2 <- fviz_nbclust(iris.scaled, kmeans, method = "silhouette", 
+                   k.max = 10) +
+  ggtitle("(B) Silhouette method")
+
+p3 <- fviz_nbclust(iris.scaled, FUN = hcut, method = "gap_stat", 
+                  k.max = 10) +
+  ggtitle("(C) Gap statistic")
+```
+
+## Clusters
+
+```{r}
+# Display plots side by side
+gridExtra::grid.arrange(p1, p2,p3, nrow = 1)
+```
+
+## Cluster Inference
+
+::: columns
+::: {.column width="50%"}
+```{r}
+rez_kmeans <- cluster_analysis(iris.scaled, standardize = FALSE, method = "kmeans")
+
+rez_kmeans
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+
+plot(rez_kmeans)
+
+```
+
+-   Cluster 1: Versicolor
+
+-   Cluster 2: Setosa + Virginica
+:::
+:::
+
+## Shiloutte score
+
+```{r}
+library(cluster)
+km.res <- kmeans(iris.scaled, 2)
+sil <- silhouette(km.res$cluster,dist(iris.scaled))
+
+fviz_silhouette(sil)
+```
+
+## Getting cluster assignments
+
+```{r}
+
+predict(rez_kmeans)
+
+#add cluster assignment back into df 
+iris.scaled$clus <- predict(rez_kmeans)
+
+
+
+```
+
+## Pros and cons: K-means
+
+-   Pros:
+
+    -   Simple
+
+    -   Fast
+
+-   Cons:
+
+    -   Sensitive to outliers
+
+    -   \# of clusters can change depending on order of data
+
+    -   Assumes spherical density
+
+        -   dbscan
+
+        -   k-mediods
+
+## Acknowledgements
+
+Special thanks to Chelsea Parlett-Pelleriti for some of the content contained herein

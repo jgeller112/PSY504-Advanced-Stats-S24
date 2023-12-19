@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>PSY 504: Advanced Statistics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jason Geller, Ph.D. (he/him/his)" />
+    <script src="multinom_files/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="psy504.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# PSY 504: Advanced Statistics
+]
+.subtitle[
+## Multinomial Regression
+]
+.author[
+### Jason Geller, Ph.D. (he/him/his)
+]
+.institute[
+### Princeton University
+]
+.date[
+### Updated:2023-03-01
+]
+
+---
+
+
+
+
+
+
+## Outline
+
+- Introduce multinomial logistic regression
+
+- Interpret model coefficients
+
+- Inference for a coefficient βjk
+
+---
+&lt;img src="ordmult.jpeg" width="80%" style="display: block; margin: auto;" /&gt;
+---
+
+## Multinomial Logistic Regression
+
+- In ordinal regression: 
+
+`$$\begin{array}{rcl} L_1 &amp;=&amp; \alpha_1-\beta_1x_1+\cdots+\beta_p X_p\\ L_2 &amp;=&amp; \alpha_2-\beta_1x_1+\cdots+\beta_p X_p &amp; \\ L_{J-1} &amp;=&amp; \alpha_{J-1}-\beta_1x_1+\cdots+\beta_p X_p \end{array}$$`
+
+- In the multinomial logistic model:
+
+`$$\begin{array}{rcl} L_1 &amp;=&amp; \alpha_1+\beta_1x_1+\cdots+\beta_p X_p\\ L_2 &amp;=&amp; \alpha_2+\beta_2x_1+\cdots+\beta_p X_p &amp; \\ L_{J-1} &amp;=&amp; \alpha_{J-1}+\beta_jx_1+\cdots+\beta_p X_p \end{array}$$`
+---
+## Multinomial logistic regression
+
+- Choose a baseline category. Let's choose `\(y=0\)`.  Then, 
+
+`$$P(y_i = 0|x_i) = P_{i0} and P(y_i = 1|x_i) = P_{i1}$$`
+.eq[
+`$$\log\bigg(\frac{p_{i1}}{p_{i0}}\bigg) = \beta_{0k} + \beta_{1k} x_i$$`
+]
+
+- Slope, `\(\beta_1\)`: when x increases by one unit, the odds of Y = 1 vs. baseline is expected to multiply by a factor or `\(exp(\beta)\)`
+
+- Intercept, `\(\beta_0\)`: when x = 0 the odds of Y = 1 is expeted to be `\(exp(\beta)\)`
+---
+## Multinomial Logistic Regression 
+
+- Which of the following best describes your pattern of study?
+
+  - Light cram
+  - Heavy cram
+  - Space out
+
+- Let "Space out" be the baseline category. Then 
+
+`$$\log\bigg(\frac{\pi_{light }}{\pi_{space}}\bigg) = \beta_{0B} + \beta_{1B}x_i \\[10pt]
+\log\bigg(\frac{\pi_{heavy}}{\pi_{space}}\bigg) = \beta_{0C} + \beta_{1C} x_i$$`
+---
+## Summary
+
+- Multinomial logistic regression models the probabilities of j response categories (j-1)
+
+  - Typically these compare each of the first m-1 categories to the last (reference) category
+  
+    - 1 vs. m, 2 vs.m, 3 vs. m
+    
+- Logits for any pair of categories can be calculated from the m-1 fitted ones
+
+---
+## NHANES Data
+
+- [National Health and Nutrition Examination Survey](https://www.cdc.gov/nchs/nhanes/index.htm) is conducted by the National Center for Health Statistics (NCHS) 
+
+- The goal is to *"assess the health and nutritional status of adults and children in the United States"*
+
+- This survey includes an interview and a physical examination
+
+---
+
+## NHANES Data
+
+- We will use the data from the &lt;font class="vocab"&gt;`NHANES`&lt;/font&gt; R package
+
+- Contains 75 variables for the 2009 - 2010 and 2011 - 2012 sample years
+
+- The data in this package is modified for educational purposes and should **not** be used for research
+
+- Original data can be obtained from the [NCHS website](https://www.cdc.gov/nchs/data_access/index.htm) for research purposes
+
+- Type &lt;font class="vocab"&gt;`?NHANES`&lt;/font&gt; in console to see list of variables and definitions
+
+---
+## Health Rating vs. Age &amp; Physical Activity
+
+- **Question**: Can we use a person's age and whether they do regular physical activity to predict their self-reported health rating?
+
+- We will analyze the following variables: 
+
+  + &lt;font class="vocab"&gt;`HealthGen`: &lt;/font&gt;Self-reported rating of participant's health in general.  Excellent, Vgood, Good, Fair, or Poor.
+  
+    + &lt;font class="vocab"&gt;`Age`: &lt;/font&gt;Age at time of screening (in years). Participants 80 or older were recorded as 80.
+    
+  + &lt;font class="vocab"&gt;`PhysActive`: &lt;/font&gt;Participant does moderate to vigorous-intensity sports, fitness or recreational activities
+---
+## The data
+
+
+```r
+library(NHANES)
+nhanes_adult &lt;- NHANES %&gt;%
+  #only use ages 18+
+  filter(Age &gt;= 18) %&gt;%
+  #select 4 vars from the full dataset
+  dplyr::select(HealthGen, Education, Age, PhysActive) %&gt;%
+  # get rid of nas
+  drop_na() %&gt;%
+  mutate(obs_num = 1:n())
+```
+
+
+```r
+glimpse(nhanes_adult)
+```
+
+```
+## Rows: 6,465
+## Columns: 5
+## $ HealthGen  &lt;fct&gt; Good, Good, Good, Good, Vgood, Vgood, Vgood, Vgood, Vgood, …
+## $ Education  &lt;fct&gt; High School, High School, High School, Some College, Colleg…
+## $ Age        &lt;int&gt; 34, 34, 34, 49, 45, 45, 45, 66, 58, 54, 50, 33, 60, 56, 56,…
+## $ PhysActive &lt;fct&gt; No, No, No, No, Yes, Yes, Yes, Yes, Yes, Yes, Yes, No, No, …
+## $ obs_num    &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, …
+```
+
+---
+## Missingness
+
+
+```r
+library(skimr)
+library(mice)
+
+skimr::skim(nhanes_adult)
+
+#you can imputate missing categorical data
+nhanes_impu=complete(mice(nhanes_adult, m=5))
+```
+
+---
+## Exploratory data analysis
+
+&lt;img src="multinom_files/figure-html/unnamed-chunk-6-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+## Exploratory data analysis
+
+&lt;img src="multinom_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Multinomial Model in R
+
+- Use the &lt;font class="vocab"&gt;`multinom()`&lt;/font&gt; function in the `nnet` package 
+
+
+```r
+library(nnet)# multinom 
+library(emmeans) # marginal means
+library(ggeffects) # visualization
+
+health_m &lt;- multinom(HealthGen ~ PhysActive + Age, 
+                     data = nhanes_adult)
+
+
+summary(health_m)
+```
+
+- Put `results = "hide"` in the code chunk header to suppress convergence output 
+
+---
+## Output results
+
+
+```r
+model_parameters(health_m, exponentiate = FALSE)%&gt;%  filter(Response=="Fair") %&gt;%
+  kable(digits = 3, format = "markdown")
+```
+
+
+
+|Parameter     | Coefficient|    SE|   CI| CI_low| CI_high|       t| df_error|     p|Response |
+|:-------------|-----------:|-----:|----:|------:|-------:|-------:|--------:|-----:|:--------|
+|(Intercept)   |       1.033| 0.174| 0.95|  0.692|   1.374|   5.938|     6453| 0.000|Fair     |
+|PhysActiveYes |      -1.662| 0.109| 0.95| -1.877|  -1.448| -15.190|     6453| 0.000|Fair     |
+|Age           |       0.001| 0.003| 0.95| -0.005|   0.007|   0.373|     6453| 0.709|Fair     |
+---
+## Output results
+
+
+```r
+model_parameters(health_m, exponentiate = TRUE) %&gt;% filter(Response=="Fair") %&gt;% kable(digits = 3, format = "markdown")
+```
+
+
+
+|Parameter     | Coefficient|    SE|   CI| CI_low| CI_high|       t| df_error|     p|Response |
+|:-------------|-----------:|-----:|----:|------:|-------:|-------:|--------:|-----:|:--------|
+|(Intercept)   |       2.809| 0.489| 0.95|  1.998|   3.951|   5.938|     6453| 0.000|Fair     |
+|PhysActiveYes |       0.190| 0.021| 0.95|  0.153|   0.235| -15.190|     6453| 0.000|Fair     |
+|Age           |       1.001| 0.003| 0.95|  0.995|   1.007|   0.373|     6453| 0.709|Fair     |
+---
+## Fair vs. Excellent Health
+
+The baseline category for the model is .vocab[`Excellent`]. 
+
+--
+
+The model equation for the log-odds a person rates themselves as having "Fair" health vs. "Excellent" is
+
+`$$\log\Big(\frac{\hat{\pi}_{Fair}}{\hat{\pi}_{Excellent}}\Big) = .915  + 0.003 ~ \text{age} - 1.66 ~ \text{PhysActive}$$`
+---
+## Interpretations
+
+.eq[
+`$$\log\Big(\frac{\hat{\pi}_{Fair}}{\hat{\pi}_{Excellent}}\Big) = .915  + \color{Red} {0.003} ~ \text{age} - 1.66 ~ \text{PhysActive}$$`
+]
+
+- For each additional year in age, the odds a person rates themselves as having fair health versus excellent health are expected to multiply by 1.003 (exp(0.003)), holding physical activity constant. 
+
+  - As Age ⬆️, more likely to report Fair vs. Excellent health
+
+---
+## Interpretations
+
+.eq[
+`$$\log\Big(\frac{\hat{\pi}_{Fair}}{\hat{\pi}_{Excellent}}\Big) = .915  + 0.003 ~ \text{age} \color{Red}{- 1.66} ~ \text{PhysActive}$$`
+]
+
+- The odds a person who does physical activity will rate themselves as having fair health versus excellent health are  expected to be 0.19 `(exp(-1.66	))` times the odds for a person who doesn't do physical activity, holding age constant.
+
+  - A person who does physical activity is more likely to rate themselves in Excellent vs. Fair health 
+
+---
+## Interpretations
+
+.eq[
+`$$\log\Big(\frac{\hat{\pi}_{Fair}}{\hat{\pi}_{Excellent}}\Big) = \color{Red}{.915}  + 0.003 ~ \text{age} - 1.66 ~ \text{PhysActive}$$`
+]
+
+- The odds a 0 year old person who doesn't do physical activity rates themselves as having fair health vs. excellent health are 2.497 ` (exp(.915))`. 
+--
+
+⚠️ **Need to mean-center age for the intercept to have a meaningful interpretation!**
+
+---
+## Good vs. Excellent health
+
+
+```r
+model_parameters(health_m, exponentiate = FALSE)%&gt;%  filter(Response=="Good") %&gt;%
+  kable(digits = 3, format = "markdown")
+```
+
+
+
+|Parameter     | Coefficient|    SE|   CI| CI_low| CI_high|       t| df_error|     p|Response |
+|:-------------|-----------:|-----:|----:|------:|-------:|-------:|--------:|-----:|:--------|
+|(Intercept)   |       1.989| 0.150| 0.95|  1.695|   2.282|  13.285|     6453| 0.000|Good     |
+|PhysActiveYes |      -1.011| 0.092| 0.95| -1.192|  -0.831| -10.979|     6453| 0.000|Good     |
+|Age           |      -0.003| 0.003| 0.95| -0.008|   0.002|  -1.187|     6453| 0.235|Good     |
+---
+
+
+```r
+model_parameters(health_m, exponentiate = TRUE) %&gt;% 
+  filter(Response=="Good") %&gt;%
+  kable(digits = 3, format = "markdown")
+```
+
+
+
+|Parameter     | Coefficient|    SE|   CI| CI_low| CI_high|       t| df_error|     p|Response |
+|:-------------|-----------:|-----:|----:|------:|-------:|-------:|--------:|-----:|:--------|
+|(Intercept)   |       7.306| 1.094| 0.95|  5.448|   9.797|  13.285|     6453| 0.000|Good     |
+|PhysActiveYes |       0.364| 0.034| 0.95|  0.304|   0.436| -10.979|     6453| 0.000|Good     |
+|Age           |       0.997| 0.003| 0.95|  0.992|   1.002|  -1.187|     6453| 0.235|Good     |
+
+---
+## Good vs. Excellent health
+
+The baseline category for the model is .vocab[`Excellent`]. 
+
+--
+
+The model equation for the log-odds a person rates themselves as having "Good" health vs. "Excellent" is
+
+`$$\log\Big(\frac{\hat{\pi}_{Good}}{\hat{\pi}_{Excellent}}\Big) = 1.99  - 0.003	 ~ \text{age} - 1.011 ~ \text{PhysActive}$$`
+---
+## Interpretations
+
+.eq[
+`$$\log\Big(\frac{\hat{\pi}_{Good}}{\hat{\pi}_{Excellent}}\Big) = 1.99 \color{Red}{- 0.003}	 ~ \text{age} - 1.011 ~ \text{PhysActive}$$`
+]
+
+- For each additional year in age, the odds a person rates themselves as having "Good" health versus "Excellent" health are expected to multiply by 1.003 (exp(0.02)), holding physical activity constant
+
+  - As Age ⬆️, higher probability to report good health vs. excellent health
+
+---
+## Interpretations
+
+.eq[
+`$$\log\Big(\frac{\hat{\pi}_{Good}}{\hat{\pi}_{Excellent}}\Big) = {1.99}  - 0.003	 ~ \text{age} \color{Red}{- 1.011} ~ \text{PhysActive}$$`
+]
+
+- The odds a person who does physical activity will rate themselves as having "Good" health versus "Excellent" health are  expected to be 0.364 `(exp(-1.01))` times the odds for a person who doesn't do physical activity, holding age constant
+
+  - A person who does physical activity ⬆️ rate themselves in Excellent vs. good health 
+
+---
+## Interpretations
+
+.eq[
+`$$\log\Big(\frac{\hat{\pi}_{Good}}{\hat{\pi}_{Excellent}}\Big) = \color{Red}{1.99}  - 0.003	 ~ \text{age} - 1.011 ~ \text{PhysActive}$$`
+]
+
+- The odds a 0 year old person who doesn't do physical activity rates themselves as having poor health vs. excellent health are 7.316 `(exp(1.99))`. 
+
+
+
+```r
+nhanes_adult %&gt;%
+  mutate(age_center=datawizard::center(Age))
+```
+
+```
+## # A tibble: 6,465 × 6
+##    HealthGen Education        Age PhysActive obs_num age_center
+##    &lt;fct&gt;     &lt;fct&gt;          &lt;int&gt; &lt;fct&gt;        &lt;int&gt; &lt;dw_trnsf&gt;
+##  1 Good      High School       34 No               1 -13.615159
+##  2 Good      High School       34 No               2 -13.615159
+##  3 Good      High School       34 No               3 -13.615159
+##  4 Good      Some College      49 No               4   1.384841
+##  5 Vgood     College Grad      45 Yes              5  -2.615159
+##  6 Vgood     College Grad      45 Yes              6  -2.615159
+##  7 Vgood     College Grad      45 Yes              7  -2.615159
+##  8 Vgood     Some College      66 Yes              8  18.384841
+##  9 Vgood     College Grad      58 Yes              9  10.384841
+## 10 Fair      9 - 11th Grade    54 Yes             10   6.384841
+## # … with 6,455 more rows
+## # ℹ Use `print(n = ...)` to see more rows
+```
+
+
+- Those reporting no physical activity are more likely to report Good vs. Excellent health
+
+--
+
+⚠️ **Need to mean-center age for the intercept to have a meaningful interpretation!**
+---
+## Change baseline
+
+&lt;br&gt;
+&lt;br&gt;
+
+
+```r
+nhanes_adult %&gt;%
+  mutate(HealthGen = relevel(as.factor(HealthGen), ref= "Poor")) %&gt;% dplyr::select(HealthGen)
+```
+
+---
+## Hypothesis test for `\(\beta_{jk}\)`
+
+The test of significance for the coefficient `\(\beta_{jk}\)` is 
+
+.alert[
+
+**Hypotheses**: `\(H_0: \beta_{jk} = 0 \hspace{2mm} \text{ vs } \hspace{2mm} H_a: \beta_{jk} \neq 0\)`
+
+**Test Statistic**: `$$z = \frac{\hat{\beta}_{jk} - 0}{SE(\hat{\beta_{jk}})}$$`
+
+**P-value**: `\(P(|Z| &gt; |z|)\)`, 
+
+where `\(Z \sim N(0, 1)\)`, the Standard Normal distribution
+]
+
+---
+
+## NHANES results
+
+- `emmeans` approach 
+
+
+```r
+multi_an &lt;- emmeans(health_m, ~ PhysActive|HealthGen)
+
+# uses baseline as contrast of interest
+# can change this to get other baselines
+# use trt.vs.ctrl" #ref = newbaseline
+coefs = contrast(regrid(multi_an, "log"),"trt.vs.ctrl1",  by="PhysActive")
+
+update(coefs, by = "contrast") %&gt;%
+  kable(format = "markdown", digits = 3)
+```
+
+
+
+|contrast          |PhysActive | estimate|    SE| df| t.ratio| p.value|
+|:-----------------|:----------|--------:|-----:|--:|-------:|-------:|
+|Vgood - Excellent |No         |    1.264| 0.079| 12|  16.069|   0.000|
+|Good - Excellent  |No         |    1.844| 0.075| 12|  24.663|   0.000|
+|Fair - Excellent  |No         |    1.087| 0.080| 12|  13.504|   0.000|
+|Poor - Excellent  |No         |   -0.418| 0.113| 12|  -3.685|   0.006|
+|Vgood - Excellent |Yes        |    0.932| 0.052| 12|  17.965|   0.000|
+|Good - Excellent  |Yes        |    0.833| 0.053| 12|  15.828|   0.000|
+|Fair - Excellent  |Yes        |   -0.576| 0.073| 12|  -7.883|   0.000|
+|Poor - Excellent  |Yes        |   -3.088| 0.209| 12| -14.764|   0.000|
+---
+## NHANES results 
+
+
+```r
+# get difference between yes-no and fair-excellent
+contrast(coefs, "revpairwise", by = "contrast") %&gt;%
+  kable(format = "markdown", digits = 3)
+```
+
+
+
+|contrast1 |contrast          | estimate|    SE| df| t.ratio| p.value|
+|:---------|:-----------------|--------:|-----:|--:|-------:|-------:|
+|Yes - No  |Vgood - Excellent |   -0.332| 0.095| 12|  -3.496|   0.004|
+|Yes - No  |Good - Excellent  |   -1.011| 0.092| 12| -10.979|   0.000|
+|Yes - No  |Fair - Excellent  |   -1.662| 0.109| 12| -15.190|   0.000|
+|Yes - No  |Poor - Excellent  |   -2.670| 0.236| 12| -11.308|   0.000|
+---
+## Calculating probabilities
+
+For categories `\(2,\ldots,K\)`, the probability that the `\(i^{th}\)` observation is in the `\(j^{th}\)` category is:
+
+`$$\hat{\pi}_{ij} = \frac{\exp\{\hat{\beta}_{0j} + \hat{\beta}_{1j}x_{i1} + \dots + \hat{\beta}_{pj}x_{ip}\}}{1 + \sum\limits_{k=2}^K \exp\{\hat{\beta}_{0k} + \hat{\beta}_{1k}x_{i1} + \dots \hat{\beta}_{pk}x_{ip}\}}$$`
+&lt;br&gt; 
+
+For the baseline category, `\(k=1\)`, we calculate the probability `\(\hat{\pi}_{i1}\)` as
+`$$\hat{\pi}_{i1} = 1- \sum\limits_{k=2}^K \hat{\pi}_{ik}$$`
+
+---
+## NHANES: Predicted probabilities: `PhysActive` 
+ 
+ .midi[
+
+```r
+#calculate predicted probabilities
+ggemmeans(health_m, terms=c("PhysActive")) %&gt;%
+  kable(format = "markdown", digits = 3)
+```
+
+
+
+|x   | predicted| std.error| conf.low| conf.high|response.level |group |
+|:---|---------:|---------:|--------:|---------:|:--------------|:-----|
+|No  |     0.069|     0.005|    0.068|     0.070|Excellent      |1     |
+|No  |     0.244|     0.008|    0.241|     0.247|Vgood          |1     |
+|No  |     0.437|     0.009|    0.433|     0.442|Good           |1     |
+|No  |     0.204|     0.007|    0.202|     0.207|Fair           |1     |
+|No  |     0.045|     0.004|    0.045|     0.045|Poor           |1     |
+|Yes |     0.155|     0.006|    0.153|     0.157|Excellent      |1     |
+|Yes |     0.394|     0.008|    0.390|     0.398|Vgood          |1     |
+|Yes |     0.357|     0.008|    0.353|     0.361|Good           |1     |
+|Yes |     0.087|     0.005|    0.086|     0.088|Fair           |1     |
+|Yes |     0.007|     0.001|    0.007|     0.007|Poor           |1     |
+]
+
+---
+## Plot predicted probabilities: `PhysActive`
+
+.pull-left[
+
+```r
+pred_probs_plot &lt;- ggemmeans(health_m, terms=c("PhysActive")) %&gt;%   ggplot(., aes(x = x, y = predicted, fill = response.level)) + 
+  geom_bar(stat = "identity" ) +
+    geom_text(aes(label = round(predicted, 3)), color="white", position = position_fill(vjust = 0.5),size=5)  + 
+  easy_add_legend_title("Response") + 
+  labs(x="Physical Health", "Predicted Probablity") + 
+  theme(text = element_text(size = 30)) +  
+  scale_fill_viridis(discrete = TRUE)
+```
+
+]
+
+.pull-right[
+&lt;img src="multinom_files/figure-html/unnamed-chunk-19-1.png" width="100%" /&gt;
+
+]
+
+
+---
+# Plot predicted probabilities: `Age`
+
+&lt;img src="multinom_files/figure-html/unnamed-chunk-20-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle, center
+
+## Model selection 
+
+---
+## Comparing nested models 
+
+- Suppose there are two models: 
+    - Reduced Model includes predictors `\(x_1, \ldots, x_q\)`
+    - Full Model includes predictors `\(x_1, \ldots, x_q, x_{q+1}, \ldots, x_p\)`
+
+- We want to test the hypotheses
+`$$\begin{aligned}&amp;H_0: \beta_{q+1} = \dots = \beta_p = 0 \\
+&amp; H_a: \text{ at least 1 }\beta_j \text{ is not} 0\end{aligned}$$`
+
+- To do so, we will use the .vocab[Drop-in-Deviance test] (very similar to logistic regression) 
+
+---
+## Add `Education` to the model? 
+
+- We consider adding the participants' `Education` level to the model
+
+    - Education takes values `8thGrade`, `9-11thGrade`, `HighSchool`, `SomeCollege`, and `CollegeGrad`
+
+- Models we're testing: 
+    - Reduced Model: `Age`, `PhysActive`
+    - Full Model: `Age`, `PhysActive`, `Education`
+    
+.alert[
+`$$\begin{align}&amp;H_0: \beta_{9-11thGrade} = \beta_{HighSchool} = \beta_{SomeCollege} = \beta_{CollegeGrad} = 0\\
+&amp;H_a: \text{ at least one }\beta_j \text{ is not equal to }0\end{align}$$`
+]
+
+---
+
+## Add `Education` to the model? 
+
+.alert[
+`$$\begin{align}&amp;H_0: \beta_{9-11thGrade} = \beta_{HighSchool} = \beta_{SomeCollege} = \beta_{CollegeGrad} = 0\\
+&amp;H_a: \text{ at least one }\beta_j \text{ is not equal to }0\end{align}$$`
+]
+
+
+
+
+
+```r
+model_red &lt;- multinom(HealthGen ~ Age + PhysActive, 
+               data = nhanes_adult)
+model_full &lt;- multinom(HealthGen ~ Age + PhysActive + 
+                         Education, 
+               data = nhanes_adult)
+```
+
+---
+## Add `Education` to the model? 
+
+
+```r
+model_red &lt;- multinom(HealthGen ~ Age + PhysActive, 
+               data = nhanes_adult)
+model_full &lt;- multinom(HealthGen ~ Age + PhysActive + Education, 
+               data = nhanes_adult)
+```
+
+
+
+```r
+anova(model_red, model_full, test = "Chisq") %&gt;%
+  kable(format = "markdown")
+```
+
+
+
+|Model                        | Resid. df| Resid. Dev|Test   |    Df| LR stat.| Pr(Chi)|
+|:----------------------------|---------:|----------:|:------|-----:|--------:|-------:|
+|Age + PhysActive             |     25848|   16994.23|       |    NA|       NA|      NA|
+|Age + PhysActive + Education |     25832|   16505.10|1 vs 2 |    16| 489.1319|       0|
+
+--
+
+At least one coefficient associated with `Education` is non-zero. Therefore, we will include `Education` in the model.
+
+---
+## Full model 
+
+
+```r
+car::Anova(model_full, type="II") %&gt;%
+  kable(format = "markdown", digits = 3)
+```
+
+
+
+|           | LR Chisq| Df| Pr(&gt;Chisq)|
+|:----------|--------:|--:|----------:|
+|Age        |   19.295|  4|      0.001|
+|PhysActive |  242.631|  4|      0.000|
+|Education  |  489.132| 16|      0.000|
+---
+## Model with `Education`
+
+.small[
+
+|Parameter               | Coefficient|    SE|   CI| CI_low| CI_high|       t| df_error|     p|Response |
+|:-----------------------|-----------:|-----:|----:|------:|-------:|-------:|--------:|-----:|:--------|
+|(Intercept)             |       0.582| 0.301| 0.95| -0.009|   1.173|   1.930|     6437| 0.054|Vgood    |
+|Age                     |       0.001| 0.003| 0.95| -0.004|   0.006|   0.419|     6437| 0.675|Vgood    |
+|PhysActiveYes           |      -0.264| 0.099| 0.95| -0.457|  -0.071|  -2.681|     6437| 0.007|Vgood    |
+|Education9 - 11th Grade |       0.768| 0.308| 0.95|  0.164|   1.372|   2.493|     6437| 0.013|Vgood    |
+|EducationHigh School    |       0.701| 0.280| 0.95|  0.153|   1.249|   2.509|     6437| 0.012|Vgood    |
+|EducationSome College   |       0.788| 0.271| 0.95|  0.255|   1.320|   2.901|     6437| 0.004|Vgood    |
+|EducationCollege Grad   |       0.408| 0.268| 0.95| -0.117|   0.933|   1.522|     6437| 0.128|Vgood    |
+|(Intercept)             |       2.041| 0.272| 0.95|  1.508|   2.573|   7.513|     6437| 0.000|Good     |
+|Age                     |      -0.002| 0.003| 0.95| -0.007|   0.003|  -0.651|     6437| 0.515|Good     |
+|PhysActiveYes           |      -0.758| 0.096| 0.95| -0.946|  -0.569|  -7.884|     6437| 0.000|Good     |
+|Education9 - 11th Grade |       0.360| 0.275| 0.95| -0.179|   0.899|   1.310|     6437| 0.190|Good     |
+|EducationHigh School    |       0.085| 0.247| 0.95| -0.399|   0.569|   0.345|     6437| 0.730|Good     |
+|EducationSome College   |      -0.011| 0.239| 0.95| -0.480|   0.457|  -0.047|     6437| 0.962|Good     |
+|EducationCollege Grad   |      -0.891| 0.236| 0.95| -1.355|  -0.427|  -3.767|     6437| 0.000|Good     |
+|(Intercept)             |       2.116| 0.288| 0.95|  1.552|   2.680|   7.355|     6437| 0.000|Fair     |
+|Age                     |       0.000| 0.003| 0.95| -0.006|   0.006|   0.107|     6437| 0.914|Fair     |
+|PhysActiveYes           |      -1.191| 0.115| 0.95| -1.416|  -0.966| -10.367|     6437| 0.000|Fair     |
+|Education9 - 11th Grade |      -0.224| 0.279| 0.95| -0.771|   0.323|  -0.802|     6437| 0.422|Fair     |
+|EducationHigh School    |      -0.832| 0.252| 0.95| -1.326|  -0.339|  -3.307|     6437| 0.001|Fair     |
+|EducationSome College   |      -1.343| 0.246| 0.95| -1.825|  -0.861|  -5.462|     6437| 0.000|Fair     |
+|EducationCollege Grad   |      -2.509| 0.253| 0.95| -3.005|  -2.013|  -9.913|     6437| 0.000|Fair     |
+|(Intercept)             |      -0.200| 0.411| 0.95| -1.005|   0.605|  -0.488|     6437| 0.626|Poor     |
+|Age                     |       0.018| 0.005| 0.95|  0.008|   0.028|   3.527|     6437| 0.000|Poor     |
+|PhysActiveYes           |      -2.267| 0.242| 0.95| -2.741|  -1.793|  -9.377|     6437| 0.000|Poor     |
+|Education9 - 11th Grade |      -0.360| 0.353| 0.95| -1.053|   0.332|  -1.020|     6437| 0.308|Poor     |
+|EducationHigh School    |      -1.150| 0.334| 0.95| -1.805|  -0.494|  -3.438|     6437| 0.001|Poor     |
+|EducationSome College   |      -1.073| 0.316| 0.95| -1.692|  -0.454|  -3.399|     6437| 0.001|Poor     |
+|EducationCollege Grad   |      -2.322| 0.366| 0.95| -3.039|  -1.604|  -6.342|     6437| 0.000|Poor     |
+]
+---
+## Emmeans
+
+- Use `emmeans` to extract log odds coefs for compairsons of interest
+
+
+```r
+multi_an &lt;- emmeans(model_full, ~ Education|HealthGen)
+
+coefs = contrast(regrid(multi_an, "log"),"trt.vs.ctrl1", by="Education")
+
+update(coefs, by = "contrast") %&gt;%
+  kable(format = "markdown", digits = 3)
+```
+
+
+
+|contrast          |Education      | estimate|    SE| df| t.ratio| p.value|
+|:-----------------|:--------------|--------:|-----:|--:|-------:|-------:|
+|Vgood - Excellent |8th Grade      |    0.456| 0.259| 28|   1.765|   0.297|
+|Good - Excellent  |8th Grade      |    1.490| 0.223| 28|   6.681|   0.000|
+|Fair - Excellent  |8th Grade      |    1.458| 0.221| 28|   6.609|   0.000|
+|Poor - Excellent  |8th Grade      |   -0.344| 0.269| 28|  -1.276|   0.572|
+|Vgood - Excellent |9 - 11th Grade |    1.232| 0.169| 28|   7.268|   0.000|
+|Good - Excellent  |9 - 11th Grade |    1.873| 0.159| 28|  11.772|   0.000|
+|Fair - Excellent  |9 - 11th Grade |    1.270| 0.165| 28|   7.704|   0.000|
+|Poor - Excellent  |9 - 11th Grade |   -0.642| 0.223| 28|  -2.872|   0.033|
+|Vgood - Excellent |High School    |    1.170| 0.108| 28|  10.871|   0.000|
+|Good - Excellent  |High School    |    1.614| 0.102| 28|  15.777|   0.000|
+|Fair - Excellent  |High School    |    0.687| 0.113| 28|   6.087|   0.000|
+|Poor - Excellent  |High School    |   -1.387| 0.193| 28|  -7.185|   0.000|
+|Vgood - Excellent |Some College   |    1.260| 0.081| 28|  15.500|   0.000|
+|Good - Excellent  |Some College   |    1.527| 0.079| 28|  19.372|   0.000|
+|Fair - Excellent  |Some College   |    0.191| 0.097| 28|   1.980|   0.207|
+|Poor - Excellent  |Some College   |   -1.286| 0.155| 28|  -8.306|   0.000|
+|Vgood - Excellent |College Grad   |    0.889| 0.067| 28|  13.356|   0.000|
+|Good - Excellent  |College Grad   |    0.672| 0.070| 28|   9.664|   0.000|
+|Fair - Excellent  |College Grad   |   -0.935| 0.113| 28|  -8.258|   0.000|
+|Poor - Excellent  |College Grad   |   -2.469| 0.240| 28| -10.273|   0.000|
+---
+
+```r
+contrast(coefs, "revpairwise", by = "contrast") %&gt;%
+  kable(format = "markdown", digits = 3)
+```
+
+
+
+|contrast1                       |contrast          | estimate|    SE| df| t.ratio| p.value|
+|:-------------------------------|:-----------------|--------:|-----:|--:|-------:|-------:|
+|(9 - 11th Grade) - 8th Grade    |Vgood - Excellent |    0.775| 0.308| 28|   2.519|   0.115|
+|High School - 8th Grade         |Vgood - Excellent |    0.714| 0.279| 28|   2.554|   0.107|
+|High School - (9 - 11th Grade)  |Vgood - Excellent |   -0.061| 0.200| 28|  -0.307|   0.998|
+|Some College - 8th Grade        |Vgood - Excellent |    0.804| 0.272| 28|   2.958|   0.045|
+|Some College - (9 - 11th Grade) |Vgood - Excellent |    0.028| 0.188| 28|   0.150|   1.000|
+|Some College - High School      |Vgood - Excellent |    0.090| 0.135| 28|   0.664|   0.962|
+|College Grad - 8th Grade        |Vgood - Excellent |    0.432| 0.269| 28|   1.607|   0.505|
+|College Grad - (9 - 11th Grade) |Vgood - Excellent |   -0.343| 0.184| 28|  -1.863|   0.360|
+|College Grad - High School      |Vgood - Excellent |   -0.282| 0.128| 28|  -2.203|   0.208|
+|College Grad - Some College     |Vgood - Excellent |   -0.371| 0.105| 28|  -3.548|   0.011|
+|(9 - 11th Grade) - 8th Grade    |Good - Excellent  |    0.382| 0.273| 28|   1.402|   0.631|
+|High School - 8th Grade         |Good - Excellent  |    0.123| 0.245| 28|   0.505|   0.986|
+|High School - (9 - 11th Grade)  |Good - Excellent  |   -0.259| 0.188| 28|  -1.374|   0.649|
+|Some College - 8th Grade        |Good - Excellent  |    0.037| 0.237| 28|   0.154|   1.000|
+|Some College - (9 - 11th Grade) |Good - Excellent  |   -0.346| 0.178| 28|  -1.946|   0.318|
+|Some College - High School      |Good - Excellent  |   -0.087| 0.129| 28|  -0.673|   0.961|
+|College Grad - 8th Grade        |Good - Excellent  |   -0.818| 0.236| 28|  -3.468|   0.014|
+|College Grad - (9 - 11th Grade) |Good - Excellent  |   -1.200| 0.176| 28|  -6.828|   0.000|
+|College Grad - High School      |Good - Excellent  |   -0.941| 0.125| 28|  -7.531|   0.000|
+|College Grad - Some College     |Good - Excellent  |   -0.854| 0.105| 28|  -8.161|   0.000|
+|(9 - 11th Grade) - 8th Grade    |Fair - Excellent  |   -0.188| 0.274| 28|  -0.689|   0.957|
+|High School - 8th Grade         |Fair - Excellent  |   -0.772| 0.247| 28|  -3.126|   0.031|
+|High School - (9 - 11th Grade)  |Fair - Excellent  |   -0.583| 0.199| 28|  -2.933|   0.048|
+|Some College - 8th Grade        |Fair - Excellent  |   -1.267| 0.242| 28|  -5.243|   0.000|
+|Some College - (9 - 11th Grade) |Fair - Excellent  |   -1.078| 0.191| 28|  -5.637|   0.000|
+|Some College - High School      |Fair - Excellent  |   -0.495| 0.149| 28|  -3.330|   0.019|
+|College Grad - 8th Grade        |Fair - Excellent  |   -2.394| 0.251| 28|  -9.544|   0.000|
+|College Grad - (9 - 11th Grade) |Fair - Excellent  |   -2.205| 0.203| 28| -10.882|   0.000|
+|College Grad - High School      |Fair - Excellent  |   -1.622| 0.161| 28| -10.058|   0.000|
+|College Grad - Some College     |Fair - Excellent  |   -1.127| 0.148| 28|  -7.590|   0.000|
+|(9 - 11th Grade) - 8th Grade    |Poor - Excellent  |   -0.298| 0.342| 28|  -0.870|   0.905|
+|High School - 8th Grade         |Poor - Excellent  |   -1.044| 0.325| 28|  -3.212|   0.025|
+|High School - (9 - 11th Grade)  |Poor - Excellent  |   -0.746| 0.291| 28|  -2.566|   0.105|
+|Some College - 8th Grade        |Poor - Excellent  |   -0.942| 0.307| 28|  -3.069|   0.035|
+|Some College - (9 - 11th Grade) |Poor - Excellent  |   -0.644| 0.269| 28|  -2.394|   0.147|
+|Some College - High School      |Poor - Excellent  |    0.102| 0.244| 28|   0.417|   0.993|
+|College Grad - 8th Grade        |Poor - Excellent  |   -2.125| 0.360| 28|  -5.898|   0.000|
+|College Grad - (9 - 11th Grade) |Poor - Excellent  |   -1.827| 0.328| 28|  -5.563|   0.000|
+|College Grad - High School      |Poor - Excellent  |   -1.081| 0.307| 28|  -3.526|   0.012|
+|College Grad - Some College     |Poor - Excellent  |   -1.183| 0.283| 28|  -4.183|   0.002|
+
+---
+## Predicted Probabilities: `Education`
+
+
+```r
+plot_edu &lt;- ggemmeans(model_full, terms=c("Education")) %&gt;%
+  ggplot(aes(x = x, y = predicted, fill = response.level))  +  
+  geom_bar(stat = "identity" ) + 
+   geom_text(aes(label = round(predicted, 3)), color="white", position = position_fill(vjust = 0.5),size=5) + 
+  easy_add_legend_title("Response") + 
+  labs(x="Education", "Predicted Probablity") + 
+  scale_fill_viridis(discrete = TRUE)
+```
+---
+&lt;img src="multinom_files/figure-html/unnamed-chunk-30-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle, center
+
+## Checking conditions
+
+---
+## Assumptions for multinomial logistic regression
+
+We want to check the following assumptions for the multinomial logistic regression model: 
+
+1. .vocab[Linearity]: Is there a linear relationship between the log-odds and the predictor variables?
+
+---
+## Assumptions for multinomial logistic regression
+
+- Fit sep logistic regressions to check for linearity, outliers, and multicolinearity
+
+
+```r
+nhanes_adult &lt;- nhanes_adult %&gt;%
+  mutate(Excellent = factor(if_else(HealthGen == "Excellent", "1", "0")), 
+         Vgood = factor(if_else(HealthGen == "Vgood", "1", "0")), 
+         Good = factor(if_else(HealthGen == "Good", "1", "0")), 
+         Fair = factor(if_else(HealthGen == "Fair", "1", "0")), 
+         Poor = factor(if_else(HealthGen == "Poor", "1", "0"))
+  )
+```
+
+---
+## Empirical logit
+
+The .vocab[empirical logit] is the log of the observed odds
+
+.eq[
+**Empirical logit**
+
+`$$\text{logit}(\hat{p}) = \log\Big(\frac{\hat{p}+0.5}{1 - \hat{p}+0.5}\Big) = \log\Big(\frac{\# \text{Yes}}{\# \text{No}}\Big)$$` 
+]
+---
+## Calculating empirical logit (quantitative predictor)
+
+1. Divide the range of the predictor into intervals with approximately equal number of cases
+
+  - If you have enough observations, use 5 - 10 intervals
+  
+2. Calculate the mean value of the predictor in each interval.
+
+3. Compute the empirical logit for each interval.
+
+--
+
+Then, we can create a plot of the empirical logit versus the mean value of the predictor in each interval.
+
+---
+## Empirical logit plot in R (quantitative predictor)
+
+
+.pull-left[
+
+```r
+library(Stat2Data)
+
+emplogitplot1(Excellent ~ Age, data = nhanes_adult, ngroups = 5, main = "Excellent vs. Age")
+```
+]
+
+.pull-right[
+
+&lt;img src="multinom_files/figure-html/unnamed-chunk-33-1.png" width="100%" /&gt;
+]
+
+---
+## Model fit
+
+- Mcfadden's `\(R^2\)`
+
+- Convert to cohen's *d*
+
+$$ d = \frac{log(OR)*\sqrt(3)}{{\pi}}$$
+  - Recommended by a reviewer once
+  
+
+```r
+oddsratio_to_d()
+```
+
+---
+## Write-up
+
+- Report full model results
+  - `\(\chi^2\)` test
+    - Age, `\(\chi^2 (4)\)` = 19.30, *p* &lt; .05
+    - PhysActive, `\(\chi^2 (4)\)` = 242.63, *p* &lt; .05 
+    - Education, `\(\chi^2 (16)\)` = 489.13, *p* &lt; .05 
+    
+- Model fit: `\(R^2\)`
+
+---
+## Write-up
+
+- Significant differences between all levels of self-reported health and variables of interest
+  
+  - Table with included ORs (see next slide for example)
+  
+  - Figure showing predicted probabilities
+
+---
+## OR table (Geller et al., 2017)
+
+&lt;img src="oddsratios.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Advanced Applications
+
+- Multilevel multinomial models
+
+  - brms
+  - `mclogit` https://cran.r-project.org/web/packages/mclogit/mclogit.pdf
+  
+
+```r
+#takes long time to run use cmdstanr to speed up models
+health_m &lt;- brm(HealthGen ~ PhysActive + Age, family=categorical, cores = 4, chains = 4, backend = "cmdstanr", 
+                     data = nhanes_adult)
+```
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true,
+"background-image": "url(\"lover.png\")",
+"background-size": "cover"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

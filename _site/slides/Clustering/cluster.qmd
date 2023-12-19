@@ -1,0 +1,433 @@
+---
+title: "Clustering in R"
+subtitle: "Princeton University"
+author: "Jason Geller, PH.D."
+date: 'Updated:`r Sys.Date()`'
+footer: "PSY 504: Advanced Statistics"
+format: 
+  revealjs:
+    theme: psy504.css
+    multiplex: true
+    transition: fade
+    slide-number: true
+    incremental: false 
+    chalkboard: true
+execute:
+  freeze: auto
+  echo: true
+  message: false
+  warning: false
+  fig.width: 10
+  fig.height: 12
+  fig.align: center
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r}
+#| echo: false
+#| 
+library(parameters)
+library(effectsize) 
+library(papaja)
+library(tidyverse)
+library(performance)
+library(see)
+library(equatiomatic)
+library(kableExtra)
+library(broom)
+library(report)
+library(emmeans)
+library(flextable)
+library(huxtable)
+library(skimr)
+library(mediation)
+library(JSmediation)
+library(MeMoBootR)
+library(papaja)
+library(tidyverse)
+library(processR)
+library(broom)
+library(ggdist)
+library(semPlot)
+library(pacman)
+library(factoextra)
+library(corrplot)
+```
+
+## Two types of clustering
+
+-   Hierarchical (agglomerative): Create a hierarchical decomposition of the set of objects using some criterion
+
+-   Partitonal (kmeans): Construct various partitions and then evaluate them by some criterion
+
+![](images/clust.png){fig-align="center"}
+
+## Hierarchical relationships
+
+\- Bottom-Up (agglomerative): Starting with each item in its own cluster, find the best pair to merge into a new cluster. Repeat until all clusters are fused together
+
+![](images/bottom.png){fig-align="center"}
+
+## Hierarchical steps
+
+![](images/hi_steps.png){fig-align="center"}
+
+## Distance metrics
+
+-   Euclidean (continuous data)
+
+    $$Distance = [(X_1 - X_2)^2 + (Y_1 - Y_2)^2]^{1/2}$$
+
+-   Manhattan
+
+    $$Distance = |A_1-B_1| + |A_2-B_2| + \cdots + |A_n-B_n|$$
+
+    ![](images/euclman.png){width="524"}
+
+## 
+
+## Hierarchical steps
+
++-------------+----------+-----------+-------------+
+| **Student** | **Math** | **Music** | **Biology** |
++-------------+----------+-----------+-------------+
+| StudentA    | 2        | 3         | 2           |
++-------------+----------+-----------+-------------+
+| StudentB    | 1        | 3         | 2           |
++-------------+----------+-----------+-------------+
+| StudentC    | 1        | 2         | 1           |
++-------------+----------+-----------+-------------+
+| StudentD    | 2        | 4         | 4           |
++-------------+----------+-----------+-------------+
+| StudentE    | 3        | 4         | 3           |
++-------------+----------+-----------+-------------+
+
+::: columns
+
+::: {.column width="50%"}
+-   Calculate a distance matrix which contains distances between every pair
+
+    -   Standardize variables (if not on same scale)
+
+    -   No missing data
+:::
+
+::: {.column width="50%"}
+```{r}
+
+students <- data.frame(
+  Student = c("StudentA", "StudentB", "StudentC", "StudentD", "StudentE"),
+  Math = c(2, 1, 1, 2, 3),
+  Music = c(3, 3, 2, 4, 4),
+  Biology = c(2, 2, 1, 4, 3)
+)
+
+rownames(students) <- students$Student # make row names speaker
+
+diststudents <- dist(students, method = "euclidian") # create a distance matrix
+
+diststudents
+```
+:::
+:::
+
+## Hierarchical steps
+
+-   Find two points closest together
+
+```{r}
+students2 <- matrix(c(1.5, 3, 2, 1,  2,  1, 2,  4,  4, 3,  4,  3),
+  nrow = 4, byrow = T)
+students2 <- as.data.frame(students2)
+rownames(students2) <- c("Cluster1", "StudentC", "StudentD", "StudentE")
+diststudents2 <- dist(students2, method = "euclidian")
+
+diststudents2
+
+```
+
+## Hierarchical steps
+
+```{r}
+students3 <- matrix(c(1.5,3,2,1,2,1,2.5,4,3.5),
+                    nrow = 3, byrow = T)
+students3 <- as.data.frame(students3)
+rownames(students3) <- c("Cluster1", "StudentC", "Cluster2")
+diststudents3 <- dist(students3, 
+                      method = "euclidian")
+
+```
+
+## Hierarchical steps
+
+![](images/IMG_2442.JPG){fig-align="center"}
+
+## Hierarchical steps
+
+![](images/IMG_2443.JPG){fig-align="center"}
+
+## Hierarchical Steps
+
+![](images/IMG_2444.JPG){fig-align="center"}
+
+## Hierarchical Steps
+
+![](images/IMG_2447.JPG){fig-align="center"}
+
+## Hirerachical steps
+
+![](images/IMG_2448.JPG){fig-align="center"}
+
+## Hirerachical steps
+
+![](images/IMG_2449.JPG){fig-align="center"}
+
+## Hirerachical steps
+
+![](images/IMG_2450.JPG){fig-align="center"}
+
+## Linkage
+
+-   How close clusters are
+
+## Linkage
+
+![](images/linkage_all.PNG){fig-align="center"}
+
+## 
+
+## Reading a dendrogram
+
+::: columns
+::: {.column width="50%"}
+![](images/full_clust.png){fig-align="center"}
+
+-   Height (y-axis): similarity
+
+-   Cohesion and separation
+:::
+:::
+
+## HAC in action
+
+::: columns
+::: {.column width="50%"}
+-   Eighty-four participants
+
+-   The talkers included three American English regional dialects (New England dialect, the Southern dialect), three international English dialects (British English, Australian English, and Africaans), and nine nonnative accents (Mandarin, Korean, and Japanese from East Asia, Bengali, Gujarati, and Urdu from South Asia, and Indonesian, Tagalog, and Thai from Southeast Asia)
+:::
+
+::: {.column width="50%"}
+```{r}
+p_load(cluster,factoextra, dendextend)
+
+clust_data = read_csv("https://raw.githubusercontent.com/jgeller112/clustering_project/main/data/class_wide_1.csv")
+
+clust_data <- dplyr::select(clust_data, -...1, -`54`) # remove extra col sub 54 has weird formatting
+clust_data <- as.data.frame(clust_data) # turn into df 
+
+rownames(clust_data) <- clust_data$speaker # make row names speaker
+
+```
+:::
+:::
+
+## HAC in action
+
+-   Calculate distance matrix
+
+    ```{r}
+
+    dist_mat <- clust_data %>% 
+      dist(., method="euclidean")
+
+    ```
+
+## HAC in action
+
+```{r}
+
+hclust_avg <- hclust(dist_mat, method = 'ward')
+
+plot(hclust_avg, cex = 0.6, hang = -1)
+
+```
+
+## Determine optimal \# clusters
+
+-   Elbow method
+
+    $$
+    minimize\Bigg(\sum^k_{k=1}W(C_k)\Bigg) 
+    $$
+
+-   Silhouette
+
+    $$
+    s(i) = \frac{b(i)-a(i)}{max{(a(i), b(i)}}
+    $$
+
+-   Gap total within-cluster variation (sum of squared distances between each point and its cluster centroid) for different values of k (number of clusters) with the expected variation if the data were randomly distributed
+
+-   $$
+    Gap_n(k) = E^*_n{log(W_k)} - log(W_k)
+    $$
+
+    ## Determine optimal \# clusters
+
+```{r}
+# Plot cluster results
+p1 <- fviz_nbclust(clust_data, FUN = hcut, method = "wss", 
+                   k.max = 10) +
+  ggtitle("(A) Elbow method")
+p2 <- fviz_nbclust(clust_data, FUN = hcut, method = "silhouette", 
+                   k.max = 10) +
+  ggtitle("(B) Silhouette method")
+
+#p3 <- fviz_nbclust(clust_data, FUN = hcut, method = "gap_stat", 
+      #             k.max = 10) +
+ # ggtitle("(C) Gap statistic")
+```
+
+## Determine optimal \# clusters
+
+```{r}
+# Display plots side by side
+gridExtra::grid.arrange(p1, p2, nrow = 1)
+```
+
+## Determine optimal \# clusters
+
+-   Consensus Method
+
+```{r}
+#easystats
+n <- n_clusters(clust_data)
+
+plot(n)
+```
+
+## Visualize clusters
+
+```{r}
+library(parameters)
+ez_hclust <- cluster_analysis(clust_data, n = 4, method = "hclust")
+
+# Visualize
+plot(ez_hclust) 
+```
+
+## Determine optimal \# clusters
+
+Bootstrapped hierarchical clustering
+
+```{rez_hclust2 <- cluster_analysis(clust_data,}
+  n = NULL,
+  method = "hclust",
+  iterations = 500,
+  ci = 0.90
+)
+```
+
+## Pros and Cons
+
+-   ::: columns
+    ::: {.column width="50%"}
+    -   Hierarchy
+
+    -   Flexibility
+    :::
+
+    ::: {.column width="50%"}
+    -   Subjective
+    :::
+    :::
+
+## K-means
+
+1.  Choose k random points to be cluster center
+2.  For each data point, assign it to the cluster whose center is closest
+3.  Recalculate centers
+4.  Repeat 2 and 3 until:
+    -   Cluster membership does not change
+    -   Centers change only a tiny amount
+
+## K-means
+
+1.  
+
+![](images/Screen%20Shot%202023-04-13%20at%2011.08.50%20AM.png)
+
+## K-means
+
+2.  
+
+![](images/Screen%20Shot%202023-04-13%20at%2011.09.33%20AM.png)
+
+## K-means
+
+3.  
+
+![](images/Screen%20Shot%202023-04-13%20at%2011.09.50%20AM.png)
+
+## Kmeans
+
+![](https://lh5.googleusercontent.com/HT7gyD57_H9FiaT5Kp3rPtGQjIksZsWynMBKzzfI7g3wKD2teS1-wb3AaYQKoIoKL7kkSSZYt1jAwsIxtizVbXICGBVGTsbWuCPZ8TnpJ1imQe1Cxy1c1S6E4meSmap4OR_NPlNUMtaUzJDeiW0FauSEsQ=s2048){fig-align="center" width="610"}
+
+## Kmeans
+
+![](https://lh3.googleusercontent.com/aSPTQjb3uLgCCuCLdj8P_FMcW19KEdlSLHKJuRb5BvcsqbKoBo1ZWwgP5jKSu_4ZzoanMNbuLsG9KNTAfus9IcsvckhxeFqXJyyKWbb1sXcvSdlWhkAn5csfwTVCeqjmbx2vB6wo83-fT_ZTzTQpfIONIQ=s2048){fig-align="center" width="626"}
+
+## Kmeans
+
+![](https://lh5.googleusercontent.com/4QhrqPACsMkbsyPsJzLTDelEy6FVWzC_RvFKxHU2JOV0FZhD5FsinqzrnTQjymm3vIff3Hi6EkETrVzkbslI5fdONAbcFUO3-TEcBLOdBanbXDbikNEHOSuvYiKxvsw4oNg_3qZWVMPrHfw6_mCH9jjuzA=s2048){fig-align="center"}
+
+## Kmeans in action
+
+-   Need to specify k, but what if you do not know?
+
+    -   `n_cluster`
+
+```{r}
+
+n <- n_clusters(clust_data, nbclust_method = "kmeans")
+
+plot(n)
+
+```
+
+```{r}
+
+rez_kmeans <- cluster_analysis(clust_data, n = 4, method = "kmeans")
+
+plot(rez_kmeans)
+```
+
+## Get clusters
+
+```{r}
+
+predict(rez_kmeans) # Get clusters
+
+```
+
+## Cluster Inference
+
+::: columns
+::: {.column width="50%"}
+```{r}
+rez_kmeans <- cluster_analysis(clust_data, n = 4, method = "kmeans")
+
+plot(rez_kmeans)
+```
+:::
+
+::: {.column width="50%"}
+-   Cluster 1: English/African
+
+-   Cluster 2: Indo/European
+
+-   Cluster 3: Asian
+:::
+:::

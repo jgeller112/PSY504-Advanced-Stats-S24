@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>PSY 504: Advanced Statistics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jason Geller, Ph.D. (he/him/his)" />
+    <script src="bayesian_modeling_2_files/header-attrs-2.14/header-attrs.js"></script>
+    <link href="bayesian_modeling_2_files/xaringanExtra-extra-styles-0.2.6/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="psy504.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# PSY 504: Advanced Statistics
+]
+.subtitle[
+## Introduction to Bayesian Data Analysis
+]
+.author[
+### Jason Geller, Ph.D. (he/him/his)
+]
+.institute[
+### Princeton University
+]
+.date[
+### Updated:2023-03-20
+]
+
+---
+
+
+
+
+
+
+
+
+
+## Today
+
+&lt;br&gt;
+&lt;br&gt;
+
+- Understand basic concepts of Bayesian statistics
+
+- Learn how to conduct and interpret a simple Bayesian regression using `brms`
+
+---
+## Bayesian statistics as a tool 
+
+.pull-left[
+
+- A lot of discussion on philosophical issues:
+
+  - Subjective vs. objective probabilities
+  - Frequentist vs. Bayesian (why I am better than you are)
+  - p-values vs. subjective probabilities
+
+]
+  
+.pull-left[
+
+&lt;img src="images/bayespower.jpg" width="90%" style="display: block; margin: auto;" /&gt;
+
+]
+---
+## What is Bayesian data analysis?
+
+- It is when you use probability to represent uncertainty in all parts of a statistical model
+
+--
+
+- A flexible extension of maximum likelihood *(hey I know what that is!)*
+
+--
+
+- Can be computationally intensive
+---
+## What is Bayesian data analysis?
+
+- A method for figuring out unknowns that requires three things: 
+
+1. Prior (what we know before data is collected)
+
+2. Data
+
+3. Generative models
+
+---
+## Generative model
+
+&lt;img src="images/gen.jpg" width="65%" style="display: block; margin: auto;" /&gt;
+---
+## Bayes' therom
+
+`$$\begin{align}
+\underbrace{ p(\theta \mid \text{data})}_{\substack{\text{Posterior beliefs}}} \,\,\, = \,\,\,
+\underbrace{ p(\theta)}_{\substack{\text{Prior beliefs} }}
+\,\,\,\, \times
+\overbrace{\underbrace{\frac{p( \text{data} \mid \theta)}{p( \text{data})}}}^{\substack{\text{Prediction for specific }\theta }}_{\substack{\text{Average prediction} \\\text{across all }  \theta's}}.
+\end{align}$$`
+
+- `\(p(\theta \mid \text{data})\)` - The question you always wanted to test (posterior)
+
+- `\(p(\theta)\)` - expectation/prior belief (priors)
+
+- `\(p(data \mid \theta)\)` - How well data fits given estimated parameter value (likelihood)
+
+- `\(p(data \mid M_k)\)` - Marginal likelihood or evidence
+
+---
+
+&lt;img src="images/bayes_fig.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+---
+## Bayesian belief updating
+
+&lt;img src="images/bayesscimethod.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+## Example
+
+- We are interested in the percentage of dog people in the US
+
+- People can be classified at dog people or cat people
+
+- Data:
+  - 0 = Cat person
+  - 1 = Dog person
+
+Parameters:
+- `\(\theta\)` = Proportion of dog people 
+
+---
+## Bayesian belief updating
+
+- Prior Probability
+
+  - An unconditional probability distribution representing belief about a parameter BEFORE DATA COLLECTION
+
+&lt;img src="images/sytep1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+???
+
+We start off with a prior distribution that captures the state of knowledge about parameters before the data collection. The wider the distribution the less knowledge we have. The most extreme prior someone can have is a point prior (here green) on one value. This means that prior to seeing the data, the person thinks that only this and no other value is technically possible. Different people can have different prior distributions, for example, the blue person has considerable more uncertainty about the prior parameter than the blue person.
+
+---
+&lt;img src="images/diffpriors.png" width="90%" style="display: block; margin: auto;" /&gt;
+---
+## Bayesian belief updating
+
+- Prior odds
+
+  - Compares the relative plausibility of two models before data collection
+
+`$$\frac{p(M1)}{p(M2)}$$`
+
+&lt;img src="images/prior_prob.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+???
+
+Imagine a third person who is asked to make a judgement about the prior expectations of two people. In most cases, without seeing the data, this third person will be impartial - and thus assign the same prior probabilities to both models. # Note that we are talking of people and models interchangeably.
+
+---
+## Declaring Priors
+
+You have to identify:
+
+  - Distribution of every statistic you want to estimate, including the dependent variable and each parameter of its distribution
+    - (e.g., DV ~ N( `\(\mu\)` , `\(\sigma\)`))
+    
+- Expected values for the location and spread of the distributions  
+
+---
+# How to choose
+
+- People argue about priors
+  
+  - Priors differ in how informative they are 
+  
+  - Priors differ in how proper they are
+
+- Creates two camps:
+
+  - “Subjective Bayesians” vs. “Objective Bayesians"
+---
+## Informativeness of priors
+
+- Informative Priors (“Subjective Bayesians”)
+
+  - Prior distributions that are specific about the values of model parameters  (e.g., true correlation ≈ N(μ = -0.5)
+
+- Non-informative Priors (“Objective Bayesians”)
+
+  - Usually, uniform distributions that includes all values of a parameter (e.g., -1 ≤ true correlation ≤ +1, with every value having equal probability)
+
+- Weakly-informative priors (“WIP”; Most Bayesians)
+
+  - Specifying the distribution (e.g., Normal), with starting values known to  bias estimates the least
+
+---
+## Informativeness of priors
+
+- People vary in how strongly they state their prior beliefs
+
+- If you state your belief strongly
+
+  - E.g., the true correlation is ~N(0.3, 0.06)
+    - Pitfall: Your beliefs have greater influence over the shape of the posterior distribution
+
+- If you state your belief weakly
+
+  - E.g., true correlation is equally likely at any real value between -1 and 1
+    - Pitfall: You run the risk of overestimating the relative densities of the posterior distribution to the prior distribution
+---
+## Bayesian belief updating
+
+- What is the probability to observe 
+0, 1, 2, … dog people in a random sample of 5 people given our model?
+
+&lt;img src="images/step2.png" width="90%" style="display: block; margin: auto;" /&gt;
+???
+From the prior expectations about a parameter we can derive prior predictions for the data (X). For example, if data 0-5 are technically possible, the green model (which was the one with the spike prior) predicts that it is very likely to draw values 2 and 3, whereas it is very unlikely to draw values 0 and 5. On the other hand, the blue model (which contained more uncertainty about the parameter) makes much less precise predictions. All data values are somewhat likely to happen according to this model – even extreme values such as 0 and 5. If we look at the probabilities of all possible data values, we get a prior predictive distribution
+---
+## Bayesian belief updating
+
+&lt;img src="images/data_cat.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+???
+The next step is data collection. Remember that everything we discussed so far happened without any knowledge about real data. As the data roll in, you could get a result like “We tried out procedure X, and were successful in 3 out of 5 trials”. 
+
+---
+## Bayesian belief updating
+
+- How plausible are the observed data under the model?
+
+  - Evaluation of the prior predictive distribution at the observed data
+
+
+&lt;img src="images/marg_like.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+???
+
+As soon as you have the data, you can check how well they fit the predictions of the models. In a Bayesian context, we think of prediction adequacy (or prediction errors) in terms of a match between the model and the data. If the data match the model well, the predictive adequacy is high / the prediction error is low. If there is no good match between model and data, the predictive adequacy is low / the prediction error is high. Now, how can we quantify this “matchingness”? Via the prior predictive distributions:
+Here, you can see again the prior predictive distributions of the two models. You can see that for the given data (x = 3), the green model made better predictions than the blue model, because the green model thought that the given data were more likely beforehand. This likelihood of the data under a model is called “marginal likelihood” or “Bayesian evidence”.
+
+---
+## Bayesian belief updating
+
+
+&lt;img src="images/showmarg.png" width="90%" style="display: block; margin: auto;" /&gt;
+---
+## Bayesian belief updating
+
+&lt;img src="images/step5.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+&lt;img src="images/bf_3.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+## Bayes factors
+
+- Frequentists have *p* values
+
+- Bayesians have Bayes factors (BF)
+  
+ -  Tells you how much more likely the observed data are under one model than under another model
+ 
+  - Can be interpreted as degree of relative evidence for a model
+
+  - Typically: Spike prior under the null model, distribution under the alternative model
+
+
+`$$\text{Bayes factor} (BF) = \frac{P(\mathcal{D}|H_1)}{P(\mathcal{D}|H_0)}$$`
+
+???
+
+`\(\text{Bayes factor}\)` represents the ratio of the likelihood of the data `\(\mathcal{D}\)` under two competing hypotheses `\(H_1\)` and `\(H_0\)`. The numerator `\(P(\mathcal{D}|H_1)\)` represents the likelihood of the data under the alternative hypothesis `\(H_1\)`, while the denominator `\(P(\mathcal{D}|H_0)\)` represents the likelihood of the data under the null hypothesis `\(H_0\)`.
+
+---
+## Bayes factors
+
+&lt;img src="images/bf.png" width="90%" style="display: block; margin: auto;" /&gt;
+---
+## Bayesian belief updating
+
+- A posterior distribution is a conditional probability  distribution that represents belief about a parameter, taking the evidence into  account
+
+&lt;img src="images/step6.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+???
+Let’s see how our knowledge is updated by the data. Remember the two persons from the beginning? One said: Everything apart from a parameter value of 0.5 is literally not possible (see green line). One had considerable uncertainty and did not rule out any parameter value, and therefore formulated a wide prior distribution (here dotted blue). The posterior distribution shows us how these prior expectations should be transformed after seeing the data. Here, the posterior distribution of the blue person is pictured with a blue solid line. There are certain parameter values that gained in plausibility, while others decreased in plausibility. For the “green person”, the prior distribution is not updated at all. Why does that happen? Since the person logically excluded all parameter values apart from 0.5, they also get a probability of zero after seeing the data. Just imagine: If you are 100% sure that Santa Claus does not exist, you won’t believe in him although you find presents in your stocking on Christmas day, get told stories about him, and saw a reindeer with a red nose in your back yard.
+---
+## Bayesian belief updating
+
+- Credible Intervals (Highest Density Intervals)
+
+  - With a probability of x%, the parameter lies within this interval
+  - Defined by the posterior distribution
+
+&lt;img src="images/step7.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Bayesian belief updating
+
+&lt;img src="images/step8.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+???
+
+Of course, after seeing the data, a third person would believe more in the model that predicted the data better (in this case model 1). This means that the posterior odds of the person changed in comparison to the prior odds. How can we quantify how much the belief changed? By multiplying the prior odds with the Bayes factor. Remember that the BF told us how much to believe in one model compared to the other, so this is straightforward: We multiply what we believed before with what we should believe when we see the data and get what we should believe after we have seen the data. In this case, the posterior model odds are 1.46, that means that an impartial judge who had no preference before would think that the green model is 1.46 times more likely than the blue model after seeing the data.
+
+---
+## Bayesian belief updating
+
+&lt;img src="images/step9.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+## Today
+
+&lt;br&gt;
+&lt;br&gt;
+
+- ✅ Understand basic concepts of Bayesian statistics
+
+- Learn how to conduct and interpret a simple Bayesian regression using `brms`
+
+---
+## Bayesain regression example 
+
+- Does synchronous attendance matter in hybrid courses?
+  
+  - 33 students in Fall 2020 statistics course
+  
+    - Looked at: 
+
+      - Grade `Final course grade`: Max 100
+      - sync `Mode of attendance`: (0=asychronous; 1=synchronous)
+      - avgView `Average standardized viewing time for recorded lectures`: in minutes
+  
+---
+## Data
+
+
+```r
+#can read directly from osf 
+data&lt;-read_csv("https://osf.io/sxk2a/download")
+```
+## Packages
+
+```r
+library(brms) # run bayes lm 
+library(emmeans) # get posteriors 
+library(ggeffects) # graph
+library(easystats) # easystats packages # bayesttestR 
+library(bayesplot) # graph trace plots
+```
+
+---
+##`avgView` plot
+
+&lt;img src="bayesian_modeling_2_files/figure-html/unnamed-chunk-23-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## `sync` plot
+
+&lt;img src="bayesian_modeling_2_files/figure-html/unnamed-chunk-24-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+## Simple regression
+
+
+```r
+lm_class &lt;- lm(grade~avgView+sync_cont, data=data)
+
+kable(tidy(lm_class), digits=3)
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p.value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55.676 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.230 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.032 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; avgView &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.461 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.153 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.020 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.005 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; sync_cont &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.297 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.920 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.038 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.970 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+## `brms`
+
+- Bayesian regression models in Stan (`brms`)
+
+
+```r
+library(brms)
+brm_class1 &lt;- brm(grade~avgView, data=data, 
+family= gaussian(),#distribution
+prior=NULL, 
+chains=4, # how many chains are run
+core=4, #computer cores to use
+warmup = 2000, # warm-up for MCMC 
+iter = 5000) # number of MCMC samples
+```
+
+- Let's go to R to run this
+
+---
+## Computing the posterior
+
+- Markov chain Monte Carlo (MCMC) sampler!
+
+- Given possible priors and your data, a computer uses a  Monte Carlo sampling technique to build stochastic  Markov Chains, a process referred to as MCMC
+
+- We run multiple chains (e.g., 4 chains in `brms`) with equal numbers of iterations (e.g., 5000 iterations) in each chain to estimate convergence/stability
+
+- MCMC chains contain samples from the posterior distribution of the theory given the data
+
+---
+## Markov chains
+
+.pull-left[
+&lt;img src="images/mcmc.png" width="90%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+- Chain of discrete events, moving forward in time
+  - Probability of each event is a  conditional probability, given the  last event
+- Each event is wholly predicted by  the immediately preceding event
+- They can stay the same/loop
+- Future events can be predicted  by knowing only the current event
+]
+---
+## Differences Between MCMC  and Bootstrapping
+
+- An entire set of bootstrapping resamples would be practically equivalent to one MCMC “chain” in the analysis
+- Bootstrap resamples are independent of each other,  MCMC iterations are dependent on each other
+- MCMC iterations can get stuck
+- The first n iterations or samples in an MCMC chain are  generated as “burn in” samples that will be the priors of the recorded MCMC samples
+
+---
+# MCMC in action
+
+
+```r
+knitr::include_url("https://chi-feng.github.io/mcmc-demo/app.html")
+```
+
+&lt;iframe src="https://chi-feng.github.io/mcmc-demo/app.html" width="90%" height="400px" data-external="1"&gt;&lt;/iframe&gt;
+
+---
+## MCMC Diagnostics
+
+- Trace plots
+
+  - Look for the fuzzy catapliers 
+
+
+```r
+bayesplot::color_scheme_set("mix-blue-red")
+bayesplot::mcmc_trace(brm_class1, pars = c("b_avgView"), 
+           facet_args = list(ncol = 1, strip.position = "left"))
+```
+
+&lt;img src="bayesian_modeling_2_files/figure-html/unnamed-chunk-29-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+---
+## MCMC Diagnostics
+
+- Bad plots
+
+&lt;img src="images/bad.jpeg" width="90%" style="display: block; margin: auto;" /&gt;
+---
+## Other diagnostics
+
+
+```r
+kable(diagnostic_posterior(brm_class1), digits=3)
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Parameter &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Rhat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ESS &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; MCSE &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; b_avgView &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10189.58 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.001 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; b_Intercept &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10340.71 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.064 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+- `\(\hat{R}\)`
+
+  - Measure of consistency of Markov chains
+  
+    - Should be close to 1 (not larger than 1.01)
+    
+  - Ratio of variance (like *F* test)
+---
+## Other Diagnostics
+
+
+```r
+kable(diagnostic_posterior(brm_class1), digits=3)
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Parameter &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Rhat &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ESS &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; MCSE &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; b_avgView &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10189.58 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.001 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; b_Intercept &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10340.71 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.064 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+- Effective sample size (ESS)
+
+  - MCMC chains are autocorrelated
+  
+  - Number of independent pieces there is in autocorrelated chains (Krushke, 2015, p182-3)
+  
+  - Should be &gt; 1000
+---
+## Priors
+
+
+```r
+prior_summary(brm_class1)
+```
+
+```
+##                   prior     class    coef group resp dpar nlpar lb ub
+##                  (flat)         b                                    
+##                  (flat)         b avgView                            
+##  student_t(3, 85, 11.9) Intercept                                    
+##   student_t(3, 0, 11.9)     sigma                                0   
+##        source
+##       default
+##  (vectorized)
+##       default
+##       default
+```
+---
+## Weakly informative priors
+
+.pull-left[
+
+- cauchy(0, .7) 
+
+
+```r
+x=distribution_cauchy(100, location=0, scale=.7)
+
+plot(density(x))
+```
+
+&lt;img src="bayesian_modeling_2_files/figure-html/unnamed-chunk-34-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+- normal(0, 10)
+
+
+```r
+x=distribution_normal(30, 0, 10)
+plot(density(x))
+```
+
+&lt;img src="bayesian_modeling_2_files/figure-html/unnamed-chunk-35-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+---
+## Resonable Ignorance Priors
+
+
+- Use empirical rule (95% data will fall within 2 `\(\sigma\)`)
+
+- Find maximum effect possible:
+
+  - min-max and divide by 2 
+  
+  - `avgplot` `\(\frac{6-75}{2}\)`
+
+  - http://svmiller.com/blog/2021/02/thinking-about-your-priors-bayesian-analysis/
+
+---
+## Visualize prior predictive distribution
+
+- Make sure prior distribution makes sensible predictions
+
+.pull-left[
+
+```r
+# set prior
+prior_emp &lt;- c(prior("lognormal(0,.51)", class = "b", lb=0, ub=100))
+
+prior1 &lt;- prior(cauchy(0, .707), class=b)
+prior2 &lt;- prior(normal(0, 10), class = b)
+prior3 &lt;- prior(normal(0, .51), class = b)
+
+#include prior 
+# only sample from prior so we can plot it and look
+brm_class_prior &lt;- brm(grade~avgView, data=data,              sample_prior="only", #use this to check prior pulls 
+prior=prior_emp, # add in prior information 
+family= gaussian(),  
+warmup = 2000,
+iter = 5000)
+
+# check prior
+```
+]
+
+.pull-right[
+
+
+```r
+pp_check(brm_class_prior)
+```
+
+&lt;img src="bayesian_modeling_2_files/figure-html/unnamed-chunk-37-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+---
+##  Visualing the posterior distribution
+
+
+```r
+posteriors &lt;- get_parameters(brm_class1)
+
+ggplot(posteriors, aes(x = b_avgView)) +
+  geom_density(fill = "orange")
+```
+
+&lt;img src="bayesian_modeling_2_files/figure-html/unnamed-chunk-38-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+---
+## Describing the Posterior
+
+1. A point-estimate which is a one-value summary (similar to the `\(\beta\)` in frequentist regressions)
+ 
+2. A credible interval representing the associated uncertainty
+
+3. Some indices of significance, giving information about the relative importance of this effect (e.g., Bayes Factors)
+---
+## Point-estimate
+
+
+```r
+describe_posterior(
+  brm_class1,
+  effects = "all",
+  component = "all",
+  centrality = "all"
+)
+```
+
+```
+## Summary of Posterior Distribution
+## 
+## Parameter   | Median |  Mean |   MAP |         95% CI |     pd |          ROPE | % in ROPE |  Rhat |      ESS
+## -------------------------------------------------------------------------------------------------------------
+## (Intercept) |  55.75 | 55.73 | 55.82 | [42.84, 68.51] |   100% | [-1.80, 1.80] |        0% | 1.000 | 10341.00
+## avgView     |   0.47 |  0.47 |  0.45 | [ 0.23,  0.71] | 99.99% | [-1.80, 1.80] |      100% | 1.000 | 10190.00
+## 
+## # Fixed effects sigma
+## 
+## Parameter | Median |  Mean |   MAP |         95% CI |   pd |          ROPE | % in ROPE |  Rhat |     ESS
+## --------------------------------------------------------------------------------------------------------
+## sigma     |  15.00 | 15.19 | 14.51 | [11.91, 19.66] | 100% | [-1.80, 1.80] |        0% | 1.000 | 9102.00
+```
+
+---
+## Uncertainty: Credible intervals
+
+.pull-left[
+- Credible intervals (high density intervals)
+
+  - Common to use 89% HDIs (why?)
+    - Provides more stable estimates
+    - If 95%, need to increase number of iterations
+    
+]
+
+.pull-right[
+
+```r
+posteriors &lt;- get_parameters(brm_class1)
+resuls=hdi(posteriors$b_avgView, ci=0.89)
+```
+
+&lt;img src="hdi_avg.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+## Visualizing uncertainty
+
+.pull-left[
+
+```r
+pred &lt;- predictions(brm_class1,
+                    newdata = datagrid(
+        avgView = seq(6, 75, by = 5))) %&gt;%
+        posterior_draws()
+
+pred_fig &lt;- ggplot(pred, aes(x = avgView, y = draw)) +
+    stat_lineribbon() +
+    scale_fill_brewer(palette = "Reds") +
+    labs(x = "Average Watch Time (min)",
+         y = "Grades (predicted)",
+         fill = "")
+```
+]
+
+
+.pull-right[
+
+
+&lt;img src="bayesian_modeling_2_files/figure-html/unnamed-chunk-43-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+]
+---
+## Significance
+
+- Does the credible interval contain 0?
+
+  - If yes, "not significant"
+  
+  - If no, "significant"
+
+
+---
+## Significance
+
+- Test if effect is greater than 0, or equal to 0
+
+
+```r
+brm_class_pr &lt;- brm(grade~avgView, data=data,#use this to check prior pulls
+prior=prior2,
+sample_prior = TRUE, 
+family= gaussian(),  
+warmup = 2000,
+iter = 5000)
+```
+
+
+```r
+BF &lt;- bayestestR::bayesfactor_parameters(brm_class_pr, null=0)
+
+BF
+```
+
+```
+## Bayes Factor (Savage-Dickey density ratio)
+## 
+## Parameter   |       BF
+## ----------------------
+## (Intercept) | 7.44e+07
+## avgView     |     8.96
+## 
+## * Evidence Against The Null: 0
+```
+
+---
+## Adding categorical predictor
+
+- `avgView` seems to have an effect on grades
+
+- Let's add `sync` to our model
+
+
+```r
+brm_class_cat &lt;- brm(grade~avgView + sync_cont, prior=prior2, 
+data=data,
+family=gaussian(), 
+sample_prior="yes")
+```
+
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; effect &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; component &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; group &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std.error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; conf.low &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; conf.high &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; fixed &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cond &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55.991 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.226 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39.818 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.098 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; fixed &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cond &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; avgView &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.463 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.141 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.178 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.741 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; fixed &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cond &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; sync_cont &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.231 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.261 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -12.193 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12.278 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ran_pars &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cond &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Residual &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; sd__Observation &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.364 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.995 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12.013 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19.809 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ran_pars &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; cond &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Residual &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; prior_sigma__NA.NA.prior_sigma &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.140 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.310 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.460 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.444 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+---
+## Posterior distribution plot 
+
+
+```r
+pp_check(brm_class_cat, type="stat_grouped", group="sync_cont")
+```
+
+&lt;img src="bayesian_modeling_2_files/figure-html/unnamed-chunk-48-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+## Point-estimate
+
+
+```r
+describe_posterior(
+  brm_class_cat,
+  effects = "fixed",
+  component = "all",
+  centrality = "all"
+)
+```
+
+```
+## Summary of Posterior Distribution
+## 
+## Parameter   | Median |  Mean |   MAP |          95% CI |     pd |          ROPE | % in ROPE |  Rhat |     ESS
+## -------------------------------------------------------------------------------------------------------------
+## (Intercept) |  56.05 | 55.99 | 56.82 | [ 39.82, 72.10] |   100% | [-1.80, 1.80] |        0% | 1.000 | 3013.00
+## avgView     |   0.46 |  0.46 |  0.45 | [  0.18,  0.74] |   100% | [-1.80, 1.80] |      100% | 1.000 | 2919.00
+## sync_cont   |   0.34 |  0.23 |  0.53 | [-12.19, 12.28] | 52.48% | [-1.80, 1.80] |    24.13% | 1.000 | 3180.00
+## 
+## # Fixed effects sigma
+## 
+## Parameter | Median |  Mean |   MAP |          95% CI |   pd |          ROPE | % in ROPE |  Rhat |     ESS
+## ---------------------------------------------------------------------------------------------------------
+## sigma     |  15.19 | 15.36 | 15.15 | [ 12.01, 19.81] | 100% | [-1.80, 1.80] |        0% | 1.000 | 3082.00
+```
+
+---
+## Uncertainty: Credible intervals
+
+
+.pull-left[
+
+- Credible intervals (HDI)
+]
+
+.pull-right[
+
+```r
+library(see)
+
+posteriors &lt;- get_parameters(brm_class_cat)
+results=hdi(posteriors$b_sync_cont, ci=0.89)
+```
+
+&lt;img src="hdi_sync.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+
+```
+
+]
+
+---
+## Significance
+
+- Does the credible interval contain 0?
+
+  - If yes, "not significant"
+  
+  - If no, "significant"
+
+---
+## Significant differences
+
+- Use `emmeans` to get mean differences between variables 
+
+
+```r
+em_syn &lt;- emmeans(brm_class, ~sync_cat) %&gt;% 
+  pairs() %&gt;%
+  kable("html")
+
+em_syn
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; contrast &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; lower.HPD &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; upper.HPD &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Async - Sync &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.2086467 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -12.57245 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12.26421 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+## Significant differences
+
+- Is the effect 0?
+
+
+```r
+library(bayestestR) # bayes functions easystats
+# contrast
+#BF only if you use weakly-strong priors 
+BF &lt;- bayestestR::bayesfactor_parameters(brm_class_cat, null = 0)
+
+BF
+```
+
+```
+## Bayes Factor (Savage-Dickey density ratio)
+## 
+## Parameter   |       BF
+## ----------------------
+## (Intercept) | 2.46e+04
+## avgView     |     2.93
+## sync_cont   |    0.614
+## 
+## * Evidence Against The Null: 0
+```
+
+---
+## Model comparisons
+
+- Use `bayestestR::bayesfactor_models` to get a BF for model selection
+
+
+```r
+# Model 1: grade ~ sync + avgView
+#save_pars for bayes factors
+brm_class1 &lt;- brm(grade~avgView + sync, data=data , family = gaussian(),prior=prior2, sample_prior="yes", save_pars = save_pars(all=TRUE), warmup = 2000, iter = 5000, refresh=0)
+#grade ~ avgView
+brm_class2 &lt;- brm(grade~avgView, data=data, prior=prior2, family = gaussian(), sample_prior="yes", save_pars = save_pars(all=TRUE), refresh=0, 
+    warmup = 2000, iter = 5000)
+```
+
+
+```r
+# testing models
+# compared to intercept-only or null model
+bayesfactor_models(brm_class1, brm_class2)
+```
+
+```
+## Bayes Factors for Model Comparison
+## 
+##     Model     BF
+## [2] avgView 1.63
+## 
+## * Against Denominator: [1] avgView + sync
+## *   Bayes Factor Type: marginal likelihoods (bridgesampling)
+```
+---
+## Original question
+
+- Do my students’ course grades depend on whether they attend lectures synchronously or asynchronously?
+  - Maybe?
+    - BF for model comparison suggests equivocal evidence
+    - Average viewing time does matter
+      - Moderate evidence that effect not zero (BF = 3.47)
+    
+- What do we get from Bayesian analysis that we don't get from regular linear regression?
+
+---
+## Reporting bayesian analysis
+
+
+```r
+report_bayes=report::report(brm_class1)
+```
+1. Include which prior settings were used
+2. Justify the prior settings (particularly for informed priors in a testing scenario) 
+3. Include a plot of the prior and posterior distribution
+4. Report the posterior mean/median and x% credible interva
+5. Include which prior settings were used
+6. If relevant, report the results from both estimation and hypothesis testing 
+7. Include BFs for model comparisons or parameters
+8. Include model convergence diagnostics (trace plot, `\(\hatR\)`, ESS)
+
+---
+## Bayesian pros 
+
+- Evidence can be gathered in favor of a hypothesis (the null)
+
+- Quantify the amount of support for one hypothesis relative to another
+
+- Parsimony is rewarded
+
+- Sample size does not affect estimates as much as it does the likelihood
+
+- Optional stopping is okay
+---
+## Bayesian cons: 
+
+- Priors
+
+- Computationaly intensive
+
+---
+## Caveat: What can Bayes not do?
+
+- Ban questionable research practices (e.g., HARKing)
+
+- Provide a remedy for:
+
+  - Small sample sizes
+  - Unrepresentative samples
+  - Poor experimental design
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true,
+"background-image": "url(\"lover.png\")",
+"background-size": "cover"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

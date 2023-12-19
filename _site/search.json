@@ -1,0 +1,466 @@
+[
+  {
+    "objectID": "Assignments/index.html",
+    "href": "Assignments/index.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "You will get the most out of this seminar if you (1) attend regularly, (2) engage with the readings, and (3) write thoughtfully.\nTo help you do all this successfully, there are three assignments for this course:\n\nMini presentation and discussion leading: Once during the semester, you will be responsible for preparing a presentation and leading the discussion for a class session. During the first day of class, I will provide a spreadsheet where you will select the week you want to be responsible for. Complete instructions and details for this assignment are here.\nLabs: Each week (Wednesday) we will have one corresponding lab exercise that will be started in class. The purpose is for you to get direct experience conducting the analyses that you learn. Each lab exercise will consist of several questions and will require R (will also accept Python) to answer the questions in a reproducible manner. All lab assignments must be reproducible (i.e., I can replicate the work you did without any errors). You may complete the labs by yourself or working with another person. If you work with another person, your work must obviously be your own.\n\nIdeally, you will finish labs in class. However, if you do not complete it in class, you can turn them in on Friday (due at 11:00 P.M.) Please let me know if you need an extension.\n\nTutorial: For your final project, you will create a tutorial explaining how to run a particular analysis in R. This will involve finding data or using your own data. The final project gives you a chance to pursue a specific method discussed in class and apply it to your own data.Complete instructions and details for this assignment are here."
+  },
+  {
+    "objectID": "Assignments/index.html#exams",
+    "href": "Assignments/index.html#exams",
+    "title": "Assignments",
+    "section": "Exams",
+    "text": "Exams\nThere are no exams! Read a bunch of things, write some things, participate in class. That’s it."
+  },
+  {
+    "objectID": "Assignments/presentation-discussion.html",
+    "href": "Assignments/presentation-discussion.html",
+    "title": "Mini presentation and discussion leading",
+    "section": "",
+    "text": "You will be responsible for preparing a short presentation on the readings and leading the discussion for one week. During the first day of class, I will provide a spreadsheet where you will select the week you want to be responsible for.\nWhen it is your turn to present and lead the discussion, you should do the following:\n\nPresentation\nFor your presentation, you should create either (1) a PowerPoint slideshow or (2) a summary handout.\nYour ~20 minute presentation should include the following:\n\nA clear overview of the topic: This should include a brief introduction to the topic, highlighting its relevance and importance in psychological research. You should also address assumptions/pros/cons of the methods, if any.\nA review of key concepts and definitions: The student should provide a summary of the key concepts and definitions related to the topic, including any technical terms that may be unfamiliar to you or the class.\n\nE.g., What are the 4 steps in the Barron and Kenny model of mediation? What does it mean to have data missing as MCAR?\n\nExamples and applications: To help peers’ understand the practical implications of the topic, you should provide examples and applications of how the topic is used in psychology. This could include your own research or examples from the literature or the materials. If you wanted to walk through an example, that is also welcome. I am going to be program agnostic here (use whatever you are most comfortable with: R, Python, SPSS, JASP, etc.).\nLingering questions"
+  },
+  {
+    "objectID": "Blog/nu-metal.html",
+    "href": "Blog/nu-metal.html",
+    "title": "Blog Example",
+    "section": "",
+    "text": "It was recently announced that nu-metal pioneers, Korn, have partnered with a makeup company to turn their iconic 3rd record, Follow The Leader, into a color palette.\n\n\n\n\n\nInspired by this, I wanted to bring the world of nu-metal into R and the awesome visualization tool ggplot. Did anyone ask for this? No. Does anyone want this? Also no.\n\n\n\n\n\n\n\nI stumbled upon the R package paletter that allows you to take any picture and extract the optimized palette. It does this by using an unsupervised learning technique (k-means clustering).\nIt is pretty simple to use. I will show you how.\n\n\n\nFirst, you need to save the location of the image file:\n\nlibrary(here) # relative path\nlibrary(paletter) # package to\nlibrary(ggplot2)\n#extract color palette\n\nimage_path <- here::here(\"Blog\", \"images\", \"Korn.jpeg\")\n\n\nThen you can read that file into a function from the package\n\n# Get the color palette\ncolours_vector <- create_palette(image_path = image_path,                            number_of_colors =10,                           type_of_variable = \"categorical\")\n\n\n\n\n\n\n\nOnce you do this, it will output a list of hex codes corresponding to the most representative colors in the image.\nLet’s put the hex codes side by side with the album art:\n\n\n\n\n\nSo here we have a color palette associated with the album Follow The Leader. Let’s see how it looks on some data.\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[1:3])"
+  },
+  {
+    "objectID": "Blog/nu-metal.html#evanescence---fallen",
+    "href": "Blog/nu-metal.html#evanescence---fallen",
+    "title": "Blog Example",
+    "section": "Evanescence - Fallen",
+    "text": "Evanescence - Fallen\nWake me up! I can’t wake up! Sorry. I am getting too pumped up for this.\n\n\n\n\n\n\nimage_path <-here::here(\"Blog\", \"images\",\"fallen1.jpeg\")\n\n\n# Get the color palette\ncolours_vector <- create_palette(image_path = image_path,                            number_of_colors =10,                            type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\n\n\n\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[1:3])"
+  },
+  {
+    "objectID": "Blog/nu-metal.html#limp-bizkit---significant-other",
+    "href": "Blog/nu-metal.html#limp-bizkit---significant-other",
+    "title": "Blog Example",
+    "section": "Limp Bizkit - Significant Other",
+    "text": "Limp Bizkit - Significant Other\n\n\n\n\n\n\nimage_path <- here::here(\"Blog\", \"images\",\"LB.jpeg\")\n\n\n# Get the color palette\ncolours_vector <- create_palette(image_path = image_path,                            number_of_colors =10,                            type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[1:3])"
+  },
+  {
+    "objectID": "Blog/nu-metal.html#linkin-park---hybrid-theory",
+    "href": "Blog/nu-metal.html#linkin-park---hybrid-theory",
+    "title": "Blog Example",
+    "section": "Linkin Park - Hybrid Theory",
+    "text": "Linkin Park - Hybrid Theory\n\n\n\n\n\n\nimage_path <- here::here(\"Blog\", \"images\",\"LP.jpeg\")\n\n\n# Get the color palette\ncolours_vector <- create_palette(image_path = image_path,                            number_of_colors =10,                            type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\n#|fig-align: \"center\"\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[1:3])"
+  },
+  {
+    "objectID": "Blog/nu-metal.html#slipknot---self-titled",
+    "href": "Blog/nu-metal.html#slipknot---self-titled",
+    "title": "Blog Example",
+    "section": "Slipknot - Self-titled",
+    "text": "Slipknot - Self-titled\n\n\n\n\n\n\nimage_path <- here::here(\"Blog\", \"images\",\"slipknot.jpeg\")\n\n\ncolours_vector <- create_palette(image_path = image_path,                            number_of_colors =10,                            type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[3:6])"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Advanced Statistics in Psychology",
+    "section": "",
+    "text": "PSY 504: Advanced Statistics\n        \n        \n            Advanced Statistical Methods in Psychology\n        \n        \n            PSYCH 504 • Spring 2023Princeton University\n        \n    \n    \n      \n        \n        \n        \n      \n    \n\n\n\n\nInstructor\n\n   Dr. Jason Geller\n   325 PSH\n   jg9120@princeton.edu\n   jgeller_phd\n   Schedule an appointment\n\n\n\nCourse details\n\n   MW\n   Janurary 31–April 25, 2023\n   10:00 AM –11:20 PM\n   A03\n\n\n\nContacting me\nE-mail is best way to get in contact with me. I will try to respond to all course-related e-mails within 24 hours (really), but also remember that life can be busy and chaotic for everyone (including me!), so if I don’t respond right away, don’t worry!"
+  },
+  {
+    "objectID": "news/2022-08-08_important-r-stuff.html",
+    "href": "news/2022-08-08_important-r-stuff.html",
+    "title": "Important R stuff",
+    "section": "",
+    "text": "← News\n\n\n\nFrom reading the syllabus you’ll notice that we’re using R in this class (though you can certainly use Stata too if you really want). R is free (!!), and highly sought after by employers, but it has a little bit of an initial learning curve. You’ll get the hang of it, though, I promise! I’m a certified RStudio instructor (see https://education.rstudio.com/trainers/), so I’ve been specially trained to teach statistical programming. Again, I promise that you’ll learn a ton.\nYou’ll be doing your stats work in RStudio this semester. While R and RStudio are free and open source, they can sometimes be tricky to install. To make life simpler, you can run RStudio in your browser without having to install anything (!!!). Over the course of the semester you’ll want to eventually install everything on your actual computer, since it’ll run faster there, but you won’t need to install anything to get started. I’ll e-mail you a link to join the class workspace.\nIn the meantime, you can also install everything on your actual computer if you follow these instructions (eventually you should do this—it’s best to run R on your own computer, but it’s totally fine to run everything at RStudio Cloud for the first few weeks)\nIf you have some free time over the next week and you feel like getting a head start, I would highly recommend going through a few of RStudio’s R Primers at https://rstudio.cloud/learn/primers. Don’t worry if you don’t have time to go through these introductory primers/tutorials! Your first problem set is essentially doing those primers (see here for the ones you’ll need to do), so you don’t have to get a head start now if you don’t want to.\nOnce again, I promise that you can do this and have a blast in this class!"
+  },
+  {
+    "objectID": "news/2022-08-08_welcome.html",
+    "href": "news/2022-08-08_welcome.html",
+    "title": "Welcome to class!",
+    "section": "",
+    "text": "← News\n\n\n\nHello everyone!\nI’m Andrew Heiss, your professor for PMAP 8521 (Evaluation Research) this fall, and I’m so excited for the class! In this class you’ll learn all about causal inference, or how to legally claim causation with statistics. In your past stats courses you were always taught “correlation isn’t causation,” which is mostly true, except when it’s not. In this class you’ll get to legitimately make causal claims.\nWe’ll cover fun tools like directed acyclic graphs (DAGs), randomized controlled trials, difference-in-differences analysis, regression discontinuity analysis, and instrumental variables. You’ll also learn the statistical language R, which is free (which means you can keep using it after you graduate and not have to pay for really really expensive SPSS or Stata licenses). I’ve had former students get jobs because of the R part of this class—tons of organizations are looking for R skills nowadays.\nI have a few important announcements before class:\n\nWe are meeting in person, but as you’ll see in the syllabus (see the “Masking and vaccines” section there, I’m trying to take as many precautions as possible given the rapid spread of the BA.5 variant. For instance…\n…I’ve made the course a flipped course, which means you’ll do all the readings and watch the lectures on YouTube before class on Mondays. We’ll spend our class time answering questions, doing activities, and learning a lot of R together. This means that the bulk of the course material is fully online and asynchronous.\nBefore class, I’d love to get to know each you a little first, so I’ve created a quick survey to fill out. I’ve sent you a link to it via e-mail. Please take it at your earliest convenience.\nThe entire course is available at a special class website at https://evalf22.classes.andrewheiss.com/. Bookmark this site—it’ll be your best friend for the next semester. I only use iCollege for collecting your assignments, posting answer keys, posting a couple scanned book chapters, and offering the two exams (since it’s password protected). This website is the official source of dates and all other class information. Because it’s not part of iCollege, you’ll be able to reference it even after you graduate and lose access to GSU resources. You can even share it with others—it’s just a website!\nPlease read the main explanatory pages at the course website at your earliest convenience. The instructions and expectations for the class are divided across different pages, all accessible from the menu bar at the top of the site. Please read the main pages for the syllabus, schedule, content, assignments, and examples.\nWe’re using zero physical textbooks in this class. Every reading and book and piece of software in this class is 100% free (see the syllabus for more information about that).\n\nQuick background about me: I’m an assistant professor here at the Andrew Young School, where I’ve been teaching MPA/MPP microeconomics, program evaluation, and data visualization. I moved here from Utah in 2019, where I was a visiting professor of public management at the Marriott School of Business at Brigham Young University (BYU). While at BYU, I taught microeconomics, statistics, and data visualization (basically the same stuff I’m teaching now). I finished my PhD in public policy and political science from Duke in 2017, and before then I finished my MPA in nonprofit management from BYU in 2012.\nWhen I’m not teaching stats and evaluation, I research international nonprofits and political science. And when I’m not teaching or researching, I’m normally chilling at my house with my 6 (!!) kids (see https://www.heissatopia.com/ for photos and hilarious stories).\nAgain, I’m really excited to get started next week. This fall semester should be a blast!"
+  },
+  {
+    "objectID": "news/2022-08-15_announcements-updates.html",
+    "href": "news/2022-08-15_announcements-updates.html",
+    "title": "Announcements and updates",
+    "section": "",
+    "text": "← News\n\n\n\nOne last thing!\nOver the course of the semester, I’ll be sending you lots of updates and announcements and FAQs based on your weekly check-ins.\nMy philosophy for this class is to let you maintain access to as much content as possible, which is why so little of the the class material is on iCollege.\nI will post all these announcements and e-mails at the “News section of the course website. This means that even after you finish the class and lose access to iCollege, and even after you graduate from GSU and lose access to your @gsu.edu e-mail address, you’ll still have a searchable archive of messages and FAQs from this class.\nI’ll let you know when there’s a new item in the news section in a few different ways:\n\nI’ll e-mail you a link to the newest message. I’ll use the e-mail address you have listed in PAWS—if you want me to use a different address, let me know and I’ll update my list,\nNew messages should post automatically to the #general channel in Slack\nIf you use an RSS feed reader (RIP Google Reader), you can subscribe to an RSS feed of the news section. There’s a link at the bottom of the news page.\n\nPhew. That should be it from me for a while. Remember to read the syllabus and the rest of the course website, answer the welcome survey, sign up for Slack, and join the RStudio.cloud workspace. Also, remember to take care of yourselves! I mean every word in the “Learning during a pandemic” section of the syllabus. This all sucks so much, and I will try my hardest to accommodate your needs throughout the semester.\nThanks!"
+  },
+  {
+    "objectID": "news/2022-08-21_first-day.html",
+    "href": "news/2022-08-21_first-day.html",
+    "title": "Plan for the first day of class",
+    "section": "",
+    "text": "← News\n\n\n\nHi everyone!\nTomorrow’s the first day of class! Exciting!\nBeyond hoping that everyone is wearing a mask, I’ve structured the class in way that limits our exposure to each other as much as possible. As noted in the syllabus (https://evalf22.classes.andrewheiss.com/syllabus.html#course-structure), we’re using a flipped classroom this semester. What this means in practice is that you’ll do all the readings and watch asynchronous lecture videos before class meets on Mondays.\nOur in-person time will not involve lectures. Instead, it’ll be a more hands-on lab for working with R and answering the questions that come up from doing the readings and watching the lectures. That’s the point of the weekly check-in assignment (https://evalf22.classes.andrewheiss.com/assignment/weekly-check-in.html)—the only way this in-person time will be effective is if you do the readings + videos and ask questions in the weekly check-in.\nThe videos for the first day of class are live and ready to watch at https://evalf22.classes.andrewheiss.com/content/01-content.html (along with the readings). If possible, please watch them (and do the readings) before class on Monday so that we can start with the lab-like in-person time and get a good solid introduction to R and RStudio + answer the questions you have from the first session’s materials.\nIdeally, please try to submit the first weekly check-in on iCollege by tomorrow too so that we can have some good Q&A time during our in-person time. BUT no worries if not!\nIf you don’t have time to get through the materials before the first day, that’s totally fine—you can do it later and there’s no late penalty or anything for the first week, given that it is the first day of classes. But if you can, let’s get started!"
+  },
+  {
+    "objectID": "news/2022-08-22_getting-help.html",
+    "href": "news/2022-08-22_getting-help.html",
+    "title": "How to reach out for help",
+    "section": "",
+    "text": "← News\n\n\n\nHi everyone!\nYou absolutely can (and should) reach out when you get stuck. I’m super responsive on Slack and e-mail. If you ask a question on the #help channel in Slack, others can help too. No question is too tricky or embarrassing, I promise. Computers are extraordinarily literal and tiny typos will often mess you up for a long time—I’ve lost countless time because of missing commas and misspelled words (curse you lenght()). Please feel comfortable reaching out.\n\nAsk early and often\nI’m a big believer in the 30 minute rule. If you’re stuck and not making progress on a task for 30 minutes, reach out for help from the community.\n\n\nBe nice\nOne of the great parts about the online R community is that the team at RStudio has actually hired people to help promote community norms. Like that’s their whole job—community evangelist (see @dataandme and @RachaelDempsey for instance). The R world is probably one of the nicest corners of the programming internet because of these norms—there’s an emphasis on helping beginners, being kind and respectful, and cheerfully helping as much as possible. Watch the #rstats hashtag on Twitter, look at the “r” tag on StackOverflow, and look at discussions at the RStudio Community and you’ll see kindness in action.\nThis was not always the case. 10ish years ago, before the RStudio people made a concerted effort to create community, the online R world was pretty mean and toxic, with forums run by a few really grumpy statisticians who’d belittle you if you asked a poorly worded question. It was awful. That kind of attitude often still persists in other languages (hooo boy try asking a beginner question about Python at StackOverflow 😬), but the R world has tried really hard to be welcoming.\nI embrace that attitude when teaching R, and I encourage you all to do the same. Reach out for help early and often. Do not suffer in silence. Do not spend hours and hours stuck on an issue before reaching out for help. If you feel comfortable, reach out publicly on the #help channel rather than a Slack DM so that others can help. This helps build and strengthen the community within our class and within the R community more broadly.\n\n\nAsk in a way that helps the answerer\nThere are a few easy guidelines to remember when asking for help:\n\nBe kind.\nTry asking questions with as complete information as possible. Rather than saying something like “my code isn’t working” and that’s it, provide more background (it’s hard to read your computer’s mind). Say specifically what you’re trying to do and provide code when possible. You can actually format R code on Slack if you click on the little lightning icon in the bottom left of the typing area and search for “text snippet”—that’ll open a dialog that will let you paste in text and add R syntax highlighting. You can also paste your code between triple backticks on Slack and it’ll format it in monospaced font (though not with the neat syntax highlighting that you get when using Slack’s text snippet thing):\n```\nggplot(blah) + geom_point()\n```\nYou can also take screenshots (use ⌘+shift+4 on macOS to save a screenshot to your Desktop, or ⌘+⌥+shift+4 to save a screenshot directly to the clipboard; use Windows+shift+S on Windows to save a screenshot directly to the clipboard). I’ve had people send photos from their phones too. The one issue with screenshots/photos is that it’s harder for people to get the code out of Slack and into RStudio on their computer to troubleshoot, since you can’t copy/paste from an image.\nTry making your question a reproducible example (or reprex). Reprexes are the best way to (1) get help online and (2) fix issues on your own.\nMaking a good reprex is tricky, but it’s a very valuable skill to know (regardless of programming language!). Here are some helpful resources for making them:\n\n What’s a reproducible example (reprex) and how do I do one?\n So you’ve been asked to make a reprex\n The reprex package\n\n\n\n\nDon’t suffer in silence\nAnd that’s it. Ask questions in ways that will help answerers answer them and be nice about it. When answering questions, be nice about it. Ask lots of questions. Answer lots of questions.\nOnce again, do not suffer in silence. I’ve had past students tell me that’s like the one thing they’ll remember from my classes—do not suffer in silence. I mean it, and I’ll keep saying it throughout the semester (because often in your past courses and degrees, you’ve been discouraged from reaching out or from building communities or whatever—that is not the case here)."
+  },
+  {
+    "objectID": "news/index.html",
+    "href": "news/index.html",
+    "title": "News",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nDate\n\n\nTitle\n\n\nCategories\n\n\n\n\n\n\nMonday August 22, 2022 at 2:52 PM\n\n\nHow to reach out for help\n\n\nadvice\n\n\n\n\nSunday August 21, 2022 at 9:05 PM\n\n\nPlan for the first day of class\n\n\ngetting started\n\n\n\n\nMonday August 15, 2022 at 3:31 PM\n\n\nAnnouncements and updates\n\n\ngetting started\n\n\n\n\nMonday August 15, 2022 at 2:33 PM\n\n\nImportant R stuff\n\n\ngetting started\n\n\n\n\nMonday August 15, 2022 at 2:21 PM\n\n\nWelcome to class!\n\n\ngetting started\n\n\n\n\n\n\nNo matching items\n\n\n\n\n\n\n\n\nSubscribe!\n\n\n\nYou can use a feed reader like Feedly or use an RSS-to-email service like Blogtrottr to subscribe to these updates and messages. I’ll also e-mail out links to them when there are new updates.\n\n\n\n RSS"
+  },
+  {
+    "objectID": "schedule/01-week.html",
+    "href": "schedule/01-week.html",
+    "title": "Week 1",
+    "section": "",
+    "text": "Introduction to Quarto and how to create website/blog"
+  },
+  {
+    "objectID": "schedule/01-week.html#before-class",
+    "href": "schedule/01-week.html#before-class",
+    "title": "Week 1",
+    "section": "Before Class",
+    "text": "Before Class\n\n\n\n\n\n\nImportant\n\n\n\n\nInstall latest version of RStudio, v2022.07.1 or later\nInstall Quarto: https://quarto.org/docs/download/\n\nFollow: https://quarto.org/docs/get-started/hello/rstudio.html\n\nSign up for free github account\nInstall Github Desktop: https://docs.github.com/en/desktop/installing-and-configuring-github-desktop/installing-and-authenticating-to-github-desktop/installing-github-desktop\nInstall Git: https://git-scm.com/downloads\nMake sure RStudio recognized Git: https://happygitwithr.com/rstudio-see-git.html#rstudio-see-git"
+  },
+  {
+    "objectID": "schedule/02-week.html",
+    "href": "schedule/02-week.html",
+    "title": "Week 2",
+    "section": "",
+    "text": "Fox.J. (2008). Applied Regression Analysis and Generalized Linear Models. SAGE Publications Inc. Chapter 21: Bootstrapping Regression Models.\n\nWhen do you use a bootstrapping procedure? What purpose does it serve?\nHow is a bootstrapped sampling distribution generated?\nHow many bootstrap samples should you use?\nWhen should you bootstrap your actual data (“cases”) versus your prediction error (“residuals”)?\n\n Wilcox, R. R. (1998). How many discoveries have been lost by ignoring modern statistical methods?. American Psychologist, 53, 300—314.\n\nWhat are the statistical and theoretical problems associated with removing outliers?\nHow does skew affect your test?\nWhat are the solutions to these problems?\n\n LaFleur, B. J., & Greevy, R. A. (2009). Introduction to Permutation and Resampling-Based Hypothesis Tests. Journal of Clinical Child & Adolescent Psychology, 38(2), 286–294. https://doi.org/10.1080/15374410902740411\n\nHow do permutation tests differ from traditional statistical hypothesis tests?\nWhat assumptions underlie permutation tests?\nWhat steps underlie permutation tests?\nHow does the number of permutations affect the power and type I error rate of a permutation test?"
+  },
+  {
+    "objectID": "schedule/02-week.html#video",
+    "href": "schedule/02-week.html#video",
+    "title": "Week 2",
+    "section": "Video",
+    "text": "Video"
+  },
+  {
+    "objectID": "schedule/02-week.html#during-class",
+    "href": "schedule/02-week.html#during-class",
+    "title": "Week 2",
+    "section": "During Class",
+    "text": "During Class\n\nWill go through this paper in class\n\nRousselet, G. A., Pernet, C. R., & Wilcox, R. R. (2021). The Percentile Bootstrap: A Primer With Step-by-Step Instructions in R. Advances in Methods and Practices in Psychological Science, 4(1), 2515245920911881. https://doi.org/10.1177/2515245920911881"
+  },
+  {
+    "objectID": "schedule/02-week.html#after-class",
+    "href": "schedule/02-week.html#after-class",
+    "title": "Week 2",
+    "section": "After Class",
+    "text": "After Class\n\n Kabacoff, R. I. (2022). *R* in Action*. Chapter 12."
+  },
+  {
+    "objectID": "schedule/03-week.html",
+    "href": "schedule/03-week.html",
+    "title": "Week 3",
+    "section": "",
+    "text": "Baraldi, A. N., & Enders, C. K. (2010). An introduction to modern missing data analyses. Journal of School Psychology, 48(1), 5-37. doi:10.1016/j.jsp.2009.10.00]\nWhat are some common methods for handling missing data in statistical analyses?\nHow do different missing data mechanisms (e.g., missing completely at random, missing at random, missing not at random) impact the validity of statistical inferences?\nWhat are some potential limitations and drawbacks of using multiple imputation to handle missing data?\n\n\n\n\n\nQuantitude Podcast.S4E08 Missing Data: The New State Of The Art With Craig Enders\nQuantitude Podcast. S1E16: IF EPISODE=16 THEN EPISODE=-999"
+  },
+  {
+    "objectID": "schedule/03-week.html#after-class",
+    "href": "schedule/03-week.html#after-class",
+    "title": "Week 3",
+    "section": "After Class",
+    "text": "After Class\n\n Kabacoff, R. I. (2022). *R* in Action* Chapter 18."
+  },
+  {
+    "objectID": "schedule/04-week.html",
+    "href": "schedule/04-week.html",
+    "title": "Week 4",
+    "section": "",
+    "text": "The R package brms (which is a Bayesian data analysis package) is used in the papers below. While it is a Bayesian technique, the output is similar to a regression output.\n\n Bürkner P-C, Vuorre M. Ordinal Regression Models in Psychology: A Tutorial. Advances in Methods and Practices in Psychological Science. 2019;2(1):77-101. doi:10.1177/2515245918823199\n Veríssimo, J. (2021). Analysis of rating scales: A pervasive problem in bilingualism research and a solution with Bayesian ordinal models. Bilingualism: Language and Cognition, 24(5), 842-848. doi:10.1017/S1366728921000316\n\nDescribe what is meant by an ordinal variable\nDescribe how an ordinal variable can be represented using a latent continuous variable.\nWhat is cumulative probability?\nList some common applications of ordinal regression in your field\nHow do you interpret the coefficients in an ordinal regression model?\nWhat is the proportional odds assumption underlying ordinal regression?\n\n\n\n\n\n\n\nIntroduction to Ordinal regression in R"
+  },
+  {
+    "objectID": "schedule/04-week.html#after-class",
+    "href": "schedule/04-week.html#after-class",
+    "title": "Week 4",
+    "section": "After Class",
+    "text": "After Class\n\n Running ordinal regression in R"
+  },
+  {
+    "objectID": "schedule/05-02-week.html",
+    "href": "schedule/05-02-week.html",
+    "title": "Week 6",
+    "section": "",
+    "text": "https://bookdown.org/chua/ber642_advanced_regression/multinomial-logistic-regression.html#introduction-to-multinomial-logistic-regression\n McNulty, K. (2021). Handbook of Regression Modeling in People Analytics: With Examples in R and Python. Multinomial Regression.\n\nDescribe the difference between a stratified versus a multinomial approach to modeling an outcome with more than two nominal categories.\nDescribe how you would interpret the odds ratio of an input variable for a given category in a stratified modeling approach.\nDescribe what is meant by the ‘reference’ of a multinomial logistic regression model with at least three nominal outcome categories.\nDescribe how you would interpret the odds ratio of an input variable for a given category in a multinomial modeling approach.\nGiven a multinomial logistic regression model with outcome categories A, B, C and D and reference category A, describe two ways to determine the coefficients of a multinomial logistic regression model with reference category C.\nDescribe a process for safely simplifying a multinomial logistic regression model by removing input variables."
+  },
+  {
+    "objectID": "schedule/05-02-week.html#in-class",
+    "href": "schedule/05-02-week.html#in-class",
+    "title": "Week 6",
+    "section": "In-class",
+    "text": "In-class\nGeller, J., Toftness, A. R., Armstrong, P. I., Carpenter, S. K., Manz, C. L., Coffman, C. R., & Lamm, M. H. (2018). Study strategies and beliefs about learning as a function of academic achievement and achievement goals. Memory, 26(5), 683–690. https://doi.org/10.1080/09658211.2017.1397175"
+  },
+  {
+    "objectID": "schedule/05-week.html",
+    "href": "schedule/05-week.html",
+    "title": "Week 5",
+    "section": "",
+    "text": "Coxe, S., West, S. G., & Aiken, L. S. (2009). The Analysis of Count Data: A Gentle Introduction to Poisson Regression and Its Alternatives. Journal of Personality Assessment, 91(2), 121–136. https://doi.org/10.1080/00223890802634175\n Winter, B., & Bürkner, P.-C. (2021). Poisson regression for linguists: A tutorial introduction to modelling count data with brms. Language and Linguistics Compass, 15(11), e12439. https://doi.org/10.1111/lnc3.12439\n\nHow does the Poisson distribution differ from other distributions, such as the normal distribution?\nHow do we interpret the parameters of the poisson?\nWhat are the assumptions of Poisson regression?\nWhat is overdispersion?\nHow is poisson related to the negative binomial?\n\n\n\n\n\nRyan, W. H., Evers, E. R. K., & Moore, D. A. (2021). Poisson Regressions: A Little Fishy. Collabra: Psychology, 7(1), 27242. https://doi.org/10.1525/collabra.27242\n\n\n\n\n\nIntroduction to Poisson regression",
+    "crumbs": [
+      "Week 5"
+    ]
+  },
+  {
+    "objectID": "schedule/05-week.html#after-class",
+    "href": "schedule/05-week.html#after-class",
+    "title": "Week 5",
+    "section": "After Class",
+    "text": "After Class\n\n Kabacoff, R. I. (2022). *R* in Action* chapter 13.\n Running Poisson regression in R",
+    "crumbs": [
+      "Week 5"
+    ]
+  },
+  {
+    "objectID": "schedule/06-week.html",
+    "href": "schedule/06-week.html",
+    "title": "Week 6",
+    "section": "",
+    "text": "Dienes, Z. (2008). Bayes and the probability hypotheses\n\nWhat is Bayes’ Theorem and how is it used in statistical analysis?\nHow does Bayesian statistical analysis differ from NHST?\nWhat affordances does Bayesian statistics provide that NHST does not?\nHow do Bayesian models incorporate prior knowledge or beliefs about the data?\nWhat are some advantages and disadvantages of using Bayesian statistical methods?\nHow do you make statistical inferences and predictions using Bayesian methods?\n\nJarosz, A. F., & Wiley, J. (2014). What Are the Odds? A Practical Guide to Computing and Reporting Bayes Factors. The Journal of Problem Solving, 7(1).\n\nWhat is a Bayes Factor?\nHow do you calculate them?\nHow do we interpret Bayes Factors?\n\n\n\n\n\n\n https://bookdown.org/marklhc/notes_bookdown/markov-chain-monte-carlo.html\n\nReally nice explanation of MCMC\n\n\n\n\n\n\n What is Bayes?\n\n\n\n\n\n\n Why use Bayes?"
+  },
+  {
+    "objectID": "schedule/06-week.html#after-class",
+    "href": "schedule/06-week.html#after-class",
+    "title": "Week 6",
+    "section": "After Class",
+    "text": "After Class\n\nJASP has some nice Bayesian implementations\n\nBayesian Regression in JASP"
+  },
+  {
+    "objectID": "schedule/08-week.html",
+    "href": "schedule/08-week.html",
+    "title": "Week 8",
+    "section": "",
+    "text": "Baron, R. M., & Kenny, D. A. (1986). The moderator–mediator variable distinction in social psychological research: Conceptual, strategic, and statistical considerations. Journal of Personality and Social Psychology, 51, 1173-1182.\n\nWhat are the steps (i.e., equations, regression models) that comprise a mediation analysis?\nWhat are you looking to see in the output of these models to establish that mediation has occurred?\nHow do you test for the overall significance of a mediational model?\nWhat is the difference between a mediation and a moderation (i.e., how do the interpretations of each differ)?\n\n Zhao, X., Lynch, Jr., J. G., & Chen, Q. (2010). Reconsidering Baron and Kenny: Myths and truths about mediation analysis.. Journal of Consumer Research, 37, 197-206)\n\nIdentify at least three recommendations/assertions of Baron and Kenny (1986) that Zhao et al (2010) argue against. State Baron & Kenny’s reasoning behind the original assertion but also the reasoning of Zhao et al when arguing the recommendation is wrong.\nWhat are the five types of mediation and nonmediation?\nWhat type of mediation can tell you whether the mediator is consistent with the causal model?"
+  },
+  {
+    "objectID": "schedule/08-week.html#class",
+    "href": "schedule/08-week.html#class",
+    "title": "Week 8",
+    "section": "Class",
+    "text": "Class\n\nData we are using for class: Mediation Data"
+  },
+  {
+    "objectID": "schedule/08-week.html#after-class",
+    "href": "schedule/08-week.html#after-class",
+    "title": "Week 8",
+    "section": "After Class",
+    "text": "After Class\nignore moderation sections\nMediation in R"
+  },
+  {
+    "objectID": "schedule/08-week.html#want-to-read-more",
+    "href": "schedule/08-week.html#want-to-read-more",
+    "title": "Week 8",
+    "section": "Want to read more?",
+    "text": "Want to read more?\nFossum, J. L., & Montoya, A. K. (2021, December 7). When to Use Different Tests for Power Analysis and Data Analysis for Between-Subjects Mediation. https://doi.org/10.31234/osf.io/5tm2x"
+  },
+  {
+    "objectID": "schedule/09-week.html",
+    "href": "schedule/09-week.html",
+    "title": "Week 9",
+    "section": "",
+    "text": "McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.\nChapters 4 and 5\n\nWhat is the purpose of SEM and how does it differ from other types of statistical models?\nWhat are the key components of an SEM model, including latent variables, observed variables, and paths between variables?\nHow do you specify an SEM model, including selecting the appropriate measurement model and structural model?\nHow do you evaluate the fit (goodness) of an SEM model and what are some common fit indices used in SEM?\nHow do you interpret the results of a SEM analysis, including the path coefficients and factor loadings?\nWhat are some common assumptions of SEM and how can you assess whether these assumptions are met?\nHow do you handle missing data in SEM and what are the implications of missing data for SEM analysis?\nWhat are some common challenges and limitations of SEM and how can they be addressed?\nWhat are the best practices for reporting SEM results and how can you communicate your findings effectively?\n\n\n\n\n\nSEM basics\n\n\n\n\n\n\n SEM basics"
+  },
+  {
+    "objectID": "schedule/10-week.html",
+    "href": "schedule/10-week.html",
+    "title": "Week 10",
+    "section": "",
+    "text": "James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An Introduction to Statistical Learning: With Applications in R. Springer.\n\nChapter 12 12.1-12.3\n\nPett, M. A., Lackey, N. R., & Sullivan, J. (2003). Chapter 1: An Overview of Factor Analyis. Making Sense of Factor Analysis: The Use of Factor Analysis for Instrument Development in Health Care Research (1st edition). SAGE Publications, Inc.\nGoretzko, D., Siemund, K., & Sterner, P. (2023). Evaluating Model Fit of Measurement Models in Confirmatory Factor Analysis. Educational and Psychological Measurement, 00131644231163813. https://doi.org/10.1177/00131644231163813\n Watkins, M. W. (2018). Exploratory Factor Analysis: A Guide to Best Practice. Journal of Black Psychology, 44(3), 219–246. https://doi.org/10.1177/0095798418771807"
+  },
+  {
+    "objectID": "schedule/10-week.html#after-class",
+    "href": "schedule/10-week.html#after-class",
+    "title": "Week 10",
+    "section": "After Class",
+    "text": "After Class\n\n Kabacoff, R. I. (2022). *R* in Action* Chapter 14\nhttps://rpubs.com/danmirman/plotting_factor_analysis"
+  },
+  {
+    "objectID": "schedule/11-week.html",
+    "href": "schedule/11-week.html",
+    "title": "Week 11",
+    "section": "",
+    "text": "James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An Introduction to Statistical Learning: With Applications in R. Springer.\n\nChapter 12 12.4-12.5\n\n(Introduction to Clustering)\n\n(kind of long but good introduction to topic)"
+  },
+  {
+    "objectID": "schedule/11-week.html#after-class",
+    "href": "schedule/11-week.html#after-class",
+    "title": "Week 11",
+    "section": "After Class",
+    "text": "After Class\n\n Kabacoff, R. I. (2022). *R* in Action* Chapter 16."
+  },
+  {
+    "objectID": "schedule/12-week.html",
+    "href": "schedule/12-week.html",
+    "title": "Week 12",
+    "section": "",
+    "text": "McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.\n\nChapters 1 and 2\n\nWhat type of data would necessitate a multilevel analysis? Come up with an example not given in the paper.\nWhat are fixed and random effects? How do multilevel models and traditional regression differ in terms of fixed and random effects?\nHow can you statistically determine if your cases are not independent?\nWhat assumptions does MLM have?\nWhat is the difference between grand-mean and group mean centered data?\nWhat is the folly of trying to account for dependence by including level 2 data in an ordinary regression model?\n Ballinger, G. A. (2004). Using Generalized Estimating Equations for Longitudinal Data Analysis. Organizational Research Methods, 7(2), 127–150. https://doi.org/10.1177/1094428104263672"
+  },
+  {
+    "objectID": "schedule/index.html",
+    "href": "schedule/index.html",
+    "title": "Schedule",
+    "section": "",
+    "text": "Here’s your roadmap for the semester!\n\n\n Readings should be completed before each class session\n\n\n Slides and other class materials will be added on the day of class\n\n\n Assignments are due at 11:00 P.M. on Friday (unless otherwise stated)\n\n\n\n\n\nWeek\nDate\nTopic\nContent\nClass\nLabs\n[]\n\n\n\n\n\n\n\n\n\n\n\n\n\n1\n1/30/23\nIntroduction\n\n\n\n\n\n\n\n2/1/23\nQuarto: Blogging\n\n\n\nJason\n\n\n2\n2/6/23\nRobust methods: Bootstrapping and permutation\n\n\n\nJason\n\n\n\n2/8/23\nLab 1\n\n\n\n\n\n\n3\n2/13/23\nMissing data\n\n\n\nSydney\n\n\n\n2/15/23\nLab 2\n\n\n\n\n\n\n4\n2/20/23\nPolytomous models: Ordinal regression\n\n\n\nNicole\n\n\n\n2/22/23\nLab 3\n\n\n\n\n\n\n5\n2/27/23\nPolytomous models: Multinomial regression\n\n\n\nHenna\n\n\n\n3/1/23\nLab 4\n\n\n\n\n\n\n6\n3/6/23\nPoisson regression/negative binomial\n\n\n\nSarah\n\n\n\n3/8/23\nLab 5\n\n\n\n\n\n\n7\nSpring Break\n\n\n\n\n\n\n\n8\n3/20/23\nBayesian analysis\n\n\n\nCody\n\n\n\n3/22/23\nLab 6\n\n\n\n\n\n\n9\n3/27/23\nMediation\n\n\n\nClaire\n\n\n\n3/29/23\nLab 7\n\n\n\n\n\n\n10\n4/3/23\nPath modeling/SEM\n\n\n\nJason\n\n\n\n4/5/23\n\n\n\n\nJason Tasukahara will Zoom in and talk about R package for SEM\n\n\n11\n4/10/23\nPrincipal components analysis/factor analysis\n\n\n\nBranson\n\n\n\n4/12/23\nLab 8\n\n\n\n\n\n\n12\n4/17/23\nUnsupervised learning: Clustering\n\n\n\nJamie\n\n\n\n4/19/23\nLab 9\n\n\n\n\n\n\n13\n4/24/23\nGEEs/Multilevel modeling\n\n\n\nKillian\n\n\n\n4/26/23\nLab 10\n\n\n\n\n\n\n14\nReading Week\n\n\n\n\n\n\n\n15\nFinals\nBlog posts due"
+  },
+  {
+    "objectID": "schedule/schedule.html",
+    "href": "schedule/schedule.html",
+    "title": "Schedule",
+    "section": "",
+    "text": "Here’s your roadmap for the semester!\n\n\n Readings should be completed before each class session\n\n\n Slides and other class materials will be added on the day of class\n\n\n Assignments are due at noon on the day they are due (unless otherwise stated)\n\n\n\n\n\nWeek\nDate\nTopic\nClass Materials\nClass PDFs\nPeer Leader\n\n\n\n\n1\n1/30/23\nIntroduction\n\n\n\n\n\n\n2/1/23\nCleaning data\n\n\n\n\n\n2\n2/6/23\nRobust methods: bootstrapping and permutation\n\n\n\n\n\n\n2/8/23\nLab 1\n\n\n\n\n\n3\n2/13/23\nMissing data\n\n\n\n\n\n\n2/15/23\nLab 2\n\n\n\n\n\n4\n2/20/23\nOrdinal and Poisson regression\n\n\n\n\n\n\n2/22/23\nLab 3\n\n\n\n\n\n5\n2/27/23\nBayesian analysis\n\n\n\n\n\n\n3/1/23\nLab 4\n\n\n\n\n\n6\n3/6/23\nMediation\n\n\n\n\n\n\n3/8/23\nLab 5\n\n\n\n\n\n7\nSpring Break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n8\n3/20/23\nPath modeling/SEM\n\n\n\n\n\n\n3/22/23\nLab 6\n\n\n\n\n\n9\n3/27/23\nPCA\n\n\n\n\n\n\n3/29/23\nLab 7\n\n\n\n\n\n10\n4/3/23\nClustering: K-means/hierarichal clustering\n\n\n\n\n\n\n4/5/23\nLab 8\n\n\n\n\n\n11\n4/10/23\nMultilevel modeling\n\n\n\n\n\n\n4/12/23\nLab 9\n\n\n\n\n\n12\n4/17/23\nGrowth curve modeling (GCA)\n\n\n\n\n\n\n4/19/23\nLab 10\n\n\n\n\n\n13\n4/24/23\nMeta-analysis\n\n\n\n\n\n\n4/26/23\nLab 11\n\n\n\n\n\n14\nReading Week\n\n\n\n\n\n\n15\nFinals"
+  },
+  {
+    "objectID": "syllabus.html",
+    "href": "syllabus.html",
+    "title": "Syllabus",
+    "section": "",
+    "text": "As a discipline, statistics has given profound tools to the sciences. Statistics is our way of detecting patterns in the noisy universe. Traditionally, psychologists were limited to research questions that could be answered with classical statistical analyses, but without particularly intending to do so, psychologists have found themselves at the cutting age of statistical discovery in the 20th and 21st centuries. This is because we needed to adapt our tools to meet the demands of the complex nature of the phenomena we study. This course will give you the quantitative tools to ask and answer research questions that were impossible to test as recently as a decade ago. Specifically, we will cover the following topics as stand-alone modules:\n1.Robust Methods: bootstrapping, permutation tests 2.Missing Data 3.Non-Gaussian statistics: poisson regression, ordinal regression 4.Beyond Null Hypothesis Significance Testing (NHST): Structural equation models, Bayesian hypothesis testing 5.Process models: Mediation, multiple mediation, path analysis 6.Dimension reduction: principal components analysis (PCA), clustering 7. Time-based analyses: Growth curve modeling\nI place a strong emphasis on practical application. I believe you are more likely to learn and readily use these analyses in the future if you do them at least once now. Every lecture will have “challenge” demonstrations for you to try the analyses along with me. Every Wednesday there will be a lab going over the material covered that week. The lab assignments will help you build a personal library of example statistical scripts that you will hopefully find useful for years into the future. These lab assignments will be due at the end of class."
+  },
+  {
+    "objectID": "syllabus.html#annotations",
+    "href": "syllabus.html#annotations",
+    "title": "Syllabus",
+    "section": "Annotations",
+    "text": "Annotations\nEvery week there will be assigned readings. You will be expected to read the weekly reading before class, so you can come prepared to class for student-lead presentations. Each week you will contribute to a collaborative annotation of the reading on Canvas. This is done via hypothes.is—simply add comments directly to the reading via the link on Canvas."
+  },
+  {
+    "objectID": "syllabus.html#student-mini-lectures-and-discussions",
+    "href": "syllabus.html#student-mini-lectures-and-discussions",
+    "title": "Syllabus",
+    "section": "Student Mini-Lectures and Discussions",
+    "text": "Student Mini-Lectures and Discussions\nEvery week (Monday) one of your peers will present an introduction to the method we will be discussing that week, based on the assigned reading for that week (you are to use the assigned articles to guide your presentation and discussion). Each presentation should be be (~20 minutes).\nAfter, I will take over and highlight how to use R to apply these methods to your data.\nIn these presentations, I would like:\n\nA clear overview of the topic: This should include a brief introduction to the topic, highlighting its relevance and importance in psychological research. You should also address limitations, if any.\nExamples and applications: To help peers’ understand the practical implications of the topic, you should provide examples and applications of how the topic is used in psychology. This could include your own research or examples from the literature. If you wanted to walk through an example, that is also welcome. I am going to be program agnostic here (use R, Python, SPSS, JASP, etc.) to do this.\nA discussion of things you did not understand or you had general questions about."
+  },
+  {
+    "objectID": "syllabus.html#labsexercises",
+    "href": "syllabus.html#labsexercises",
+    "title": "Syllabus",
+    "section": "Labs/Exercises",
+    "text": "Labs/Exercises\n\nEach week (Wednesday) we will have one corresponding lab exercise that will be started in class. The purpose is for you to get direct experience conducting the analyses that you learn. Each lab exercise will consist of several questions and will require R (will also accept Python) to answer the questions in a reproducible manner. All lab assignments must be reproducible (i.e., I can replicate the work you did without any errors). You may complete the labs by yourself or working with another person. If you work with another person, your work must obviously be your own.\n\nIdeally, you will finish labs in class. However, if you choose to finish at home, completed labs will be due at 6:00 p.m. on the Sunday of that week. Please let me know if you need an extension."
+  },
+  {
+    "objectID": "syllabus.html#tutorial",
+    "href": "syllabus.html#tutorial",
+    "title": "Syllabus",
+    "section": "Tutorial",
+    "text": "Tutorial\nFor your final project, you will create a tutorial explaining how to run a particular analysis in R or Python. This will involve finding data or using your own data. The final project gives you a chance to pursue a specific method discussed in class and apply it to your own data.\nThere is no final exam 😊"
+  },
+  {
+    "objectID": "syllabus.html#participation",
+    "href": "syllabus.html#participation",
+    "title": "Syllabus",
+    "section": "Participation",
+    "text": "Participation\nIt is expected that you will come to class having read the articles assigned and prepared to discuss the material."
+  },
+  {
+    "objectID": "Assignments/blog.html",
+    "href": "Assignments/blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "For your final project you will create a tutorial about how to something in R. The final project gives you a chance to pursue any topic in the R universe and learn more about it. For example, you could choose to write a tutorial on any R package. If you are interested in solving particular kind of problems, you could write a tutorial on solving those kinds of problems.\nThe main part of the final project will be for you to write a tutorial exploring how to do X in R. You will write an .qmd file, that explains the issue, and gives example code showing how to solve the issue, or approach the issue. The process of writing a tutorial is a great way to learn the issues at hand yourself.\nAll of the tutorials will then be compiled together in a web-book.\nI expect the tutorial to be comprehensive enough to demonstrate that you have delved into the topic. The length of the tutorial should be consistent with the length of a final paper in a typical content course."
+  },
+  {
+    "objectID": "Labs/Lab1.html",
+    "href": "Labs/Lab1.html",
+    "title": "Lab 1: Robust Methods",
+    "section": "",
+    "text": "In Lab 1, we will have a look at a variety of datasets to gain practice in applying robust methods. The purpose of this exercise is to get a better understanding of robust methods and how to apply them in R. Additionally, students will get practice in visualizing data in ggplot.\nTo access Lab 1, please go here: Access to assignment.\nTo push and pull to your repository you can use Github Desktop, or do it within RStudio. If the latter, you will need to follow the directions from the Quarto blog presentation (https://psy504-advanced-stats.netlify.app/slides/quarto/quarto#/github-in-rstudio)."
+  },
+  {
+    "objectID": "robust_class.html",
+    "href": "robust_class.html",
+    "title": "Robust_Notes",
+    "section": "",
+    "text": "library(boot) # package dedicated to bootstrap methods\nlibrary(simpleboot) #\n\nSimple Bootstrap Routines (1.1-7)\n\n\n\nn <- 6 # sample size\nsamp <- 1:n\nsamp\n\n[1] 1 2 3 4 5 6\n\n\n\nset.seed(21) # for reproducible results\nboot_samp <- sample(samp, size = n, replace = TRUE) # sample with replacement\nboot_samp\n\n[1] 1 3 1 2 5 3\n\n\n\n# for reproducible results\nboot_samp <- sample(samp, size = n, replace = TRUE) # sample with replacement\nboot_samp\n\n[1] 3 4 2 6 6 6\n\n\n\nboot_samp <- sample(samp, size = n, replace = TRUE) # sample with replacement\nboot_samp\n\n[1] 3 6 2 3 4 5\n\n\n\nx=c(1,5,6,7,8,9)\nindices=c(2,2,3)\n\nx[indices]\n\n[1] 5 5 6\n\n\n\nset.seed(666)\n# define the function that will be used to calculate the mean\n# can be extended to other statistics\nmean_fun = function(data, indices) {\n  return(mean(data[indices])) #indices to do bootstrapping\n}\n# use boot to bootstrap means 1000 times (R)\n#input is df, function for mean, and # of boot samples\nresults = boot(samp, mean_fun, R=1000)\n\n\n#bias is bootstrapped sample mean - sample mean\n\nresults\n\n\nORDINARY NONPARAMETRIC BOOTSTRAP\n\n\nCall:\nboot(data = samp, statistic = mean_fun, R = 1000)\n\n\nBootstrap Statistics :\n    original  bias    std. error\nt1*      3.5  0.0335   0.7032939\n\n\nBias = sample mean - bootstrapped mean\noriginal = sample mean\nstd.error (precision)\n\npermutations"
+  },
+  {
+    "objectID": "Labs/Lab2.html",
+    "href": "Labs/Lab2.html",
+    "title": "Lab 2: Missing Data",
+    "section": "",
+    "text": "Lab 2 uses a dataset from the micepackage. In this lab, you will screen data for missingness, disagnoise mechanisms of missigness (i.e., MAR, MCAR), and apply different methods for dealing with missigness–all in R. Additionally, students will practice data wrangling and visualizing data in ggplot.\nTo access Lab 2, please go here: Click Here"
+  },
+  {
+    "objectID": "Labs/Lab3.html",
+    "href": "Labs/Lab3.html",
+    "title": "Lab 3: Ordinal Regression",
+    "section": "",
+    "text": "In this lab, you will be using a Great British Bakeoff dataset to learn more about ordinal regression.\nTo access Lab 3, please go here: Click here"
+  },
+  {
+    "objectID": "Labs/Lab4.html",
+    "href": "Labs/Lab4.html",
+    "title": "Lab 4: Multinomial Regression",
+    "section": "",
+    "text": "In this lab, we will be using data from eightythirtyfive looking at factors that influence voting behavior.\nTo access Lab 4, please go here: Click here"
+  },
+  {
+    "objectID": "Labs/Lab5.html",
+    "href": "Labs/Lab5.html",
+    "title": "Lab 5",
+    "section": "",
+    "text": "In Lab 5, you will follow a preregistered document that will ask you to preform an analysis on data from the General Social Survey (GSS). It is up to you to decide which model to run. Please follow the the preregistered document closely. In addition, I wanted to add some elements from earlier class sessions so you will do some data wrangling and deal with missing data.\nTo access Lab 5, please Click here"
+  },
+  {
+    "objectID": "Labs/Lab6.html",
+    "href": "Labs/Lab6.html",
+    "title": "Lab 6",
+    "section": "",
+    "text": "In Lab 6, we will analyze data from Carney, Cuddy, and Yap’s (2010) study on the effect of power posing on testosterone levels. To conduct the analysis, we will be using the brms package to fit a Bayesian regression model. The focus of this lab is to teach you how to fit and report Bayesian regression models, including discussion of the posterior distribution, working with priors, and model selection.\nTo access Lab 6, please Click here"
+  },
+  {
+    "objectID": "Labs/Lab7.html",
+    "href": "Labs/Lab7.html",
+    "title": "Lab 7",
+    "section": "",
+    "text": "You will be reproducing the results presented in the following research paper:\nCho, C., Yoo, H. J., Min, J., Nashiro, K., Thayer, J. F., Lehrer, P. M., & Mather, M. (2023). Changes in Medial Prefrontal Cortex Mediate Effects of Heart Rate Variability Biofeedback on Positive Emotional Memory Biases. Applied Psychophysiology and Biofeedback. https://doi.org/10.1007/s10484-023-09579-1\nDuring this lab, you will gain experience performing mediation in R and assessing open science practices by attempting to replicate the findings of a recent paper.\nTo access Lab 7, please click here."
+  },
+  {
+    "objectID": "Labs/Lab8.html",
+    "href": "Labs/Lab8.html",
+    "title": "Lab 8",
+    "section": "",
+    "text": "In this lab, you will evaluate a survey that measures anxiety towards statistics, which was created by Andy Field. The objective of this lab is to:\n\nAssess the suitability of factor analysis for the survey\nDecide on the number of factors to extract\nChoose an extraction and rotation method\nInterpret and name the factors\nValidate the model using CFA\n\nThrough this lab, you will gain experience in performing EFA and SEM/CFA using R, as well as visualizing and writing up the results.\nTo access Lab 8, please click here."
+  },
+  {
+    "objectID": "Labs/Lab9.html",
+    "href": "Labs/Lab9.html",
+    "title": "Lab 10",
+    "section": "",
+    "text": "For this lab, we will apply core concepts from class to a dataset from Coyne et al. (2019). Here, you will fit, interpret, and visualize results from a multilevel model.\n\nCoyne, M. D., McCoach, D. B., Ware, S., Austin, C. R., Loftus-Rattan, S. M., & Baker, D. L. (2019). Racing Against the Vocabulary Gap: Matthew Effects in Early Vocabulary Instruction and Intervention. Exceptional Children, 85(2), 163–179. https://doi.org/10.1177/0014402918789162\n\nTo access Lab 10, please click here."
+  },
+  {
+    "objectID": "Labs/Lab10.html",
+    "href": "Labs/Lab10.html",
+    "title": "Lab 10",
+    "section": "",
+    "text": "For this lab, we will apply core concepts of multilevel modeling to a dataset from Coyne et al. (2019). Here, you will be engaging in model building/selection, fitting and interpreting results, and visualizing results. This lab is meant to be an introduction to the techniques of multilevel modeling.\n\nCoyne, M. D., McCoach, D. B., Ware, S., Austin, C. R., Loftus-Rattan, S. M., & Baker, D. L. (2019). Racing Against the Vocabulary Gap: Matthew Effects in Early Vocabulary Instruction and Intervention. Exceptional Children, 85(2), 163–179. https://doi.org/10.1177/0014402918789162\n\nTo access Lab 10, please click here."
+  },
+  {
+    "objectID": "schedule/02-week-logistic.html",
+    "href": "schedule/02-week-logistic.html",
+    "title": "Week 2",
+    "section": "",
+    "text": "DeMaris, A. (1995). A tutorial in logistic regression. Journal of Marriage and the Family, 57, 956-968.\n\nWhen do you use logistic regression?\nWhy is it superior to ordinary least squares regression in this case?\nConceptually, how do you interpret the log odds from a logistic regression?\nWhat is an odds ratio?\nHow is logistic regression extended to include non-binary categorical dependent variables?\n\n\n\n\n\n\n Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd. \n\nCh. 3"
+  },
+  {
+    "objectID": "schedule/02-week-logistic.html#before-class",
+    "href": "schedule/02-week-logistic.html#before-class",
+    "title": "Week 2",
+    "section": "",
+    "text": "DeMaris, A. (1995). A tutorial in logistic regression. Journal of Marriage and the Family, 57, 956-968.\n\nWhen do you use logistic regression?\nWhy is it superior to ordinary least squares regression in this case?\nConceptually, how do you interpret the log odds from a logistic regression?\nWhat is an odds ratio?\nHow is logistic regression extended to include non-binary categorical dependent variables?\n\n\n\n\n\n\n Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd. \n\nCh. 3"
+  },
+  {
+    "objectID": "schedule/05-week.html#before-class",
+    "href": "schedule/05-week.html#before-class",
+    "title": "Week 5",
+    "section": "",
+    "text": "Coxe, S., West, S. G., & Aiken, L. S. (2009). The Analysis of Count Data: A Gentle Introduction to Poisson Regression and Its Alternatives. Journal of Personality Assessment, 91(2), 121–136. https://doi.org/10.1080/00223890802634175\n Winter, B., & Bürkner, P.-C. (2021). Poisson regression for linguists: A tutorial introduction to modelling count data with brms. Language and Linguistics Compass, 15(11), e12439. https://doi.org/10.1111/lnc3.12439\n\nHow does the Poisson distribution differ from other distributions, such as the normal distribution?\nHow do we interpret the parameters of the poisson?\nWhat are the assumptions of Poisson regression?\nWhat is overdispersion?\nHow is poisson related to the negative binomial?\n\n\n\n\n\nRyan, W. H., Evers, E. R. K., & Moore, D. A. (2021). Poisson Regressions: A Little Fishy. Collabra: Psychology, 7(1), 27242. https://doi.org/10.1525/collabra.27242\n\n\n\n\n\nIntroduction to Poisson regression",
+    "crumbs": [
+      "Week 5"
+    ]
+  }
+]

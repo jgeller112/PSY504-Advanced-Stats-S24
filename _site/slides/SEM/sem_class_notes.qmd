@@ -1,0 +1,60 @@
+---
+title: "SEM_class_notes"
+editor: visual
+---
+
+```         
+#--- Conduct a non-nested model comparison ----
+# Non-Nested Model Comparison: Testing whether applying to grad school is all about intention + social pressure
+grad_model_nonnested = '
+  intent.to.apply ~ perceived.value
+  application.behaviour ~ intent.to.apply + job.opportunities
+
+  perceived.value ~~ job.opportunities # Covariance path between 2 exogenous variables
+'
+```
+
+```         
+grad_analysis_nonnested %>% 
+  summary(fit.measures = TRUE, 
+          standardized = TRUE) #Note that this model does not fit well, so the BIC comparison below is purely pedagogical
+
+# Example of plotting the variables in specific locations
+nonnested_locations = matrix(c(0, 0, 
+                               .5, 0, 
+                               -.5, 0, 
+                               -.5, .5), 
+                             ncol=2, 
+                             byrow=2)
+nonnested_labels = c("Intent\nTo Apply",
+                     "Application\nBehaviour",
+                     "Perceived\nValue",
+                     "Job\nOpportunities")
+grad_analysis_nonnested %>%
+  semPaths(whatLabels = "est", 
+           nodeLabels = nonnested_labels, 
+           layout = nonnested_locations, 
+           sizeMan = 12
+  )
+
+# Compare by AIC
+exp(-1/2 * abs(AIC(grad_analysis) - AIC(grad_analysis_nonnested)))
+AIC(grad_analysis)
+AIC(grad_analysis_nonnested)
+
+# Compare BIC
+abs(BIC(grad_analysis) - BIC (grad_analysis_nonnested))
+BIC(grad_analysis)
+BIC(grad_analysis_nonnested)
+```
+
+{r}
+summary(fit, standardize = TRUE, ci=TRUE)
+
+fit \<- sem(grad_model, se="bootstrap", data=grad)
+
+## Non-nested model
+
+nonnested_model \<- \`
+
+\`

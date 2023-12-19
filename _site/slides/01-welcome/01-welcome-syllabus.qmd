@@ -1,0 +1,222 @@
+---
+title: "Welcome Back!"
+subtitle: "PSY 504: Advanced Statistics"
+author: "Jason Geller, Ph.D.<br> Princeton University <br> Janurary 30, 2023"
+format: 
+  revealjs:
+    theme: [serif, pp.scss]
+    preview-links: auto
+    chalkboard: 
+      boardmarker-width: 5
+from: markdown+emoji
+execute:
+  echo: true
+---
+
+## PSY 504: Advanced Statistics
+
+![](wonka.jpeg){fig-align="center" width="1068"}
+
+## PSY 504: Advanced Statistics
+
+::: columns
+::: {.column width="50%"}
+![](buffet.jpeg){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+-   Robust methods
+
+-   Missing data
+
+-   Generalized linear models
+
+-   Mediation
+
+-   Path analysis (SEM)
+
+-   PCA
+
+-   Clustering
+
+-   MLM
+:::
+:::
+
+## Student Learning Outcomes
+
+-   Make informed analytic decisions
+
+-   Run and code analyses in R
+
+-   Interpret output and summarize results of the analyses
+
+-   Effectively communicate results from statistical analyses to a general audience
+
+-   Use Quarto to write reproducible reports and GitHub for version control and collaboration\
+
+## Assignments
+
+-   Reading annotations
+
+-   Mini-lectures
+
+-   Labs
+
+-   Tutorial Blog
+
+## Grades
+
+-   No points associated with assignments
+
+-   Self-evaluation
+
+    -   Did you meet learning outcomes for the class?
+
+    -   Did you turn in all your assignments?
+
+    -   Based on my feedback, how well did you think you did on assignments?
+
+    -   How much time outside of class did spend preparing for class?
+
+# Assignments
+
+## Reading Annotations
+
+::: columns
+::: {.column width="50%"}
+-   Every week you will annotate articles via hypothe.is platform
+
+-   Collaborative note taking
+
+-   I've included questions to guide your reading on the course website
+:::
+
+::: {.column width="50%"}
+![](annotations.png)
+:::
+:::
+
+## Mini-Lectures/Discussion
+
+::: columns
+::: {.column width="50%"}
+-   High level overview of the topic
+
+    -   A brief introduction
+
+    -   Important concepts
+
+    -   limitations/advantages
+:::
+
+::: {.column width="50%"}
+-   Relevance to psychology
+
+    -   Examples and applications
+
+        -   Walk us through an example from one of the articles/readings or your own work
+
+-   A few questions for the class
+:::
+:::
+
+## Labs
+
+-   Every week (Wednesday) we will have a lab activity covering material from that week
+
+    -   Lab should be completed in RMD/QMD or Jypter Notebook (**reproducible**)
+
+        -   Labs will be pushed to Github repository
+
+        -   Should be able to turn it in by end of class
+
+            -   Have until end of the week
+
+## Tutorial/Blog Post
+
+-   The final project will require you to use one of the methods discussed in class to analyze data (your own or publicly available data) and write a short blog post walking us through the process (i.e., pre-processing, analysis, and interpretation of results)
+
+    -   **Will go over how to create Quarto blog/website on Wednesday**
+
+# Attendance
+
+-   Come to class
+
+-   If you are sick, please stay home
+
+# Office Hours
+
+-   M 1:00 P.M.- 3:00 P.M.; W 1:00 P.M. - 2:00 P.M. :chair:
+
+-   By appointment
+
+    -   Calendly: **https://calendly.com/jg9120/30min**
+
+# Course Content
+
+-   <https://psy504-advanced-stats.netlify.app/>
+
+-   I will use Github to host labs
+
+-   I will use Canvas to:
+
+    -   Send announcements
+
+    -   Post readings for annotations
+
+    -   Answer and send emails
+
+# Recommended Text
+
+McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.
+
+<center>![](modelingbook.jpg){width="278"}</center>
+
+# Recommended Text
+
+Kabacoff, R. I. (2022). R in Action, Third Edition: Data analysis and graphics with R and Tidyverse (3rd edition). Manning.
+
+<center>![](rinaction.jpeg){width="319"}</center>
+
+# Class Format
+
+## Lectures (Monday)
+
+-   Peers will introduce you to the basics of each topic and get you started with examples
+
+-   I'll highlight main concepts/walk you through analysis
+
+## Lab (Wednesday)
+
+-   Wednesday will be reserved for working on activities related to the topic
+
+    -   Also a time to seek clarification on topics from me or your classmates
+
+## Precept Time
+
+-   PSY 505
+
+    -   Tuesdays 11:00 A.M. - 1:00 P.M.
+
+Speaker and workshop focused
+
+No HW or papers
+
+## Class Questions
+
+-   Any general questions about course content or assignments should be posted on the class [GitHub](https://github.com/jgeller112/psy504-advanced-stats/issues) Issues. There is a chance another student has already asked a similar question, so please check the other posts before adding a new question. If you know the answer to a question posted in the discussion forum, I encourage you to respond!
+
+## Schedule
+
+<https://psy504-advanced-stats.netlify.app/schedule/>
+
+## Survey
+
+-   Go [here](https://docs.google.com/spreadsheets/d/1DmVNF5bdJ3xbF4w8OhTYWRfo1pnYp1rKqLrmeNHEMnw/edit?usp=sharing)
+
+    -   Rank order preference
+
+    -   Will try to give your #1 choice
+
+        -   At least top 3 :blush:
