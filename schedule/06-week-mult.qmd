@@ -1,0 +1,27 @@
+---
+title: "Week 6"
+subtitle: "Multinomial Regression"
+date: 2023-02-27
+---
+## Before Class
+
+### Textbook
+
+- {{< fa book >}} Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
+
+    -   [Ch.7](/readings/mult/mult.pdf)
+
+  - Describe the difference between a stratified versus a multinomial approach to modeling an outcome with more than two nominal categories.
+  
+  - Describe how you would interpret the odds ratio of an input variable for a given category in a stratified modeling approach.
+  
+  - Describe what is meant by the ‘reference’ of a multinomial logistic regression model with at least three nominal outcome categories.
+  
+  - Describe how you would interpret the odds ratio of an input variable for a given category in a multinomial modeling approach.
+  
+  - Given a multinomial logistic regression model with outcome categories A, B, C and D and reference category A, describe two ways to determine the coefficients of a multinomial logistic regression model with reference category C.
+  
+  - Describe a process for safely simplifying a multinomial logistic regression model by removing input variables.
+
+
+

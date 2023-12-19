@@ -1,0 +1,46 @@
+---
+title: "Week 11"
+subtitle: "Path Modeling/SEM"
+date: 2024-04-8
+---
+## Before Class
+
+### Articles
+
+{{< fa book >}} McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.
+
+[Chapters 4 and 5](/readings/sem.pdf)
+
+  - What is the purpose of SEM and how does it differ from other types of statistical models?
+
+  - What are the key components of an SEM model, including latent variables, observed variables, and paths between variables?
+
+  - How do you specify an SEM model, including selecting the appropriate measurement model and structural model?
+
+  - How do you evaluate the fit (goodness) of an SEM model and what are some common fit indices used in SEM?
+
+  - How do you interpret the results of a SEM analysis, including the path coefficients and factor loadings?
+
+  - What are some common assumptions of SEM and how can you assess whether these assumptions are met?
+
+  - How do you handle missing data in SEM and what are the implications of missing data for SEM analysis?
+
+  - What are some common challenges and limitations of SEM and how can they be addressed?
+
+  - What are the best practices for reporting SEM results and how can you communicate your findings effectively?
+  
+
+### Videos
+
+- {{< fa video >}}SEM basics 
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/GJu-E6PGl8w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<center>
+
+- {{< fa video >}} SEM basics 
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/wHFrgp3SQMI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<center>
+
+

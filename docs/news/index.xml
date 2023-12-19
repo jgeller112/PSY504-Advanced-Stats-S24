@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Program Evaluation (PMAP 8521) News</title>
+<link>https://imaginative-sunshine-d182ab.netlify.app/news/index.html</link>
+<atom:link href="https://imaginative-sunshine-d182ab.netlify.app/news/index.xml" rel="self" type="application/rss+xml"/>
+<description>Updates and FAQs for PMAP 8521 at Georgia State University</description>
+<generator>quarto-1.1.189</generator>
+<lastBuildDate>Mon, 22 Aug 2022 18:52:00 GMT</lastBuildDate>
+<item>
+  <title>How to reach out for help</title>
+  <link>https://imaginative-sunshine-d182ab.netlify.app/news/2022-08-22_getting-help.html</link>
+  <description><![CDATA[ 
+
+<div class="back-nav"><a href="https://imaginative-sunshine-d182ab.netlify.app/news/">← News</a></div>
+
+
+
+<p>Hi everyone!</p>
+<p>You <strong>absolutely</strong> can (and should) reach out when you get stuck. I’m super responsive on Slack and e-mail. If you ask a question on the #help channel in Slack, others can help too. No question is too tricky or embarrassing, I promise. Computers are extraordinarily literal and tiny typos will often mess you up for a long time—I’ve lost countless time because of missing commas and misspelled words (curse you <code>lenght()</code>). Please feel comfortable reaching out.</p>
+<section id="ask-early-and-often" class="level3">
+<h3 class="anchored" data-anchor-id="ask-early-and-often">Ask early and often</h3>
+<p>I’m a big believer in the 30 minute rule. <strong>If you’re stuck and not making progress on a task for 30 minutes, reach out for help from the community.</strong></p>
+</section>
+<section id="be-nice" class="level3">
+<h3 class="anchored" data-anchor-id="be-nice">Be nice</h3>
+<p>One of the great parts about the online R community is that the team at RStudio has actually hired people to help promote community norms. Like that’s their whole job—community evangelist (see <a href="https://twitter.com/dataandme">@dataandme</a> and <a href="https://twitter.com/_RachaelDempsey">@RachaelDempsey</a> for instance). The R world is probably one of the nicest corners of the programming internet because of these norms—there’s an emphasis on helping beginners, being kind and respectful, and cheerfully helping as much as possible. Watch the #rstats hashtag on Twitter, look at the “r” tag on StackOverflow, and look at discussions at <a href="https://community.rstudio.com/">the RStudio Community</a> and you’ll see kindness in action.</p>
+<p>This was not always the case. 10ish years ago, before the RStudio people made a concerted effort to create community, the online R world was pretty mean and toxic, with forums run by a few really grumpy statisticians who’d belittle you if you asked a poorly worded question. It was awful. That kind of attitude often still persists in other languages (hooo boy try asking a beginner question about Python at StackOverflow 😬), but the R world has tried really hard to be welcoming.</p>
+<p>I embrace that attitude when teaching R, and I encourage you all to do the same. Reach out for help early and often. Do not suffer in silence. Do not spend hours and hours stuck on an issue before reaching out for help. If you feel comfortable, reach out publicly on the #help channel rather than a Slack DM so that others can help. This helps build and strengthen the community within our class and within the R community more broadly.</p>
+</section>
+<section id="ask-in-a-way-that-helps-the-answerer" class="level3">
+<h3 class="anchored" data-anchor-id="ask-in-a-way-that-helps-the-answerer">Ask in a way that helps the answerer</h3>
+<p>There are a few easy guidelines to remember when asking for help:</p>
+<ol type="1">
+<li><p>Be kind.</p></li>
+<li><p>Try asking questions with as complete information as possible. Rather than saying something like “my code isn’t working” and that’s it, provide more background (it’s hard to read your computer’s mind). Say specifically what you’re trying to do and provide code when possible. You can actually format R code on Slack if you click on the little lightning icon in the bottom left of the typing area and search for “text snippet”—that’ll open a dialog that will let you paste in text and add R syntax highlighting. You can also paste your code between triple backticks on Slack and it’ll format it in monospaced font (though not with the neat syntax highlighting that you get when using Slack’s text snippet thing):</p>
+<pre><code>```
+ggplot(blah) + geom_point()
+```</code></pre>
+<p>You can also take screenshots (use ⌘+shift+4 on macOS to save a screenshot to your Desktop, or ⌘+⌥+shift+4 to save a screenshot directly to the clipboard; use Windows+shift+S on Windows to save a screenshot directly to the clipboard). I’ve had people send photos from their phones too. The one issue with screenshots/photos is that it’s harder for people to get the code out of Slack and into RStudio on their computer to troubleshoot, since you can’t copy/paste from an image.</p></li>
+<li><p>Try making your question a <strong>repr</strong>oducible <strong>ex</strong>ample (or reprex). Reprexes are the best way to (1) get help online and (2) fix issues on your own.</p>
+<p>Making a good reprex is tricky, but it’s a very valuable skill to know (regardless of programming language!). Here are some helpful resources for making them:</p>
+<ul>
+<li> <a href="https://community.rstudio.com/t/faq-whats-a-reproducible-example-reprex-and-how-do-i-do-one/5219">What’s a reproducible example (<code>reprex</code>) and how do I do one?</a></li>
+<li> <a href="https://www.jessemaegan.com/post/so-you-ve-been-asked-to-make-a-reprex/">So you’ve been asked to make a reprex</a></li>
+<li> <a href="https://reprex.tidyverse.org/index.html">The reprex package</a></li>
+</ul></li>
+</ol>
+</section>
+<section id="dont-suffer-in-silence" class="level3">
+<h3 class="anchored" data-anchor-id="dont-suffer-in-silence">Don’t suffer in silence</h3>
+<p>And that’s it. <strong>Ask questions in ways that will help answerers answer them and be nice about it. When answering questions, be nice about it. Ask lots of questions. Answer lots of questions.</strong></p>
+<p>Once again, <em>do not suffer in silence</em>. I’ve had past students tell me that’s like the one thing they’ll remember from my classes—do not suffer in silence. I mean it, and I’ll keep saying it throughout the semester (because often in your past courses and degrees, you’ve been discouraged from reaching out or from building communities or whatever—that is <em>not</em> the case here).</p>
+
+
+</section>
+
+ ]]></description>
+  <category>advice</category>
+  <guid>https://imaginative-sunshine-d182ab.netlify.app/news/2022-08-22_getting-help.html</guid>
+  <pubDate>Mon, 22 Aug 2022 18:52:00 GMT</pubDate>
+</item>
+<item>
+  <title>Plan for the first day of class</title>
+  <link>https://imaginative-sunshine-d182ab.netlify.app/news/2022-08-21_first-day.html</link>
+  <description><![CDATA[ 
+
+<div class="back-nav"><a href="https://imaginative-sunshine-d182ab.netlify.app/news/">← News</a></div>
+
+
+
+<p>Hi everyone!</p>
+<p>Tomorrow’s the first day of class! Exciting!</p>
+<p>Beyond hoping that everyone is wearing a mask, I’ve structured the class in way that limits our exposure to each other as much as possible. As noted in the syllabus (<a href="https://evalf22.classes.andrewheiss.com/syllabus.html#course-structure">https://evalf22.classes.andrewheiss.com/syllabus.html#course-structure</a>), we’re using a flipped classroom this semester. What this means in practice is that you’ll do all the readings <em>and</em> watch asynchronous lecture videos before class meets on Mondays.</p>
+<p>Our in-person time will <strong>not</strong> involve lectures. Instead, it’ll be a more hands-on lab for working with R and answering the questions that come up from doing the readings and watching the lectures. That’s the point of the weekly check-in assignment (<a href="https://evalf22.classes.andrewheiss.com/assignment/weekly-check-in.html">https://evalf22.classes.andrewheiss.com/assignment/weekly-check-in.html</a>)—the only way this in-person time will be effective is if you do the readings + videos and ask questions in the weekly check-in.</p>
+<p>The videos for the first day of class are live and ready to watch at <a href="https://evalf22.classes.andrewheiss.com/content/01-content.html">https://evalf22.classes.andrewheiss.com/content/01-content.html</a> (along with the readings). If possible, please watch them (and do the readings) before class on Monday so that we can start with the lab-like in-person time and get a good solid introduction to R and RStudio + answer the questions you have from the first session’s materials.</p>
+<p>Ideally, please try to submit the first weekly check-in on iCollege by tomorrow too so that we can have some good Q&amp;A time during our in-person time. <a href="https://www.huffingtonpost.co.uk/entry/no-worries-if-not-psychology_uk_60fff90be4b0d017f838bf1a">BUT no worries if not!</a></p>
+<p>If you don’t have time to get through the materials before the first day, that’s totally fine—you can do it later and there’s no late penalty or anything for the first week, given that it is the first day of classes. But if you can, let’s get started!</p>
+
+
+
+ ]]></description>
+  <category>getting started</category>
+  <guid>https://imaginative-sunshine-d182ab.netlify.app/news/2022-08-21_first-day.html</guid>
+  <pubDate>Mon, 22 Aug 2022 01:05:00 GMT</pubDate>
+</item>
+<item>
+  <title>Announcements and updates</title>
+  <link>https://imaginative-sunshine-d182ab.netlify.app/news/2022-08-15_announcements-updates.html</link>
+  <description><![CDATA[ 
+
+<div class="back-nav"><a href="https://imaginative-sunshine-d182ab.netlify.app/news/">← News</a></div>
+
+
+
+<p>One last thing!</p>
+<p>Over the course of the semester, I’ll be sending you lots of updates and announcements and FAQs based on your weekly check-ins.</p>
+<p>My philosophy for this class is to let you maintain access to as much content as possible, which is why so little of the the class material is on iCollege.</p>
+<p>I will post all these announcements and e-mails at <a href="../news/index.html">the “News section</a> of the course website. This means that even after you finish the class and lose access to iCollege, and even after you graduate from GSU and lose access to your <span class="citation" data-cites="gsu.edu">(<strong>gsu.edu?</strong>)</span> e-mail address, you’ll still have a searchable archive of messages and FAQs from this class.</p>
+<p>I’ll let you know when there’s a new item in the news section in a few different ways:</p>
+<ol type="1">
+<li>I’ll e-mail you a link to the newest message. I’ll use the e-mail address you have listed in PAWS—if you want me to use a different address, let me know and I’ll update my list,</li>
+<li>New messages should post automatically to the #general channel in Slack</li>
+<li>If you use an RSS feed reader (RIP Google Reader), you can subscribe to an RSS feed of the news section. There’s a link at the bottom of <a href="../news/index.html">the news page</a>.</li>
+</ol>
+<p>Phew. That should be it from me for a while. Remember to read the syllabus and the rest of the course website, answer the welcome survey, sign up for Slack, and join the RStudio.cloud workspace. Also, remember to take care of yourselves! I mean <em>every word</em> in <a href="https://evalf22.classes.andrewheiss.com/syllabus.html#learning-during-a-pandemic">the “Learning during a pandemic” section of the syllabus</a>. This all sucks so much, and I will try my hardest to accommodate your needs throughout the semester.</p>
+<p>Thanks!</p>
+
+
+
+ ]]></description>
+  <category>getting started</category>
+  <guid>https://imaginative-sunshine-d182ab.netlify.app/news/2022-08-15_announcements-updates.html</guid>
+  <pubDate>Mon, 15 Aug 2022 19:31:00 GMT</pubDate>
+</item>
+<item>
+  <title>Important R stuff</title>
+  <link>https://imaginative-sunshine-d182ab.netlify.app/news/2022-08-08_important-r-stuff.html</link>
+  <description><![CDATA[ 
+
+<div class="back-nav"><a href="https://imaginative-sunshine-d182ab.netlify.app/news/">← News</a></div>
+
+
+
+<p>From reading the syllabus you’ll notice that we’re using R in this class (though you can certainly use Stata too if you really want). R is free (!!), and highly sought after by employers, but it has a little bit of an initial learning curve. You’ll get the hang of it, though, I promise! I’m a certified RStudio instructor (see <a href="https://education.rstudio.com/trainers/" class="uri">https://education.rstudio.com/trainers/</a>), so I’ve been specially trained to teach statistical programming. Again, I promise that you’ll learn a ton.</p>
+<p>You’ll be doing your stats work in RStudio this semester. While R and RStudio are free and open source, they can sometimes be tricky to install. To make life simpler, you can run RStudio in your browser without having to install anything (!!!). Over the course of the semester you’ll want to eventually install everything on your actual computer, since it’ll run faster there, but you won’t need to install anything to get started. I’ll e-mail you a link to join the class workspace.</p>
+<p>In the meantime, you can also install everything on your actual computer if you <a href="../resource/install.qmd">follow these instructions</a> (eventually you should do this—it’s best to run R on your own computer, but it’s totally fine to run everything at RStudio Cloud for the first few weeks)</p>
+<p>If you have some free time over the next week and you feel like getting a head start, I would <em>highly</em> recommend going through a few of RStudio’s R Primers at <a href="https://rstudio.cloud/learn/primers" class="uri">https://rstudio.cloud/learn/primers</a>. <strong>Don’t worry if you don’t have time to go through these introductory primers/tutorials!</strong> Your first problem set is essentially doing those primers (<a href="../example/rstudio-tidyverse.qmd">see here for the ones you’ll need to do</a>), so you don’t have to get a head start now if you don’t want to.</p>
+<p>Once again, I promise that you can do this and have a blast in this class!</p>
+
+
+
+ ]]></description>
+  <category>getting started</category>
+  <guid>https://imaginative-sunshine-d182ab.netlify.app/news/2022-08-08_important-r-stuff.html</guid>
+  <pubDate>Mon, 15 Aug 2022 18:33:00 GMT</pubDate>
+</item>
+<item>
+  <title>Welcome to class!</title>
+  <link>https://imaginative-sunshine-d182ab.netlify.app/news/2022-08-08_welcome.html</link>
+  <description><![CDATA[ 
+
+<div class="back-nav"><a href="https://imaginative-sunshine-d182ab.netlify.app/news/">← News</a></div>
+
+
+
+<p>Hello everyone!</p>
+<p>I’m Andrew Heiss, your professor for PMAP 8521 (Evaluation Research) this fall, and I’m so excited for the class! In this class you’ll learn all about causal inference, or how to legally claim causation with statistics. In your past stats courses you were always taught “correlation isn’t causation,” which is mostly true, except when it’s not. In this class you’ll get to legitimately make causal claims.</p>
+<p>We’ll cover fun tools like directed acyclic graphs (DAGs), randomized controlled trials, difference-in-differences analysis, regression discontinuity analysis, and instrumental variables. You’ll also learn the statistical language R, which is free (which means you can keep using it after you graduate and not have to pay for really really expensive SPSS or Stata licenses). I’ve had former students get jobs because of the R part of this class—tons of organizations are looking for R skills nowadays.</p>
+<p>I have a few important announcements before class:</p>
+<ul>
+<li><p>We are meeting in person, but as you’ll see in the syllabus (see the <a href="../syllabus.html#pandemic-stuff">“Masking and vaccines” section</a> there, I’m trying to take as many precautions as possible given the rapid spread of the BA.5 variant. For instance…</p></li>
+<li><p>…I’ve made the course a flipped course, which means you’ll do all the readings and watch the lectures on YouTube <em>before</em> class on Mondays. We’ll spend our class time answering questions, doing activities, and learning a lot of R together. This means that the bulk of the course material is fully online and asynchronous.</p></li>
+<li><p>Before class, I’d love to get to know each you a little first, so I’ve created a quick survey to fill out. I’ve sent you a link to it via e-mail. Please take it at your earliest convenience.</p></li>
+<li><p>The entire course is available at a special class website at <a href="https://evalf22.classes.andrewheiss.com/" class="uri">https://evalf22.classes.andrewheiss.com/</a>. Bookmark this site—it’ll be your best friend for the next semester. I only use iCollege for collecting your assignments, posting answer keys, posting a couple scanned book chapters, and offering the two exams (since it’s password protected). This website is the official source of dates and all other class information. Because it’s not part of iCollege, you’ll be able to reference it even after you graduate and lose access to GSU resources. You can even share it with others—it’s just a website!</p></li>
+<li><p><strong>Please read the main explanatory pages at the course website at your earliest convenience.</strong> The instructions and expectations for the class are divided across different pages, all accessible from the menu bar at the top of the site. Please read the main pages for the <a href="../syllabus.html">syllabus</a>, <a href="../schedule.html">schedule</a>, <a href="../content/index.qmd">content</a>, <a href="../assignment/index.qmd">assignments</a>, and <a href="../example/index.qmd">examples</a>.</p></li>
+<li><p>We’re using zero physical textbooks in this class. Every reading and book and piece of software in this class is 100% <strong>free</strong> (<a href="../syllabus.html#course-materials">see the syllabus for more information about that</a>).</p></li>
+</ul>
+<p>Quick background about me: I’m an assistant professor here at the Andrew Young School, where I’ve been teaching MPA/MPP microeconomics, program evaluation, and data visualization. I moved here from Utah in 2019, where I was a visiting professor of public management at the Marriott School of Business at Brigham Young University (BYU). While at BYU, I taught microeconomics, statistics, and data visualization (basically the same stuff I’m teaching now). I finished my PhD in public policy and political science from Duke in 2017, and before then I finished my MPA in nonprofit management from BYU in 2012.</p>
+<p>When I’m not teaching stats and evaluation, I research international nonprofits and political science. And when I’m not teaching or researching, I’m normally chilling at my house with my 6 (!!) kids (see <a href="https://www.heissatopia.com/" class="uri">https://www.heissatopia.com/</a> for photos and hilarious stories).</p>
+<p>Again, I’m really excited to get started next week. This fall semester should be a blast!</p>
+
+
+
+ ]]></description>
+  <category>getting started</category>
+  <guid>https://imaginative-sunshine-d182ab.netlify.app/news/2022-08-08_welcome.html</guid>
+  <pubDate>Mon, 15 Aug 2022 18:21:00 GMT</pubDate>
+</item>
+</channel>
+</rss>

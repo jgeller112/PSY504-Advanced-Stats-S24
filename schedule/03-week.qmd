@@ -1,0 +1,24 @@
+---
+title: "Week 3"
+subtitle: "Missing Data Techniques"
+date: 2024-02-12
+---
+## Before Class
+
+### Articles
+
+- {{< fa book >}} Baraldi, A. N., & Enders, C. K. (2010). [An introduction to modern missing data analyses](/readings/week1-missing_data/baraldi2010.pdf). Journal of School Psychology, 48(1), 5-37. doi:10.1016/j.jsp.2009.10.00]
+
+- What are some common methods for handling missing data in statistical analyses?
+
+- How do different missing data mechanisms (e.g., missing completely at random, missing at random, missing not at random) impact the validity of statistical inferences?
+
+- What are some potential limitations and drawbacks of using multiple imputation to handle missing data?
+
+### Optional
+
+- [Quantitude Podcast.S4E08 Missing Data: The New State Of The Art With Craig Enders](https://quantitudepod.org/s4e08-craig-enders/)
+
+- [Quantitude Podcast. S1E16: IF EPISODE=16 THEN EPISODE=-999](https://quantitudepod.org/s4e08-craig-enders/)
+
+

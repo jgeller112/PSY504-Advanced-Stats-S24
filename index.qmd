@@ -1,0 +1,41 @@
+---
+title: "PSY 504: Advanced Statistics"
+subtitle: "Advanced Statistical Methods in Psychology"
+details: |
+  PSYCH 504  • Spring 2023<br>Princeton University
+sidebar: false
+toc: false
+page-layout: full
+format:
+  html:
+    template-partials:
+      - html/home/title-block.html
+course-logo: /files/img/eval-hires.png
+---
+
+::: {.grid .course-details}
+::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
+### Instructor
+
+-   {{< fa user >}}   [{{< var instructor.name >}}](%7B%7B%3C%20var%20instructor.url%20%3E%7D%7D)
+-   {{< fa university >}}   {{< var instructor.office >}}
+-   {{< fa envelope >}}   <a href="mailto:{{< var instructor.email >}}">{{< var instructor.email >}}</a>
+-   {{< fa brands twitter >}}   [{{< var instructor.twitter >}}](https://www.twitter.com/%7B%7B%3C%20var%20instructor.twitter%20%3E%7D%7D)
+-   {{< fa calendar-check >}}   [Schedule an appointment](%7B%7B%3C%20var%20instructor.appointment_url%20%3E%7D%7D)
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
+### Course details
+
+-   {{< fa calendar >}}   {{< var course.days >}}
+-   {{< fa calendar-alt >}}   {{< var course.dates >}}
+-   {{< fa clock >}}   {{< var course.time >}}
+-   {{< fa location-dot >}}   {{< var course.location >}}
+:::
+
+::: {.g-col-12 .g-col-md-4 .contact-policy}
+### Contacting me
+
+{{< var instructor.contact_policy >}}
+:::
+:::

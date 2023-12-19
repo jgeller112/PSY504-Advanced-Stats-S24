@@ -1,0 +1,4 @@
+- source: project
+  netlify:
+    - id: b922c494-8ddf-4824-8a81-8c382eab249f
+      url: 'https://imaginative-sunshine-d182ab.netlify.app'

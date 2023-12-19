@@ -1,0 +1,52 @@
+---
+title: "Week 5"
+subtitle: "Poission Regression"
+date: 2023-02-27
+---
+
+## Before Class
+
+### Articles
+
+
+- {{< fa book >}}Coxe, S., West, S. G., & Aiken, L. S. (2009). [The Analysis of Count Data: A Gentle Introduction to Poisson Regression and Its Alternatives](/readings/count_data_poisson.pdf). Journal of Personality Assessment, 91(2), 121–136. https://doi.org/10.1080/00223890802634175
+
+- {{< fa book >}}
+Winter, B., & Bürkner, P.-C. (2021). [Poisson regression for linguists: A tutorial introduction to modelling count data with brms](/readings/brms_poisson.pdf). Language and Linguistics Compass, 15(11), e12439. https://doi.org/10.1111/lnc3.12439
+
+  - How does the Poisson distribution differ from other distributions, such as the normal distribution?
+  
+  - How do we interpret the parameters of the poisson?
+  
+  - What are the assumptions of Poisson regression?
+  
+  - What is overdispersion?
+    
+  - How is poisson related to the negative binomial?
+  
+### Optional
+
+Ryan, W. H., Evers, E. R. K., & Moore, D. A. (2021). [Poisson Regressions: A Little Fishy](/readings/collabra_2021_fishy.pdf). Collabra: Psychology, 7(1), 27242. https://doi.org/10.1525/collabra.27242
+
+
+### Videos
+
+{{< fa video >}}
+- Introduction to Poisson regression 
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Obpz_Uvo2rQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<center>
+
+## After Class
+
+- {{< fa book >}} Kabacoff, R. I. (2022). \*R* in Action\* chapter 13.
+
+- {{< fa video >}} Running Poisson regression in R
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/QPY4zuxs1W0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<center>
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/WuWGXJvTda4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<center>

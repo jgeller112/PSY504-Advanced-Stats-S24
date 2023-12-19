@@ -1,0 +1,23 @@
+---
+title: "Week 2"
+subtitle: "Logistic Regression"
+date: 2024-02-05
+---
+
+## Before Class
+
+### Articles
+
+-   {{< fa book >}} DeMaris, A. (1995). [A tutorial in logistic regression](/readings/logistic/DeMaris-TutorialLogisticRegression-1995.pdf). Journal of Marriage and the Family, 57, 956-968.
+
+    -   When do you use logistic regression?
+    -   Why is it superior to ordinary least squares regression in this case?
+    -   Conceptually, how do you interpret the log odds from a logistic regression?
+    -   What is an odds ratio?
+    -   How is logistic regression extended to include non-binary categorical dependent variables?
+
+### Textbook
+
+-   {{< fa book >}} Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
+
+    -   [Ch.3](/readings/logistic/logistc.pdf)

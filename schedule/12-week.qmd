@@ -1,0 +1,21 @@
+---
+title: "Week 12"
+subtitle: "GEEs and MLMs"
+date: 2023-04-17
+---
+## Before Class
+
+### Articles
+
+- {{< fa book >}} McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.
+
+[Chapters 1 and 2](/readings/MLM_12.pdf)
+
+  - What type of data would necessitate a multilevel analysis? Come up with an example not given in the paper.
+  - What are fixed and random effects? How do multilevel models and traditional regression differ in terms of fixed and random effects?
+  - How can you statistically determine if your cases are not independent?
+  - What assumptions does MLM have?
+  - What is the difference between grand-mean and group mean centered data?
+  - What is the folly of trying to account for dependence by including level 2 data in an ordinary regression model?
+
+- {{< fa book >}} Ballinger, G. A. (2004). [Using Generalized Estimating Equations for Longitudinal Data Analysis](/readings/GEEs.pdf). Organizational Research Methods, 7(2), 127–150. https://doi.org/10.1177/1094428104263672

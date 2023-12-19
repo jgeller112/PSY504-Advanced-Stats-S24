@@ -1,0 +1,59 @@
+---
+title: "Week 2"
+subtitle: "Robust Methods"
+date: 2023-02-14
+---
+## Before Class
+
+### Articles
+
+- {{< fa book >}} Fox.J. (2008). Applied Regression Analysis and Generalized Linear Models. SAGE Publications Inc. [Chapter 21: Bootstrapping Regression Models](/readings/03-week-robust_methods/bootstrap_fox.pdf).
+
+  - When do you use a bootstrapping procedure? What purpose does it serve?
+
+  - How is a bootstrapped sampling distribution generated?
+
+  - How many bootstrap samples should you use?
+
+  - When should you bootstrap your actual data (“cases”) versus your prediction error (“residuals”)?
+
+- {{< fa book >}} Wilcox, R. R. (1998). [How many discoveries have been lost by ignoring modern statistical methods?](/readings/03-week-robust_methods/wilcox1998.pdf). American Psychologist, 53, 300—314.
+
+  - What are the statistical and theoretical problems associated with removing outliers?
+  - How does skew affect your test?
+  - What are the solutions to these problems?
+
+- {{< fa book >}} LaFleur, B. J., & Greevy, R. A. (2009). [Introduction to Permutation and Resampling-Based Hypothesis Tests](/readings/03-week-robust_methods/lafleur2009.pdf). Journal of Clinical Child & Adolescent Psychology, 38(2), 286–294. https://doi.org/10.1080/15374410902740411
+
+  - How do permutation tests differ from traditional statistical hypothesis tests?
+
+  - What assumptions underlie permutation tests?
+
+  - What steps underlie permutation tests?
+
+  - How does the number of permutations affect the power and type I error rate of a permutation test?
+
+## Video
+
+{{< fa video >}}
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XSjj7IeBHnA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<center>
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Xz0x-8-cgaQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<center>
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BbP1HfXiITs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<center>
+## During Class 
+
+- Will go through this paper in class
+
+  - Rousselet, G. A., Pernet, C. R., & Wilcox, R. R. (2021). [The Percentile Bootstrap: A Primer With Step-by-Step Instructions in R](/readings/03-week-robust_methods/rtutorial_boot.pdf). Advances in Methods and Practices in Psychological Science, 4(1), 2515245920911881. https://doi.org/10.1177/2515245920911881
+
+## After Class
+
+
+- {{< fa book >}} Kabacoff, R. I. (2022). \*R* in Action\*. [Chapter 12](https://books-library.net/files/books-library.net-10271851Vx7V9.pdf).

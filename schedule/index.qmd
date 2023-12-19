@@ -1,0 +1,59 @@
+---
+title: "Schedule"
+sidebar: false
+toc: false
+page-layout: full
+---
+
+```{r packages-data, include=FALSE}
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+```
+
+::: schedule-page
+Here's your roadmap for the semester!
+
+<ul class="icon-list">
+
+<li><i class="fas fa-book-reader"></i> Readings should be completed ***before*** each class session</li>
+
+<li><i class="fas fa-tv"></i> Slides and other class materials will be added on the day of class</li>
+
+<li><i class="fas fa pen-ruler"></i> Assignments are due at 11:00 P.M. on Friday (unless otherwise stated)</li>
+
+</ul>
+| Week  | Date         | Topic                                         | Content                                                      | Class                    | Labs                   | [{{<    fa   person >}}]                                       |
+|-------|--------------|-----------------------------------------------|--------------------------------------------------------------|--------------------------|------------------------|----------------------------------------------------------------|
+|       |              |                                               |                                                              |                          |                        |                                                                |
+| 1     | 1/30/23      | Introduction                                  |                                                              | [{{< fa laptop-code   >}}](/slides/01-welcome/01-welcome-syllabus.html)                       |                          |                                                                |
+|       | 2/1/23       | Quarto: Blogging                              |[{{<    fa   book-open-reader >}}](/schedule/01-week.qmd)    | [{{< fa laptop-code   >}}](/slides/Quarto/quarto.html) |                        | Jason                                                          |
+| 2     | 2/6/23       | Robust methods: Bootstrapping and permutation | [{{<    fa   book-open-reader >}}](/schedule/02-week.qmd)    | [{{< fa laptop-code   >}}](/slides/03-Robust_Methods/02_Robust-Methods.html) |                        | Jason                                                          |
+|       | 2/8/23       | Lab 1                                         |                                                              |                          | [{{< fa pen-ruler   >}}](/Labs/Lab1.qmd) |                                                                |
+| 3     | 2/13/23      | Missing data                                  | [{{<    fa   book-open-reader >}}](/schedule/03-week.qmd)    | [{{< fa laptop-code   >}}](/slides/Missing_Data/missing_data_in_r.html) |                        | [Sydney](/student_presentations/syd_class_pres_missing_data.pdf)                                                         |
+|       | 2/15/23      | Lab 2                                         |                                                              |                          | [{{< fa pen-ruler   >}}](/Labs/Lab2.qmd) |                                                                |
+| 4     | 2/20/23      | Polytomous models: Ordinal regression         | [{{<    fa   book-open-reader >}}](/schedule/04-week.qmd)    | [{{< fa laptop-code   >}}](/slides/Ordinal_Regression/Ordinal.html) |                        | [Nicole](/student_presentations/psy504ord.pdf)                                                        |
+|       | 2/22/23      | Lab 3                                         |                                                              |                          | [{{< fa pen-ruler   >}}](/Labs/Lab3.qmd) |                                                                |
+| 5     | 2/27/23      | Polytomous   models:  Multinomial regression  | [{{<    fa   book-open-reader >}}](/schedule/05-02-week.qmd) | [{{< fa laptop-code   >}}](/slides/Multinom/multinom.html) |                        | [Henna](/student_presentations/MultinomialRegression_Vartiainen.pdf)                                                          |
+|       | 3/1/23       | Lab 4                                         |                                                              |                          | [{{< fa pen-ruler   >}}](/Labs/Lab4.qmd) |                                                                |
+| 6     | 3/6/23       | Poisson regression/negative binomial          | [{{<    fa   book-open-reader >}}](/schedule/05-week.qmd)    | [{{< fa laptop-code   >}}](/slides/Poisson/Fish-regression.html) |                        | [Sarah](/student_presentations/PSY504Poisson.pdf)                                                          |
+|       | 3/8/23       | Lab 5                                         |                                                              |                          | [{{< fa pen-ruler   >}}](/Labs/Lab5.qmd) |                                                                |
+| 7     | Spring Break |                                               |                                                              |                          |                        |                                                                |
+| 8     | 3/20/23      | Bayesian   analysis                           | [{{<    fa   book-open-reader >}}](/schedule/06-week.qmd)    | [{{< fa laptop-code   >}}](/slides/bayes_class/bayesian_modeling_2.html) |                        | [Cody](/student_presentations/Bayesian_PSY504_CD_2023.pdf)                                                           |
+|       | 3/22/23      | Lab 6                                         |                                                              |                          | [{{< fa pen-ruler   >}}](/Labs/Lab6.qmd) |                                                                |
+| 9     | 3/27/23      | Mediation                                     | [{{<    fa   book-open-reader >}}](/schedule/08-week.qmd)    | [{{< fa laptop-code   >}}](/slides/mediation_r/mediation-speaker.html) |                        | [Claire](/student_presentations/Mediation_Presentation.pdf)                                                         |
+|       | 3/29/23      | Lab 7                                                                                                |  |   | [{{< fa pen-ruler   >}}](/Labs/Lab7.qmd) |                                                                |
+| 10    | 4/3/23       | Path modeling/SEM                             | [{{<    fa   book-open-reader >}}](/schedule/09-week.qmd)    | [{{< fa laptop-code   >}}](/slides/SEM/sem_intro_1-speaker.html)                         |                        | Jason                                                          |
+|       | 4/5/23       |                                         |                                                              |                          | {{< fa pen-ruler >}}   | Jason Tasukahara will Zoom in and talk about R package for SEM |
+| 11    | 4/10/23      | Principal components analysis/factor analysis                   | [{{<    fa   book-open-reader >}}](/schedule/10-week.qmd)    | [{{< fa laptop-code   >}}](/slides/FA/FA-speaker.html)  |                        | [Branson](/student_presentations/PCA_Presentation.pdf)                                                       |
+|       | 4/12/23      | Lab 8                                         |                                                              |                          | [{{< fa pen-ruler   >}}](/Labs/Lab8.qmd) |                                                                |
+| 12    | 4/17/23      | Unsupervised learning: Clustering            | [{{<    fa   book-open-reader >}}](/schedule/11-week.qmd)    | [{{< fa laptop-code   >}}](/slides/Clustering/cluster_new-speaker.html) |                        | [Jamie](/student_presentations/PSY504-Clustering.pdf)                                                          |
+|       | 4/19/23      | Lab 9                                        |                                                              |                          | [{{< fa pen-ruler   >}}](/Labs/Lab9.qmd) |  {{< fa movie   >}}                                                              |
+| 13    | 4/24/23      | GEEs/Multilevel   modeling                         | [{{<    fa   book-open-reader >}}](/schedule/12-week.qmd)    | [{{< fa laptop-code   >}}](/slides/MLM/MLM-speaker.html) |                        | [Killian](/student_presentations/killian_class_presentation.pdf)                                                        |
+|       | 4/26/23      | Lab 10                                         |                                                              |                          | [{{< fa pen-ruler   >}}](/Labs/Lab10.qmd) |                                                                |
+| 14    | Reading Week |                                               |                                                              |                          |                        |                                                                |
+| 15    | Finals       | Blog posts due                                              |                                                              |                          |                        |                                                                |
+|       |              |                                               |                                                              |                          |                        |                                                                |
+|       |              |                                               |                                                              |                          |                        |                                                                |
+|       |              |                                               |                                                              |                          |                        |                                                                |
+:::

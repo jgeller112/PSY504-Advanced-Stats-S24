@@ -1,0 +1,50 @@
+---
+title: "Week 6"
+subtitle: "Bayesian Data Analysis"
+date: 2023-03-06
+---
+## Before Class
+
+### Articles
+
+- {{< fa book >}} Dienes, Z. (2008). [Bayes and the probability hypotheses](/readings/bayes.pdf)
+
+    - What is Bayes' Theorem and how is it used in statistical analysis?
+    - How does Bayesian statistical analysis differ from NHST?
+    - What affordances does Bayesian statistics provide that NHST does not?
+   - How do Bayesian models incorporate prior knowledge or beliefs about the data?
+   - What are some advantages and disadvantages of using Bayesian statistical methods?
+   - How do you make statistical inferences and predictions using Bayesian methods?
+  
+- {{< fa book >}}Jarosz, A. F., & Wiley, J. (2014). [What Are the Odds? A Practical Guide to Computing and Reporting Bayes Factors](https://docs.lib.purdue.edu/jps/vol7/iss1/2/). The Journal of Problem Solving, 7(1). 
+
+  - What is a Bayes Factor?
+  - How do you calculate them?
+  - How do we interpret Bayes Factors? 
+  
+### Optional
+- {{< fa book >}} https://bookdown.org/marklhc/notes_bookdown/markov-chain-monte-carlo.html
+
+  - Really nice explanation of MCMC 
+
+### Video
+
+- {{< fa video >}} What is Bayes?
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3OJEae7Qb_o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<center>
+
+- {{< fa video >}} Why use Bayes?
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mAUwjSo5TJE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<center>
+
+## After Class
+
+- JASP has some nice Bayesian implementations
+
+[Bayesian Regression in JASP ](https://www.youtube.com/watch?v=QRJ05uZs58w)
+
+

@@ -1,0 +1,46 @@
+---
+title: "Week 4"
+subtitle: "Ordinal Regression"
+date: 2023-02-20
+---
+
+## Before Class
+
+### Articles
+
+**The R package brms (which is a Bayesian data analysis package) is used in the papers below. While it is a Bayesian technique, the output is similar to a regression output.** 
+
+
+- {{< fa book >}} Bürkner P-C, Vuorre M. [Ordinal Regression Models in Psychology: A Tutorial](https://journals.sagepub.com/doi/epub/10.1177/2515245918823199). Advances in Methods and Practices in Psychological Science. 2019;2(1):77-101. doi:10.1177/2515245918823199
+
+- {{< fa book >}} Veríssimo, J. (2021). [Analysis of rating scales: A pervasive problem in bilingualism research and a solution with Bayesian ordinal models](https://files.osf.io/v1/resources/4m2ap/providers/osfstorage/6013ef9a75226b05015161a6?action=download&direct&version=2). Bilingualism: Language and Cognition, 24(5), 842-848. doi:10.1017/S1366728921000316
+
+  - Describe what is meant by an ordinal variable 
+  
+  - Describe how an ordinal variable can be represented using a latent continuous variable.
+
+  - What is cumulative probability? 
+  
+  - List some common applications of ordinal regression in your field
+  
+  - How do you interpret the coefficients in an ordinal regression model? 
+  
+  - What is the proportional odds assumption underlying ordinal regression? 
+
+### Videos
+
+{{< fa video >}}
+
+- Introduction to Ordinal regression in R 
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jWIJ7P1G9P4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<center>
+
+## After Class
+
+- {{< fa video >}} Running ordinal regression in R
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rrRrI9gElYA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<center>

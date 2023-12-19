@@ -1,0 +1,20 @@
+---
+title: "Week 4"
+subtitle: "Multilevel Modeling"
+date: 2024-02-19
+---
+
+## Before Class
+
+### Articles
+
+- {{< fa book >}} McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.
+
+[Chapters 1 and 2](/readings/MLM_12.pdf)
+
+  - What type of data would necessitate a multilevel analysis? Come up with an example not given in the paper.
+  - What are fixed and random effects? How do multilevel models and traditional regression differ in terms of fixed and random effects?
+  - How can you statistically determine if your cases are not independent?
+  - What assumptions does MLM have?
+  - What is the difference between grand-mean and group mean centered data?
+  - What is the folly of trying to account for dependence by including level 2 data in an ordinary regression model?

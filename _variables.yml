@@ -1,0 +1,27 @@
+author: Jason Geller
+
+instructor:
+  name: Dr. Jason Geller
+  name_no_title: Jason Geller
+  email: jg9120@princeton.edu
+  url: "https://www.drjasongeller.com"
+  twitter: jgeller_phd
+  github: jgeller112
+  office: "325 PSH "
+  contact_policy: >-
+    E-mail is best way to get in contact with me. I will try to respond to all course-related e-mails within 24 hours (*really*), but also remember that life can be busy and chaotic for everyone (including me!), so if I don't respond right away, don't worry!
+  appointment_url: https://calendly.com/jg9120
+
+course:
+  number: "PSY 504"
+  semester: "Spring 2024"
+  days: "MW"
+  time: "10:00 AM –11:20 PM"
+  location: "A30"
+  dates: "Janurary 30–April 24, 2024"
+  github: "https://github.com/jgeller112/PSY504-Advanced-Stats-S24"
+  copyright_year: "2024"
+
+university:
+  name: Princeton University
+  url: "https://www.princeton.edu/"

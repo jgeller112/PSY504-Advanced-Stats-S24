@@ -1,0 +1,46 @@
+---
+title: "Week 8"
+subtitle: "Mediation"
+date: 2023-03-20
+---
+## Before Class
+
+### Articles
+
+- {{< fa book >}} Baron, R. M., & Kenny, D. A. (1986). [The moderator–mediator variable distinction in social psychological research: Conceptual, strategic, and statistical considerations](/readings/06-med/baron_kenny.pdf). Journal of Personality and Social Psychology, 51, 1173-1182.
+
+  - What are the steps (i.e., equations, regression models) that comprise a mediation analysis?
+  - What are you looking to see in the output of these models to establish that mediation has occurred?
+  - How do you test for the overall significance of a mediational model?
+  - What is the difference between a mediation and a moderation (i.e., how do the interpretations of each differ)?
+
+- {{< fa book >}} Zhao, X., Lynch, Jr., J. G., & Chen, Q. (2010). [Reconsidering Baron and Kenny: Myths and truths about mediation analysis.](/readings/06-med/med_bk.pdf). Journal of Consumer Research, 37, 197-206)
+
+  - Identify at least three recommendations/assertions of Baron and Kenny (1986) that Zhao et al (2010) argue against. State Baron & Kenny’s reasoning behind the original assertion but also the reasoning of Zhao et al when arguing the recommendation is wrong.
+
+  - What are the five types of mediation and nonmediation? 
+
+  - What type of mediation can tell you whether the mediator is consistent with the causal model?
+
+### Video
+
+{{< fa video >}}
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-ngp06-qrtI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+## Class
+
+- Data we are using for class: 
+[Mediation Data](https://raw.githubusercontent.com/doomlab/statsofdoom-files/master/advanced/R/Notes/Mediation%20Moderation/data%206.csv)
+
+## After Class
+
+**ignore moderation sections**
+
+[Mediation in R ](https://ademos.people.uic.edu/Chapter14.html#1_what_are_mediation_and_moderation)
+
+## Want to read more?
+
+Fossum, J. L., & Montoya, A. K. (2021, December 7). [When to Use Different Tests for Power Analysis and Data Analysis for Between-Subjects Mediation](https://psyarxiv.com/5tm2x/download). https://doi.org/10.31234/osf.io/5tm2x
+

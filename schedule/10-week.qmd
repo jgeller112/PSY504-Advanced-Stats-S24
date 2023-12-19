@@ -1,0 +1,24 @@
+---
+title: "Week 10"
+subtitle: "PCA"
+date: 2023-04-03
+---
+## Before Class
+
+### Articles
+
+- {{< fa book >}} James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An Introduction to Statistical Learning: With Applications in R. Springer.
+  - [Chapter 12 12.1-12.3](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf)
+
+- {{< fa book >}}Pett, M. A., Lackey, N. R., & Sullivan, J. (2003). [Chapter 1: An Overview of Factor Analyis](/readings/intro_fact.pdf). Making Sense of Factor Analysis: The Use of Factor Analysis for Instrument Development in Health Care Research (1st edition). SAGE Publications, Inc.
+
+- {{< fa book >}}Goretzko, D., Siemund, K., & Sterner, P. (2023). [Evaluating Model Fit of Measurement Models in Confirmatory Factor Analysis](/readings/cfa.pdf). Educational and Psychological Measurement, 00131644231163813. https://doi.org/10.1177/00131644231163813
+
+- {{< fa book >}} Watkins, M. W. (2018). [Exploratory Factor Analysis: A Guide to Best Practice](/readings/EFA_intro.pdf). Journal of Black Psychology, 44(3), 219–246. https://doi.org/10.1177/0095798418771807
+
+
+## After Class
+
+- {{< fa book >}} Kabacoff, R. I. (2022). \*R* in Action\* [Chapter 14](https://books-library.net/files/books-library.net-10271851Vx7V9.pdf)
+
+- https://rpubs.com/danmirman/plotting_factor_analysis
