@@ -1,0 +1,127 @@
+---
+title: "Syllabus"
+page-layout: full
+sidebar: false
+---
+
+# Course Introduction
+
+As a discipline, statistics has given profound tools to the sciences. Statistics is our way of detecting patterns in the noisy universe. Traditionally, psychologists were limited to research questions that could be answered with classical statistical analyses, but without particularly intending to do so, psychologists have found themselves at the cutting age of statistical discovery in the 20th and 21st centuries. This is because we needed to adapt our tools to meet the demands of the complex nature of the phenomena we study. This course will give you the quantitative tools to ask and answer research questions that were impossible to test as recently as a decade ago. Specifically, we will cover the following topics as stand-alone modules:
+
+1.Robust Methods: bootstrapping, permutation tests
+2.Missing Data
+3.Non-Gaussian statistics: poisson regression, ordinal regression
+4.Beyond Null Hypothesis Significance Testing (NHST): Structural equation models, Bayesian hypothesis testing
+5.Process models: Mediation, multiple mediation, path analysis
+6.Dimension reduction: principal components analysis (PCA), clustering 
+7. Time-based analyses: Growth curve modeling
+
+I place a strong emphasis on practical application. I believe you are more likely to learn and readily use these analyses in the future if you do them at least once now. Every lecture will have "challenge" demonstrations for you to try the analyses along with me. Every Wednesday there will be a lab going over the material covered that week. The lab assignments will help you build a personal library of example statistical scripts that you will hopefully find useful for years into the future. These lab assignments will be due at the end of class.
+
+# Audience
+
+This course is designed for quantitative psychologists but it is relevant to any social and natural scientists studying human behavior.
+
+\vspace{.75cm}
+
+# Prerequisite
+
+The main prerequisite for this course is PSY 503.
+
+**NOTE:** It is highly recommended (but not mandatory) that students also enroll in *PSY 505: Advanced Seminar in Statistical Methods and Research Practices in Psychology* (Spring 2023, T: 11am - 1pm), which constitutes an important complement to this course.
+
+# Student Learning Outcomes
+
+At the end of the course, students will be able to:
+
+- Make informed analytic decisions
+
+- Run and code analyses in R
+
+- Interpret output and summarize results of the analyses
+
+- Effectively communicate results from statistical analyses to a general audience
+
+- Use Quarto to write reproducible reports and GitHub for version control and collaboration
+
+# Office Hours
+
+I will hold weekly office hours (M: 1-3 P.M.; W: 1-2 P.M.). If you need to see me outside of these hours please schedule a meeting: https://calendly.com/jg9120/30min
+
+# Textbooks
+
+-   I strongly recommend you get the following books:
+
+    -   McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.
+<center>
+    ![](modelingbook.jpg){width="417"}
+<center>
+- Kabacoff, R. I. (2022). R in Action, Third Edition: Data analysis and graphics with R and Tidyverse (3rd edition). Manning.
+<center>
+  ![](rinaction.jpeg){width="417"}
+  <center>
+  
+
+In addition, I will also assign articles (these will be posted [here](/schedule))
+
+# Attendance Policy
+
+You're expected to come to class, having (1) carefully read the material and (2) completed the weekly reading report.
+
+Attendance and participation are *crucial* to your success in this course. However, we're in the middle of a deadly global pandemic and *so many people* are getting sick. If you are sick or are incapable of participating meaningfully in class (e.g., you have stayed up all night and are going to fall asleep in class), please stay home. I will try my best to record in-class lectures (or record them at home).
+
+# Absences and Late Work
+
+If you need to be absent or submit an assignment late, please let me know as soon as possible. We don't need to know your personal or medical details. We can be flexible, but please respect my time by turning your assignments in on time whenever possible.
+
+# Technology
+
+It is expected that you will bring your laptop to class. Please try to keep it class related.
+
+\vspace{.75cm}
+
+# Assignments
+
+There will be no points associated with any of the assignments this semester. To receive a passing grade (A), all assignments must be turned in.
+
+## Annotations
+
+Every week there will be assigned readings. You will be expected to read the weekly reading before class, so you can come prepared to class for student-lead presentations. Each week you will contribute to a collaborative annotation of the reading on
+Canvas. This is done via hypothes.is—simply add comments directly to the reading via the link on Canvas. 
+
+## Student Mini-Lectures and Discussions
+
+Every week (Monday) one of your peers will present an introduction to the method we will be discussing that week, based on the assigned reading for that week (you are to use the assigned articles to guide your presentation and discussion). Each presentation should be be (~20 minutes). 
+
+After, I will take over and highlight how to use R to apply these methods to your data.
+
+In these presentations, I would like:
+
+- A clear overview of the topic: This should include a brief introduction to the topic, highlighting its relevance and importance in psychological research. You should also address limitations, if any.
+
+- Examples and applications: To help peers' understand the practical implications of the topic, you should provide examples and applications of how the topic is used in psychology. This could include your own research or examples from the literature. If you wanted to walk through an example, that is also welcome. I am going to be program agnostic here (use R, Python, SPSS, JASP, etc.) to do this.
+
+- A discussion of things you did not understand or you had general questions about. 
+
+## Labs/Exercises
+
+-   Each week (Wednesday) we will have one corresponding lab exercise that will be started in class. The purpose is for you to get direct experience conducting the analyses that you learn. Each lab exercise will consist of several questions and will require R (will also accept Python) to answer the questions in a reproducible manner. All lab assignments must be reproducible (i.e., I can replicate the work you did without any errors). You may complete the labs by yourself or working with another person. If you work with another person, your work must obviously be your own.
+
+Ideally, you will finish labs in class. However, if you choose to finish at home, completed labs will be due at 6:00 p.m. on the Sunday of that week. Please let me know if you need an extension.
+
+## Tutorial
+
+For your final project, you will create a tutorial explaining how to run a particular analysis in R or Python. This will involve finding data or using your own data. The final project gives you a chance to pursue a specific method discussed in class and apply it to your own data.
+
+**There is no final exam 😊**
+
+## Participation
+
+It is expected that you will come to class having read the articles assigned and prepared to discuss the material.
+
+# Grades
+
+At the end of the semester, you will assign yourself the final grade. You will provide a self-evaluation as whether you met the learning outcomes for the course and how well you think you did on assignments and the final project. I have veto rights to change your assigned grade :). 
+
+# [Schedule](/schedule/index.qmd)
+
