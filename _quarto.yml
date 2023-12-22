@@ -51,17 +51,17 @@ website:
       contents:
         - schedule/index.qmd
         - schedule/01-week.qmd
-        - schedule/02-week.qmd
+        - schedule/02-week-mlm.qmd
         - schedule/03-week.qmd
-        - schedule/04-week.qmd
-        - schedule/05-week.qmd
-        - schedule/05-02-week.qmd
-        - schedule/06-week.qmd
-        - schedule/08-week.qmd
-        - schedule/09-week.qmd
-        - schedule/10-week.qmd
-        - schedule/11-week.qmd
-        - schedule/12-week.qmd
+        - schedule/04-week-logistic.qmd
+        - schedule/05-week-ord.qmd
+        - schedule/06-week-mult.qmd
+        - schedule/08-week-pos.qmd
+        - schedule/09-week-bayes.qmd
+        - schedule/10-week-med.qmd
+        - schedule/11-week-sem.qmd
+        - schedule/12-week-fa.qmd
+        - schedule/13-week-ML.qmd
         
     - title: "Assignments"
       style: "docked"
