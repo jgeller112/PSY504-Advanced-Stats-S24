@@ -51,7 +51,7 @@ website:
       contents:
         - schedule/index.qmd
         - schedule/01-week.qmd
-        - schedule/02-week-mlm.qmd
+        - schedule/02-week-MLM.qmd
         - schedule/03-week.qmd
         - schedule/04-week-logistic.qmd
         - schedule/05-week-ord.qmd
