@@ -321,7 +321,7 @@
     "href": "schedule/index.html",
     "title": "Schedule",
     "section": "",
-    "text": "::: schedule-page Here’s your roadmap for the semester!\n\n\n Readings should be completed before each class session\n\n\n Slides and other class materials will be added on the day of class\n\n\n Assignments are due at 11:00 P.M. on Friday (unless otherwise stated)\n\n\n\n\nWeek\nDate\nTopic\nContent\nClass\nLabs\n[]\n\n\n\n\n\n\n\n\n\n\n\n\n\n1\n1/29/24\nIntroduction\n\n\n\n\n\n\n\n1/31/24\nQuarto: Blogging and Website\n\n\n\nJason\n\n\n2\n2/5/24\nMultilevel modeling\n\n\n\n\n\n\n\n2/7/24\nLab 1\n\n\n\n\n\n\n3\n2/12/24\nMissing data\n\n\n\n\n\n\n\n2/14/24\nLab 2\n\n\n\n\n\n\n4\n2/19/24\nLogistic regression\n\n\n\n\n\n\n\n2/21/24\nLab 3\n\n\n\n\n\n\n5\n2/26/24\nPolytomous models: Ordinal regression\n\n\n\n\n\n\n\n2/28/24\nLab 4\n\n\n\n\n\n\n6\n3/4/24\nPolytomous models: Multinomial regression\n\n\n\n\n\n\n\n3/6/24\nLab 5\n\n\n\n\n\n\n7\nSpring Break\n\n\n\n\n\n\n\n8\n3/18/24\nPoisson regression\n\n\n\n\n\n\n\n3/20/24\nLab 6\n\n\n\n\n\n\n9\n3/25/24\nBayesian analysis\n\n\n\n\n\n\n\n3/27/24\nLab 7\n\n\n\n\n\n\n10\n4/1/24\nMediation\n\n\n\n\n\n\n\n4/3/24\nLab 8\n\n\n\n\n\n\n11\n4/8/24\nPath modeling/SEM\n\n\n\n\n\n\n\n4/10/24\nLab 9\n\n\n\n\n\n\n12\n4/15/24\nFactor analysis\n\n\n\n\n\n\n\n4/17/24\nLab 10\n\n\n\n\n\n\n13\n4/22/24\nSupervised machine learning techniques\n\n\n\n\n\n\n\n4/24/24\nLab 11\n\n\n\n\n\n\n14\nReading Week\n\n\n\n\n\n\n\n15\nFinals\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n:::",
+    "text": "Here’s your roadmap for the semester!\n\n\n Readings should be completed before each class session\n\n\n Slides and other class materials will be added on the day of class\n\n\n Assignments are due at 11:00 P.M. on Friday (unless otherwise stated)\n\n\n\n\nWeek\nDate\nTopic\nContent\nClass\nLabs\n[]\n\n\n\n\n\n\n\n\n\n\n\n\n\n1\n1/29/24\nIntroduction\n\n\n\n\n\n\n\n1/31/24\nQuarto: Blogging and Website\n\n\n\nJason\n\n\n2\n2/5/24\nMultilevel modeling\n\n\n\n\n\n\n\n2/7/24\nLab 1\n\n\n\n\n\n\n3\n2/12/24\nMissing data\n\n\n\n\n\n\n\n2/14/24\nLab 2\n\n\n\n\n\n\n4\n2/19/24\nLogistic regression\n\n\n\n\n\n\n\n2/21/24\nLab 3\n\n\n\n\n\n\n5\n2/26/24\nPolytomous models: Ordinal regression\n\n\n\n\n\n\n\n2/28/24\nLab 4\n\n\n\n\n\n\n6\n3/4/24\nPolytomous models: Multinomial regression\n\n\n\n\n\n\n\n3/6/24\nLab 5\n\n\n\n\n\n\n7\nSpring Break\n\n\n\n\n\n\n\n8\n3/18/24\nPoisson regression\n\n\n\n\n\n\n\n3/20/24\nLab 6\n\n\n\n\n\n\n9\n3/25/24\nBayesian analysis\n\n\n\n\n\n\n\n3/27/24\nLab 7\n\n\n\n\n\n\n10\n4/1/24\nMediation\n\n\n\n\n\n\n\n4/3/24\nLab 8\n\n\n\n\n\n\n11\n4/8/24\nPath modeling/SEM\n\n\n\n\n\n\n\n4/10/24\nLab 9\n\n\n\n\n\n\n12\n4/15/24\nFactor analysis\n\n\n\n\n\n\n\n4/17/24\nLab 10\n\n\n\n\n\n\n13\n4/22/24\nSupervised machine learning techniques\n\n\n\n\n\n\n\n4/24/24\nLab 11\n\n\n\n\n\n\n14\nReading Week\n\n\n\n\n\n\n\n15\nFinals",
     "crumbs": [
       "Schedule"
     ]
@@ -737,5 +737,35 @@
     "title": "Week 13",
     "section": "",
     "text": "Pargent, F., Schoedel, R., & Stachl, C. (2023). Best Practices in Supervised Machine Learning: A Tutorial for Psychologists. Advances in Methods and Practices in Psychological Science, 6(3), 25152459231162559. https://doi.org/10.1177/25152459231162559\nRosenbusch, H; Soldner, F; Evans, AM; Zeelenberg, M; (2021) Supervised machine learning methods in psychology: A practical introduction with annotated R code. Social and Personality Psychology Compass , 15 (2) , Article e12579. 10.1111/spc3.12579."
+  },
+  {
+    "objectID": "schedule/08-week-pos.html",
+    "href": "schedule/08-week-pos.html",
+    "title": "Week 8",
+    "section": "",
+    "text": "Coxe, S., West, S. G., & Aiken, L. S. (2009). The Analysis of Count Data: A Gentle Introduction to Poisson Regression and Its Alternatives. Journal of Personality Assessment, 91(2), 121–136. https://doi.org/10.1080/00223890802634175\n Winter, B., & Bürkner, P.-C. (2021). Poisson regression for linguists: A tutorial introduction to modelling count data with brms. Language and Linguistics Compass, 15(11), e12439. https://doi.org/10.1111/lnc3.12439\n\nHow does the Poisson distribution differ from other distributions, such as the normal distribution?\nHow do we interpret the parameters of the poisson?\nWhat are the assumptions of Poisson regression?\nWhat is overdispersion?\nHow is poisson related to the negative binomial?\n\n\n\n\n\nRyan, W. H., Evers, E. R. K., & Moore, D. A. (2021). Poisson Regressions: A Little Fishy. Collabra: Psychology, 7(1), 27242. https://doi.org/10.1525/collabra.27242\n\n\n\n\n\nIntroduction to Poisson regression",
+    "crumbs": [
+      "Week 8"
+    ]
+  },
+  {
+    "objectID": "schedule/08-week-pos.html#before-class",
+    "href": "schedule/08-week-pos.html#before-class",
+    "title": "Week 8",
+    "section": "",
+    "text": "Coxe, S., West, S. G., & Aiken, L. S. (2009). The Analysis of Count Data: A Gentle Introduction to Poisson Regression and Its Alternatives. Journal of Personality Assessment, 91(2), 121–136. https://doi.org/10.1080/00223890802634175\n Winter, B., & Bürkner, P.-C. (2021). Poisson regression for linguists: A tutorial introduction to modelling count data with brms. Language and Linguistics Compass, 15(11), e12439. https://doi.org/10.1111/lnc3.12439\n\nHow does the Poisson distribution differ from other distributions, such as the normal distribution?\nHow do we interpret the parameters of the poisson?\nWhat are the assumptions of Poisson regression?\nWhat is overdispersion?\nHow is poisson related to the negative binomial?\n\n\n\n\n\nRyan, W. H., Evers, E. R. K., & Moore, D. A. (2021). Poisson Regressions: A Little Fishy. Collabra: Psychology, 7(1), 27242. https://doi.org/10.1525/collabra.27242\n\n\n\n\n\nIntroduction to Poisson regression",
+    "crumbs": [
+      "Week 8"
+    ]
+  },
+  {
+    "objectID": "schedule/08-week-pos.html#after-class",
+    "href": "schedule/08-week-pos.html#after-class",
+    "title": "Week 8",
+    "section": "After Class",
+    "text": "After Class\n\n Kabacoff, R. I. (2022). *R* in Action* chapter 13.\n Running Poisson regression in R",
+    "crumbs": [
+      "Week 8"
+    ]
   }
 ]
