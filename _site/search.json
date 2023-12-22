@@ -231,14 +231,20 @@
     "href": "schedule/06-week.html",
     "title": "Week 6",
     "section": "",
-    "text": "Dienes, Z. (2008). Bayes and the probability hypotheses\n\nWhat is Bayes’ Theorem and how is it used in statistical analysis?\nHow does Bayesian statistical analysis differ from NHST?\nWhat affordances does Bayesian statistics provide that NHST does not?\nHow do Bayesian models incorporate prior knowledge or beliefs about the data?\nWhat are some advantages and disadvantages of using Bayesian statistical methods?\nHow do you make statistical inferences and predictions using Bayesian methods?\n\nJarosz, A. F., & Wiley, J. (2014). What Are the Odds? A Practical Guide to Computing and Reporting Bayes Factors. The Journal of Problem Solving, 7(1).\n\nWhat is a Bayes Factor?\nHow do you calculate them?\nHow do we interpret Bayes Factors?\n\n\n\n\n\n\n https://bookdown.org/marklhc/notes_bookdown/markov-chain-monte-carlo.html\n\nReally nice explanation of MCMC\n\n\n\n\n\n\n What is Bayes?\n\n\n\n\n\n\n Why use Bayes?"
+    "text": "Dienes, Z. (2008). Bayes and the probability hypotheses\n\nWhat is Bayes’ Theorem and how is it used in statistical analysis?\nHow does Bayesian statistical analysis differ from NHST?\nWhat affordances does Bayesian statistics provide that NHST does not?\nHow do Bayesian models incorporate prior knowledge or beliefs about the data?\nWhat are some advantages and disadvantages of using Bayesian statistical methods?\nHow do you make statistical inferences and predictions using Bayesian methods?\n\nJarosz, A. F., & Wiley, J. (2014). What Are the Odds? A Practical Guide to Computing and Reporting Bayes Factors. The Journal of Problem Solving, 7(1).\n\nWhat is a Bayes Factor?\nHow do you calculate them?\nHow do we interpret Bayes Factors?\n\n\n\n\n\n\n https://bookdown.org/marklhc/notes_bookdown/markov-chain-monte-carlo.html\n\nReally nice explanation of MCMC\n\n\n\n\n\n\n What is Bayes?\n\n\n\n\n\n\n Why use Bayes?",
+    "crumbs": [
+      "Week 6"
+    ]
   },
   {
     "objectID": "schedule/06-week.html#after-class",
     "href": "schedule/06-week.html#after-class",
     "title": "Week 6",
     "section": "After Class",
-    "text": "After Class\n\nJASP has some nice Bayesian implementations\n\nBayesian Regression in JASP"
+    "text": "After Class\n\nJASP has some nice Bayesian implementations\n\nBayesian Regression in JASP",
+    "crumbs": [
+      "Week 6"
+    ]
   },
   {
     "objectID": "schedule/08-week.html",
@@ -315,7 +321,7 @@
     "href": "schedule/index.html",
     "title": "Schedule",
     "section": "",
-    "text": "Here’s your roadmap for the semester!\n\n\n Readings should be completed before each class session\n\n\n Slides and other class materials will be added on the day of class\n\n\n Assignments are due at 11:00 P.M. on Friday (unless otherwise stated)\n\n\n\n\n\nWeek\nDate\nTopic\nContent\nClass\nLabs\n[]\n\n\n\n\n\n\n\n\n\n\n\n\n\n1\n1/30/23\nIntroduction\n\n\n\n\n\n\n\n2/1/23\nQuarto: Blogging\n\n\n\nJason\n\n\n2\n2/6/23\nRobust methods: Bootstrapping and permutation\n\n\n\nJason\n\n\n\n2/8/23\nLab 1\n\n\n\n\n\n\n3\n2/13/23\nMissing data\n\n\n\nSydney\n\n\n\n2/15/23\nLab 2\n\n\n\n\n\n\n4\n2/20/23\nPolytomous models: Ordinal regression\n\n\n\nNicole\n\n\n\n2/22/23\nLab 3\n\n\n\n\n\n\n5\n2/27/23\nPolytomous models: Multinomial regression\n\n\n\nHenna\n\n\n\n3/1/23\nLab 4\n\n\n\n\n\n\n6\n3/6/23\nPoisson regression/negative binomial\n\n\n\nSarah\n\n\n\n3/8/23\nLab 5\n\n\n\n\n\n\n7\nSpring Break\n\n\n\n\n\n\n\n8\n3/20/23\nBayesian analysis\n\n\n\nCody\n\n\n\n3/22/23\nLab 6\n\n\n\n\n\n\n9\n3/27/23\nMediation\n\n\n\nClaire\n\n\n\n3/29/23\nLab 7\n\n\n\n\n\n\n10\n4/3/23\nPath modeling/SEM\n\n\n\nJason\n\n\n\n4/5/23\n\n\n\n\nJason Tasukahara will Zoom in and talk about R package for SEM\n\n\n11\n4/10/23\nPrincipal components analysis/factor analysis\n\n\n\nBranson\n\n\n\n4/12/23\nLab 8\n\n\n\n\n\n\n12\n4/17/23\nUnsupervised learning: Clustering\n\n\n\nJamie\n\n\n\n4/19/23\nLab 9\n\n\n\n\n\n\n13\n4/24/23\nGEEs/Multilevel modeling\n\n\n\nKillian\n\n\n\n4/26/23\nLab 10\n\n\n\n\n\n\n14\nReading Week\n\n\n\n\n\n\n\n15\nFinals\nBlog posts due",
+    "text": "::: schedule-page Here’s your roadmap for the semester!\n\n\n Readings should be completed before each class session\n\n\n Slides and other class materials will be added on the day of class\n\n\n Assignments are due at 11:00 P.M. on Friday (unless otherwise stated)\n\n\n\n\nWeek\nDate\nTopic\nContent\nClass\nLabs\n[]\n\n\n\n\n\n\n\n\n\n\n\n\n\n1\n1/29/24\nIntroduction\n\n\n\n\n\n\n\n1/31/24\nQuarto: Blogging and Website\n\n\n\nJason\n\n\n2\n2/5/24\nMultilevel modeling\n\n\n\n\n\n\n\n2/7/24\nLab 1\n\n\n\n\n\n\n3\n2/12/24\nMissing data\n\n\n\n\n\n\n\n2/14/24\nLab 2\n\n\n\n\n\n\n4\n2/19/24\nLogistic regression\n\n\n\n\n\n\n\n2/21/24\nLab 3\n\n\n\n\n\n\n5\n2/26/24\nPolytomous models: Ordinal regression\n\n\n\n\n\n\n\n2/28/24\nLab 4\n\n\n\n\n\n\n6\n3/4/24\nPolytomous models: Multinomial regression\n\n\n\n\n\n\n\n3/6/24\nLab 5\n\n\n\n\n\n\n7\nSpring Break\n\n\n\n\n\n\n\n8\n3/18/24\nPoisson regression\n\n\n\n\n\n\n\n3/20/24\nLab 6\n\n\n\n\n\n\n9\n3/25/24\nBayesian analysis\n\n\n\n\n\n\n\n3/27/24\nLab 7\n\n\n\n\n\n\n10\n4/1/24\nMediation\n\n\n\n\n\n\n\n4/3/24\nLab 8\n\n\n\n\n\n\n11\n4/8/24\nPath modeling/SEM\n\n\n\n\n\n\n\n4/10/24\nLab 9\n\n\n\n\n\n\n12\n4/15/24\nFactor analysis\n\n\n\n\n\n\n\n4/17/24\nLab 10\n\n\n\n\n\n\n13\n4/22/24\nSupervised machine learning techniques\n\n\n\n\n\n\n\n4/24/24\nLab 11\n\n\n\n\n\n\n14\nReading Week\n\n\n\n\n\n\n\n15\nFinals\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n:::",
     "crumbs": [
       "Schedule"
     ]
@@ -578,14 +584,14 @@
   {
     "objectID": "schedule/02-week-MLM.html",
     "href": "schedule/02-week-MLM.html",
-    "title": "Week 4",
+    "title": "Week 2",
     "section": "",
     "text": "McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.\n\nChapters 1 and 2\n\nWhat type of data would necessitate a multilevel analysis? Come up with an example not given in the paper.\nWhat are fixed and random effects? How do multilevel models and traditional regression differ in terms of fixed and random effects?\nHow can you statistically determine if your cases are not independent?\nWhat assumptions does MLM have?\nWhat is the difference between grand-mean and group mean centered data?\nWhat is the folly of trying to account for dependence by including level 2 data in an ordinary regression model?"
   },
   {
     "objectID": "schedule/02-week-MLM.html#before-class",
     "href": "schedule/02-week-MLM.html#before-class",
-    "title": "Week 4",
+    "title": "Week 2",
     "section": "",
     "text": "McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.\n\nChapters 1 and 2\n\nWhat type of data would necessitate a multilevel analysis? Come up with an example not given in the paper.\nWhat are fixed and random effects? How do multilevel models and traditional regression differ in terms of fixed and random effects?\nHow can you statistically determine if your cases are not independent?\nWhat assumptions does MLM have?\nWhat is the difference between grand-mean and group mean centered data?\nWhat is the folly of trying to account for dependence by including level 2 data in an ordinary regression model?"
   },
@@ -707,5 +713,29 @@
     "title": "Blog Example",
     "section": "",
     "text": "First, you need to save the location of the image file:\n\nlibrary(here) # relative path\nlibrary(paletter) # package to\nlibrary(ggplot2)\n#extract color palette\n\nimage_path &lt;- here::here(\"Blog\", \"images\", \"Korn.jpeg\")\n\n\nThen you can read that file into a function from the package\n\n# Get the color palette\ncolours_vector &lt;- create_palette(image_path = image_path,                            number_of_colors =10,                           type_of_variable = \"categorical\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOnce you do this, it will output a list of hex codes corresponding to the most representative colors in the image.\nLet’s put the hex codes side by side with the album art:\n\n\n\n\n\nSo here we have a color palette associated with the album Follow The Leader. Let’s see how it looks on some data.\n\nggplot(data=iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +\n  geom_point(size=2) +\n  scale_color_manual(values=colours_vector[1:3])"
+  },
+  {
+    "objectID": "schedule/06-week.html#before-class",
+    "href": "schedule/06-week.html#before-class",
+    "title": "Week 6",
+    "section": "",
+    "text": "Dienes, Z. (2008). Bayes and the probability hypotheses\n\nWhat is Bayes’ Theorem and how is it used in statistical analysis?\nHow does Bayesian statistical analysis differ from NHST?\nWhat affordances does Bayesian statistics provide that NHST does not?\nHow do Bayesian models incorporate prior knowledge or beliefs about the data?\nWhat are some advantages and disadvantages of using Bayesian statistical methods?\nHow do you make statistical inferences and predictions using Bayesian methods?\n\nJarosz, A. F., & Wiley, J. (2014). What Are the Odds? A Practical Guide to Computing and Reporting Bayes Factors. The Journal of Problem Solving, 7(1).\n\nWhat is a Bayes Factor?\nHow do you calculate them?\nHow do we interpret Bayes Factors?\n\n\n\n\n\n\n https://bookdown.org/marklhc/notes_bookdown/markov-chain-monte-carlo.html\n\nReally nice explanation of MCMC\n\n\n\n\n\n\n What is Bayes?\n\n\n\n\n\n\n Why use Bayes?",
+    "crumbs": [
+      "Week 6"
+    ]
+  },
+  {
+    "objectID": "schedule/13-week-ML.html",
+    "href": "schedule/13-week-ML.html",
+    "title": "Week 13",
+    "section": "",
+    "text": "Pargent, F., Schoedel, R., & Stachl, C. (2023). Best Practices in Supervised Machine Learning: A Tutorial for Psychologists. Advances in Methods and Practices in Psychological Science, 6(3), 25152459231162559. https://doi.org/10.1177/25152459231162559\nRosenbusch, H; Soldner, F; Evans, AM; Zeelenberg, M; (2021) Supervised machine learning methods in psychology: A practical introduction with annotated R code. Social and Personality Psychology Compass , 15 (2) , Article e12579. 10.1111/spc3.12579."
+  },
+  {
+    "objectID": "schedule/13-week-ML.html#before-class",
+    "href": "schedule/13-week-ML.html#before-class",
+    "title": "Week 13",
+    "section": "",
+    "text": "Pargent, F., Schoedel, R., & Stachl, C. (2023). Best Practices in Supervised Machine Learning: A Tutorial for Psychologists. Advances in Methods and Practices in Psychological Science, 6(3), 25152459231162559. https://doi.org/10.1177/25152459231162559\nRosenbusch, H; Soldner, F; Evans, AM; Zeelenberg, M; (2021) Supervised machine learning methods in psychology: A practical introduction with annotated R code. Social and Personality Psychology Compass , 15 (2) , Article e12579. 10.1111/spc3.12579."
   }
 ]

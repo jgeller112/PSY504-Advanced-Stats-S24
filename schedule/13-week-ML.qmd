@@ -1,0 +1,14 @@
+---
+title: "Week 13"
+subtitle: "Machine Learning Techniques"
+date: 2024-02-24
+---
+## Before Class
+
+### Articles
+
+Pargent, F., Schoedel, R., & Stachl, C. (2023). [Best Practices in Supervised Machine Learning: A Tutorial for Psychologists.](/readings/ML/machine-learning-psych.pdf) Advances in Methods and Practices in Psychological Science, 6(3), 25152459231162559. https://doi.org/10.1177/25152459231162559
+
+Rosenbusch, H; Soldner, F; Evans, AM; Zeelenberg, M; (2021) [Supervised machine learning methods in psychology: A practical introduction with annotated R code.](/readings/ML/Supervisedmachinelearningmethods.pdf) Social and Personality Psychology Compass , 15 (2) , Article e12579. 10.1111/spc3.12579. 
+
+
