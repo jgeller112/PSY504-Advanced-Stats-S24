@@ -23,10 +23,9 @@ Here's your roadmap for the semester!
 
 | Week  | Date | Topic | Content | Class | Labs | [{{<    fa   person >}}] |
 |---|---|---|---|---|---|---|
-|  |   |   |  |  |  |  |
-| 1 | 1/29/24 | Introduction |  |  |  |  |
-|  | 1/31/24 | Quarto:   Blogging and Website | [{{<    fa   book-open-reader >}}](/schedule/01-week.qmd) | {{< fa laptop-code   >}} |  | Jason |
-| 2 | 2/5/24 | Multilevel   modeling | [{{<    fa   book-open-reader >}}](/schedule/02-week-MLM.qmd) | {{< fa laptop-code   >}} |  |  |
+| 1 | 1/29/24 | Introduction | [{{<    fa   book-open-reader >}}](/schedule/01-week.qmd) | {{< fa laptop-code   >}} |  |  |
+|  | 1/31/24 | Quarto: Blogging and Website <br>Multilevel modeling | [{{<    fa   book-open-reader >}}](/schedule/02-week-mlm.qmd) | {{< fa laptop-code   >}} |  | Jason |
+| 2 | 2/5/24 | Multilevel modeling | [{{<    fa   book-open-reader >}}](/schedule/02-week-mlm.qmd) | {{< fa laptop-code   >}} |  | Jason |
 |  | 2/7/24 | Lab 1 |  |  | {{< fa pen-ruler >}} |  |
 | 3 | 2/12/24 | Missing data | [{{<    fa   book-open-reader >}}](/schedule/03-week.qmd) | {{< fa laptop-code   >}} |  |  |
 |  | 2/14/24 | Lab 2 |  |  | {{< fa pen-ruler >}} |  |
@@ -39,15 +38,15 @@ Here's your roadmap for the semester!
 | 7 | Spring Break |   |  |  |  |  |
 | 8 | 3/18/24 | Poisson regression | [{{<    fa   book-open-reader >}}](/schedule/08-week-pos.qmd) | {{< fa laptop-code   >}} |  |  |
 |  | 3/20/24 | Lab 6  |  |  | {{< fa pen-ruler >}} |  |
-| 9 | 3/25/24 | Bayesian analysis | [{{<    fa   book-open-reader >}}](/schedule/08-week-bayes.qmd) | {{< fa laptop-code   >}} |  |  |
+| 9 | 3/25/24 | Bayesian analysis | [{{<    fa   book-open-reader >}}](/schedule/09-week-bayes.qmd) | {{< fa laptop-code   >}} |  |  |
 |  | 3/27/24 | Lab 7 |  | {{< fa laptop-code >}} | {{< fa pen-ruler >}} |  |
-| 10 | 4/1/24 | Mediation | [{{<    fa   book-open-reader >}}](/schedule/10-week-med.qmd) |  |  |  |
+| 10 | 4/1/24 | Beta regression | [{{<    fa   book-open-reader >}}](/schedule/10-week-beta.qmd) |  |  |  |
 |  | 4/3/24 | Lab 8  |  |  | {{< fa pen-ruler >}} |  |
-| 11 | 4/8/24 | Path modeling/SEM | [{{<    fa   book-open-reader >}}](/schedule/11-week-sem.qmd) | {{< fa laptop-code   >}} |  |  |
-|  | 4/10/24 | Lab 9  |  |  | {{< fa pen-ruler >}} |  |
-| 12 | 4/15/24 | Factor analysis | [{{<    fa   book-open-reader >}}](/schedule/12-week-fa.qmd) | {{< fa laptop-code   >}} |  |  |
-|  | 4/17/24 | Lab 10 |  |  | {{< fa pen-ruler >}} |  |
-| 13 | 4/22/24 | Supervised machine learning techniques | [{{<    fa   book-open-reader >}}](/schedule/13-week-ML.qmd) | {{< fa laptop-code   >}} |  |  |
-|  | 4/24/24 | Lab 11 |  |  | {{< fa pen-ruler >}} |  |
+| 11 | 4/8/24 | Mediation | [{{<    fa   book-open-reader >}}](/schedule/11-week-med.qmd) |  |  |  |
+|  | 4/10/24 | Lab 8  |  |  | {{< fa pen-ruler >}} |  |
+| 12 | 4/15/24 | Path modeling/SEM | [{{<    fa   book-open-reader >}}](/schedule/12-week-sem.qmd) | {{< fa laptop-code   >}} |  |  |
+|  | 4/17/24 | Lab 9  |  |  | {{< fa pen-ruler >}} |  |
+| 13 | 4/22/24 | Factor analysis | [{{<    fa   book-open-reader >}}](/schedule/13-week-fa.qmd) | {{< fa laptop-code   >}} |  |  |
+|  | 4/24/24 | Lab 10 |  |  | {{< fa pen-ruler >}} |  |
 | 14 | Reading Week |   |  |  |  |  |
 | 15 | Finals |   |  |  |  |  |

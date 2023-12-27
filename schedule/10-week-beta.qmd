@@ -1,0 +1,19 @@
+---
+title: "Week 10"
+subtitle: "Beta"
+date: 2023-04-01
+---
+## Before Class
+
+### Articles
+
+- Heiss, A. (n.d.). A guide to modeling proportions with Bayesian beta and zero-inflated beta regression models. Andrew Heiss. Retrieved December 27, 2023, from https://www.andrewheiss.com/blog/2021/11/08/beta-regression-guide/
+
+- Vuorre, M. (2019, February 18). Matti’s homepage—How to analyze visual analog (slider) scale data? Matti’s Homepage. https://mvuorre.github.io/posts/2019-02-18-analyze-analog-scale-ratings-with-zero-one-inflated-beta-models/
+
+####  Ordinal Beta Reg
+
+- https://stats.andrewheiss.com/compassionate-clam/notebook/ordbeta.html
+
+
+

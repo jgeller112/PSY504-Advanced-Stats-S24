@@ -27,24 +27,4 @@ date: 2024-03-25
 
   - Really nice explanation of MCMC 
 
-### Video
-
-- {{< fa video >}} What is Bayes?
-
-<center>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3OJEae7Qb_o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-<center>
-
-- {{< fa video >}} Why use Bayes?
-
-<center>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/mAUwjSo5TJE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-<center>
-
-## After Class
-
-- JASP has some nice Bayesian implementations
-
-[Bayesian Regression in JASP ](https://www.youtube.com/watch?v=QRJ05uZs58w)
-
 

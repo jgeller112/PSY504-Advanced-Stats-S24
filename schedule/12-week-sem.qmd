@@ -1,7 +1,7 @@
 ---
-title: "Week 9"
-subtitle: "SEM"
-da  te: 2023-04-10
+title: "Week 12"
+subtitle: "Path Modeling/SEM"
+date: 2024-04-15
 ---
 ## Before Class
 
