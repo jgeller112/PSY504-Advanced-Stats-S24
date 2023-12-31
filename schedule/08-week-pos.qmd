@@ -8,7 +8,6 @@ date: 2023-03-18
 
 ### Articles
 
-
 - {{< fa book >}}Coxe, S., West, S. G., & Aiken, L. S. (2009). [The Analysis of Count Data: A Gentle Introduction to Poisson Regression and Its Alternatives](/readings/count_data_poisson.pdf). Journal of Personality Assessment, 91(2), 121–136. https://doi.org/10.1080/00223890802634175
 
 - {{< fa book >}}
@@ -24,29 +23,11 @@ Winter, B., & Bürkner, P.-C. (2021). [Poisson regression for linguists: A tutor
     
   - How is poisson related to the negative binomial?
   
-### Optional
 
-Ryan, W. H., Evers, E. R. K., & Moore, D. A. (2021). [Poisson Regressions: A Little Fishy](/readings/collabra_2021_fishy.pdf). Collabra: Psychology, 7(1), 27242. https://doi.org/10.1525/collabra.27242
+- {{< fa book >}} Ryan, W. H., Evers, E. R. K., & Moore, D. A. (2021). [Poisson Regressions: A Little Fishy](/readings/collabra_2021_fishy.pdf). Collabra: Psychology, 7(1), 27242. https://doi.org/10.1525/collabra.27242
 
+### Textbook
 
-### Videos
+- {{< fa book >}} Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
 
-{{< fa video >}}
-- Introduction to Poisson regression 
-<center>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Obpz_Uvo2rQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-<center>
-
-## After Class
-
-- {{< fa book >}} Kabacoff, R. I. (2022). \*R* in Action\* chapter 13.
-
-- {{< fa video >}} Running Poisson regression in R
-
-<center>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/QPY4zuxs1W0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-<center>
-
-<center>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/WuWGXJvTda4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-<center>
+    -   [Ch.8](/readings/poi/poi.pdf)
