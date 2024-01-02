@@ -6,10 +6,17 @@ date: 2024-02-26
 
 ## Before Class
 
+### Textbook
+
+- {{< fa book >}} Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
+
+    -   [Ch.4](/readings/ord/ord.pdf)
+    -   [Ch.5](/readings/ord/partialodds.pdf)
+
+
 ### Articles
 
 **The R package brms (which is a Bayesian data analysis package) is used in the papers below. While it is a Bayesian technique, the output is similar to a regression output.** 
-
 - {{< fa book >}} Liddell, T. M., & Kruschke, J. K. (2018). [Analyzing ordinal data with metric models: What could possibly go wrong?](https://www.sciencedirect.com/science/article/pii/S0022103117307746?via%3Dihub) Journal of Experimental Social Psychology, 79, 328–348. https://doi.org/10.1016/j.jesp.2018.08.009
 
 
@@ -17,20 +24,20 @@ date: 2024-02-26
 
 - {{< fa book >}} Veríssimo, J. (2021). [Analysis of rating scales: A pervasive problem in bilingualism research and a solution with Bayesian ordinal models](https://files.osf.io/v1/resources/4m2ap/providers/osfstorage/6013ef9a75226b05015161a6?action=download&direct&version=2). Bilingualism: Language and Cognition, 24(5), 842-848. doi:10.1017/S1366728921000316
 
+#### Questions
+
   - Describe what is meant by an ordinal variable 
   
-  - Describe how an ordinal variable can be represented using a latent continuous variable.
+  - Describe how an ordinal variable can be represented using a latent continuous variable
 
   - What is cumulative probability? 
   
   - List some common applications of ordinal regression in your field
   
-  - How do you interpret the coefficients in an ordinal regression model? 
-  - What is the proportional odds assumption underlying ordinal regression? 
+  - How do you interpret the coefficients in an ordinal regression model?
   
-### Textbook
-
-- {{< fa book >}} Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
-
-    -   [Ch.4](/readings/ord/ord.pdf)
+  - What is the proportional odds assumption underlying ordinal regression? What do you do when it is violated?
+  
+  
+    
 
