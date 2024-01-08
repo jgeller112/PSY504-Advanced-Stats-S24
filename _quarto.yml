@@ -58,10 +58,10 @@ website:
         - schedule/06-week-mult.qmd
         - schedule/08-week-pos.qmd
         - schedule/09-week-bayes.qmd
-        - schedule/10-week-med.qmd
-        - schedule/11-week-sem.qmd
-        - schedule/12-week-fa.qmd
-        - schedule/13-week-ML.qmd
+        - schedule/10-week-beta.qmd
+        - schedule/11-week-med.qmd
+        - schedule/12-week-sem.qmd
+        - schedule/13-week-fa.qmd
         
     - title: "Assignments"
       style: "docked"
