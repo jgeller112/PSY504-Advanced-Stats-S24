@@ -4,14 +4,8 @@ subtitle: "Ordinal Regression"
 date: 2024-02-26
 ---
 
-## Before Class
+## Before class
 
-### Textbook
-
-- {{< fa book >}} Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
-
-    -   [Ch.4](/readings/ord/ord.pdf)
-    -   [Ch.5](/readings/ord/partialodds.pdf)
 
 
 ### Articles
@@ -38,6 +32,13 @@ date: 2024-02-26
   
   - What is the proportional odds assumption underlying ordinal regression? What do you do when it is violated?
   
-  
+## After class
+
+### Textbook
+
+- {{< fa book >}} Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
+
+    -   [Ch.4](/readings/ord/ord.pdf)
+    -   [Ch.5](/readings/ord/partialodds.pdf)
     
 

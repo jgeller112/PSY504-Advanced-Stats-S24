@@ -4,7 +4,7 @@ subtitle: "Multilevel Modeling"
 date: 2024-02-05
 ---
 
-## Before Class
+## Before class
 
 ### Textbook
 
@@ -19,7 +19,7 @@ date: 2024-02-05
   - What is the difference between grand-mean and group mean centered data?
   - What is the folly of trying to account for dependence by including level 2 data in an ordinary regression model?
 
-## After Class
+## After class
 
 ### Textbook 
 

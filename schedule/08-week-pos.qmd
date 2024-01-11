@@ -5,13 +5,6 @@ date: 2023-03-18
 ---
 
 ## Before Class
-
-### Textbook
-
-- {{< fa book >}} Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
-
-    - [Ch.8](/readings/poi/poi.pdf)
-    - [Ch.9](/readings/poi/negbinom.pdf)
     
 ### Articles
 
@@ -34,3 +27,12 @@ date: 2023-03-18
   - How is poisson related to the negative binomial and zero-inflated?
   
   - What are some of the issues associted with Poisson regression?
+  
+## After Class
+
+### Textbook
+
+- {{< fa book >}} Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
+
+    - [Ch.8](/readings/poi/poi.pdf)
+    - [Ch.9](/readings/poi/negbinom.pdf)

@@ -3,7 +3,7 @@ title: "Week 6"
 subtitle: "Multinomial Regression"
 date: 2023-02-27
 ---
-## Before Class
+## Before class
 
 ### Textbook
 
