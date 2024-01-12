@@ -4,7 +4,7 @@ subtitle: "Poission Regression"
 date: 2023-03-18
 ---
 
-## Before Class
+## Before class
     
 ### Articles
 
@@ -28,7 +28,7 @@ date: 2023-03-18
   
   - What are some of the issues associted with Poisson regression?
   
-## After Class
+## After class
 
 ### Textbook
 

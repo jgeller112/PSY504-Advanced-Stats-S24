@@ -142,8 +142,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#technology" id="toc-technology" class="nav-link" data-scroll-target="#technology">Technology</a></li>
   <li><a href="#assignments" id="toc-assignments" class="nav-link" data-scroll-target="#assignments">Assignments</a>
   <ul class="collapse">
-  <li><a href="#annotations" id="toc-annotations" class="nav-link" data-scroll-target="#annotations">Annotations</a></li>
-  <li><a href="#student-mini-lectures-and-discussions" id="toc-student-mini-lectures-and-discussions" class="nav-link" data-scroll-target="#student-mini-lectures-and-discussions">Student Mini-Lectures and Discussions</a></li>
+  <li><a href="#readings" id="toc-readings" class="nav-link" data-scroll-target="#readings">Readings</a></li>
+  <li><a href="#student-mini-lectures-and-discussions" id="toc-student-mini-lectures-and-discussions" class="nav-link" data-scroll-target="#student-mini-lectures-and-discussions">Student mini-lectures and discussions</a></li>
   <li><a href="#labsexercises" id="toc-labsexercises" class="nav-link" data-scroll-target="#labsexercises">Labs/Exercises</a></li>
   <li><a href="#tutorial" id="toc-tutorial" class="nav-link" data-scroll-target="#tutorial">Tutorial</a></li>
   <li><a href="#participation" id="toc-participation" class="nav-link" data-scroll-target="#participation">Participation</a></li>
@@ -178,7 +178,14 @@ ul.task-list li input[type="checkbox"] {
 <section id="course-introduction" class="level1">
 <h1>Course Introduction</h1>
 <p>As a discipline, statistics has given profound tools to the sciences. Statistics is our way of detecting patterns in the noisy universe. Traditionally, psychologists were limited to research questions that could be answered with classical statistical analyses, but without particularly intending to do so, psychologists have found themselves at the cutting age of statistical discovery in the 20th and 21st centuries. This is because we needed to adapt our tools to meet the demands of the complex nature of the phenomena we study. This course will give you the quantitative tools to ask and answer research questions that were impossible to test as recently as a decade ago. Specifically, we will cover the following topics as stand-alone modules:</p>
-<p>1.Robust Methods: bootstrapping, permutation tests 2.Missing Data 3.Non-Gaussian statistics: poisson regression, ordinal regression 4.Beyond Null Hypothesis Significance Testing (NHST): Structural equation models, Bayesian hypothesis testing 5.Process models: Mediation, multiple mediation, path analysis 6.Dimension reduction: principal components analysis (PCA), clustering 7. Time-based analyses: Growth curve modeling</p>
+<ol type="1">
+<li>Multilevel modeling</li>
+<li>Missing Data</li>
+<li>Non-Gaussian statistics: logistic regression, poisson regression, ordinal regression, multinomial regression, beta regression</li>
+<li>Beyond Null Hypothesis Significance Testing (NHST): Structural equation models, Bayesian hypothesis testing</li>
+<li>Process models: Mediation, multiple mediation, path analysis</li>
+<li>Dimension reduction: Factor analysis</li>
+</ol>
 <p>I place a strong emphasis on practical application. I believe you are more likely to learn and readily use these analyses in the future if you do them at least once now. Every lecture will have “challenge” demonstrations for you to try the analyses along with me. Every Wednesday there will be a lab going over the material covered that week. The lab assignments will help you build a personal library of example statistical scripts that you will hopefully find useful for years into the future. These lab assignments will be due at the end of class.</p>
 </section>
 <section id="audience" class="level1">
@@ -188,7 +195,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="prerequisite" class="level1">
 <h1>Prerequisite</h1>
 <p>The main prerequisite for this course is PSY 503.</p>
-<p><strong>NOTE:</strong> It is highly recommended (but not mandatory) that students also enroll in <em>PSY 505: Advanced Seminar in Statistical Methods and Research Practices in Psychology</em> (Spring 2023, T: 11am - 1pm), which constitutes an important complement to this course.</p>
+<p><strong>NOTE:</strong> It is highly recommended (but not mandatory) that students also enroll in <em>PSY 505: Advanced Seminar in Statistical Methods and Research Practices in Psychology</em> (Spring 2024, T: 11am - 1pm), which constitutes an important complement to this course.</p>
 </section>
 <section id="student-learning-outcomes" class="level1">
 <h1>Student Learning Outcomes</h1>
@@ -210,22 +217,36 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><p>I strongly recommend you get the following books:</p>
 <ul>
-<li>McCoach, D. B., &amp; Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.
+<li><p>McCoach, D. B., &amp; Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.</p>
 <center>
-<img src="modelingbook.jpg" class="img-fluid" width="417">
+<p><img src="modelingbook.jpg" class="img-fluid" width="417"></p>
 <center></center></center></li>
 </ul></li>
-<li><p>Kabacoff, R. I. (2022). R in Action, Third Edition: Data analysis and graphics with R and Tidyverse (3rd edition). Manning.</p>
+<li><p>Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.</p>
 <center>
-<p><img src="rinaction.jpeg" class="img-fluid" width="417"></p>
-<center></center></center></li>
+<p><img src="textbook.png" class="img-fluid" width="472"></p>
+<center>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>I will post PDFs for these chapters so you do not need to buy them, but these are really nice books to have (they are pretty cheap).</li>
 </ul>
-<p>In addition, I will also assign articles (these will be posted <a href="./schedule">here</a>)</p>
+</div>
+</div></center></center></li>
+</ul>
 </section>
 <section id="attendance-policy" class="level1">
 <h1>Attendance Policy</h1>
 <p>You’re expected to come to class, having (1) carefully read the material and (2) completed the weekly reading report.</p>
-<p>Attendance and participation are <em>crucial</em> to your success in this course. However, we’re in the middle of a deadly global pandemic and <em>so many people</em> are getting sick. If you are sick or are incapable of participating meaningfully in class (e.g., you have stayed up all night and are going to fall asleep in class), please stay home. I will try my best to record in-class lectures (or record them at home).</p>
+<p>Attendance and participation are <em>crucial</em> to your success in this course. If you are sick or are incapable of participating meaningfully in class (e.g., you have stayed up all night and are going to fall asleep in class), please stay home. I will try my best to record in-class lectures (or record them at home) so you do not miss any content.</p>
 </section>
 <section id="absences-and-late-work" class="level1">
 <h1>Absences and Late Work</h1>
@@ -237,19 +258,31 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="assignments" class="level1">
 <h1>Assignments</h1>
-<p>There will be no points associated with any of the assignments this semester. To receive a passing grade (A), all assignments must be turned in.</p>
-<section id="annotations" class="level2">
-<h2 class="anchored" data-anchor-id="annotations">Annotations</h2>
-<p>Every week there will be assigned readings. You will be expected to read the weekly reading before class, so you can come prepared to class for student-lead presentations. Each week you will contribute to a collaborative annotation of the reading on Canvas. This is done via hypothes.is—simply add comments directly to the reading via the link on Canvas.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The default grade is an “A,” and the vast majority of students will make an “A.” If you are particularly engaged with the class either during lecture or outside of class, do all your labs (and revise them in accordance with my feedback) and submit one of the best final project papers, then you will get an A+. If you do a substandard job on your labs (e.g., not submitting or doing really poorly on a number of labs), then you could make an A- or lower. Or, if you submit an abysmally bad final paper, then you can make an A- or lower. If you are at risk for making less than an A- in the course (i.e., a B+ or lower) due to lab submissions, then we will let you know before the last date you can cancel the class. In terms of your GPA, getting an A or A+ does not matter. This marking scheme is purposefully non-quantitative so that you will focus on learning instead of on your marks. Basically, you will make an A unless you slack off and do not care about the training you are receiving through this class. There is a big difference between “slacking off” and being overwhelmed, though. Please reach out to me if you feel overwhelmed.</p>
+</div>
+</div>
+<section id="readings" class="level2">
+<h2 class="anchored" data-anchor-id="readings">Readings</h2>
+<p>Every week there will be assigned readings. You will be expected to read the weekly readings before class, so you can come prepared to class for student-lead presentations. There are also readings for after class that will aid in the lab portion of the class on Wednesdays.</p>
 </section>
 <section id="student-mini-lectures-and-discussions" class="level2">
-<h2 class="anchored" data-anchor-id="student-mini-lectures-and-discussions">Student Mini-Lectures and Discussions</h2>
+<h2 class="anchored" data-anchor-id="student-mini-lectures-and-discussions">Student mini-lectures and discussions</h2>
 <p>Every week (Monday) one of your peers will present an introduction to the method we will be discussing that week, based on the assigned reading for that week (you are to use the assigned articles to guide your presentation and discussion). Each presentation should be be (~20 minutes).</p>
 <p>After, I will take over and highlight how to use R to apply these methods to your data.</p>
 <p>In these presentations, I would like:</p>
 <ul>
 <li><p>A clear overview of the topic: This should include a brief introduction to the topic, highlighting its relevance and importance in psychological research. You should also address limitations, if any.</p></li>
-<li><p>Examples and applications: To help peers’ understand the practical implications of the topic, you should provide examples and applications of how the topic is used in psychology. This could include your own research or examples from the literature. If you wanted to walk through an example, that is also welcome. I am going to be program agnostic here (use R, Python, SPSS, JASP, etc.) to do this.</p></li>
+<li><p>Examples and applications: To help peers’ understand the practical implications of the topic, you should provide examples and applications of how the topic is used in psychology. This could include your own research or examples from the literature. If you wanted to walk through an example, that is also welcome.</p></li>
 <li><p>A discussion of things you did not understand or you had general questions about.</p></li>
 </ul>
 </section>
@@ -258,7 +291,7 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>Each week (Wednesday) we will have one corresponding lab exercise that will be started in class. The purpose is for you to get direct experience conducting the analyses that you learn. Each lab exercise will consist of several questions and will require R (will also accept Python) to answer the questions in a reproducible manner. All lab assignments must be reproducible (i.e., I can replicate the work you did without any errors). You may complete the labs by yourself or working with another person. If you work with another person, your work must obviously be your own.</li>
 </ul>
-<p>Ideally, you will finish labs in class. However, if you choose to finish at home, completed labs will be due at 6:00 p.m. on the Sunday of that week. Please let me know if you need an extension.</p>
+<p>Ideally, you will finish labs in class. However, if you choose to finish at home, completed labs will be due at 11:59 p.m. on the Sunday of that week. Please let me know if you need an extension. I WILL NOT ACCEPT LABS MORE THAN A WEEK LATE.</p>
 </section>
 <section id="tutorial" class="level2">
 <h2 class="anchored" data-anchor-id="tutorial">Tutorial</h2>
