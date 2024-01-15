@@ -81,41 +81,30 @@ https://calendly.com/jg9120/30min
 
 -   I strongly recommend you get the following books:
 
-    -   McCoach, D. B., & Cintron, D. (2022). Introduction to Modern
-        Modelling Methods (1st edition). SAGE Publications Ltd.
+    -   Xing Liu (2023). Categorical Data Analysis and Multilevel
+        Modeling Using R (1st edition). SAGE Publications Ltd.
 
         <center>
 
-        ![](modelingbook.jpg){width="417"}
+        ![](textbook.png){width="472"}
 
         <center>
 
--   Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling
-    Using R (1st edition). SAGE Publications Ltd.
-
-    <center>
-
-    ![](textbook.png){width="472"}
-
-    <center>
-
-    ::: callout-note
-    -   I will post PDFs for these chapters so you do not need to buy
-        them, but these are really nice books to have (they are pretty
-        cheap).
-    :::
+        ::: callout-note
+        -   I will post PDFs for these chapters so you do not need to
+            buy them, but these are really nice books to have (they are
+            pretty cheap).
+        :::
 
 # Attendance Policy
 
-You're expected to come to class, having (1) carefully read the material
-and (2) completed the weekly reading report.
+You're expected to come to class prepared!
 
 Attendance and participation are *crucial* to your success in this
 course. If you are sick or are incapable of participating meaningfully
 in class (e.g., you have stayed up all night and are going to fall
 asleep in class), please stay home. I will try my best to record
-in-class lectures (or record them at home) so you do not miss any
-content.
+in-class (or record them at home) so you do not miss any content.
 
 # Absences and Late Work
 
@@ -210,6 +199,22 @@ For your final project, you will create a tutorial explaining how to run
 a particular analysis in R or Python. This will involve finding data or
 using your own data. The final project gives you a chance to pursue a
 specific method discussed in class and apply it to your own data.
+
+There are a tone of great blog posts out there to serve as your muse!
+
+-   <https://solomonkurz.netlify.app/blog/>
+
+-   <https://www.andrewheiss.com/blog/>
+
+-   <https://vuorre.netlify.app/blog>
+
+-   <https://daniellakens.blogspot.com/>
+
+-   <https://cameronpatrick.com/blog>
+
+-   <https://www.drjasongeller.com/blog/>
+
+## Final Exam
 
 **There is no final exam 😊**
 

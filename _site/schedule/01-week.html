@@ -153,6 +153,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../schedule/02-week-MLM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 2</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../schedule/03-week.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Week 3</span></a>
   </div>
@@ -189,25 +195,25 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../schedule/10-week-med.html" class="sidebar-item-text sidebar-link">
+  <a href="../schedule/10-week-beta.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Week 10</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../schedule/11-week-sem.html" class="sidebar-item-text sidebar-link">
+  <a href="../schedule/11-week-med.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Week 11</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../schedule/12-week-fa.html" class="sidebar-item-text sidebar-link">
+  <a href="../schedule/12-week-sem.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Week 12</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../schedule/13-week-ML.html" class="sidebar-item-text sidebar-link">
+  <a href="../schedule/13-week-fa.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Week 13</span></a>
   </div>
 </li>
@@ -221,7 +227,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#before-class" id="toc-before-class" class="nav-link active" data-scroll-target="#before-class">Before Class</a></li>
+  <li><a href="#installation-setup" id="toc-installation-setup" class="nav-link active" data-scroll-target="#installation-setup">Installation &amp; Setup</a>
+  <ul class="collapse">
+  <li><a href="#a.-install-quarto-and-your-programming-language" id="toc-a.-install-quarto-and-your-programming-language" class="nav-link" data-scroll-target="#a.-install-quarto-and-your-programming-language">A. Install Quarto and your programming language</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -254,36 +263,121 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<ul>
-<li>Introduction to Quarto and how to create website/blog</li>
-</ul>
-<section id="before-class" class="level2">
-<h2 class="anchored" data-anchor-id="before-class">Before Class</h2>
-<div class="callout callout-style-default callout-important callout-titled">
+<section id="installation-setup" class="level1 unnumbered">
+<h1 class="unnumbered">Installation &amp; Setup</h1>
+<p>The installation procedure will differ depending on how you choose to work with the Quarto publishing system. Below we go into the following 2 situations:</p>
+<ol type="1">
+<li>Using Quarto with Python or R in Visual Studio Code</li>
+<li>Using Quarto with R in RStudio</li>
+</ol>
+<p>It is also possible to use Quarto with Python in Jupyter notebooks. We do not go into that situation in this workshop for now. Just know that it is possible by installing a Python installation, Jupyter lab (e.g., via Anaconda) and Quarto (<a href="https://quarto.org/docs/get-started/hello/jupyter.html">see Quarto documentation</a>).</p>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Important
+Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
+<p>Besides R and Python, Quarto can also work with other programming languages, such as Julia or Observable, and it can interact with other software as well, like Neovim and simple Text editors.</p>
+</div>
+</div>
+<section id="a.-install-quarto-and-your-programming-language" class="level2">
+<h2 class="anchored" data-anchor-id="a.-install-quarto-and-your-programming-language">A. Install Quarto and your programming language</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">1. Quarto in VS Code (R or Python)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">2. Quarto in Rstudio (R)</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<section id="install-visual-studio-code" class="level2">
+<h2 class="anchored" data-anchor-id="install-visual-studio-code">1. Install Visual Studio Code</h2>
+<p>Install Visual Studio Code (VS Code) using the <a href="https://code.visualstudio.com/docs/setup/setup-overview">set-up instructions for your operating system</a>.</p>
+<ol type="1">
+<li>Download VS Code from <a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></li>
+<li>Walk through the installation steps. The default installation location is usually fine. If you have administrator rights, we recommend to Add VS Code to the PATH if you’re using Windows.</li>
+</ol>
+</section>
+<section id="set-up-python-andor-r-for-use-in-vs-code" class="level2">
+<h2 class="anchored" data-anchor-id="set-up-python-andor-r-for-use-in-vs-code">2. Set up Python and/or R for use in VS Code</h2>
+<ol type="1">
+<li>R: Follow <a href="https://code.visualstudio.com/docs/languages/r#_getting-started">the instructions here</a> for installing R and using it in VS Code.
+<ol type="a">
+<li>In VS Code, you can open an R terminal to install the <code>languageserver</code> package.</li>
+</ol></li>
+<li>Python: Follow <a href="https://code.visualstudio.com/docs/python/python-tutorial#_install-a-python-interpreter">the instructions here</a> for installing a Python interpreter, or see the <a href="https://utrechtuniversity.github.io/workshop-introduction-to-python/installation-and-setup.html#install-python">installation instructions</a> in our Introduction to Python workshop.
+<ol type="a">
+<li>Be sure to also install the Jupyter extension in VS Code if you wish to work with Jupyter notebooks (<code>.ipynb</code>).</li>
+</ol></li>
+</ol>
+</section>
+<section id="install-quarto" class="level2">
+<h2 class="anchored" data-anchor-id="install-quarto">3. Install Quarto</h2>
+<ol type="1">
+<li>Download Quarto from <a href="https://quarto.org/docs/get-started/">https://quarto.org/docs/get-started/</a></li>
+<li>Open the msi/executable file. Answer “Yes” to the pop-up question “Do you want to allow this app to make changes to your device?”. Then start the set-up wizard.</li>
+<li>Choose <code>Install for all users</code>. If you do not have administrator rights, select <code>Install just for you</code>.</li>
+<li>Choose the installation location, usually the default proposed location is fine.</li>
+<li>Installation will start. After installation, click Finish.</li>
+</ol>
+</section>
+<section id="make-vs-code-quarto-and-rpython-talk-to-each-other" class="level2">
+<h2 class="anchored" data-anchor-id="make-vs-code-quarto-and-rpython-talk-to-each-other">4. Make VS Code, Quarto and R/Python talk to each other</h2>
+<p>Now that everything is installed, we need to make sure VS Code can use Quarto and Python/R.</p>
+<ol type="1">
+<li>Open VS Code.</li>
+<li>Open the Extensions view in VS Code (<code>Ctrl+Shift+X</code> on Windows and Linux, <code>Cmd+Shift+X</code> on macOS)</li>
+<li>Install the <a href="https://marketplace.visualstudio.com/items?itemName=quarto.quarto">Quarto extension</a> from the Extensions view in VS Code.</li>
+<li>If you want to use Python in VS Code:
+<ol type="a">
+<li>From the Extensions view in VS Code, install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python">Python extension</a>.</li>
+<li>Set the Python interpreter: Open the command palette in VS Code (<code>Ctrl+Shift+P</code> on Windows and Linux, <code>Cmd+Shift+P</code> on macOS), type “Python: Select Interpreter”, and select the relevant Python interpreter from the interpreters that VS Code can find.</li>
+</ol></li>
+<li>If you want to use R in VS Code: install the <a href="https://marketplace.visualstudio.com/items?itemName=REditorSupport.r">R extension</a> from the extensions view in VS Code.</li>
+<li>Check whether Quarto is detected:
+<ol type="a">
+<li>Open a new terminal: Terminal &gt; New terminal.</li>
+<li>Type <code>quarto --version</code></li>
+<li>If a version number appears, Quarto is detected.</li>
+</ol></li>
+<li>Check whether Python is detected:
+<ol type="a">
+<li>Open a new terminal or use the one that you used in step 6a.</li>
+<li>Type <code>python --version</code></li>
+<li>If a version number appears, Python is detected.</li>
+</ol></li>
+<li>Check whether R is detected: if you can open an R terminal, it shows you the R version and R is detected successfully.</li>
+</ol>
+</section>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<section id="install-r-and-rstudio" class="level2">
+<h2 class="anchored" data-anchor-id="install-r-and-rstudio">1. Install R and Rstudio</h2>
+<p>If you do not yet have an installation for R and Rstudio, you need to install them on your device.</p>
 <ul>
-<li><p>Install latest version of RStudio,&nbsp;<a href="https://www.rstudio.com/products/rstudio/download/#download"><code>v2022.07.1</code>&nbsp;or later</a></p></li>
-<li><p>Install Quarto: https://quarto.org/docs/download/</p>
-<ul>
-<li>Follow: <a href="https://quarto.org/docs/get-started/hello/rstudio.html" class="uri">https://quarto.org/docs/get-started/hello/rstudio.html</a></li>
-</ul></li>
-<li><p>Sign up for free github account</p></li>
-<li><p>Install Github Desktop: <a href="https://docs.github.com/en/desktop/installing-and-configuring-github-desktop/installing-and-authenticating-to-github-desktop/installing-github-desktop" class="uri">https://docs.github.com/en/desktop/installing-and-configuring-github-desktop/installing-and-authenticating-to-github-desktop/installing-github-desktop</a></p></li>
-<li><p>Install Git: <a href="https://git-scm.com/downloads" class="uri">https://git-scm.com/downloads</a></p></li>
-<li><p>Make sure RStudio recognized Git: <a href="https://happygitwithr.com/rstudio-see-git.html#rstudio-see-git" class="uri">https://happygitwithr.com/rstudio-see-git.html#rstudio-see-git</a></p></li>
+<li>If you have a personal device with administrator/installation rights:
+<ol type="a">
+<li>Install R from <a href="https://cran.rstudio.com/">https://cran.rstudio.com/</a></li>
+<li>Install Rstudio from <a href="https://posit.co/download/rstudio-desktop/#download">https://posit.co/download/rstudio-desktop/#download</a></li>
+</ol></li>
+<li>If your RStudio version is older than <code>v2022.07</code>, then you should update it. Quarto recommends using the latest version of RStudio (currently v.2023.06).</li>
 </ul>
+</section>
+<section id="install-quarto-and-r-markdown" class="level2">
+<h2 class="anchored" data-anchor-id="install-quarto-and-r-markdown">2. Install Quarto and R Markdown</h2>
+<ol type="1">
+<li>In the RStudio console, type <code>install.packages("rmarkdown")</code> and <code>install.packages("quarto")</code></li>
+<li>Load both packages with <code>library(rmarkdown)</code> and <code>library(quarto)</code></li>
+<li>Restart RStudio.</li>
+<li>Check whether Quarto is detected: go to the Terminal (next to the Console) and type <code>quarto --version</code>. Alternatively, go to <code>File</code> &gt; <code>New project</code> &gt; <code>New directory</code> and check whether the Quarto outputs are presented as options (Quarto project, Quarto website, Quarto blog, Quarto book)</li>
+</ol>
+</section>
+</div>
 </div>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
