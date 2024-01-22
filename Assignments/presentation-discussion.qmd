@@ -1,0 +1,24 @@
+---
+title: "Mini presentation and discussion leading"
+---
+
+You will be responsible for preparing a short presentation on the readings and leading the discussion for one week. During the first day of class, I will provide a spreadsheet where you will select the week you want to be responsible for.
+
+When it is your turn to present and lead the discussion, you should do the following:
+
+### Presentation
+
+For your presentation, you should create either (1) a  slideshow or (2) a summary handout. 
+
+Your ~15 minute presentation should include the following:
+
+- A clear overview of the topic: This should include a brief introduction to the topic, highlighting its relevance and importance in psychological research. You should also address assumptions/pros/cons of the methods, if any.  
+
+- A review of key concepts and definitions: The student should provide a summary of the key concepts and definitions related to the topic, including any technical terms that may be unfamiliar to you or the class. 
+
+  - E.g., What are the 4 steps in the Barron and Kenny model of mediation? What does it mean to have data missing as MCAR?
+
+- Examples and applications: To help peers' understand the practical implications of the topic, you should provide examples and applications of how the topic is used in psychology. This could include your own research or examples from the literature or the materials. If you wanted to walk through an example, that is also welcome.
+
+- Lingering questions
+

@@ -1,0 +1,14 @@
+---
+title: "Blog"
+editor: visual
+---
+
+## **Final Project: A tutorial on how to do X in R**
+
+For your final project you will create a tutorial about how to something in R. The final project gives you a chance to pursue any topic in the R universe and learn more about it. For example, you could choose to write a tutorial on any R package. If you are interested in solving particular kind of problems, you could write a tutorial on solving those kinds of problems.
+
+The main part of the final project will be for you to write a tutorial exploring how to do X in R. You will write an .qmd file, that explains the issue, and gives example code showing how to solve the issue, or approach the issue. The process of writing a tutorial is a great way to learn the issues at hand yourself.
+
+All of the tutorials will then be compiled together in a web-book.
+
+I expect the tutorial to be comprehensive enough to demonstrate that you have delved into the topic. The length of the tutorial should be consistent with the length of a final paper in a typical content course.\
