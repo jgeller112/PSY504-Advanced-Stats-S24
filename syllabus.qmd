@@ -22,7 +22,7 @@ impossible to test as recently as a decade ago. Specifically, we will
 cover the following topics as stand-alone modules:
 
 1.  Multilevel modeling
-2.  Missing Data
+2.  Missing data
 3.  Non-Gaussian statistics: logistic regression, poisson regression,
     ordinal regression, multinomial regression, beta regression
 4.  Beyond Null Hypothesis Significance Testing (NHST): Structural
@@ -122,26 +122,6 @@ keep it class related.
 
 # Assignments
 
-::: callout-important
-The default grade is an “A,” and the vast majority of students will make
-an “A.” If you are particularly engaged with the class either during
-lecture or outside of class, do all your labs (and revise them in
-accordance with my feedback) and submit one of the best final project
-papers, then you will get an A+. If you do a substandard job on your
-labs (e.g., not submitting or doing really poorly on a number of labs),
-then you could make an A- or lower. Or, if you submit an abysmally bad
-final paper, then you can make an A- or lower. If you are at risk for
-making less than an A- in the course (i.e., a B+ or lower) due to lab
-submissions, then we will let you know before the last date you can
-cancel the class. In terms of your GPA, getting an A or A+ does not
-matter. This marking scheme is purposefully non-quantitative so that you
-will focus on learning instead of on your marks. Basically, you will
-make an A unless you slack off and do not care about the training you
-are receiving through this class. There is a big difference between
-“slacking off” and being overwhelmed, though. Please reach out to me if
-you feel overwhelmed.
-:::
-
 ## Readings
 
 Every week there will be assigned readings. You will be expected to read
@@ -196,9 +176,11 @@ LABS MORE THAN A WEEK LATE.
 ## Tutorial
 
 For your final project, you will create a tutorial explaining how to run
-a particular analysis in R or Python. This will involve finding data or
-using your own data. The final project gives you a chance to pursue a
-specific method discussed in class and apply it to your own data.
+a particular analysis in R. This will involve finding data or using your
+own data. The final project gives you a chance to pursue a specific
+method discussed in class and apply it to your own data. These blogs are
+to be done in Quarto and hosted on your own personal website (we will
+talk about this in class).
 
 There are a tone of great blog posts out there to serve as your muse!
 
@@ -225,10 +207,24 @@ assigned and prepared to discuss the material.
 
 # Grades
 
-At the end of the semester, you will assign yourself the final grade.
-You will provide a self-evaluation as whether you met the learning
-outcomes for the course and how well you think you did on assignments
-and the final project. I have veto rights to change your assigned grade
-:).
+::: callout-important
+The default grade is an “A,” and the vast majority of students will make
+an “A.” If you are particularly engaged with the class either during
+lecture or outside of class, do all your labs (and revise them in
+accordance with my feedback) and submit one of the best final project
+papers, then you will get an A+. If you do a substandard job on your
+labs (e.g., not submitting or doing really poorly on a number of labs),
+then you could make an A- or lower. Or, if you submit an abysmally bad
+final paper, then you can make an A- or lower. If you are at risk for
+making less than an A- in the course (i.e., a B+ or lower) due to lab
+submissions, then we will let you know before the last date you can
+cancel the class. In terms of your GPA, getting an A or A+ does not
+matter. This marking scheme is purposefully non-quantitative so that you
+will focus on learning instead of on your marks. Basically, you will
+make an A unless you slack off and do not care about the training you
+are receiving through this class. There is a big difference between
+“slacking off” and being overwhelmed, though. Please reach out to me if
+you feel overwhelmed.
+:::
 
 # [Schedule](/schedule/index.qmd)
