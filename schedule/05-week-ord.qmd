@@ -11,6 +11,7 @@ date: 2024-02-26
 ### Articles
 
 **The R package brms (which is a Bayesian data analysis package) is used in the papers below. While it is a Bayesian technique, the output is similar to a regression output.** 
+
 - {{< fa book >}} Liddell, T. M., & Kruschke, J. K. (2018). [Analyzing ordinal data with metric models: What could possibly go wrong?](https://www.sciencedirect.com/science/article/pii/S0022103117307746?via%3Dihub) Journal of Experimental Social Psychology, 79, 328–348. https://doi.org/10.1016/j.jesp.2018.08.009
 
 
