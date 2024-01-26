@@ -24,7 +24,7 @@ Here's your roadmap for the semester!
 | Week  | Date | Topic | Content | Class | Labs | [{{<    fa   person >}}] |
 |---|---|---|---|---|---|---|
 | 1 | 1/29/24 | Introduction | [{{<    fa   book-open-reader >}}](/schedule/01-week.qmd) | {{< fa laptop-code   >}} |  |  |
-|  | 1/31/24 | Quarto: Blogging and Website <br>Multilevel modeling | [{{<    fa   book-open-reader >}}](/schedule/02-week-MLM.qmd) | {{< fa laptop-code   >}} |  | Jason |
+|  | 1/31/24 | Quarto: Blogging and Website <br>Multilevel modeling | [{{<    fa   book-open-reader >}}](/schedule/01-week-MLM.qmd) | {{< fa laptop-code   >}} |  | Jason |
 | 2 | 2/5/24 | Multilevel modeling | [{{<    fa   book-open-reader >}}](/schedule/02-week-MLM.qmd) | {{< fa laptop-code   >}} |  | Jason |
 |  | 2/7/24 | Lab 1 |  |  | {{< fa pen-ruler >}} |  |
 | 3 | 2/12/24 | Missing data | [{{<    fa   book-open-reader >}}](/schedule/03-week.qmd) | {{< fa laptop-code   >}} |  |  |
