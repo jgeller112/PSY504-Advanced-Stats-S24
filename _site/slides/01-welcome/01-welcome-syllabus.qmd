@@ -1,7 +1,7 @@
 ---
 title: "Welcome Back!"
 subtitle: "PSY 504: Advanced Statistics"
-author: "Jason Geller, Ph.D.<br> Princeton University <br> Janurary 30, 2023"
+author: "Jason Geller, Ph.D.<br> Princeton University <br> Janurary 29, 2024"
 format: 
   revealjs:
     theme: [serif, pp.scss]
@@ -12,6 +12,16 @@ from: markdown+emoji
 execute:
   echo: true
 ---
+
+## Course content
+
+-   I will only use Canvas to:
+
+    -   Send announcements
+
+-   All course content located here:
+
+    -   <https://psy504-s24-advstats.netlify.app/>
 
 ## PSY 504: Advanced Statistics
 
@@ -25,25 +35,31 @@ execute:
 :::
 
 ::: {.column width="50%"}
--   Robust methods
+-   Multilevel modeling
 
 -   Missing data
 
 -   Generalized linear models
 
+-   Bayesian data analysis
+
 -   Mediation
 
 -   Path analysis (SEM)
 
--   PCA
-
--   Clustering
-
--   MLM
+-   Factor analysis
 :::
 :::
 
-## Student Learning Outcomes
+## In this class you will:
+
+-   Read some stuff
+
+-   Apply some stuff
+
+-   Write some stuff
+
+## Student learning outcomes
 
 -   Make informed analytic decisions
 
@@ -53,51 +69,45 @@ execute:
 
 -   Effectively communicate results from statistical analyses to a general audience
 
--   Use Quarto to write reproducible reports and GitHub for version control and collaboration\
+-   Use Quarto to write reproducible reports and GitHub for version control and collaboration
 
 ## Assignments
 
--   Reading annotations
-
--   Mini-lectures
+-   Mini-lecture
 
 -   Labs
 
--   Tutorial Blog
+-   Tutorial blog post
 
 ## Grades
 
--   No points associated with assignments
+-   No points/percentages associated with assignments
 
--   Self-evaluation
+-   Default grade is A
 
-    -   Did you meet learning outcomes for the class?
+    -   In order to keep A you MUST COMPLETE ALL ASSIGNMENTS
 
-    -   Did you turn in all your assignments?
+        -   You can earn A+ if you turn exemplary work
 
-    -   Based on my feedback, how well did you think you did on assignments?
+        -   A- and below, If you turn in substandard work (missing labs, late labs, half finished labs)
 
-    -   How much time outside of class did spend preparing for class?
+::: callout-important
+This marking scheme is purposefully non-quantitative so that you will focus on learning instead of on your marks
+:::
 
 # Assignments
 
-## Reading Annotations
+## Readings
 
-::: columns
-::: {.column width="50%"}
--   Every week you will annotate articles via hypothe.is platform
+-   Each week you will read a variety of articles and textbook chapters
 
--   Collaborative note taking
+    -   Before class
 
--   I've included questions to guide your reading on the course website
-:::
+    -   After class (materials to help with labs)
 
-::: {.column width="50%"}
-![](annotations.png)
-:::
-:::
+## Mini-lectures/discussion
 
-## Mini-Lectures/Discussion
+\~15 minutes
 
 ::: columns
 ::: {.column width="50%"}
@@ -115,7 +125,7 @@ execute:
 
     -   Examples and applications
 
-        -   Walk us through an example from one of the articles/readings or your own work
+        -   Walk us through an example from your own work or something of interest to you
 
 -   A few questions for the class
 :::
@@ -125,27 +135,35 @@ execute:
 
 -   Every week (Wednesday) we will have a lab activity covering material from that week
 
-    -   Lab should be completed in RMD/QMD or Jypter Notebook (**reproducible**)
+    -   Lab should be completed in QMD and rendered as HTML document (needs to be **reproducible!**)
 
-        -   Labs will be pushed to Github repository
+        -   Have until Sunday at midnight to turn them in
 
-        -   Should be able to turn it in by end of class
+-   I will provide feedback and comments that you should incorporate into a revision
 
-            -   Have until end of the week
+::: callout-note
+I will not accept labs more than a week late!
+:::
 
-## Tutorial/Blog Post
+## Tutorial/blog post
 
 -   The final project will require you to use one of the methods discussed in class to analyze data (your own or publicly available data) and write a short blog post walking us through the process (i.e., pre-processing, analysis, and interpretation of results)
 
+    ::: callout-note
     -   **Will go over how to create Quarto blog/website on Wednesday**
+    :::
 
 # Attendance
 
 -   Come to class
 
+    -   Come on time!
+
 -   If you are sick, please stay home
 
-# Office Hours
+    -   Can start a Zoom session
+
+# Office hours
 
 -   M 1:00 P.M.- 3:00 P.M.; W 1:00 P.M. - 2:00 P.M. :chair:
 
@@ -153,31 +171,29 @@ execute:
 
     -   Calendly: **https://calendly.com/jg9120/30min**
 
-# Course Content
-
--   <https://psy504-advanced-stats.netlify.app/>
-
--   I will use Github to host labs
-
--   I will use Canvas to:
-
-    -   Send announcements
-
-    -   Post readings for annotations
-
-    -   Answer and send emails
-
-# Recommended Text
+# Recommended text
 
 McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.
 
 <center>![](modelingbook.jpg){width="278"}</center>
 
-# Recommended Text
+# Recommended text
 
-Kabacoff, R. I. (2022). R in Action, Third Edition: Data analysis and graphics with R and Tidyverse (3rd edition). Manning.
+Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
 
-<center>![](rinaction.jpeg){width="319"}</center>
+<center>![](/textbook.png){width="321"}</center>
+
+## Software
+
+-   R
+
+-   RStudio (IDE)
+
+-   Quarto (QMD)
+
+    ::: callout-note
+    If you need help installing these please ask me. Instructions can be found here: <https://psy504-s24-advstats.netlify.app/schedule/01-week>
+    :::
 
 # Class Format
 
@@ -185,31 +201,38 @@ Kabacoff, R. I. (2022). R in Action, Third Edition: Data analysis and graphics w
 
 -   Peers will introduce you to the basics of each topic and get you started with examples
 
--   I'll highlight main concepts/walk you through analysis
+-   I'll highlight main concepts/walk through example(s)
+
+    -   How to run analysis in R
+
+    -   Interpretation
+
+    -   Write-up
 
 ## Lab (Wednesday)
 
--   Wednesday will be reserved for working on activities related to the topic
+-   Wednesday will be reserved for application-based activities (labs)
 
     -   Also a time to seek clarification on topics from me or your classmates
+    -   Can work in groups (strongly encouraged!)
 
-## Precept Time
+## Precept time
 
 -   PSY 505
 
     -   Tuesdays 11:00 A.M. - 1:00 P.M.
 
-Speaker and workshop focused
+-   Speaker and workshop focused (great list of speakers this semester)
 
-No HW or papers
+-   No HW or papers
 
-## Class Questions
+## Class questions
 
--   Any general questions about course content or assignments should be posted on the class [GitHub](https://github.com/jgeller112/psy504-advanced-stats/issues) Issues. There is a chance another student has already asked a similar question, so please check the other posts before adding a new question. If you know the answer to a question posted in the discussion forum, I encourage you to respond!
+-   Any general questions about course content or assignments should be posted on the class [GitHub](https://github.com/jgeller112/PSY504-Advanced-Stats-S24) Issues. There is a chance another student has already asked a similar question, so please check the other posts before adding a new question. If you know the answer to a question posted in the discussion forum, I encourage you to respond!
 
 ## Schedule
 
-<https://psy504-advanced-stats.netlify.app/schedule/>
+<https://psy504-s24-advstats.netlify.app/schedule/>
 
 ## Survey
 
