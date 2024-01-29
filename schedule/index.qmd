@@ -27,26 +27,26 @@ Here's your roadmap for the semester!
 |  | 1/31/24 | Quarto: Blogging and Website <br>Multilevel modeling | [{{<    fa   book-open-reader >}}](/schedule/01-week-MLM.qmd) | {{< fa laptop-code   >}} |  | Jason |
 | 2 | 2/5/24 | Multilevel modeling | [{{<    fa   book-open-reader >}}](/schedule/02-week-MLM.qmd) | {{< fa laptop-code   >}} |  | Jason |
 |  | 2/7/24 | Lab 1 |  |  | {{< fa pen-ruler >}} |  |
-| 3 | 2/12/24 | Missing data | [{{<    fa   book-open-reader >}}](/schedule/03-week.qmd) | {{< fa laptop-code   >}} |  |  |
+| 3 | 2/12/24 | Missing data | [{{<    fa   book-open-reader >}}](/schedule/03-week.qmd) | {{< fa laptop-code   >}} |  |Ari|
 |  | 2/14/24 | Lab 2 |  |  | {{< fa pen-ruler >}} |  |
-| 4 | 2/19/24 | Logistic regression | [{{<    fa   book-open-reader >}}](/schedule/04-week-logistic.qmd) | {{< fa laptop-code   >}} |  |  |
+| 4 | 2/19/24 | Logistic regression | [{{<    fa   book-open-reader >}}](/schedule/04-week-logistic.qmd) | {{< fa laptop-code   >}} |  | Abby  |
 |  | 2/21/24 | Lab 3 |  |  | {{< fa pen-ruler >}} |  |
-| 5 | 2/26/24 | Polytomous models: Ordinal regression | [{{<    fa   book-open-reader >}}](/schedule/05-week-ord.qmd) | {{< fa laptop-code   >}} |  |  |
+| 5 | 2/26/24 | Polytomous models: Ordinal regression | [{{<    fa   book-open-reader >}}](/schedule/05-week-ord.qmd) | {{< fa laptop-code   >}} |  | Faustine |
 |  | 2/28/24 | Lab 4 |  |  | {{< fa pen-ruler >}} |  |
-| 6 | 3/4/24 | Polytomous models:  Multinomial regression | [{{<    fa   book-open-reader >}}](/schedule/06-week-mult.qmd) | {{< fa laptop-code   >}} |  |  |
+| 6 | 3/4/24 | Polytomous models:  Multinomial regression | [{{<    fa   book-open-reader >}}](/schedule/06-week-mult.qmd) | {{< fa laptop-code   >}} |  | Nicole  |
 |  | 3/6/24 | Lab 5 |  |  | {{< fa pen-ruler >}} |  |
 | 7 | Spring Break |   |  |  |  |  |
-| 8 | 3/18/24 | Poisson regression | [{{<    fa   book-open-reader >}}](/schedule/08-week-pos.qmd) | {{< fa laptop-code   >}} |  |  |
+| 8 | 3/18/24 | Poisson regression | [{{<    fa   book-open-reader >}}](/schedule/08-week-pos.qmd) | {{< fa laptop-code   >}} |  | Kennedy |
 |  | 3/20/24 | Lab 6  |  |  | {{< fa pen-ruler >}} |  |
-| 9 | 3/25/24 | Bayesian analysis | [{{<    fa   book-open-reader >}}](/schedule/09-week-bayes.qmd) | {{< fa laptop-code   >}} |  |  |
+| 9 | 3/25/24 | Bayesian analysis | [{{<    fa   book-open-reader >}}](/schedule/09-week-bayes.qmd) | {{< fa laptop-code   >}} |  | Alex and Ham  |
 |  | 3/27/24 | Lab 7 |  | {{< fa laptop-code >}} | {{< fa pen-ruler >}} |  |
-| 10 | 4/1/24 | Beta regression | [{{<    fa   book-open-reader >}}](/schedule/10-week-beta.qmd) |  |  |  |
+| 10 | 4/1/24 | Beta regression | [{{<    fa   book-open-reader >}}](/schedule/10-week-beta.qmd) |{{< fa laptop-code   >}}  |  | Xiaoyi  |
 |  | 4/3/24 | Lab 8  |  |  | {{< fa pen-ruler >}} |  |
-| 11 | 4/8/24 | Mediation | [{{<    fa   book-open-reader >}}](/schedule/11-week-med.qmd) |  |  |  |
+| 11 | 4/8/24 | Mediation | [{{<    fa   book-open-reader >}}](/schedule/11-week-med.qmd) |{{< fa laptop-code   >}}  |  |Kristopher  |
 |  | 4/10/24 | Lab 8  |  |  | {{< fa pen-ruler >}} |  |
-| 12 | 4/15/24 | Path modeling/SEM | [{{<    fa   book-open-reader >}}](/schedule/12-week-sem.qmd) | {{< fa laptop-code   >}} |  |  |
+| 12 | 4/15/24 | Path modeling/SEM | [{{<    fa   book-open-reader >}}](/schedule/12-week-sem.qmd) | {{< fa laptop-code   >}} |  | Renata and Brooke |
 |  | 4/17/24 | Lab 9  |  |  | {{< fa pen-ruler >}} |  |
-| 13 | 4/22/24 | Factor analysis | [{{<    fa   book-open-reader >}}](/schedule/13-week-fa.qmd) | {{< fa laptop-code   >}} |  |  |
+| 13 | 4/22/24 | Factor analysis | [{{<    fa   book-open-reader >}}](/schedule/13-week-fa.qmd) | {{< fa laptop-code   >}} |  | Aditi  |
 |  | 4/24/24 | Lab 10 |  |  | {{< fa pen-ruler >}} |  |
 | 14 | Reading Week |   |  |  |  |  |
 | 15 | Finals |   |  |  |  |  |
