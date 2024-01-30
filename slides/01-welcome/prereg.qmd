@@ -1,0 +1,345 @@
+---
+title: "Preregistration"
+institute: Princeton Univeristy
+date: 10-21-22
+author:
+  - Jason Geller
+format: 
+  revealjs:
+    multiplex: true
+    theme: ["pp.scss"]
+    slide-number: c/t
+    incremental: true
+editor: visual
+---
+
+---
+
+# Poll
+
+::: {style="position: relative; padding-bottom: 56.25%; padding-top: 35px; height: 0; overflow: hidden;"}
+<iframe sandbox="allow-scripts allow-same-origin allow-presentation" allowfullscreen="true" allowtransparency="true" frameborder="0" height="315" src="https://www.mentimeter.com/app/presentation/al5c4knpi4qqr99vwby58tscsezxqwsu/embed" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" width="420">
+
+</iframe>
+:::
+
+##  A demo
+
+## The Replication Crisis: A Timeline 
+
+-   2011 - Daryl Bem published a paper in JPSP(top journal) claiming to have found evidence that ESP exists
+
+-   2011 - Diederik Stapel busted for fabricating data(58 papers retracted to date)
+
+-   2015 - Open Science Collaboration attempted to replicate 100 studies published in 3 top psychology journals in 2008
+
+## Open Science Collaboration (2015) 
+
+::: columns
+
+::: {.column width="40%"}
+-   Replications used materials supplied by original authors and were high-powered
+
+    -   Results: 39% of the original studies were successfully replicated
+
+        -   25% of social psychology studies replicated
+        -   50% of cognitive psychology studies replicated
+            -   Effect sizes overestimated in original studies
+:::
+
+::: {.column width="60%"}
+```{r, fig.align='center', echo=FALSE, warning=FALSE,  out.width = "100%"}
+
+knitr::include_graphics("repproj.jpg")
+```
+:::
+:::
+## Do we have a problem?
+
+```{r, fig.align='center', echo=FALSE, warning=FALSE,  out.width = "80%"}
+
+knitr::include_graphics("iscrisis.png")
+```
+
+## Potential reasons for the replication crisis
+
+- False Positive Psychology (Simmons, Nelson, & Simonsohn, 2011)
+
+- Low power in replication studies?
+
+## The Dangers of False Positives
+
+- Can be dangerous
+
+  - E.g., health research: claim that a treatment is effective when actually it isn’t, or even has negative side effects
+  
+- Wastes resources
+
+  - Researchers waste time, effort, and money conducting research on effects that don’t actually exist
+  
+- Hard to exercise false positives from the literature
+
+- Not enough incentives for researchers to conduct replications that debunk the false positives
+
+- Erodes the credibility of psychological science
+
+## Why do we have a problem?
+
+- Researcher Degrees of Freedom 
+
+  - Researchers may engage in questionable research practices (QPRs) not because they intend to be dishonest
+
+  - Rather, they are motivated to make decisions that support their hypotheses
+
+  - Make decisions so that p-value will be below .05 and can claim statistical significance
+  
+## Anything can become significant with a  creative approach
+
+:::
+
+::: {.column width="60%"}
+- Optional stopping (ending data collection when p<0.05)
+- Selective reporting of variables and conditions
+- Exclusion of participants ("Outlier")
+- Conducting tons of analyses but only report the one that best fits the
+hypothesis (“Garden of forking paths”)
+:::
+::: {.column width="60%"}
+
+- Adding covariates to the analysis
+- Transforming the data
+- Forming hypotheses post-hoc (HARKing)
+:::
+
+## Potential Soloutions
+
+- Preregistration
+
+- A formalized (time-stamped) document that specifies all hypotheses & methodological choices in writing prior to data collection
+
+  - Reduces RDoF
+  
+  - Can’t p-hack
+  
+  - Can’t HARK
+
+
+##  What is pregregistration?
+
+- Specification of your research plan before gathering any data
+
+- Separating hypothesis-generating (exploratory) from hypothesis-
+testing (confirmatory) research as the same data cannot be used to generate  and test a hypothesis
+
+- Planning improves the quality and transparency of your research, and helps  others who may wish to build on it
+
+https://cos.io/prereg/
+
+## Why Preregister?
+
+- Makes the research process more transparent
+
+- Makes	you	thoroughly	think	through	your	data	collection	and  analysis before starting
+
+- Allows to clearly distinguish between a priori and post-hoc decisions
+(confirmatory and exploratory analyses)
+
+- Strict documentation of studies
+
+- Allows	others	to	reproduce	your	results sharing)
+- Makes it harder to fool yourself and others
+
+## What to preregister?
+
+- Everything you can specify beforehand
+- Fixed decisions (e.g., outcome measures)
+- Decision rules (e.g., "if we cannot collect 100 participants until June 5,  2020, we will stop the data collection that very day and…“)
+- Statistical models (ideally analysis scripts, including data-dependent  decision rules)
+- Rules for interpretation we will interpret an effect size of X as support  for our hypothesis that…“)
+- General rules of your lab regarding standard operation procedures (SOP)  or outlier exclusion
+- Following established templates makes sure you don’t miss
+
+## Where to Preregister?
+
+ - OSF
+    - Large number of templates
+    - All participating authors can cancel
+      within 48 hours
+    - Prereg can be kept private for up to four  years but then gets published
+    - Withdrawing possible but leaves behind
+    - Basic metadata
+    - Also allows to make scripts, materials,  preprints public
+
+## Where to Preregister?
+- Aspredicted.org
+      - Short: 9 questions
+      - All authors approve       
+      - Does not become public until authors act  to publish it
+
+## When to preregister?
+
+- Ideally before data collection starts
+
+- Before new round of data collection after peer review
+
+- Everything before analysis is ok as long as you’re transparent
+
+- Secondary data preregistration also possible (template on OSF)
+
+## Preregistration
+
+1. Create an OSF account
+
+2. Start a preregistration
+  -  First, sign in to the OSF, and go to https://osf.io/prereg/.
+  
+  -  You will be taken to the "OSF Preregistration" landing page.
+
+```{r, fig.align='center', echo=FALSE, warning=FALSE,  out.width = "50%"}
+
+knitr::include_graphics("step1.png")
+```
+
+## Preregistration
+
+- Click start a new preregisrtation
+
+```{r, fig.align='center', echo=FALSE, warning=FALSE,  out.width = "70%"}
+
+knitr::include_graphics("step2.png")
+```
+
+## Preregistration
+
+- A textbox will appear
+
+  - Enter a title for your preregistration into the textbox, then click **Continue** 
+```{r, fig.align='center', echo=FALSE, warning=FALSE,  out.width = "70%"}
+
+knitr::include_graphics("step2.1.png")
+```
+
+## Preregistration
+
+- An OSF project will be created, and you will be taken to the project's **Registrations** page.
+- Click the **New registration** button
+
+```{r, fig.align='center', echo=FALSE, warning=FALSE,  out.width = "70%"}
+
+knitr::include_graphics("step3.png")
+```
+
+## Preregistration
+
+- Select OSF Preregistration from the list, then click the **Create Draft** button.
+
+```{r, fig.align='center', echo=FALSE, warning=FALSE,  out.width = "70%"}
+
+knitr::include_graphics("step4.png")
+```
+
+## Preregistration
+
+- The preregistration form will appear
+
+```{r, fig.align='center', echo=FALSE, warning=FALSE,  out.width = "70%"}
+
+knitr::include_graphics("step5.png")
+```
+
+## Preregistration
+
+- The preregistration form will appear
+
+```{r, fig.align='center', echo=FALSE, warning=FALSE,  out.width = "70%"}
+
+knitr::include_graphics("step5.png")
+```
+
+## What to preregister?
+
+1. Hypotheses
+
+2. Method
+
+3. Analysis - confirmatory
+
+## Do's and Dont's
+
+- Research Question or Hypothesis
+
+  - Bad Answer: Building on the work of Picasso (1901-1904), we  hypothesized that....
+
+  - Good Answer: Does sadness increase preference for the color blue?
+
+## Do's and Dont's
+
+- Dependent Variable
+
+  - Bad answer: Preference for the color blue
+
+  - Good answer: Participants will rate their liking for red, blue, orange, and  purple on 7-points scales (1 = not at all; 7 = an extreme amount).  Preference for blue will be defined as the difference between a  participant‘s rating for blue and their average rating of the three non-  blue.
+
+## Do's and Dont's
+
+- Manipulations
+
+  - Bad answer: We will manipulate mood by having participants watch  different videos.
+
+  - Good answer: Before rating their color preferences, participants will be  randomly assigned to one of three conditions in which they watch a clip  from either a sad video (My Dog Skip), a happy video (Pitch Perfect), or a  neutral video (Gone Curling).
+
+
+## Do's and Dont's
+
+- Analyses
+
+  - Bad answer: We will regress preference for the color blue on mood  condition.
+
+  - Good answer: We will run an OLS regression predicting preference for  the color blue with condition (coded 1 = sad video; 0 = happy or neutral  video). We will control for gender (1=male; 0 = female).
+  
+## Do's and Dont's
+
+
+- Outliers & Exclusions
+
+  - Bad answer: We will exclude participants who are inattentive, and those  who show an extreme preference for the color orange.
+
+  - Good answer: We will exclude participants who fail at least two out of  three attention checks that will be included at the beginning of our study  (before the manipulation). We will also exclude participants whose rating  of orange is higher than 5 on the 7-point scale. 
+  
+## Do's and Dont's
+
+- Sample size
+
+  - Bad answer: We conducted a power analysis that showed that… And so  we decided to collect between 100 and 200 observations
+
+  - Good answer: We will stop data collection once 150 participants have  submitted a response on MTurk. Deviations from this goal are entirely  due to MTurk software and outside of our control.
+
+## Potential Solutions
+
+- Registered Reports
+
+  - Review and acceptance prior to data collection
+
+```{r, fig.align='center', echo=FALSE, warning=FALSE,  out.width = "80%"}
+
+knitr::include_graphics("rrr.png")
+```
+## Potential Solutions
+
+::: columns
+::: {.column width="40%"}
+- Registered Reports
+  - Reduces RDoF
+  - Can’t p-hack
+  - Can’t HARK
+  - Reduces publication bias 
+:::
+
+::: {.column width="40%"}
+```{r, fig.align='center', echo=FALSE, warning=FALSE,  out.width = "100%"}
+
+knitr::include_graphics("rrrpic.png")
+```
+:::
+
+

@@ -1,0 +1,247 @@
+---
+title: "Welcome Back!"
+subtitle: "PSY 504: Advanced Statistics"
+author: "Jason Geller, Ph.D.<br> Princeton University <br> Janurary 29, 2024"
+format: 
+  revealjs:
+    theme: [serif, pp.scss]
+    preview-links: auto
+    chalkboard: 
+      boardmarker-width: 5
+from: markdown+emoji
+execute:
+  echo: true
+---
+
+## Course content
+
+-   I will only use Canvas to:
+
+    -   Send announcements
+
+-   All course content located here:
+
+    -   <https://psy504-s24-advstats.netlify.app/>
+
+## PSY 504: Advanced Statistics
+
+![](wonka.jpeg){fig-align="center" width="1068"}
+
+## PSY 504: Advanced Statistics
+
+::: columns
+::: {.column width="50%"}
+![](buffet.jpeg){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+-   Multilevel modeling
+
+-   Missing data
+
+-   Generalized linear models
+
+-   Beta regression
+
+-   Bayesian data analysis
+
+-   Mediation
+
+-   Path analysis (SEM)
+
+-   Factor analysis
+:::
+:::
+
+## In this class you will:
+
+-   Read some stuff
+
+-   Apply some stuff
+
+-   Write some stuff
+
+## Student learning outcomes
+
+-   Make informed analytic decisions
+
+-   Run and code analyses in R
+
+-   Interpret output and summarize results of the analyses
+
+-   Effectively communicate results from statistical analyses to a general audience
+
+-   Use Quarto to write reproducible reports and GitHub for version control and collaboration
+
+## Assignments
+
+-   Mini-lecture
+
+-   Labs
+
+-   Tutorial blog post
+
+## Grades
+
+-   No points/percentages associated with assignments
+
+-   Default grade is A
+
+    -   In order to keep A you MUST COMPLETE ALL ASSIGNMENTS
+
+        -   You can earn A+ if you turn exemplary work
+
+        -   A- and below, If you turn in substandard work (missing labs, late labs, half finished labs)
+
+::: callout-important
+This marking scheme is purposefully non-quantitative so that you will focus on learning instead of on your marks
+:::
+
+# Assignments
+
+## Readings
+
+-   Each week you will read a variety of articles and textbook chapters
+
+    -   Before class
+
+    -   After class (materials to help with labs)
+
+## Mini-lectures/discussion
+
+\~15 minutes
+
+::: columns
+::: {.column width="50%"}
+-   High level overview of the topic
+
+    -   A brief introduction
+
+    -   Important concepts
+
+    -   limitations/advantages
+:::
+
+::: {.column width="50%"}
+-   Relevance to psychology
+
+    -   Examples and applications
+
+        -   Walk us through an example from your own work or something of interest to you
+
+-   A few questions for the class
+:::
+:::
+
+## Labs
+
+-   Every week (Wednesday) we will have a lab activity covering material from that week
+
+    -   Lab should be completed in QMD and rendered as HTML document (needs to be **reproducible!**)
+
+        -   Have until Sunday at midnight to turn them in
+
+-   I will provide feedback and comments that you should incorporate into a revision
+
+::: callout-note
+I will not accept labs more than a week late!
+:::
+
+## Tutorial/blog post
+
+-   The final project will require you to use one of the methods discussed in class to analyze data (your own or publicly available data) and write a short blog post walking us through the process (i.e., pre-processing, analysis, and interpretation of results)
+
+    ::: callout-note
+    -   **Will go over how to create Quarto blog/website on Wednesday**
+    :::
+
+# Attendance
+
+-   Come to class
+
+    -   Come on time!
+
+-   If you are sick, please stay home
+
+    -   Can start a Zoom session
+
+# Office hours
+
+-   M 1:00 P.M.- 3:00 P.M.; W 1:00 P.M. - 2:00 P.M. :chair:
+
+-   By appointment
+
+    -   Calendly: **https://calendly.com/jg9120/30min**
+
+# Recommended text
+
+McCoach, D. B., & Cintron, D. (2022). Introduction to Modern Modelling Methods (1st edition). SAGE Publications Ltd.
+
+<center>![](modelingbook.jpg){width="278"}</center>
+
+# Recommended text
+
+Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
+
+<center>![](/textbook.png){width="321"}</center>
+
+## Software
+
+-   R
+
+-   RStudio (IDE)
+
+-   Quarto (QMD)
+
+    ::: callout-note
+    If you need help installing these please ask me. Instructions can be found here: <https://psy504-s24-advstats.netlify.app/schedule/01-week>
+    :::
+
+# Class Format
+
+## Lectures (Monday)
+
+-   Peers will introduce you to the basics of each topic and get you started with examples
+
+-   I'll highlight main concepts/walk through example(s)
+
+    -   How to run analysis in R
+
+    -   Interpretation
+
+    -   Write-up
+
+## Lab (Wednesday)
+
+-   Wednesday will be reserved for application-based activities (labs)
+
+    -   Also a time to seek clarification on topics from me or your classmates
+    -   Can work in groups (strongly encouraged!)
+
+## Precept time
+
+-   PSY 505
+
+    -   Tuesdays 11:00 A.M. - 1:00 P.M.
+
+-   Speaker and workshop focused (great list of speakers this semester)
+
+-   No HW or papers
+
+## Class questions
+
+-   Any general questions about course content or assignments should be posted on the class [GitHub](https://github.com/jgeller112/PSY504-Advanced-Stats-S24) Issues. There is a chance another student has already asked a similar question, so please check the other posts before adding a new question. If you know the answer to a question posted in the discussion forum, I encourage you to respond!
+
+## Schedule
+
+<https://psy504-s24-advstats.netlify.app/schedule/>
+
+## Survey
+
+-   Go [here](https://docs.google.com/spreadsheets/d/1DmVNF5bdJ3xbF4w8OhTYWRfo1pnYp1rKqLrmeNHEMnw/edit?usp=sharing)
+
+    -   Rank order preference
+
+    -   Will try to give your #1 choice
+
+        -   At least top 3 :blush:

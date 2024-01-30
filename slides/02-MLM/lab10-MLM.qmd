@@ -1,0 +1,92 @@
+---
+title: "Lab10-MLM"
+editor: visual
+---
+
+itle: Multilevel Regression in R with Plotting and Testing Means with emmeans
+
+Objective:
+The objective of this lab activity is to teach graduate students how to perform a multilevel regression analysis using R, plot the results, and test means with emmeans. Students will learn how to fit multilevel models, interpret the results, evaluate the model fit, plot the results, and test means with emmeans.
+
+Materials:
+
+-   R software (latest version)
+
+-   Multilevel dataset (e.g., students nested within schools)
+
+Procedure:
+
+1.  Load the necessary libraries for the analysis. Install the lme4, tidyverse, and emmeans libraries if they are not already installed.
+
+```         
+rCopy code
+```
+
+`library(lme4)
+library(tidyverse)
+library(emmeans)`
+
+2.  Load the dataset. In this example, we will use a dataset with math test scores for students nested within schools. The dataset is called "mathdata" and is in CSV format.
+
+```         
+rCopy code
+```
+
+`mathdata <- read.csv("mathdata.csv")`
+
+3.  Examine the dataset to see how it is structured. Determine the number of students and schools in the dataset.
+
+```         
+rCopy code
+```
+
+`str(mathdata)
+nrow(mathdata) # number of students
+length(unique(mathdata$school_id)) # number of schools`
+
+4.  Fit a null model to estimate the variability in math test scores between schools. The null model does not include any predictors. What is the ICC?
+
+```         
+rCopy code
+```
+
+`nullmodel <- lmer(math_score ~ 1 + (1 | school_id), data = mathdata)
+summary(nullmodel)`
+
+5.  Fit a multilevel model that includes one predictor (e.g., student gender) to estimate the effect of gender on math test scores, while accounting for the school-level variability in math scores.
+
+```         
+rCopy code
+```
+
+`gendermodel <- lmer(math_score ~ gender + (1 | school_id), data = mathdata)
+summary(gendermodel)`
+
+6.  Interpret the results of the multilevel model. Pay attention to the fixed and random effects, as well as the model fit statistics.
+
+7.  Evaluate the model fit by comparing the null model to the multilevel model. Use the AIC and BIC values to determine which model fits the data better.
+
+```         
+rCopy code
+```
+
+`AIC(nullmodel, gendermodel)
+BIC(nullmodel, gendermodel)`
+
+8.  Plot the results using the sjPlot library.
+
+```         
+rCopy code
+```
+
+`library(sjPlot)
+plot_model(gendermodel, type = "eff", terms = c("gender"), show.values = TRUE)`
+
+9.  Test means using the emmeans library. Test the difference in mean math scores between male and female students.
+
+```         
+rCopy code
+```
+
+`emm <- emmeans(gendermodel, specs = ~ gender)
+pairs(emm, adjust = "tukey")`
