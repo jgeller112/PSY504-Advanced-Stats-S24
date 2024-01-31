@@ -21,6 +21,18 @@ date: 2024-01-31
 -   What is the difference between grand-mean and group mean centered data?
 -   What is the folly of trying to account for dependence by including level 2 data in an ordinary regression model?
 
+## Class
+
+### Videos
+
+-   How to make a blog
+
+    {{< video https://www.youtube.com/watch?v=_b9DZy7aH8I width="800" height="400" >}}
+
+-   MLM - Part 1
+
+    -   {{< video https://www.youtube.com/watch?v=ko8wG8VxeRw width="800" height="400" >}}
+
 ## After class
 
 ### Podcasts
