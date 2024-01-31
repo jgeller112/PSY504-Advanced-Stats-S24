@@ -49,6 +49,7 @@ execute:
 -   How to do it (Monday)
 
     -   Organizing data for MLM analysis
+    -   Estimation
     -   Fit and interpret multilevel models
     -   Effect size
     -   Power
@@ -310,7 +311,7 @@ knitr::include_graphics("images/2level.png")
 
     -   Can analyze all the observations you have!
 
-## Why MLM is Awesome 
+## Why MLM is Awesome
 
 -   Classic Analysis:
 
@@ -440,9 +441,8 @@ $$
 
         -   A random sample of an infinite number of possible levels
 
-```{=html}
 <!-- -->
-```
+
 -   ::: callout-note
     Can only be categorical!
     :::
