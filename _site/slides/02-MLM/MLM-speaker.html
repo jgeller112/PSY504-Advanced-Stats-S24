@@ -415,7 +415,7 @@ Jason Geller, PH.D.(he/him)
 <ul>
 <li><p>The nuts and bolts of multilevel models</p>
 <ul>
-<li>Why does we use multilevel models, what are they, and why are they awesome</li>
+<li>Why do we need multilevel models? what are they? and why are they awesome?</li>
 <li>Important terminology</li>
 <li>How we specify MLMs (in code and mathematically)</li>
 </ul></li>
@@ -442,18 +442,14 @@ Jason Geller, PH.D.(he/him)
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(ggeffects)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(ggrain)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(here)</span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(broom.mixed)</span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">library</span>(lme4)</span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">library</span>(emmeans)</span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="fu">library</span>(easystats)</span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="fu">library</span>(equatiomatic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(broom.mixed)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(lme4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
-<li>Follow along by downloading .qmd file here:</li>
+<li>Follow along by downloading .qmd file here: <a href="https://github.com/jgeller112/PSY504-Advanced-Stats-S24/blob/main/slides/02-MLM/MLM.qmd" class="uri">https://github.com/jgeller112/PSY504-Advanced-Stats-S24/blob/main/slides/02-MLM/MLM.qmd</a></li>
 </ul>
 </section>
 <section id="why-multilevel-modeling" class="slide level2">
@@ -477,6 +473,9 @@ Jason Geller, PH.D.(he/him)
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">lm</span>(math<span class="sc">~</span>ses, <span class="at">data=</span>data) <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">tidy</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <thead>
@@ -544,8 +543,10 @@ Jason Geller, PH.D.(he/him)
 <section id="why-multilevel-modeling-3" class="slide level2">
 <h2>Why multilevel modeling?</h2>
 <ul>
-<li><p>The word we live in is highly interdependent!</p></li>
-<li><p>Biological, psychological, social processes occur at multipel levels</p></li>
+<li><p>The word we live in is highly interdependent!</p>
+<ul>
+<li>Biological, psychological, social processes occur at multiple levels</li>
+</ul></li>
 </ul>
 
 <img data-src="images/inter.png" class="quarto-figure quarto-figure-center r-stretch"></section>
@@ -683,7 +684,7 @@ Jason Geller, PH.D.(he/him)
 </blockquote>
 <ol type="1">
 <li>What is the most basic level of observation (Level One)?</li>
-<li>What are the group units (Level Two, Level Three, etc…)</li>
+<li>What are the group units (Level Two, Level Three, etc…)?</li>
 </ol>
 </section>
 <section>
@@ -878,7 +879,7 @@ y_i = {b_{0_{\text{(intercept)}}} + b_{1_{\text{(slope)}}} x_i} + \color{red}{e_
 <ul>
 <li><p>Uncorrelated with fixed part</p></li>
 <li><p>Variation around the expected values</p></li>
-<li><p>Normal distributed</p></li>
+<li><p>Normal distributed ~ <span class="math inline">\(N(\mu,\sigma)\)</span></p></li>
 </ul>
 <div class="fragment">
 <ul>
@@ -891,8 +892,10 @@ y_i = {b_{0_{\text{(intercept)}}} + b_{1_{\text{(slope)}}} x_i} + \color{red}{e_
 <ul>
 <li><p>Random factors:</p>
 <ul>
-<li><p>Represent higher level grouping variables</p></li>
-<li><p>A random sample of an infinite number of possible levels</p></li>
+<li><p>Represent higher level grouping variables</p>
+<ul>
+<li>A random sample of an infinite number of possible levels</li>
+</ul></li>
 </ul></li>
 </ul>
 <!-- -->
@@ -917,10 +920,10 @@ y_i = {b_{0_{\text{(intercept)}}} + b_{1_{\text{(slope)}}} x_i} + \color{red}{e_
 <ul>
 <li><p>The random factor is your clustering variable:</p>
 <ul>
-<li><p>Participants</p></li>
-<li><p>Schools</p></li>
+<li><p>Participants 🧑‍🤝‍🧑</p></li>
+<li><p>Schools 🏫</p></li>
 <li><p>Words</p></li>
-<li><p>Pictures</p></li>
+<li><p>Pictures 🖼️</p></li>
 </ul></li>
 </ul>
 </section>
@@ -931,13 +934,13 @@ y_i = {b_{0_{\text{(intercept)}}} + b_{1_{\text{(slope)}}} x_i} + \color{red}{e_
 <ul>
 <li><p>How random factors are allowed to vary</p>
 <ul>
-<li><p>Random intercept (most common) : <span class="math inline">\(U\_{0j}\)</span></p>
+<li><p>Random intercept (most common) : <span class="math inline">\(U_{0j}\)</span></p>
 <ul>
 <li>Each level-2 cluster has its own average level-1 outcome</li>
 </ul></li>
-<li><p>Random slope: <span class="math inline">\(U\_{1j}\)</span>:</p>
+<li><p>Random slope: <span class="math inline">\(U_{1j}\)</span></p>
 <ul>
-<li><p>Each level-2 cluster has its own b coef for the effect of a predictor on the outcome</p>
+<li><p>Each level-2 cluster has its own coef for the effect of a predictor on the outcome</p>
 <ul>
 <li><strong>You have a choice about whether or not to allow your Level 1 intercept and slopes to have variability</strong></li>
 </ul></li>
@@ -980,8 +983,8 @@ y_i = {b_{0_{\text{(intercept)}}} + b_{1_{\text{(slope)}}} x_i} + \color{red}{e_
 </ul>
 </section></section>
 <section>
-<section id="mlm-formula" class="title-slide slide level1 center">
-<h1>MLM Formula</h1>
+<section id="specifiying-mlms" class="title-slide slide level1 center">
+<h1>Specifiying MLMs</h1>
 
 </section>
 <section id="single-level-fixed-regression" class="slide level2">
@@ -989,9 +992,7 @@ y_i = {b_{0_{\text{(intercept)}}} + b_{1_{\text{(slope)}}} x_i} + \color{red}{e_
 <ul>
 <li><p>Blue = fixed</p></li>
 <li><p>Red = random</p>
-<p><span class="math display">\[
-  y_i = \color{blue}{b_{0_{\text{(intercept)}}} + b_{1_{\text{(slope)}}} x_i} + \color{red}{ e_{i_{\text{(error)}}}}
-  \]</span></p></li>
+<p><span class="math display">\[y_i = \color{blue}{b_{0_{\text{(intercept)}}} + b_{1_{\text{(slope)}}} x_i} + \color{red}{ e_{i_{\text{(error)}}}}\]</span></p></li>
 </ul>
 <p><span class="math display">\[
 e_{i_{\text{(error)}}} = y_i - \hat{y}_i
@@ -1013,21 +1014,16 @@ U_{0j} = b_{0j} - b_0
 <li>Between-group variation</li>
 </ul>
 
-<img data-src="images/ranint3.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<img data-src="images/ranint3.png" class="quarto-figure quarto-figure-center r-stretch"><p>i = individual observation j = group</p>
+</section>
 <section id="random-intercepts" class="slide level2">
 <h2>Random intercepts</h2>
 <p><span class="math display">\[
 y_{ij} = ({b_{0j_{\text{(intercept)}}} + U_{0j_{\text{(random intercept)}}}}) + b_{1_{\text{(slope)}}} x_{ij} + \color{red}{ e_{ij_{\text{(error)}}}}
 \]</span></p>
-<ul>
-<li><p>Within-group variation</p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="images/ranint2.png" class="quarto-figure quarto-figure-center"></p>
-</figure>
-</div></li>
-</ul>
-</section>
+<p>Within-group variation</p>
+
+<img data-src="images/ranint2.png" class="quarto-figure quarto-figure-center r-stretch" width="491"></section>
 <section id="random-intercepts---fixed-slope" class="slide level2">
 <h2>Random intercepts - fixed slope</h2>
 <ul>
@@ -1117,13 +1113,13 @@ U_{1j} = b_{1j} - b_1
 <li>Fit models using <code>lmer</code> in <code>lme4</code> package</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">lm</span>(math<span class="sc">~</span>ses, <span class="at">data=</span>data) <span class="co"># lm</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">lmer</span>(math<span class="sc">~</span>ses <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>schcode), <span class="at">data=</span>data) <span class="co"># random intercept fixed slope</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="fu">lmer</span>(math<span class="sc">~</span>ses <span class="sc">+</span> (<span class="dv">0</span><span class="sc">+</span> ses <span class="sc">|</span>schcode), <span class="at">data=</span>data) <span class="co"># random slope fixed intercept</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="fu">lmer</span>(math<span class="sc">~</span>ses <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>ses<span class="sc">|</span>schcode), <span class="at">data=</span>data) <span class="co"># random intercept + random slope</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">lm</span>(math<span class="sc">~</span>ses, <span class="at">data=</span>data) <span class="co"># lm</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="fu">lmer</span>(math<span class="sc">~</span>ses <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>schcode), <span class="at">data=</span>data) <span class="co"># random intercept fixed slope</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="fu">lmer</span>(math<span class="sc">~</span>ses <span class="sc">+</span> (<span class="dv">0</span><span class="sc">+</span> ses <span class="sc">|</span>schcode), <span class="at">data=</span>data) <span class="co"># random slope fixed intercept</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="fu">lmer</span>(math<span class="sc">~</span>ses <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>ses<span class="sc">|</span>schcode), <span class="at">data=</span>data) <span class="co"># random intercept + random slope</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -1168,8 +1164,8 @@ U_{1j} = b_{1j} - b_1
 </ul></li>
 </ul>
 </section>
-<section id="how-are-mlms-similar-to-glm" class="slide level2">
-<h2>How are MLMs similar to GLM?</h2>
+<section id="how-are-mlms-similar-to-lm" class="slide level2">
+<h2>How are MLMs similar to LM?</h2>
 <ul>
 <li><p>The fixed effects (usually) hold your hypothesis tests</p>
 <ul>
@@ -1190,10 +1186,10 @@ U_{1j} = b_{1j} - b_1
 <li><p>Fixed effects of random terms are the average estimates across groups</p></li>
 </ul>
 </section>
-<section id="after-class" class="slide level2">
-<h2>After class</h2>
+<section id="next-class" class="slide level2">
+<h2>Next class</h2>
 <ul>
-<li>Read!</li>
+<li><a href="https://psy504-s24-advstats.netlify.app/schedule/02-week-mlm" class="uri">https://psy504-s24-advstats.netlify.app/schedule/02-week-mlm</a></li>
 </ul>
 <div class="footer footer-default">
 <p>PSY 504: Advaced Statistics</p>

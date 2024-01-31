@@ -1,0 +1,206 @@
+---
+title: "How to Make a Blog"
+subtitle: "PSY 504: Advanced Statistics"
+author: "Jason Geller, Ph.D.<br> Princeton University <br> January 31, 2024"
+format: 
+  revealjs:
+    theme: [pp.scss]
+    preview-links: auto
+    chalkboard: 
+      boardmarker-width: 5
+from: markdown+emoji
+execute:
+  eval: true
+  echo: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+# Building a Website with Quarto
+
+## Software
+
+1.  Github account
+2.  Github Desktop
+3.  R
+4.  R Studio
+
+## Quarto Blog
+
+::: columns
+::: {.column width="50%"}
+1.  Open up R studio.
+
+2.  Choose File -\> New Project
+
+3.  You should see a pop-up menu
+
+4.  Choose "New Directory"
+:::
+
+::: {.column width="50%"}
+![](new_proj.png){fig-align="center"}
+:::
+:::
+
+## Create a new blog
+
+![](proj_type.png){fig-align="center"}
+
+## Name Your Blog
+
+![](name.png){fig-align="center"}
+
+## Complie
+
+![](complie.png){fig-align="center"}
+
+## Build
+
+1.  Go to the "build" tab in the top right hand corner, and press
+    "Render website".
+
+![](build.png){fig-align="center"}
+
+## Preview
+
+1.  You may see a preview of the website in the R Studio browser window,
+    and you can click this little button to preview the blog in your
+    default browser.
+
+![](preview.png){fig-align="center"}
+
+## Writing Your Own Posts
+
+I recommend learning to blog with quarto by opening and modifying the
+template files.
+
+You can see all of the files in your project by clicking on the files
+tab:
+
+![](writing_own.png){fig-align="center"}
+
+## New Post
+
+-   To create a new post, copy an existing folder and name it something
+    else
+
+    ![](new_post.png)
+
+## Index
+
+-   Clicking on "index.qmd" should open the file in the R studio text
+    editor (on the left)
+
+-   Give it a new name and delete the default text
+
+    ![](index.png)
+
+## Re-render
+
+![](new_blog.png){fig-align="center"}
+
+# You have made your first blog!
+
+## Share it on Github
+
+1.  Open up Github Desktop
+
+2.  Go to preferences and sign in to your Github.com account
+
+3.  "Add" your blog project folder to Github Desktop
+
+4.  Publish to github.com and uncheck private repository (if you want
+    other people to see it.)
+
+5.  You should now be able to see your new repository in your github.com
+    profile, which means you should be able to see a copy of your blog
+    files in the repository.
+
+## QMD Changes for Github Site
+
+-   To change the output directory from `_site` to `docs` open up
+    `_quarto.yml`, and add the line `output-dir: docs` just like this:
+
+<!-- -->
+
+```         
+project:
+  type: website
+  output-dir: docs
+```
+
+-   Should see a new docs folder
+
+-   Push your changes to github so that your repository, and activate
+    the github pages option under your repository settings.
+
+## Config File
+
+-   `_quarto.yml`
+
+    -   Metadata
+
+        \`\`\` {project:} output-dir: \_output
+
+        toc: true number-sections: true bibliography: references.bib
+
+        format: html: css: styles.css html-math-method: katex pdf:
+        documentclass: report margin-left: 30mm margin-right: 30mm
+        \`\`\`
+
+## Side Bar
+
+`{website:}   sidebar:"doc"     search: true`
+
+::: columns
+::: {.column width="50%"}
+-   Docked
+:::
+
+::: {.column width="50%"}
+![](nav-side-anchored.png){fig-align="center"}
+:::
+:::
+
+## Side Bar
+
+`{website:}   sidebar:"floating"     search: true`
+
+::: columns
+::: {.column width="50%"}
+floating
+:::
+
+::: {.column width="50%"}
+![](nav-side-floating.png){fig-align="center"}
+:::
+:::
+
+# Github in RStudio
+
+## Github in RStudio
+
+-   Get SSH key
+
+    ![](ssh_key.png)
+
+## Github in RStudio
+
+![](github_key.png){fig-align="center"}
+
+## You can do more!
+
+-   Make new posts by copying an existing one.
+
+-   Publish them by rendering the website on your computer, and pushing
+    your changes to Github.com
+
+## Presentations
+
+-   https://quarto.org/docs/presentations/
+
+## Make a Professional Website
+
+-   https://quarto.org/docs/websites/
