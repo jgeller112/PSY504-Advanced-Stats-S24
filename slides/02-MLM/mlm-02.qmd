@@ -14,19 +14,19 @@ format:
     incremental: false 
     chalkboard: true
     fontsize: "25pt"
+    highlight-style: github-dark
 webr:
-  packages: ["tidyverse", "easystats", "broom", "kableExtra", "interactions", "emmeans", "lme4",  "ggeffects"]
+  packages: ["tidyverse", "easystats", "broom", "kableExtra", "interactions", "emmeans", "lme4","lmertest",  "ggeffects"]
 filters:
   - webr
-
 execute:
   freeze: auto
   echo: true
   message: false
   warning: false
   fig-align: center
-  fig-width: 12
-  fig-height: 8
+  fig-width: 16
+  fig-height: 12
   editor_options: 
   chunk_output_type: inline
   code-overflow: wrap
@@ -35,63 +35,106 @@ execute:
     code-tools: true
 ---
 
-# Modeling
+## Multilevel models
+
+-   When to use them:
+
+    -   Nested designs
+
+    -   Repeated measures
+
+    -   Longitudinal data
+
+    -   Complex designs
+
+-   Why use them:
+
+    -   Captures variance occurring between groups and within groups
+
+-   What they are:
+
+    -   Linear model with extra residuals
+
+## Today
+
+-   Everything you need to know to run and report a MLM
+
+    -   Organizing data for MLM analysis
+    -   Estimation
+    -   Fit and interpret multilevel models
+    -   Visualizion
+    -   Effect size
+    -   Reporting
+    -   Power
+
+## Packages
+
+```{r}
+library(tidyverse) # data wrangling
+library(knitr) # nice tables
+library(lme4) # fit mixed models
+library(lmerTest) # mixed models
+library(broom.mixed) # tidy output of mixed models
+library(afex) # fit mixed models for lrt test
+library(emmeans) # marginal means
+library(ggeffects) # marginal means
+library(ggrain) # rain plots
+library(easystats) # nice ecosystem of packages
+
+options(scipen=999) # get rid of sci notation
+
+```
 
 ## Today's data
 
 -   What did you say?
 
-    -   Ps (*N* = 31) listened to clear (NS) and 6 channel vocoded speech (V6)
+    -   Ps (*N* = 31) listened to *both* clear (NS) and 6 channel vocoded speech (V6)
         -   (https://www.mrc-cbu.cam.ac.uk/personal/matt.davis/vocode/a1_6.wav)
+            -   Fixed factor: ?
+            -   Random factor: ?
 
-![](images/grand_avg_v6ns.png){fig-align="center"}
+## Today's data
 
-## Data
-
-<br>
-<br>
-
-::: columns
-::: {.column width="50%"}
 ```{r}
-library(tidyverse)
-library(lme4) # fit mixed models
-library(broom.mixed) # tidy output of mixed models
-library(afex) # fit mixed models
-library(emmeans) # marginal means
-library(ggeffects) # marginal means
-eye  <- read_csv("https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/MLM/data/vocoded_pupil.csv")
+eye  <- read_csv("https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/MLM/data/vocoded_pupil.csv") # data for class
 
 ```
-:::
 
-::: {.column width="50%"}
 ```{r}
 #| echo: false
-#| fig-width: 12
-#| fig-height: 8
+#| fig-align: "center"
+#| 
+
 eye %>% group_by(subject, vocoded) %>% summarise(mean_pupil=mean(mean_pupil)) %>% 
   ggplot(., aes(vocoded, mean_pupil, fill = vocoded)) +
-  geom_rain(alpha = .5, rain.side = 'f2x2', id.long.var = "subject") +
-  theme_classic() +
+  geom_rain(alpha = .5, id.long.var = "subject") +
   scale_fill_manual(values=c("dodgerblue", "darkorange")) +
-  guides(fill = 'none', color = 'none')
+  guides(fill = 'none', color = 'none') + 
+  labs(y="Mean Pupil Size") + 
+    theme_lucid(base_size=18)
 
 ```
-:::
-:::
-
 
 ## Data organization
 
 -   Data Structure
 
-    -   MLM analysis requires data in long format
+    -   MLM analysis (in R) requires data in long format
+
+![](images/pivot_longer.png){fig-align="center"}
+
+## Data organization
+
+-   Level 1: trial
+
+-   Level 2: subject
 
 ```{r}
 #| echo: false
-head(eye)
-
+head(eye) %>%
+  select(-...1) %>% 
+  kable()
 ```
 
 ## Centering
@@ -104,9 +147,9 @@ head(eye)
 :::
 
 ::: {.column width="50%"}
-![](){fig-align="center"}
-
 ![](images/centering_mlm.png)
+
+![](){fig-align="center"}
 :::
 :::
 
@@ -118,7 +161,7 @@ head(eye)
 
 -   Group-mean centering: $x_{ij} - x_j$
 
-    -   Variable represents each observation's deviation from their group's norm
+    -   Variable represents each observation's deviation from their group's norm (removes group effect)
 
 ## Group- vs. Grand-Mean Centering
 
@@ -135,15 +178,16 @@ head(eye)
         -   Level 1 coefficient will always be with within-group effect, regardless of whether the group means are included at Level 2 or not
         -   If level 2 means included, coefficient represents the between-groups effect
 
-.footnote\[.small\[https://centerstat.org/centering/\]
-
-.footnote\[.small\[https://centerstat.org/centering/\]
+::: callout-note
+Can apply to categorical predictors as well (see Yaremych, Preacher, & Hedeker, 2023)
+:::
 
 ## Centering in R
 
 ```{r, eval=FALSE}
 
 library(datawizard) #easystats 
+
 # how to group mean center 
 d <- d %>% 
   # Grand mean centering (CMC)
@@ -154,31 +198,45 @@ d <- d %>%
          iv.cwc = iv-iv.cm)
 
 #data wizard way
-x <- demean(x, select=c("x"), group="ID") #gets within-group cluster
+x <- demean(x, select=c("x"), group="ID") #gets within-group and between group clusters
 
 ```
 
-# Maximum Likelihood
+# Model Estimation
 
-## Likelihood
+## Maximum Likelihood
+
+<br>
+
+<br>
+
+<br>
 
 -   In MLM we try to maximize the likelihood of the data
 
-    -   More complex models do not use sums of squares :(
+    -   No OLS!
 
-## Probabality vs. Likelihood
+## Probability vs. Likelihood
 
 -   Probability
 
-> If I assume a distribution with certain parameters, how often do I see a particular value in the data?
+> If I assume a distribution with certain parameters (fixed), what is the probability I see a particular value in the data?
 
--   Pr⁡〖(𝑦\>0│𝜇=0,𝜎=1)=.50〗
+::: columns
+::: {.column width="50%"}
+-   Pr⁡(𝑦\>0│𝜇=0,𝜎=1)=.50
 
--   Pr⁡〖(−1\<𝑦\<1│𝜇=0,𝜎=1)=.68〗
+-   Pr⁡(−1\<𝑦\<1│𝜇=0,𝜎=1)=.68
 
--   Pr⁡〖(0\<𝑦\<1│𝜇=0,𝜎=1)=.34〗
+-   Pr⁡(0\<𝑦\<1│𝜇=0,𝜎=1)=.34
 
--   Pr⁡〖(𝑦\>2│𝜇=0,𝜎=1)=.02
+-   Pr⁡(𝑦\>2│𝜇=0,𝜎=1)=.02
+:::
+
+::: {.column width="50%"}
+![](images/normal.png){fig-align="center"}
+:::
+:::
 
 ## Likelihood
 
@@ -237,21 +295,21 @@ knitr::include_graphics("images/like5.png")
 knitr::include_graphics("images/like6.png")
 ```
 
+## Likelihood
+
+Interactive: Understanding Maximum Likelihood Estimation: <https://rpsychologist.com/likelihood/>
+
 ## Log likelihood
 
 -   With large samples, likelihood values ℒ(𝜇,𝜎│𝑥) get very small very fast
 
     -   To make them easier to work with, we usually work with the log-likelihood
+        -   Measure of how well the model fits the data
+        -   Higher values of $\log L$ are better
 
-.eq\[ $$\log L = \sum\limits_{i=1}^n[y_i \log(\hat{\pi}_i) + (1 - y_i)\log(1 - \hat{\pi}_i)]$$\]
+-   Deviance = $-2logL$
 
--   Measure of how well the model fits the data
-
--   Higher values of $\log L$ are better
-
--   Deviance = $-2 \log L$
-
-    -   $-2 \log L$ follows a $\chi^2$ distribution with $n - p - 1$ degrees of freedom
+    -   $-2logL$ follows a $\chi^2$ distribution with $n (\text{sample size}) - p (\text{paramters}) - 1$ degrees of freedom
 
 ## $\chi^2$ distribution
 
@@ -274,49 +332,54 @@ legend("topright",
        col = c(1, 2, 3, 4), lty = 1)
 ```
 
-## Comparing Nested Models
+## Comparing nested models
 
 -   Suppose there are two models:
 
     -   Reduced model includes predictors $x_1, \ldots, x_q$
     -   Full model includes predictors $x_1, \ldots, x_q, x_{q+1}, \ldots, x_p$
 
--   We want to test the hypotheses
+-   We want to test the hypotheses:
 
-$$\begin{aligned}&H_0: \beta_{q+1} = \dots = \beta_p = 0 \\
-& H_a: \text{ at least 1 }\beta_j \text{ is not } 0\end{aligned}$$
+    -   $H_0$: smaller model is better
 
--   To do so, we will use the [Drop-in-deviance test] (also known as the Nested Likelihood Ratio test)
+    -   $H_1$: Larger model is better
+
+-   To do so, we will use the drop-in-deviance test (also known as the nested likelihood ratio test)
 
 ## Drop-In-Deviance Test
 
--   Hypotheses: $$\begin{aligned}&H_0: \beta_{q+1} = \dots = \beta_p = 0 \\
-    & H_a: \text{ at least 1 }\beta_j \text{ is not } 0\end{aligned}$$
+-   Hypotheses:
+
+    -   $H_0$: smaller model is better
+
+    -   $H_1$: Larger model is better
 
 -   Test Statistic: $$G = (-2 \log L_{reduced}) - (-2 \log L_{full})$$
 
 -   P-value: $P(\chi^2 > G)$:
 
     -   Calculated using a $\chi^2$ distribution
-
-    <!-- -->
-
     -   df = $df_1$ - $df_2$
 
-## Testing Deviance
+## Testing deviance
 
--   We can use the anova function to conduct this test
+-   We can use the `anova` function to conduct this test
 
     -   Add test = "Chisq" to conduct the drop-in-deviance test
 
+-   I like `test_likelihoodratio` from `easystats`
+
 ```{r, eval=FALSE}
+anova(model1, model2, test="chisq")
+
 # test using easystats function
-anova(model1, model2)
+
 test_likelihoodratio(model1, model2)
 
 ```
 
-## Model fitting: ML or REML
+## Model fitting: ML or REML?
 
 -   Two flavors of maximum likelihood
 
@@ -326,19 +389,20 @@ test_likelihoodratio(model1, model2)
 
         -   Can be used to draw conclusions about fixed and random effects
 
-        -   Issue: Fixed effects are treated as known values when estimating variance components
+        -   Issue:
 
-            -   Results in biased estimates of variance components (especially when sample size is small)
+            -   Results are biased because fixed effects are estimated without error
 
 ## Model fitting: ML or REML
 
 -   Restricted Maximum Likelihood (REML)
 
-    -   Estimate the variance components using the sample residuals not the sample data
+    -   Estimates the variance components using the sample residuals not the sample data
 
     -   It is conditional on the fixed effects, so it accounts for uncertainty in fixed effects estimates
 
         -   This results in unbiased estimates of variance components
+        -   Associated with error/penalty
 
 ## Model fitting: ML or REML?
 
@@ -346,13 +410,13 @@ test_likelihoodratio(model1, model2)
 
 -   **REML** (`REML = TRUE`; default in `lmer`) is preferable when:
 
-    -   The number of parameters is large or primary, or
+    -   The number of parameters is large
 
-    -   Primary objective is to obtain estimates of the model parameters
+    -   Primary objective is to obtain relaible estimates of the variance parameters
+
+    -   For REML, likelihood ratio tests can only be used to draw conclusions about variance components
 
 -   **ML** (`REML = FALSE`) <u>must</u> be used if you want to compare nested fixed effects models using a likelihood ratio test (e.g., a drop-in-deviance test)
-
--   For REML, the goodness-of-fit and likelihood ratio tests can only be used to draw conclusions about variance components
 
 ## ML or REML?
 
@@ -378,87 +442,75 @@ y = lmer(DV ~ IV1+ IV2 + (1|ID))
 
 ```
 
-## Check assumptions
-
-::: columns
-::: {.column width="50%"}
--   Linearity
-
--   Normality
-
--   Homoscedasticity
-:::
-
-::: {.column width="50%"}
--   Collinearity
-
--   Outliers
-:::
-:::
-
-```{r}
-#| fig-align: "center"
-#| echo: false
-library(easystats)
-rand_model <- lmer(mean_pupil ~vocoded +(1+vocoded|subject), data = eye)
-
-check_model(rand_model)
-```
-
 # Fitting and Interpreting Models
 
-## Linear regression
+## Modeling approach
 
-```{r}
+-   Forward approach
 
-eye_agg <- eye %>%
-  group_by(subject, vocoded)%>%
-  summarize(mean_pupil=mean(mean_pupil))
-
-lm_model <- lm(mean_pupil ~ vocoded, data = eye_agg)
-
-tidy(lm_model)
+```{webr-r}
 
 ```
 
-## Model selection
+-   `Keep it maximal`[^1]
 
--   Forward or backward approach
+    -   Whatever can vary, should vary
 
-    -   Model 1: Null (unconditional means) model (calculate ICC)
+        -   **Decreases Type 1 error**
 
-    -   Model 2: full (maximal) model
+[^1]: Barr, D. J., Levy, R., Scheepers, C., & Tily, H. J. (2013). Random effects structure for confirmatory hypothesis testing: Keep it maximal. Journal of memory and language, 68(3), 10.1016/j.jml.2012.11.001. https://doi.org/10.1016/j.jml.2012.11.001
 
-        -   if non-convergence (pay attention to warning messages):
+## Modeling approach
 
-            -   Try different optimizers [^1]
+-   Full (maximal) model
 
-            -   Sort out random effects
+    -   Only when there is convergence issues should you remove terms
+        -   if non-convergence (pay attention to warning messages in summary output!):
+            -   Try different optimizer (`afex::all_fit()`)
+                -   Sort out random effects
+                    -   Remove correlations between slopes and intercepts
+                    -   Random slopes
+                    -   Random Intercepts
+                -   Sort out fixed effects (e.g., interaction)
+                -   Once you arrive at the final model present it using REML estimation
 
-            -   Sort out fixed effects (e.g., interaction)
+## Modeling approach
 
-[^1]: `afex::all_fit` will test a variety of optimizers and tell you which ones worked
+-   If your model is singular (check output!!!!)
+
+    -   Variance might be close to 0
+    -   Perfect correlations (1 or -1)
+
+-   Drop the parameter!
+
+## Modeling approach
+
+```{r}
+data <- read.csv("https://raw.githubusercontent.com/jgeller112/PSY504-Advanced-Stats-S24/main/slides/02-MLM/data/heck2011.csv")
+
+summary(lmer(math~ses + (1+ses|schcode), data=data))
+
+```
+
+## Null model (unconditional means)
+
+Get ICC
+
+-   ICC is a standardized way of expressing how much variance is due to clustering/group
+    -   Ranges from 0-1
+-   Can also be interpreted as correlation among observations within cluster/group!
+-   If ICC is sufficiently low (i.e., $\rho$ \< .1), then you don't have to use MLM! *BUT YOU PROBABLY SHOULD 🙂*
 
 ## Null model (unconditional means)
 
 ```{r}
 library(lme4) # pop linear modeling package
 
-null_model <- lmer(mean_pupil ~ (1|subject), data = eye)
+null_model <- lmer(mean_pupil ~ (1|subject), data = eye, REML=TRUE)
 
 summary(null_model)
 
 ```
-
-## Intraclass correlation (ICC)
-
--   ICC is a standardized way of expressing how much variance is due to clustering/group
-
-    -   Ranges from 0-1
-
--   Can also be interpreted as correlation among observations within cluster/group!
-
--   If ICC is sufficiently low (i.e., $\rho$ \< .1), then you don't have to use MLM! *BUT YOU PROBABLY SHOULD 🙂*
 
 ## Calculating ICC
 
@@ -469,13 +521,23 @@ summary(null_model)
 $$\mathrm{ICC}=\frac{\text { between-group variability }}{\text { between-group variability+within-group variability}}$$
 
 $$
-ICC=\frac{\operatorname{Var}\left(u_{0 j}\right)}{\operatorname{Var}\left(u_{0 j}\right)+\operatorname{Var}\left(r_{i j}\right)}=\frac{\tau_{00}}{\tau_{00}+\sigma^{2}}
+ICC=\frac{\operatorname{Var}\left(u_{0 j}\right)}{\operatorname{Var}\left(u_{0 j}\right)+\operatorname{Var}\left(e_{i j}\right)}=\frac{\tau_{00}}{\tau_{00}+\sigma^{2}}
 $$
 
 ```{r}
-icc <- model_performance(null_model)
+# easystats 
+icc <- performance::model_performance(null_model)
 
 icc$ICC
+```
+
+## Maximal model: Fixed effect random intercepts (subject) and slopes (vocoded) model
+
+```{r}
+
+max_model <- lmer(mean_pupil ~vocoded +(1+vocoded|subject), data = eye)
+
+summary(max_model)
 ```
 
 ## Fixed effects
@@ -483,19 +545,19 @@ icc$ICC
 -   Interpretation same as lm
 
 ```{r}
-
-# add the fixed effect of vocode
-inter_model <- lmer(mean_pupil ~vocoded+(1|subject), data = eye)
-
 #grab the fixed effects
-broom.mixed::tidy(inter_model) %>% filter(effect == "fixed") %>%
-  kable()
-
+summary(max_model)
 ```
 
--   Default behavior is leave out \*p\*-values (Doug Bates doesn't like them)
+## Degrees of freedom and p-values
 
-    -   Install \`lmerTest\` to include \*p\*-values
+-   Degrees of freedom (denominator) can be assessed with several methods:
+
+    -   ***Satterthwaite*** (default when install `lmerTest` and then run `lmer`)
+
+    -   Asymptotic (Inf) (**default** behavior lme4)
+
+    -   Kenward-Rogers
 
 ## Random effects/variance components
 
@@ -505,81 +567,7 @@ broom.mixed::tidy(inter_model) %>% filter(effect == "fixed") %>%
 
 ```{r}
 
-tidy(inter_model) %>% filter(effect == "ran_pars") %>%
-          kable()
-```
-
-## Visualize random effects
-
-```{r}
-#| fig-align: center
-#| 
-#use easystats to grab group variance
-random <- estimate_grouplevel(inter_model)
-
-plot(random) +
-  theme_lucid()
-
-```
-
-## Maximal model: Fixed effect random intercepts (subject) and slopes (vocoded) model
-
-```{r}
-
-max_model <- lmer(mean_pupil ~vocoded +(1+vocoded|subject), data = eye)
-
-tidy(max_model) %>%
-  kable(bootstrap="condensed")
-
-```
-
-## Denominator DFs
-
--   Degrees of freedom (denominator) can be assessed with several methods:
-
-    -   Asymptotic (1.96) (**default** behavior lme4)
-
-    -   Satterwaithe (default when install `lmerTest` and then run `lmer`)
-
-    -   Kenward-Rogers
-  
-
-## Using `emmeans`
-
--   Get factor means and contrasts
-
-```{r}
-
-library(emmeans)
-
-emmeans(max_model, specs = "vocoded") # grabs means for each level of modality
-
-emmeans(max_model, specs = "vocoded") %>%
-  pairs() # use this to get pariwise compairsons between levels of factors
-```
-
-## Maximal models
-
--   `Keep it maximal`[^2]
-
-    -   Whatever can vary, should vary
-
-        -   include random slopes only if it is a within cluster manipulation
-
-    -   Only when there is convergence issues should you remove terms
-
--   **Decreases Type 1 error**
-
-[^2]: Barr, D. J., Levy, R., Scheepers, C., & Tily, H. J. (2013). Random effects structure for confirmatory hypothesis testing: Keep it maximal. Journal of memory and language, 68(3), 10.1016/j.jml.2012.11.001. https://doi.org/10.1016/j.jml.2012.11.001
-
-## Visualize random intercepts + slopes
-
-```{r}
-
-random <- estimate_grouplevel(rand_model)
-
-plot(random) +
-  theme_lucid()
+summary(max_model)
 
 ```
 
@@ -594,65 +582,167 @@ plot(random) +
 ```{r}
 #| echo: false
 #| fig-align: "center"
-#| 
-re = ranef(rand_model)$subject
+#| fig-width: 12
+#| fig-height: 8
+re = ranef(max_model)$subject # get random effects 
 
 cor_test(re,  "vocodedV6", "(Intercept)") %>% 
   plot()
 ```
 
-## Model comparison
+## Visualize Random Effects
+
+```{r}
+#| fig-align: center
+#| 
+# use easystats to grab group variance
+random <- estimate_grouplevel(max_model)
+
+plot(random) + theme_lucid()
+```
+
+## Model comparisons
 
 -   Can compare models using `anova` function or `test_likelihoodratio` from `easystats`
 
-    -   *Will be refit using ML*
+    -   *Will be refit using ML if interested in fixed effects*
 
 ```{r}
-
-#anova(null_model, inter_model, max_model)
-test_likelihoodratio(null_model, inter_model, max_model)
-
+# you try
 ```
+
+# AIC/BIC
+
+-   LRT requires nested models
+
+## AIC
+
+-   AIC:
+
+$$
+D + 2p
+$$
+
+-   where d = deviance and p = \# of parameters in model
+
+-   Can compare AICs[^2]:
+
+    $$
+     \Delta_i = AIC_{i} - AIC_{min}
+    $$
+
+-   Less than 2: More parsimonious model is preferred
+
+-   Between 4 and 7: some evidence for lower AIC model
+
+-   Greater than 10,: strong evidence for lower AIC
+
+[^2]: BURNHAM, ANDERSON, & HUYVAERT (2011)
+
+## BIC
+
+-   BIC:
+
+$$
+D + ln(n)*p
+$$
+
+-   where d = deviance, p = \# of parameters in model, n = sample size
+
+-   Change in BIC:
+
+    -   $\Delta{BIC}$ \<= 2 (No difference)
+
+    -   $\Delta{BIC}$ \> 3 (evidence for smaller BIC model)
 
 ## AIC/BIC
 
-- LRT requires nested models
+```{r}
 
-- AIC: 
+performance::model_performance(max_model) %>% # easystats
+  kable()
 
-$$
-
-$$
-
-- BIC: 
-
-$$
-
-$$
+```
 
 ## Hypothesis testing
 
-- For more complex models, use LRT chi-square (drop-in deviance test)
+-   Multiple options
+
+    1.  t/F tests with approximate degrees of freedom (Kenward-Rogers or Satterwaithe)
+    2.  Parametric bootstrap
+    3.  **Likelihood ratio test (LRT)**
 
     -   Can be interpreted as main effects and interactions
     -   Use `afex` package to do that
 
+## Hypothesis testing - `afex`
+
 ```{r}
+library(afex) # load afex in 
 
-library(afex)
-
-m <- mixed(mean_pupil ~ 1 + vocoded +  (1+vocoded|subject), data =eye, method = "LRT")
+m <- mixed(mean_pupil ~ 1 + vocoded +  (1+vocoded|subject), data =eye, method = "LRT") # fit lmer using afex
 
 nice(m) %>%
   kable()
 ```
 
-# Visualization
+## Using `emmeans`
+
+-   Get means and contrasts
+
+```{r}
+
+library(emmeans) # get marginal means 
+
+emmeans(max_model, specs = "vocoded") %>% 
+  kable() # grabs means/SEs for each level of vocode 
+
+pairs(emmeans(max_model, specs = "vocoded")) %>%
+  confint() %>%
+  kable()
+# use this to get pariwise compairsons between levels of factors
+```
+
+# Assumptions
+
+## Check assumptions
+
+::: columns
+::: {.column width="50%"}
+-   Linearity
+
+-   Normality
+
+    -   Level 1 residuals are normally distributed around zero
+
+    -   Level 2 residuals are multivariate-normal with a mean of zero
+
+-   Homoskedacticity
+
+    -   Level 1 residual variance is homoskedastic both within- and between-groups
+:::
+
+::: {.column width="50%"}
+-   Collinearity
+
+-   Outliers
+:::
+:::
+
+## Assumptions
+
+```{r}
+#| fig-align: "center"
+#| 
+library(easystats) # performance package
+
+check_model(max_model)
+```
+
+## Visualization
 
 ```{r}
 #| echo: false
-
-
 
 pupil_data_mean <- eye %>%
   group_by(subject, vocoded) %>%
@@ -667,12 +757,12 @@ pupil_plot_lmer <- ggplot(pupil_data_mean, aes(x = vocoded, y = mean_pup)) +
   geom_violinhalf(aes(fill = vocoded), color = "white") +
   geom_jitter2(width = 0.05, alpha = 0.5, size=5) +  # Add pointrange and line from means
   geom_line(aes(y=mean_pup, group=subject))+
-  geom_line(data = mod_plot, aes(y = Mean, group = 1), size = 3) +
+  geom_line(data = mod_plot, aes(y = Mean, group = 1), size = 3, color="purple") +
   geom_pointrange(
     data = mod_plot,
     aes(y = Mean, ymin = CI_low, ymax = CI_high),
     size = 2,
-    color = "green"
+    color = "purple"
   ) + 
   # Improve colors
   scale_fill_material() +
@@ -687,109 +777,146 @@ pupil_plot_lmer
 
 ```{r}
 #| fig-align: "center"
-#| 
-ggemmeans(max_model, terms=c("vocoded"), type="random",  interval="confidence") %>% plot()
+
+ggemmeans(max_model, terms=c("vocoded")) %>% plot()
 ```
 
 ## Effect size
 
-::: columns
-::: {.column width="50%"}
--   Report pseudo-$R^2$ for marginal (fixed) and conditional model (random)
+-   Report pseudo-$R^2$ for marginal (fixed) and conditional model (random) (Nakagawa et al. 2017)
 
-    -   Report partial $R^2$ for each predictor variable
-        -   $R^2_\beta$
-            -   `partR2` package in R does this for us
-:::
+$$
+R^2_{LMM(c)} = \frac{\sigma_f^2\text{fixed} + \sigma_a^2\text{random}}{\sigma_f^2\text{fixed} + \sigma_a^2\text{random} + \sigma_e^2\text{residual}}
+$$
 
-::: {.column width="50%"}
+$$
+R^2_{\text{LMM}(m)} = \frac{\sigma_f^2\text{fixed}}{\sigma_f^2\text{fixed} + \sigma_a^2\text{random} + \sigma_e^2\text{residual}}
+$$
+
+-   Report semi-partial $R^2$ for each predictor variable
+    -   $R^2_\beta$
+        -   `partR2` package in R does this for you
+
+## Effect size
+
 ```{r}
-#get r2 for model
+#| eval: false
+#| 
+#get r2 for model with performance fro easystats
+
+performance::r2(max_model) 
+
+# get semi-part
 library(partR2)
-
-r2(inter_model)
-
-R2_3 <- partR2(inter_model,
+# does not work with random slopes for some reason :/
+R2_3 <- partR2(max_model,data=eye, 
   partvars = c("vocoded"),
   R2_type = "marginal", nboot = 10, CI = 0.95
 )
 ```
-:::
-:::
+
+## Effect size
+
+-   Cohen's $d$ for treatment effects/categorical predictions[^3]
+
+[^3]: Brysbaert, M., & Debeer, D. (2023, September 12). How to run linear mixed effects analysis for pairwise comparisons? A tutorial and a proposal for the calculation of standardized effect sizes. <https://doi.org/10.31234/osf.io/esnku>
+
+$$
+d = \frac{\text{Effect}}{\sqrt{\sigma^2_\text{Intercept} + \sigma^2_\text{slope} + \sigma^2_\text{residual}}}
+$$
+
+```{r}
+
+emmeans(max_model,~ vocoded) %>% 
+ eff_size(.,sigma=.04, edf=30) # need to calcuate sigma and add dfs
+
+```
 
 # Reporting Results
 
 ## Describing a MLM analysis
 
--   The type of model you conducted
+-   Structure
 
-    -   Your "nesting" variable
-        -   levels
-    -   Which effects were random and fixed
-    -   The full model equation/syntax used
+    -   What was the nested data structure (e.g., how many levels; what were the units at each level?)
 
--   ICC of the model
+        • How many units were in each level, on average?
 
--   Assumption checks
+        • What was the range of the number of lower-level units in each group/cluster?
 
--   Method of estimating degrees of freedom (e.g., Kenward-Rogers, asymptotic)
+## Describing a MLM analysis
 
--   Effect sizes for overall model and individual effects (partial $R^2$, d, $\eta$).
+::: columns
+::: {.column width="50%"}
+-   What equation can best represent your model?
+
+-   What estimation method was used (e.g., ML, REML)?
+
+-    If there were convergence issues, how was this addressed?
+
+-   What software (and version) was used (when using R, what packages as well)?
+:::
+
+::: {.column width="50%"}
+-   If degrees of freedom were used, what kind?
+
+-   What type of models were estimated (i.e., unconditional, random intercept, random slope, max)?
+
+-   What variables were centered and what kind of centering was used?
+
+-   What model assumptions were checked and what were the results?
+:::
+:::
 
 ## Reporting Results
 
--   LRT
+::: columns
+::: {.column width="50%"}
+-   What was the ICC of the outcome variable?
 
-    - Do not use if \# levels of random effect(s) \< 50
+-   Are fixed effects and variance components reported?
 
-A likelihood-ratio test indicated that the model including modality provided a better fit for the data than a model without it, $\chi^2$(1) = 32.39, p \< .001. Examination of the summary output for the full model indicated that response times were on average an estimated 83 ms slower in the audiovisual relative to the audio-only condition, $\beta = 83.18, SE = 12.58, t = 6.62, p < .001$
+-   What inferential statistics were used (e.g., t-statistics, LRTs)?
 
-```{r, eval=FALSE}
-library(afex)
-m4 <- mixed(RT ~ 1 + modality+  (1+modality|PID) + (1+ modality|stim), data = rt_data, method = "LRT")
+-   How precise were the results (report the standard errors and/or confidence
+    intervals)?
+:::
 
-anova(m4)
-```
+::: {.column width="50%"}
+-   Were model comparisons performed (e.g., AIC, BIC, if using an LRT,report the χ2, degrees of freedom, and p value)?
 
-## F-values
+-   Were effect sizes reported (e.g., Cohen’s d, pseudo-R2?
 
--   F-test/ANOVA
-
-```{r}
-#| eval: false
-#| 
-
-library(afex)
-m4 <- mixed(RT ~ 1 + modality+  (1+modality|PID) + (1+ modality|stim), data = rt_data)
-```
-
-A linear mixed model was performed using the function `mixed` from `afex`. The analysis indicated a main effect of modality, $F = 43.75(1, 52.09), p < .001, \eta_p^2 = 0.46$. Examination of the summary output for the full model indicated that response times were on average an estimated 83 ms slower in the audiovisual relative to the audio-only condition, $b$ = 83.18, SE = 12.58, t = 6.62, p \< .001.
+-   What kind of pseudo-R2 were reported?
+:::
+:::
 
 ## Write-up
 
 ```{r}
-report::report(max_model)
+#| eval: false
+report::report(max_model) # easystats report function
 ```
+
+`r report(max_model)`
 
 ## Table
 
 ```{r}
-modelsummary::modelsummary(max_model)
+modelsummary::modelsummary(list("max model" = max_model), output="kableExtra") # modelsummary package
 ```
 
 ## Power
 
-- Simulation
+-   Simulation-based power analyses
 
     -   Simulate new data
 
-        -   `faux`(https://debruine.github.io/faux/articles/sim_mixed.html)
+        -   `faux` (<https://debruine.github.io/faux/articles/sim_mixed.html>)
 
     -   Use pilot data (what I would do)
 
-        -   `mixedpower` (https://link.springer.com/article/10.3758/s13428-021-01546-0)
-        -   `simr`
+        -   `mixedpower`(https://link.springer.com/article/10.3758/s13428-021-01546-0)
+        -   `simr` (<https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.12504>)
 
-## More resources
-
--   <https://www.learn-mlms.com/>
+    ## 
