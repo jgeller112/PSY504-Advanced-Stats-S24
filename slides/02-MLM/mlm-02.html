@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.504">
 
   <meta name="author" content="Jason Geller, PH.D.(he/him)">
-  <meta name="dcterms.date" content="2024-02-04">
+  <meta name="dcterms.date" content="2024-02-05">
   <title>Multilevel Modeing (with R) Part 2</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -557,7 +557,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"code":"","options":{"fig-height":5,"output":"true","classes":"","context":"interactive","results":"markup","out-width":"700px","out-height":"","label":"unnamed-chunk-1","warning":"true","dpi":72,"fig-cap":"","message":"true","fig-width":7,"comment":""},"id":1}];
+  globalThis.qwebrCellDetails = [{"code":"","options":{"dpi":72,"comment":"","classes":"","message":"true","out-height":"","context":"interactive","results":"markup","fig-cap":"","label":"unnamed-chunk-1","warning":"true","fig-width":7,"fig-height":5,"output":"true","out-width":"700px"},"id":1}];
 
   </script>
   <script type="module">
@@ -1466,7 +1466,7 @@ Jason Geller, PH.D.(he/him)
 </div>
 </div>
 
-  <p class="date">2024-02-04</p>
+  <p class="date">2024-02-05</p>
 </section>
 <section id="multilevel-models" class="slide level2">
 <h2>Multilevel models</h2>
@@ -1496,7 +1496,7 @@ Jason Geller, PH.D.(he/him)
 <li>Organizing data for MLM analysis</li>
 <li>Estimation</li>
 <li>Fit and interpret multilevel models</li>
-<li>Visualizion</li>
+<li>Visualization</li>
 <li>Effect size</li>
 <li>Reporting</li>
 <li>Power</li>
@@ -2024,7 +2024,7 @@ boundary (singular) fit: see help('isSingular')</code></pre>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">lmer</span>(math<span class="sc">~</span>ses <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>ses<span class="sc">||</span>schcode), <span class="at">data=</span>data) <span class="co"># removes correlation()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">lmer</span>(math<span class="sc">~</span>ses <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>ses<span class="sc">||</span>schcode), <span class="at">data=</span>data) <span class="co"># removes correlation() with double pipes. Does not work with categorical variables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -2086,11 +2086,14 @@ ICC=\frac{\operatorname{Var}\left(u_{0 j}\right)}{\operatorname{Var}\left(u_{0 j
 \]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># easystats </span></span>
-<span id="cb12-2"><a href="#cb12-2"></a>icc <span class="ot">&lt;-</span> performance<span class="sc">::</span><span class="fu">model_performance</span>(null_model)</span>
-<span id="cb12-3"><a href="#cb12-3"></a></span>
-<span id="cb12-4"><a href="#cb12-4"></a>icc<span class="sc">$</span>ICC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="co">#adjusted icc just random effects</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="co">#unadjusted fixed effects taken into account</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>performance<span class="sc">::</span><span class="fu">icc</span>(null_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.07183568</code></pre>
+<pre><code># Intraclass Correlation Coefficient
+
+    Adjusted ICC: 0.072
+  Unadjusted ICC: 0.072</code></pre>
 </div>
 </div>
 </section>
@@ -2175,7 +2178,7 @@ vocodedV6 -0.306</code></pre>
 <section id="degrees-of-freedom-and-p-values" class="slide level2">
 <h2>Degrees of freedom and p-values</h2>
 <ul>
-<li><p>Degrees of freedom (denominator) can be assessed with several methods:</p>
+<li><p>Degrees of freedom (denominator) and <em>p</em>-values can be assessed with several methods:</p>
 <ul>
 <li><p><strong><em>Satterthwaite</em></strong> (default when install <code>lmerTest</code> and then run <code>lmer</code>)</p></li>
 <li><p>Asymptotic (Inf) (<strong>default</strong> behavior lme4)</p></li>

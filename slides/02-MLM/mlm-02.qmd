@@ -62,7 +62,7 @@ execute:
     -   Organizing data for MLM analysis
     -   Estimation
     -   Fit and interpret multilevel models
-    -   Visualizion
+    -   Visualization
     -   Effect size
     -   Reporting
     -   Power
@@ -503,7 +503,7 @@ summary(lmer(math~ses + (1+ses|schcode), data=data))
 ```{r}
 #| eval: false
 #| 
-lmer(math~ses + (1+ses||schcode), data=data) # removes correlation()
+lmer(math~ses + (1+ses||schcode), data=data) # removes correlation() with double pipes. Does not work with categorical variables
 ```
 
 ## Null model (unconditional means)
@@ -540,9 +540,10 @@ $$
 
 ```{r}
 # easystats 
-icc <- performance::model_performance(null_model)
+#adjusted icc just random effects
+#unadjusted fixed effects taken into account
+performance::icc(null_model)
 
-icc$ICC
 ```
 
 ## Maximal model: Fixed effect random intercepts (subject) and slopes (vocoded) model
@@ -565,7 +566,7 @@ summary(max_model)
 
 ## Degrees of freedom and p-values
 
--   Degrees of freedom (denominator) can be assessed with several methods:
+-   Degrees of freedom (denominator) and *p*-values can be assessed with several methods:
 
     -   ***Satterthwaite*** (default when install `lmerTest` and then run `lmer`)
 
