@@ -557,7 +557,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"code":"","options":{"dpi":72,"comment":"","classes":"","message":"true","out-height":"","context":"interactive","results":"markup","fig-cap":"","label":"unnamed-chunk-1","warning":"true","fig-width":7,"fig-height":5,"output":"true","out-width":"700px"},"id":1}];
+  globalThis.qwebrCellDetails = [{"options":{"message":"true","classes":"","fig-width":7,"dpi":72,"out-width":"700px","fig-cap":"","out-height":"","warning":"true","fig-height":5,"output":"true","comment":"","label":"unnamed-chunk-1","results":"markup","context":"interactive"},"code":"","id":1}];
 
   </script>
   <script type="module">
@@ -1519,6 +1519,9 @@ Jason Geller, PH.D.(he/him)
 <span id="cb1-11"><a href="#cb1-11"></a></span>
 <span id="cb1-12"><a href="#cb1-12"></a><span class="fu">options</span>(<span class="at">scipen=</span><span class="dv">999</span>) <span class="co"># get rid of sci notation</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<ul>
+<li>Find the .qmd document here to follow along: <a href="https://github.com/jgeller112/PSY504-Advanced-Stats-S24/blob/main/slides/02-MLM/mlm-02.qmd" class="uri">https://github.com/jgeller112/PSY504-Advanced-Stats-S24/blob/main/slides/02-MLM/mlm-02.qmd</a></li>
+</ul>
 </section>
 <section id="todays-data" class="slide level2">
 <h2>Today’s data</h2>
@@ -2239,15 +2242,23 @@ vocodedV6 -0.306</code></pre>
 </ul></li>
 </ul></li>
 </ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>Parameter1 |  Parameter2 |     r |        95% CI | t(29) |     p
+----------------------------------------------------------------
+vocodedV6  | (Intercept) | -0.10 | [-0.44, 0.26] | -0.57 | 0.576
 
-<img data-src="mlm-02_files/figure-revealjs/unnamed-chunk-22-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
+Observations: 31</code></pre>
+</div>
+</div>
+</section>
 <section id="visualize-random-effects" class="slide level2">
 <h2>Visualize Random Effects</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># use easystats to grab group variance</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a>random <span class="ot">&lt;-</span> <span class="fu">estimate_grouplevel</span>(max_model)</span>
-<span id="cb20-3"><a href="#cb20-3"></a></span>
-<span id="cb20-4"><a href="#cb20-4"></a><span class="fu">plot</span>(random) <span class="sc">+</span> <span class="fu">theme_lucid</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># use easystats to grab group variance</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>random <span class="ot">&lt;-</span> <span class="fu">estimate_grouplevel</span>(max_model)</span>
+<span id="cb21-3"><a href="#cb21-3"></a></span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="fu">plot</span>(random) <span class="sc">+</span> <span class="fu">theme_lucid</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="mlm-02_files/figure-revealjs/unnamed-chunk-23-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1536"></section>
@@ -2260,7 +2271,7 @@ vocodedV6 -0.306</code></pre>
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># you try</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># you try</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
@@ -2309,8 +2320,8 @@ D + ln(n)*p
 <section id="aicbic-1" class="slide level2">
 <h2>AIC/BIC</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>performance<span class="sc">::</span><span class="fu">model_performance</span>(max_model) <span class="sc">%&gt;%</span> <span class="co"># easystats</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>performance<span class="sc">::</span><span class="fu">model_performance</span>(max_model) <span class="sc">%&gt;%</span> <span class="co"># easystats</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <colgroup>
@@ -2369,12 +2380,12 @@ D + ln(n)*p
 <section id="hypothesis-testing---afex" class="slide level2">
 <h2>Hypothesis testing - <code>afex</code></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">library</span>(afex) <span class="co"># load afex in </span></span>
-<span id="cb23-2"><a href="#cb23-2"></a></span>
-<span id="cb23-3"><a href="#cb23-3"></a>m <span class="ot">&lt;-</span> <span class="fu">mixed</span>(mean_pupil <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> vocoded <span class="sc">+</span>  (<span class="dv">1</span><span class="sc">+</span>vocoded<span class="sc">|</span>subject), <span class="at">data =</span>eye, <span class="at">method =</span> <span class="st">"LRT"</span>) <span class="co"># fit lmer using afex</span></span>
-<span id="cb23-4"><a href="#cb23-4"></a></span>
-<span id="cb23-5"><a href="#cb23-5"></a><span class="fu">nice</span>(m) <span class="sc">%&gt;%</span></span>
-<span id="cb23-6"><a href="#cb23-6"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">library</span>(afex) <span class="co"># load afex in </span></span>
+<span id="cb24-2"><a href="#cb24-2"></a></span>
+<span id="cb24-3"><a href="#cb24-3"></a>m <span class="ot">&lt;-</span> <span class="fu">mixed</span>(mean_pupil <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> vocoded <span class="sc">+</span>  (<span class="dv">1</span><span class="sc">+</span>vocoded<span class="sc">|</span>subject), <span class="at">data =</span>eye, <span class="at">method =</span> <span class="st">"LRT"</span>) <span class="co"># fit lmer using afex</span></span>
+<span id="cb24-4"><a href="#cb24-4"></a></span>
+<span id="cb24-5"><a href="#cb24-5"></a><span class="fu">nice</span>(m) <span class="sc">%&gt;%</span></span>
+<span id="cb24-6"><a href="#cb24-6"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <thead>
@@ -2403,10 +2414,10 @@ D + ln(n)*p
 <li>Get means and contrasts</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">library</span>(emmeans) <span class="co"># get marginal means </span></span>
-<span id="cb24-2"><a href="#cb24-2"></a></span>
-<span id="cb24-3"><a href="#cb24-3"></a><span class="fu">emmeans</span>(max_model, <span class="at">specs =</span> <span class="st">"vocoded"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb24-4"><a href="#cb24-4"></a>  <span class="fu">kable</span>() <span class="co"># grabs means/SEs for each level of vocode </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">library</span>(emmeans) <span class="co"># get marginal means </span></span>
+<span id="cb25-2"><a href="#cb25-2"></a></span>
+<span id="cb25-3"><a href="#cb25-3"></a><span class="fu">emmeans</span>(max_model, <span class="at">specs =</span> <span class="st">"vocoded"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-4"><a href="#cb25-4"></a>  <span class="fu">kable</span>() <span class="co"># grabs means/SEs for each level of vocode </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <thead>
@@ -2439,9 +2450,9 @@ D + ln(n)*p
 </tbody>
 </table>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">pairs</span>(<span class="fu">emmeans</span>(max_model, <span class="at">specs =</span> <span class="st">"vocoded"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a>  <span class="fu">confint</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb25-3"><a href="#cb25-3"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">pairs</span>(<span class="fu">emmeans</span>(max_model, <span class="at">specs =</span> <span class="st">"vocoded"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>  <span class="fu">confint</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <thead>
@@ -2466,7 +2477,7 @@ D + ln(n)*p
 </tbody>
 </table>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># use this to get pariwise compairsons between levels of factors</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co"># use this to get pariwise compairsons between levels of factors</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
@@ -2501,9 +2512,9 @@ D + ln(n)*p
 <section id="assumptions-1" class="slide level2">
 <h2>Assumptions</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">library</span>(easystats) <span class="co"># performance package</span></span>
-<span id="cb27-2"><a href="#cb27-2"></a></span>
-<span id="cb27-3"><a href="#cb27-3"></a><span class="fu">check_model</span>(max_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">library</span>(easystats) <span class="co"># performance package</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a></span>
+<span id="cb28-3"><a href="#cb28-3"></a><span class="fu">check_model</span>(max_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="mlm-02_files/figure-revealjs/unnamed-chunk-28-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1536"></section>
@@ -2514,7 +2525,7 @@ D + ln(n)*p
 <section id="ggeffects" class="slide level2">
 <h2><code>ggeffects</code></h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">ggemmeans</span>(max_model, <span class="at">terms=</span><span class="fu">c</span>(<span class="st">"vocoded"</span>)) <span class="sc">%&gt;%</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">ggemmeans</span>(max_model, <span class="at">terms=</span><span class="fu">c</span>(<span class="st">"vocoded"</span>)) <span class="sc">%&gt;%</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="mlm-02_files/figure-revealjs/unnamed-chunk-30-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1536"></section>
@@ -2542,9 +2553,9 @@ R^2_{\text{LMM}(m)} = \frac{\sigma_f^2\text{fixed}}{\sigma_f^2\text{fixed} + \si
 <section id="effect-size-1" class="slide level2">
 <h2>Effect size</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co">#get r2 for model with performance from easystats</span></span>
-<span id="cb29-2"><a href="#cb29-2"></a></span>
-<span id="cb29-3"><a href="#cb29-3"></a>performance<span class="sc">::</span><span class="fu">r2</span>(max_model) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="co">#get r2 for model with performance from easystats</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a></span>
+<span id="cb30-3"><a href="#cb30-3"></a>performance<span class="sc">::</span><span class="fu">r2</span>(max_model) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># R2 for Mixed Models
 
@@ -2553,13 +2564,13 @@ R^2_{\text{LMM}(m)} = \frac{\sigma_f^2\text{fixed}}{\sigma_f^2\text{fixed} + \si
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co"># get semi-part</span></span>
-<span id="cb31-2"><a href="#cb31-2"></a><span class="fu">library</span>(partR2)</span>
-<span id="cb31-3"><a href="#cb31-3"></a><span class="co"># does not work with random slopes for some reason :/</span></span>
-<span id="cb31-4"><a href="#cb31-4"></a>R2_3 <span class="ot">&lt;-</span> <span class="fu">partR2</span>(max_model,<span class="at">data=</span>eye, </span>
-<span id="cb31-5"><a href="#cb31-5"></a>  <span class="at">partvars =</span> <span class="fu">c</span>(<span class="st">"vocoded"</span>),</span>
-<span id="cb31-6"><a href="#cb31-6"></a>  <span class="at">R2_type =</span> <span class="st">"marginal"</span>, <span class="at">nboot =</span> <span class="dv">10</span>, <span class="at">CI =</span> <span class="fl">0.95</span></span>
-<span id="cb31-7"><a href="#cb31-7"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co"># get semi-part</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a><span class="fu">library</span>(partR2)</span>
+<span id="cb32-3"><a href="#cb32-3"></a><span class="co"># does not work with random slopes for some reason :/</span></span>
+<span id="cb32-4"><a href="#cb32-4"></a>R2_3 <span class="ot">&lt;-</span> <span class="fu">partR2</span>(max_model,<span class="at">data=</span>eye, </span>
+<span id="cb32-5"><a href="#cb32-5"></a>  <span class="at">partvars =</span> <span class="fu">c</span>(<span class="st">"vocoded"</span>),</span>
+<span id="cb32-6"><a href="#cb32-6"></a>  <span class="at">R2_type =</span> <span class="st">"marginal"</span>, <span class="at">nboot =</span> <span class="dv">10</span>, <span class="at">CI =</span> <span class="fl">0.95</span></span>
+<span id="cb32-7"><a href="#cb32-7"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="effect-size-2" class="slide level2">
@@ -2571,8 +2582,8 @@ R^2_{\text{LMM}(m)} = \frac{\sigma_f^2\text{fixed}}{\sigma_f^2\text{fixed} + \si
 d = \frac{\text{Effect}}{\sqrt{\sigma^2_\text{Intercept} + \sigma^2_\text{slope} + \sigma^2_\text{residual}}}
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">emmeans</span>(max_model,<span class="sc">~</span> vocoded) <span class="sc">%&gt;%</span> </span>
-<span id="cb32-2"><a href="#cb32-2"></a> <span class="fu">eff_size</span>(.,<span class="at">sigma=</span>.<span class="dv">04</span>, <span class="at">edf=</span><span class="dv">30</span>) <span class="co"># need to calcuate sigma and add dfs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">emmeans</span>(max_model,<span class="sc">~</span> vocoded) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="#cb33-2"></a> <span class="fu">eff_size</span>(.,<span class="at">sigma=</span>.<span class="dv">04</span>, <span class="at">edf=</span><span class="dv">30</span>) <span class="co"># need to calcuate sigma and add dfs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> contrast effect.size     SE  df asymp.LCL asymp.UCL
  NS - V6      -0.0781 0.0377 Inf    -0.152  -0.00421
@@ -2641,7 +2652,7 @@ Confidence level used: 0.95 </code></pre>
 <section id="write-up" class="slide level2">
 <h2>Write-up</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>report<span class="sc">::</span><span class="fu">report</span>(max_model) <span class="co"># easystats report function</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>report<span class="sc">::</span><span class="fu">report</span>(max_model) <span class="co"># easystats report function</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We fitted a linear mixed model (estimated using REML and nloptwrap optimizer) to predict mean_pupil with vocoded (formula: mean_pupil ~ vocoded). The model included vocoded as random effects (formula: ~1 + vocoded | subject). The model’s total explanatory power is weak (conditional R2 = 0.08) and the part related to the fixed effects alone (marginal R2) is of 1.34e-03. The model’s intercept, corresponding to vocoded = NS, is at 3.64e-03 (95% CI [-7.38e-04, 8.02e-03], t(5603) = 1.63, p = 0.103). Within this model:</p>
 <ul>
@@ -2652,7 +2663,7 @@ Confidence level used: 0.95 </code></pre>
 <section id="table" class="slide level2">
 <h2>Table</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(<span class="fu">list</span>(<span class="st">"max model"</span> <span class="ot">=</span> max_model), <span class="at">output=</span><span class="st">"kableExtra"</span>) <span class="co"># modelsummary package</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(<span class="fu">list</span>(<span class="st">"max model"</span> <span class="ot">=</span> max_model), <span class="at">output=</span><span class="st">"kableExtra"</span>) <span class="co"># modelsummary package</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table" data-quarto-postprocess="true" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>

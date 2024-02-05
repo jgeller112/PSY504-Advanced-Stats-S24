@@ -62,7 +62,7 @@ execute:
     -   Organizing data for MLM analysis
     -   Estimation
     -   Fit and interpret multilevel models
-    -   Visualizion
+    -   Visualization
     -   Effect size
     -   Reporting
     -   Power
@@ -84,6 +84,8 @@ library(easystats) # nice ecosystem of packages
 options(scipen=999) # get rid of sci notation
 
 ```
+
+-   Find the .qmd document here to follow along: <https://github.com/jgeller112/PSY504-Advanced-Stats-S24/blob/main/slides/02-MLM/mlm-02.qmd>
 
 ## Today's data
 
@@ -503,7 +505,7 @@ summary(lmer(math~ses + (1+ses|schcode), data=data))
 ```{r}
 #| eval: false
 #| 
-lmer(math~ses + (1+ses||schcode), data=data) # removes correlation()
+lmer(math~ses + (1+ses||schcode), data=data) # removes correlation() with double pipes. Does not work with categorical variables
 ```
 
 ## Null model (unconditional means)
@@ -540,9 +542,10 @@ $$
 
 ```{r}
 # easystats 
-icc <- performance::model_performance(null_model)
+#adjusted icc just random effects
+#unadjusted fixed effects taken into account
+performance::icc(null_model)
 
-icc$ICC
 ```
 
 ## Maximal model: Fixed effect random intercepts (subject) and slopes (vocoded) model
@@ -565,7 +568,7 @@ summary(max_model)
 
 ## Degrees of freedom and p-values
 
--   Degrees of freedom (denominator) can be assessed with several methods:
+-   Degrees of freedom (denominator) and *p*-values can be assessed with several methods:
 
     -   ***Satterthwaite*** (default when install `lmerTest` and then run `lmer`)
 
@@ -598,10 +601,10 @@ summary(max_model)
 #| fig-align: "center"
 #| fig-width: 12
 #| fig-height: 8
+#| 
 re = ranef(max_model)$subject # get random effects 
 
-cor_test(re,  "vocodedV6", "(Intercept)") %>% 
-  plot()
+cor_test(re,  "vocodedV6", "(Intercept)")
 ```
 
 ## Visualize Random Effects
