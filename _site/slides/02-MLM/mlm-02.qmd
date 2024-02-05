@@ -165,6 +165,8 @@ head(eye) %>%
 
 ## Group- vs. Grand-Mean Centering
 
+::: columns
+::: {.column width="50%"}
 -   Level 1 predictors
 
     -   Grand-mean centering
@@ -172,11 +174,15 @@ head(eye) %>%
         -   **Include means of level 2**
             -   Allows us to directly test within-group effect
             -   Coefficient associated with the Level 2 group mean represents **contextual effect**
+:::
 
-    -   Group-mean centering
+::: {.column width="50%"}
+-   Group-mean centering
 
-        -   Level 1 coefficient will always be with within-group effect, regardless of whether the group means are included at Level 2 or not
-        -   If level 2 means included, coefficient represents the between-groups effect
+    -   Level 1 coefficient will always be with within-group effect, regardless of whether the group means are included at Level 2 or not
+    -   If level 2 means included, coefficient represents the between-groups effect
+:::
+:::
 
 ::: callout-note
 Can apply to categorical predictors as well (see Yaremych, Preacher, & Hedeker, 2023)
@@ -185,8 +191,6 @@ Can apply to categorical predictors as well (see Yaremych, Preacher, & Hedeker, 
 ## Centering in R
 
 ```{r, eval=FALSE}
-
-library(datawizard) #easystats 
 
 # how to group mean center 
 d <- d %>% 
@@ -197,8 +201,10 @@ d <- d %>%
   mutate(iv.cm = mean(iv),
          iv.cwc = iv-iv.cm)
 
+library(datawizard) #easystats 
+
 #data wizard way
-x <- demean(x, select=c("x"), group="ID") #gets within-group and between group clusters
+x <- demean(x, select=c("x"), group="ID") #gets within-group and included cluster means
 
 ```
 
@@ -446,7 +452,7 @@ y = lmer(DV ~ IV1+ IV2 + (1|ID))
 
 ## Modeling approach
 
--   Forward approach
+-   Forward/backward approach
 
 ```{webr-r}
 
@@ -490,6 +496,14 @@ data <- read.csv("https://raw.githubusercontent.com/jgeller112/PSY504-Advanced-S
 
 summary(lmer(math~ses + (1+ses|schcode), data=data))
 
+```
+
+. . .
+
+```{r}
+#| eval: false
+#| 
+lmer(math~ses + (1+ses||schcode), data=data) # removes correlation()
 ```
 
 ## Null model (unconditional means)
@@ -783,7 +797,7 @@ ggemmeans(max_model, terms=c("vocoded")) %>% plot()
 
 ## Effect size
 
--   Report pseudo-$R^2$ for marginal (fixed) and conditional model (random) (Nakagawa et al. 2017)
+-   Report pseudo-$R^2$ for marginal (fixed) and conditional model (full model) (Nakagawa et al. 2017)
 
 $$
 R^2_{LMM(c)} = \frac{\sigma_f^2\text{fixed} + \sigma_a^2\text{random}}{\sigma_f^2\text{fixed} + \sigma_a^2\text{random} + \sigma_e^2\text{residual}}
@@ -800,11 +814,17 @@ $$
 ## Effect size
 
 ```{r}
-#| eval: false
-#| 
-#get r2 for model with performance fro easystats
+
+#get r2 for model with performance from easystats
 
 performance::r2(max_model) 
+
+
+```
+
+```{r}
+#| eval: false
+#| 
 
 # get semi-part
 library(partR2)

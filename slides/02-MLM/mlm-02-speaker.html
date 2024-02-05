@@ -557,7 +557,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"options":{"out-height":"","message":"true","dpi":72,"fig-width":7,"out-width":"700px","context":"interactive","output":"true","classes":"","label":"unnamed-chunk-1","results":"markup","fig-height":5,"warning":"true","fig-cap":"","comment":""},"code":"","id":1}];
+  globalThis.qwebrCellDetails = [{"code":"","options":{"fig-height":5,"output":"true","classes":"","context":"interactive","results":"markup","out-width":"700px","out-height":"","label":"unnamed-chunk-1","warning":"true","dpi":72,"fig-cap":"","message":"true","fig-width":7,"comment":""},"id":1}];
 
   </script>
   <script type="module">
@@ -1645,6 +1645,8 @@ Jason Geller, PH.D.(he/him)
 </section>
 <section id="group--vs.-grand-mean-centering-1" class="slide level2">
 <h2>Group- vs.&nbsp;Grand-Mean Centering</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
 <li><p>Level 1 predictors</p>
 <ul>
@@ -1656,13 +1658,18 @@ Jason Geller, PH.D.(he/him)
 <li>Coefficient associated with the Level 2 group mean represents <strong>contextual effect</strong></li>
 </ul></li>
 </ul></li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
 <li><p>Group-mean centering</p>
 <ul>
 <li>Level 1 coefficient will always be with within-group effect, regardless of whether the group means are included at Level 2 or not</li>
 <li>If level 2 means included, coefficient represents the between-groups effect</li>
 </ul></li>
-</ul></li>
 </ul>
+</div>
+</div>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -1680,19 +1687,19 @@ Jason Geller, PH.D.(he/him)
 <section id="centering-in-r" class="slide level2">
 <h2>Centering in R</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(datawizard) <span class="co">#easystats </span></span>
-<span id="cb3-2"><a href="#cb3-2"></a></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># how to group mean center </span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>d <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> </span>
-<span id="cb3-5"><a href="#cb3-5"></a>  <span class="co"># Grand mean centering (CMC)</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a>  <span class="fu">mutate</span>(<span class="at">iv.gmc =</span> iv<span class="sc">-</span><span class="fu">mean</span>(iv)) <span class="sc">%&gt;%</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a>  <span class="co"># group  mean centering (more generally, centering within cluster)</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-9"><a href="#cb3-9"></a>  <span class="fu">mutate</span>(<span class="at">iv.cm =</span> <span class="fu">mean</span>(iv),</span>
-<span id="cb3-10"><a href="#cb3-10"></a>         <span class="at">iv.cwc =</span> iv<span class="sc">-</span>iv.cm)</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># how to group mean center </span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>d <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="co"># Grand mean centering (CMC)</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>  <span class="fu">mutate</span>(<span class="at">iv.gmc =</span> iv<span class="sc">-</span><span class="fu">mean</span>(iv)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>  <span class="co"># group  mean centering (more generally, centering within cluster)</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-7"><a href="#cb3-7"></a>  <span class="fu">mutate</span>(<span class="at">iv.cm =</span> <span class="fu">mean</span>(iv),</span>
+<span id="cb3-8"><a href="#cb3-8"></a>         <span class="at">iv.cwc =</span> iv<span class="sc">-</span>iv.cm)</span>
+<span id="cb3-9"><a href="#cb3-9"></a></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="fu">library</span>(datawizard) <span class="co">#easystats </span></span>
 <span id="cb3-11"><a href="#cb3-11"></a></span>
 <span id="cb3-12"><a href="#cb3-12"></a><span class="co">#data wizard way</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a>x <span class="ot">&lt;-</span> <span class="fu">demean</span>(x, <span class="at">select=</span><span class="fu">c</span>(<span class="st">"x"</span>), <span class="at">group=</span><span class="st">"ID"</span>) <span class="co">#gets within-group and between group clusters</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-13"><a href="#cb3-13"></a>x <span class="ot">&lt;-</span> <span class="fu">demean</span>(x, <span class="at">select=</span><span class="fu">c</span>(<span class="st">"x"</span>), <span class="at">group=</span><span class="st">"ID"</span>) <span class="co">#gets within-group and included cluster means</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section>
@@ -1702,10 +1709,13 @@ Jason Geller, PH.D.(he/him)
 </section>
 <section id="maximum-likelihood" class="slide level2">
 <h2>Maximum Likelihood</h2>
+<p><br></p>
+<p><br></p>
+<p><br></p>
 <ul>
 <li><p>In MLM we try to maximize the likelihood of the data</p>
 <ul>
-<li>More complex models do not use things we are used to like OLS</li>
+<li>No OLS!</li>
 </ul></li>
 </ul>
 </section>
@@ -1923,7 +1933,7 @@ Jason Geller, PH.D.(he/him)
 <section id="modeling-approach" class="slide level2">
 <h2>Modeling approach</h2>
 <ul>
-<li>Forward approach</li>
+<li>Forward/backward approach</li>
 </ul>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
@@ -2012,6 +2022,11 @@ optimizer (nloptwrap) convergence code: 0 (OK)
 boundary (singular) fit: see help('isSingular')</code></pre>
 </div>
 </div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">lmer</span>(math<span class="sc">~</span>ses <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>ses<span class="sc">||</span>schcode), <span class="at">data=</span>data) <span class="co"># removes correlation()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
 <section id="null-model-unconditional-means" class="slide level2">
 <h2>Null model (unconditional means)</h2>
@@ -2028,11 +2043,11 @@ boundary (singular) fit: see help('isSingular')</code></pre>
 <section id="null-model-unconditional-means-1" class="slide level2">
 <h2>Null model (unconditional means)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">library</span>(lme4) <span class="co"># pop linear modeling package</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a></span>
-<span id="cb9-3"><a href="#cb9-3"></a>null_model <span class="ot">&lt;-</span> <span class="fu">lmer</span>(mean_pupil <span class="sc">~</span> (<span class="dv">1</span><span class="sc">|</span>subject), <span class="at">data =</span> eye, <span class="at">REML=</span><span class="cn">TRUE</span>)</span>
-<span id="cb9-4"><a href="#cb9-4"></a></span>
-<span id="cb9-5"><a href="#cb9-5"></a><span class="fu">summary</span>(null_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(lme4) <span class="co"># pop linear modeling package</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a></span>
+<span id="cb10-3"><a href="#cb10-3"></a>null_model <span class="ot">&lt;-</span> <span class="fu">lmer</span>(mean_pupil <span class="sc">~</span> (<span class="dv">1</span><span class="sc">|</span>subject), <span class="at">data =</span> eye, <span class="at">REML=</span><span class="cn">TRUE</span>)</span>
+<span id="cb10-4"><a href="#cb10-4"></a></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="fu">summary</span>(null_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite's method [
 lmerModLmerTest]
@@ -2070,10 +2085,10 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 ICC=\frac{\operatorname{Var}\left(u_{0 j}\right)}{\operatorname{Var}\left(u_{0 j}\right)+\operatorname{Var}\left(e_{i j}\right)}=\frac{\tau_{00}}{\tau_{00}+\sigma^{2}}
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># easystats </span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>icc <span class="ot">&lt;-</span> performance<span class="sc">::</span><span class="fu">model_performance</span>(null_model)</span>
-<span id="cb11-3"><a href="#cb11-3"></a></span>
-<span id="cb11-4"><a href="#cb11-4"></a>icc<span class="sc">$</span>ICC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># easystats </span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>icc <span class="ot">&lt;-</span> performance<span class="sc">::</span><span class="fu">model_performance</span>(null_model)</span>
+<span id="cb12-3"><a href="#cb12-3"></a></span>
+<span id="cb12-4"><a href="#cb12-4"></a>icc<span class="sc">$</span>ICC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.07183568</code></pre>
 </div>
@@ -2082,9 +2097,9 @@ ICC=\frac{\operatorname{Var}\left(u_{0 j}\right)}{\operatorname{Var}\left(u_{0 j
 <section id="maximal-model-fixed-effect-random-intercepts-subject-and-slopes-vocoded-model" class="slide level2">
 <h2>Maximal model: Fixed effect random intercepts (subject) and slopes (vocoded) model</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>max_model <span class="ot">&lt;-</span> <span class="fu">lmer</span>(mean_pupil <span class="sc">~</span>vocoded <span class="sc">+</span>(<span class="dv">1</span><span class="sc">+</span>vocoded<span class="sc">|</span>subject), <span class="at">data =</span> eye)</span>
-<span id="cb13-2"><a href="#cb13-2"></a></span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="fu">summary</span>(max_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>max_model <span class="ot">&lt;-</span> <span class="fu">lmer</span>(mean_pupil <span class="sc">~</span>vocoded <span class="sc">+</span>(<span class="dv">1</span><span class="sc">+</span>vocoded<span class="sc">|</span>subject), <span class="at">data =</span> eye)</span>
+<span id="cb14-2"><a href="#cb14-2"></a></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="fu">summary</span>(max_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite's method [
 lmerModLmerTest]
@@ -2123,8 +2138,8 @@ vocodedV6 -0.306</code></pre>
 <li>Interpretation same as lm</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">#grab the fixed effects</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">summary</span>(max_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">#grab the fixed effects</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">summary</span>(max_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite's method [
 lmerModLmerTest]
@@ -2177,7 +2192,7 @@ vocodedV6 -0.306</code></pre>
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">summary</span>(max_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">summary</span>(max_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite's method [
 lmerModLmerTest]
@@ -2222,17 +2237,17 @@ vocodedV6 -0.306</code></pre>
 </ul></li>
 </ul>
 
-<img data-src="mlm-02_files/figure-revealjs/unnamed-chunk-21-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
+<img data-src="mlm-02_files/figure-revealjs/unnamed-chunk-22-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
 <section id="visualize-random-effects" class="slide level2">
 <h2>Visualize Random Effects</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># use easystats to grab group variance</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>random <span class="ot">&lt;-</span> <span class="fu">estimate_grouplevel</span>(max_model)</span>
-<span id="cb19-3"><a href="#cb19-3"></a></span>
-<span id="cb19-4"><a href="#cb19-4"></a><span class="fu">plot</span>(random) <span class="sc">+</span> <span class="fu">theme_lucid</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># use easystats to grab group variance</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>random <span class="ot">&lt;-</span> <span class="fu">estimate_grouplevel</span>(max_model)</span>
+<span id="cb20-3"><a href="#cb20-3"></a></span>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="fu">plot</span>(random) <span class="sc">+</span> <span class="fu">theme_lucid</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="mlm-02_files/figure-revealjs/unnamed-chunk-22-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1536"></section>
+<img data-src="mlm-02_files/figure-revealjs/unnamed-chunk-23-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1536"></section>
 <section id="model-comparisons" class="slide level2">
 <h2>Model comparisons</h2>
 <ul>
@@ -2242,7 +2257,7 @@ vocodedV6 -0.306</code></pre>
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># you try</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># you try</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
@@ -2291,8 +2306,8 @@ D + ln(n)*p
 <section id="aicbic-1" class="slide level2">
 <h2>AIC/BIC</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>performance<span class="sc">::</span><span class="fu">model_performance</span>(max_model) <span class="sc">%&gt;%</span> <span class="co"># easystats</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>performance<span class="sc">::</span><span class="fu">model_performance</span>(max_model) <span class="sc">%&gt;%</span> <span class="co"># easystats</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <colgroup>
@@ -2351,12 +2366,12 @@ D + ln(n)*p
 <section id="hypothesis-testing---afex" class="slide level2">
 <h2>Hypothesis testing - <code>afex</code></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">library</span>(afex) <span class="co"># load afex in </span></span>
-<span id="cb22-2"><a href="#cb22-2"></a></span>
-<span id="cb22-3"><a href="#cb22-3"></a>m <span class="ot">&lt;-</span> <span class="fu">mixed</span>(mean_pupil <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> vocoded <span class="sc">+</span>  (<span class="dv">1</span><span class="sc">+</span>vocoded<span class="sc">|</span>subject), <span class="at">data =</span>eye, <span class="at">method =</span> <span class="st">"LRT"</span>) <span class="co"># fit lmer using afex</span></span>
-<span id="cb22-4"><a href="#cb22-4"></a></span>
-<span id="cb22-5"><a href="#cb22-5"></a><span class="fu">nice</span>(m) <span class="sc">%&gt;%</span></span>
-<span id="cb22-6"><a href="#cb22-6"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">library</span>(afex) <span class="co"># load afex in </span></span>
+<span id="cb23-2"><a href="#cb23-2"></a></span>
+<span id="cb23-3"><a href="#cb23-3"></a>m <span class="ot">&lt;-</span> <span class="fu">mixed</span>(mean_pupil <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> vocoded <span class="sc">+</span>  (<span class="dv">1</span><span class="sc">+</span>vocoded<span class="sc">|</span>subject), <span class="at">data =</span>eye, <span class="at">method =</span> <span class="st">"LRT"</span>) <span class="co"># fit lmer using afex</span></span>
+<span id="cb23-4"><a href="#cb23-4"></a></span>
+<span id="cb23-5"><a href="#cb23-5"></a><span class="fu">nice</span>(m) <span class="sc">%&gt;%</span></span>
+<span id="cb23-6"><a href="#cb23-6"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <thead>
@@ -2385,10 +2400,10 @@ D + ln(n)*p
 <li>Get means and contrasts</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">library</span>(emmeans) <span class="co"># get marginal means </span></span>
-<span id="cb23-2"><a href="#cb23-2"></a></span>
-<span id="cb23-3"><a href="#cb23-3"></a><span class="fu">emmeans</span>(max_model, <span class="at">specs =</span> <span class="st">"vocoded"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb23-4"><a href="#cb23-4"></a>  <span class="fu">kable</span>() <span class="co"># grabs means/SEs for each level of vocode </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">library</span>(emmeans) <span class="co"># get marginal means </span></span>
+<span id="cb24-2"><a href="#cb24-2"></a></span>
+<span id="cb24-3"><a href="#cb24-3"></a><span class="fu">emmeans</span>(max_model, <span class="at">specs =</span> <span class="st">"vocoded"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-4"><a href="#cb24-4"></a>  <span class="fu">kable</span>() <span class="co"># grabs means/SEs for each level of vocode </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <thead>
@@ -2421,9 +2436,9 @@ D + ln(n)*p
 </tbody>
 </table>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">pairs</span>(<span class="fu">emmeans</span>(max_model, <span class="at">specs =</span> <span class="st">"vocoded"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a>  <span class="fu">confint</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb24-3"><a href="#cb24-3"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">pairs</span>(<span class="fu">emmeans</span>(max_model, <span class="at">specs =</span> <span class="st">"vocoded"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>  <span class="fu">confint</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <thead>
@@ -2448,7 +2463,7 @@ D + ln(n)*p
 </tbody>
 </table>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co"># use this to get pariwise compairsons between levels of factors</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># use this to get pariwise compairsons between levels of factors</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
@@ -2483,27 +2498,27 @@ D + ln(n)*p
 <section id="assumptions-1" class="slide level2">
 <h2>Assumptions</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">library</span>(easystats) <span class="co"># performance package</span></span>
-<span id="cb26-2"><a href="#cb26-2"></a></span>
-<span id="cb26-3"><a href="#cb26-3"></a><span class="fu">check_model</span>(max_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">library</span>(easystats) <span class="co"># performance package</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a></span>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="fu">check_model</span>(max_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="mlm-02_files/figure-revealjs/unnamed-chunk-27-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1536"></section>
+<img data-src="mlm-02_files/figure-revealjs/unnamed-chunk-28-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1536"></section>
 <section id="visualization" class="slide level2">
 <h2>Visualization</h2>
 
-<img data-src="mlm-02_files/figure-revealjs/unnamed-chunk-28-1.png" width="1536" class="r-stretch"></section>
+<img data-src="mlm-02_files/figure-revealjs/unnamed-chunk-29-1.png" width="1536" class="r-stretch"></section>
 <section id="ggeffects" class="slide level2">
 <h2><code>ggeffects</code></h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">ggemmeans</span>(max_model, <span class="at">terms=</span><span class="fu">c</span>(<span class="st">"vocoded"</span>)) <span class="sc">%&gt;%</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">ggemmeans</span>(max_model, <span class="at">terms=</span><span class="fu">c</span>(<span class="st">"vocoded"</span>)) <span class="sc">%&gt;%</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="mlm-02_files/figure-revealjs/unnamed-chunk-29-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1536"></section>
+<img data-src="mlm-02_files/figure-revealjs/unnamed-chunk-30-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1536"></section>
 <section id="effect-size" class="slide level2">
 <h2>Effect size</h2>
 <ul>
-<li>Report pseudo-<span class="math inline">\(R^2\)</span> for marginal (fixed) and conditional model (random) (Nakagawa et al.&nbsp;2017)</li>
+<li>Report pseudo-<span class="math inline">\(R^2\)</span> for marginal (fixed) and conditional model (full model) (Nakagawa et al.&nbsp;2017)</li>
 </ul>
 <p><span class="math display">\[
 R^2_{LMM(c)} = \frac{\sigma_f^2\text{fixed} + \sigma_a^2\text{random}}{\sigma_f^2\text{fixed} + \sigma_a^2\text{random} + \sigma_e^2\text{residual}}
@@ -2524,17 +2539,24 @@ R^2_{\text{LMM}(m)} = \frac{\sigma_f^2\text{fixed}}{\sigma_f^2\text{fixed} + \si
 <section id="effect-size-1" class="slide level2">
 <h2>Effect size</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co">#get r2 for model with performance fro easystats</span></span>
-<span id="cb28-2"><a href="#cb28-2"></a></span>
-<span id="cb28-3"><a href="#cb28-3"></a>performance<span class="sc">::</span><span class="fu">r2</span>(max_model) </span>
-<span id="cb28-4"><a href="#cb28-4"></a></span>
-<span id="cb28-5"><a href="#cb28-5"></a><span class="co"># get semi-part</span></span>
-<span id="cb28-6"><a href="#cb28-6"></a><span class="fu">library</span>(partR2)</span>
-<span id="cb28-7"><a href="#cb28-7"></a><span class="co"># does not work with random slopes for some reason :/</span></span>
-<span id="cb28-8"><a href="#cb28-8"></a>R2_3 <span class="ot">&lt;-</span> <span class="fu">partR2</span>(max_model,<span class="at">data=</span>eye, </span>
-<span id="cb28-9"><a href="#cb28-9"></a>  <span class="at">partvars =</span> <span class="fu">c</span>(<span class="st">"vocoded"</span>),</span>
-<span id="cb28-10"><a href="#cb28-10"></a>  <span class="at">R2_type =</span> <span class="st">"marginal"</span>, <span class="at">nboot =</span> <span class="dv">10</span>, <span class="at">CI =</span> <span class="fl">0.95</span></span>
-<span id="cb28-11"><a href="#cb28-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co">#get r2 for model with performance from easystats</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a></span>
+<span id="cb29-3"><a href="#cb29-3"></a>performance<span class="sc">::</span><span class="fu">r2</span>(max_model) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># R2 for Mixed Models
+
+  Conditional R2: 0.077
+     Marginal R2: 0.001</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co"># get semi-part</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a><span class="fu">library</span>(partR2)</span>
+<span id="cb31-3"><a href="#cb31-3"></a><span class="co"># does not work with random slopes for some reason :/</span></span>
+<span id="cb31-4"><a href="#cb31-4"></a>R2_3 <span class="ot">&lt;-</span> <span class="fu">partR2</span>(max_model,<span class="at">data=</span>eye, </span>
+<span id="cb31-5"><a href="#cb31-5"></a>  <span class="at">partvars =</span> <span class="fu">c</span>(<span class="st">"vocoded"</span>),</span>
+<span id="cb31-6"><a href="#cb31-6"></a>  <span class="at">R2_type =</span> <span class="st">"marginal"</span>, <span class="at">nboot =</span> <span class="dv">10</span>, <span class="at">CI =</span> <span class="fl">0.95</span></span>
+<span id="cb31-7"><a href="#cb31-7"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="effect-size-2" class="slide level2">
@@ -2546,8 +2568,8 @@ R^2_{\text{LMM}(m)} = \frac{\sigma_f^2\text{fixed}}{\sigma_f^2\text{fixed} + \si
 d = \frac{\text{Effect}}{\sqrt{\sigma^2_\text{Intercept} + \sigma^2_\text{slope} + \sigma^2_\text{residual}}}
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">emmeans</span>(max_model,<span class="sc">~</span> vocoded) <span class="sc">%&gt;%</span> </span>
-<span id="cb29-2"><a href="#cb29-2"></a> <span class="fu">eff_size</span>(.,<span class="at">sigma=</span>.<span class="dv">04</span>, <span class="at">edf=</span><span class="dv">30</span>) <span class="co"># need to calcuate sigma and add dfs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">emmeans</span>(max_model,<span class="sc">~</span> vocoded) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-2"><a href="#cb32-2"></a> <span class="fu">eff_size</span>(.,<span class="at">sigma=</span>.<span class="dv">04</span>, <span class="at">edf=</span><span class="dv">30</span>) <span class="co"># need to calcuate sigma and add dfs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> contrast effect.size     SE  df asymp.LCL asymp.UCL
  NS - V6      -0.0781 0.0377 Inf    -0.152  -0.00421
@@ -2616,7 +2638,7 @@ Confidence level used: 0.95 </code></pre>
 <section id="write-up" class="slide level2">
 <h2>Write-up</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>report<span class="sc">::</span><span class="fu">report</span>(max_model) <span class="co"># easystats report function</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>report<span class="sc">::</span><span class="fu">report</span>(max_model) <span class="co"># easystats report function</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We fitted a linear mixed model (estimated using REML and nloptwrap optimizer) to predict mean_pupil with vocoded (formula: mean_pupil ~ vocoded). The model included vocoded as random effects (formula: ~1 + vocoded | subject). The model’s total explanatory power is weak (conditional R2 = 0.08) and the part related to the fixed effects alone (marginal R2) is of 1.34e-03. The model’s intercept, corresponding to vocoded = NS, is at 3.64e-03 (95% CI [-7.38e-04, 8.02e-03], t(5603) = 1.63, p = 0.103). Within this model:</p>
 <ul>
@@ -2627,7 +2649,7 @@ Confidence level used: 0.95 </code></pre>
 <section id="table" class="slide level2">
 <h2>Table</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(<span class="fu">list</span>(<span class="st">"max model"</span> <span class="ot">=</span> max_model), <span class="at">output=</span><span class="st">"kableExtra"</span>) <span class="co"># modelsummary package</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(<span class="fu">list</span>(<span class="st">"max model"</span> <span class="ot">=</span> max_model), <span class="at">output=</span><span class="st">"kableExtra"</span>) <span class="co"># modelsummary package</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table" data-quarto-postprocess="true" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
