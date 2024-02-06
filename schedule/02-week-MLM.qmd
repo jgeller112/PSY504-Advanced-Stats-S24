@@ -6,6 +6,12 @@ date: 2024-02-05
 
 ![](/slides/02-MLM/images/mlm_title.png){fig-align="center"}
 
+## Class
+
+-   MLM - Part 2
+
+    {{< video https://youtu.be/ehZ1JYGIqkA width="800" height="400" >}}
+
 ### Textbook
 
 -   {{< fa book >}} Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
