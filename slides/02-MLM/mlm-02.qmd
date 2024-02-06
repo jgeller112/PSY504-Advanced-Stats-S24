@@ -857,17 +857,15 @@ emmeans(max_model,~ vocoded) %>%
 
 # Reporting Results
 
-## Describing a MLM analysis
+## Describing a MLM analysis - Structure
 
--   Structure
+-   What was the nested data structure (e.g., how many levels; what were the units at each level?)
 
-    -   What was the nested data structure (e.g., how many levels; what were the units at each level?)
+    • How many units were in each level, on average?
 
-        • How many units were in each level, on average?
+    • What was the range of the number of lower-level units in each group/cluster?
 
-        • What was the range of the number of lower-level units in each group/cluster?
-
-## Describing a MLM analysis
+## Describing a MLM analysis - Model
 
 ::: columns
 ::: {.column width="50%"}
@@ -875,7 +873,7 @@ emmeans(max_model,~ vocoded) %>%
 
 -   What estimation method was used (e.g., ML, REML)?
 
--    If there were convergence issues, how was this addressed?
+-   If there were convergence issues, how was this addressed?
 
 -   What software (and version) was used (when using R, what packages as well)?
 :::
@@ -891,7 +889,7 @@ emmeans(max_model,~ vocoded) %>%
 :::
 :::
 
-## Reporting Results
+## Describing a MLM analysis - Results
 
 ::: columns
 ::: {.column width="50%"}
@@ -901,16 +899,13 @@ emmeans(max_model,~ vocoded) %>%
 
 -   What inferential statistics were used (e.g., t-statistics, LRTs)?
 
--   How precise were the results (report the standard errors and/or confidence
-    intervals)?
+-   How precise were the results (report the standard errors and/or confidence intervals)?
 :::
 
 ::: {.column width="50%"}
 -   Were model comparisons performed (e.g., AIC, BIC, if using an LRT,report the χ2, degrees of freedom, and p value)?
 
--   Were effect sizes reported (e.g., Cohen’s d, pseudo-R2?
-
--   What kind of pseudo-R2 were reported?
+-   Were effect sizes reported for overall model and individual predictors (e.g., Cohen’s d, $R^2$ )?
 :::
 :::
 
@@ -926,7 +921,7 @@ report::report(max_model) # easystats report function
 ## Table
 
 ```{r}
-modelsummary::modelsummary(list("max model" = max_model), output="kableExtra") # modelsummary package
+modelsummary::modelsummary(list("max model" = max_model), output="html") # modelsummary package
 ```
 
 ## Power
