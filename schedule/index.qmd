@@ -26,7 +26,7 @@ Here's your roadmap for the semester!
 | 1 | 1/29/24 | Introduction | [{{<    fa   book-open-reader >}}](/schedule/01-week.qmd) | [{{< fa laptop-code   >}}](/slides/01-welcome/01-welcome-syllabus.html) |  |  |
 |  | 1/31/24 | Quarto: Blogging and Website <br>Multilevel modeling | [{{<    fa   book-open-reader >}}](/schedule/01-week-MLM.qmd) | [{{< fa laptop-code   >}}](/slides/02-Blog/quarto.html) [{{< fa laptop-code   >}}](/slides/02-MLM/MLM.html) |  | Jason |
 | 2 | 2/5/24 | Multilevel modeling | [{{<    fa   book-open-reader >}}](/schedule/02-week-MLM.qmd) | [{{< fa laptop-code   >}}](/slides/02-MLM/mlm-02.html)|  | Jason |
-|  | 2/7/24 | Lab 1 |  |  | {{< fa pen-ruler >}} |  |
+|  | 2/7/24 | Lab 1 |  |  | [{{< fa pen-ruler >}}](/Labs/01-Lab1.qmd) |  |
 | 3 | 2/12/24 | Missing data | [{{<    fa   book-open-reader >}}](/schedule/03-week.qmd) | {{< fa laptop-code   >}} |  |Ari|
 |  | 2/14/24 | Lab 2 |  |  | {{< fa pen-ruler >}} |  |
 | 4 | 2/19/24 | Logistic regression | [{{<    fa   book-open-reader >}}](/schedule/04-week-logistic.qmd) | {{< fa laptop-code   >}} |  | Abby  |
