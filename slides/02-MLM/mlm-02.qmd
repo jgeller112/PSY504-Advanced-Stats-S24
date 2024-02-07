@@ -736,7 +736,7 @@ pairs(emmeans(max_model, specs = "vocoded")) %>%
 
 -   Homoskedacticity
 
-    -   Level 1 residual variance is homoskedastic both within- and between-groups
+    -   Level 1/Level 2 predictors and residuals are homoskedastic
 :::
 
 ::: {.column width="50%"}
