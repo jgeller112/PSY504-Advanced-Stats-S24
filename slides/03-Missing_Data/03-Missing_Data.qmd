@@ -205,7 +205,7 @@ dat %>%
 
 -   Look at your data
 
-    -   Explore data using descriptive statistics and graphs
+    -   Explore data using descriptive statistics and figures
 
         -   What variables have missing data? How much is missing in total? By variable?
 
@@ -695,7 +695,7 @@ Implicit imputation
 
 -   The mean and variance of depression increase to accommodate observed perceived control scores at the low end 
 
-![](images/Screen%20Shot%202024-01-04%20at%205.37.37%20PM.png){fig-align="center"}
+![](images/ML_unbiased.png){fig-align="center" width="559"}
 
 ## ML: Cons
 
