@@ -1,5 +1,5 @@
 ---
-title: "Missing Data"
+title: "Missing Data in R"
 subtitle: "Princeton University"
 author: "Jason Geller, PH.D.(he/him)"
 date: 'Updated:`r Sys.Date()`'
@@ -14,18 +14,15 @@ format:
     incremental: false 
     chalkboard: true
     fontsize: "25pt"
-webr:
-  packages: ["tidyverse", "easystats", "broom", "kableExtra", "interactions", "emmeans", "moderndive", "ggeffects", "visreg"]
-filters:
-  - webr
+    highlight-style: github-dark
 execute:
   freeze: auto
   echo: true
   message: false
   warning: false
   fig-align: center
-  fig-width: 12
-  fig-height: 8
+  fig-width: 16
+  fig-height: 10
   editor_options: 
   chunk_output_type: inline
   code-overflow: wrap
@@ -40,9 +37,7 @@ execute:
 
     -   MCAR, MAR, NMAR
 
--   Screening data for missingness
-
-    -   Missingness patterns
+-   Screening data for missingnes
 
 -   Diagnosing missing data mechanisms in R
 
@@ -51,8 +46,8 @@ execute:
     -   Listwise deletion
     -   Casewise deletion
     -   Nonconditional and conditional imputation
-    -   Maxmimum likelihood
     -   Multiple imputation
+    -   Maximum likelihood
 
 ## Packages
 
@@ -66,6 +61,7 @@ Load these packages:
 
 ```{r, warning = F, message = F}
 library(tidyverse) 
+library(knitr)
 library(broom) #tidy statistics
 library(ggmice) #graph missing data
 library(mice) # dealing and visualizing missing data
@@ -76,25 +72,31 @@ library(finalfit)# missing data visualization
 
 ## Missing data mechanisms
 
--   Missing data mechanisms (processes) describe different ways in which the data relate to nonresponse -
-
--   Missingness may be completely random or systematically related to different parts of the data
-
--   Mechanisms function as statistical assumptions 
-
-## Missing data mechanisms
-
--   Most of modern missing data theory comes from the work of statistician Donald B. Rubin ([https://statistics.fas.harvard.edu/people/donald-b-rubin).](https://statistics.fas.harvard.edu/people/donald-b-rubin).-)
-
-<!-- -->
+::: columns
+::: {.column width="50%"}
+-   Most of modern missing data theory comes from the work of statistician Donald B. Rubin
 
 -   Rubin proposed we can divide an entire data set $Y$ into two components:
 
     -   $Y_\text{obs}$ the observed values in the data set
 
-    -   $Y_\text{mis}$ the missing values in the data set $$Y = Y_\text{obs} + Y_\text{mis}.$$
+    -   $Y_\text{mis}$ the missing values in the data set
 
-![](images/Screen%20Shot%202024-01-04%20at%207.46.41%20AM.png)
+$$Y = Y_\text{obs} + Y_\text{mis}$$
+:::
+
+::: {.column width="50%"}
+![](images/Screen%20Shot%202024-01-04%20at%207.46.41%20AM.png){fig-align="center"}
+:::
+:::
+
+## Missing data mechanisms
+
+-   Missing data mechanisms (processes) describe different ways in which the data relate to nonresponse
+
+-   Missingness may be completely random or systematically related to different parts of the data
+
+-   Mechanisms function as statistical assumptions 
 
 ## Missing completely at random
 
@@ -103,15 +105,10 @@ library(finalfit)# missing data visualization
 -   The probability of missingness is unrelated to the data
 
 -   MCAR is purely random missingness
-
-    -   Computer crash
-    -   Inclement weather
-    -   Experimenter error
-    -   Random subsampling of people
 :::
 
 ::: {.column width="50%"}
-![](/slides/03-Missing_Data/mcar.png){fig-align="center"}
+![](images/mcar.png){fig-align="center"}
 :::
 :::
 
@@ -119,13 +116,13 @@ library(finalfit)# missing data visualization
 
 ::: columns
 ::: {.column width="50%"}
-- Systematic missingness related to the observed scores
+-   Systematic missingness related to the observed scores
 
 -   The probability of missing values is unrelated to the unseen (latent) data
 :::
 
 ::: {.column width="50%"}
-![](/slides/03-Missing_Data/cmar.png){fig-align="center"}
+![](images/cmar.png){fig-align="center"}
 :::
 :::
 
@@ -136,12 +133,10 @@ library(finalfit)# missing data visualization
 -   Systematic missingness
 
 -   The probability of missing values is related to the unseen (latent) data
-
--   The Big Three can model MNAR processes (selection and pattern mixture models) 
 :::
 
 ::: {.column width="50%"}
-![](/slides/03-Missing_Data/nmar.png){fig-align="center"}
+![](images/nmar.png){fig-align="center"}
 :::
 :::
 
@@ -154,23 +149,40 @@ library(finalfit)# missing data visualization
     -   Study (*N* = 275) investigating psychological correlates of chronic pain
 
         -   Depression (`depress`)
-        -   Preceived control (`control`)
+        -   Perceived control (`control`)
 
 -   Perceived control over pain is complete, depression scores are missing
 
     ::: callout-note
-    I manipulated the dataset so missingness is realted to control over pain (i.e., low control is related to missingness on depression scores)
+    I manipulated the dataset so missingness is related to control over pain (i.e., low control is related to missingness on depression scores)
     :::
 
 ## Chronic pain example
 
+::: columns
+::: {.column width="50%"}
 ```{r}
-#| echo: false
-dat <- read.table(here::here("slides/03-Missing_Data/APA\ Missing\ Data\ Training/Analysis\ Examples/pain.dat"), na.strings = "999")
+
+dat <- read.table("https://raw.githubusercontent.com/jgeller112/PSY504-Advanced-Stats-S24/main/slides/03-Missing_Data/APA%20Missing%20Data%20Training/Analysis%20Examples/pain.dat", na.strings = "999")
+
 names(dat) <- c("id", "txgrp", "male", "age", "edugroup", "workhrs", "exercise", "paingrps", 
                 "pain", "anxiety", "stress", "control", "depress", "interfere", "disability",
-                paste0("dep", seq(1:7)), paste0("int", seq(1:6)), paste0("dis", seq(1:6))) 
+                paste0("dep", seq(1:7)), paste0("int", seq(1:6)), paste0("dis", seq(1:6)))
 
+dat <- dat  %>%
+  select("id", "age", "control",  "depress", "stress") %>%
+  mutate(depress=ifelse(depress==999, NA, depress)) %>%
+    mutate(r_mar_low = ifelse(control < 15.51, 1, 0)) %>% 
+  mutate(depress = ifelse(r_mar_low == 1, NA, depress)) %>%
+  select(-r_mar_low)
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| 
 dat <- dat  %>%
   select("id", "age", "control",  "depress", "stress") %>%
   mutate(depress=ifelse(depress==999, NA, depress)) %>%
@@ -182,12 +194,16 @@ dat %>%
   kable()
 
 ```
+:::
+:::
 
 ## Exploratory data analysis (EDA)
 
--   Always look at your data
+-   Need to identify missing data!
 
-    -   Look for errors
+<!-- -->
+
+-   Look at your data
 
     -   Explore data using descriptive statistics and graphs
 
@@ -195,39 +211,54 @@ dat %>%
 
 ## EDA
 
-```{r, fig.align='center', out.width="70%"}
-#library(naniar)
+```{r}
+#| fig-align: "center"
+library(naniar)
 vis_miss(dat)
 ```
 
-## Missing Patterns
+## EDA
 
 ```{r}
-library(mice)
 
-md.pattern(dat, plot=TRUE)
+library(skimr)
+skimr::skim(dat) %>% 
+  kable()
 
 ```
 
-## Missing Patterns
+## Missing patterns
 
-```{r, fig.align='center', out.width="100%"}
+::: columns
+::: {.column width="50%"}
+-   Where the data is missing?
 
-#md.pattern will give you a table
-
+```{r}
+#md.pattern(nhanes, plot=FALSE)
+#ggmice
 dat %>%
  # create missing data pattern plot
 plot_pattern()
 
 ```
+:::
 
-```{r, echo=FALSE, fig.align='center',out.width="100%"}
+::: {.column width="50%"}
+<br>
 
-knitr::include_graphics("missing_patterns.png")
+<br>
 
+<br>
+
+```{r}
+#| echo: false
+#| fig-align: "center"
+knitr::include_graphics("images/missing_patterns.png")
 ```
+:::
+:::
 
-# Missing Patterns
+## Missing patterns
 
 ::: columns
 ::: {.column width="50%"}
@@ -244,27 +275,38 @@ knitr::include_graphics("missing_patterns.png")
 
 ::: {.column width="50%"}
 ```{r}
-knitr::include_graphics("new_patterns.webp")
+#| fig-align: "center"
+#| echo: false
+#| 
+
+knitr::include_graphics("images/new_patterns.webp")
 ```
 :::
 :::
 
 ## Is it MCAR or MAR?
 
--   Create a dummy coded variable where 1 = score missing and 0 = score not missing on missing variable
--   If these variables are related to other variables in dataset
+![](images/marcar.png){fig-align="center"}
 
-    -   MAR
+## Is it MCAR or MAR?
+
+-   Can make a case for MCAR
+
+    -   Little's test
+
+        -   $\chi^2$
+
+            -   Sig = not MCAR
+
+            -   Not sig = MCAR
 
 ```{r}
-pain_r <- dat %>%
-#can also use case_when #if missing 1 else 0
-mutate(depress_1 = ifelse(is.na(depress), 1, 0))
+library(naniar)
 
-pain_r %>%
-  head() %>%
-  kable()
+mcar_test(dat) %>% kable()
 ```
+
+-   Not used much anymore!
 
 ## Is it MCAR or MAR?
 
@@ -274,20 +316,35 @@ library(finalfit)
 explanatory = c("control", "age")
 dependent = "depress" 
 
-misspairs <- pain_r %>%
+misspairs <- dat %>%
   missing_pairs(explanatory, dependent)
    # mice function visualize data
 ```
 
 ```{r, echo=FALSE, fig.align='center', out.width="100%"}
-
 misspairs
+```
+
+## Is it MCAR or MAR?
+
+-   Our job is to find out if our data is MAR
+
+    -   Create a dummy coded variable for missing variable where 1 = score missing and 0 = score not missing on missing variable
+
+        -   If these variables are related to other variables in dataset
+
+            -   MAR
+
+```{r}
+pain_r <- dat %>%#can also use case_when #if missing 1 else 
+  mutate(depress_1 = ifelse(is.na(depress), 1, 0))
+pain_r %>% head() %>% kable()
 
 ```
 
 ## Testing
 
-- lm or *t*-test
+-   lm or *t*-test
 
 ```{r}
 model <- lm(control~depress_1,data=pain_r)
@@ -296,21 +353,30 @@ tidy(model) %>%
   kable()
 ```
 
+-   It looks like missing on depression is related to control!
+
 # Methods for dealing with MCAR
 
 ## Listwise deletion
 
-```{r, echo=TRUE}
-#create data frame
-dat
+::: columns
+::: {.column width="50%"}
+```{r}
+dat %>%
+  kable()
 ```
+:::
 
-```{r, echo=TRUE}
+::: {.column width="50%"}
+```{r}
 
 dat  %>%
-  drop_na()
+  drop_na() %>%
+  kable()
 
 ```
+:::
+:::
 
 ## Listwise deletion: pros and cons
 
@@ -318,7 +384,7 @@ dat  %>%
 
     -   Produces the correct parameter estimates if missingness is MCAR
 
-    -   If not, biased
+        -   If not, biased
 
 -   Cons:
 
@@ -330,7 +396,8 @@ dat  %>%
 
 ```{r, echo=TRUE}
 #create data frame
-nhanes
+dat %>%
+  kable()
 ```
 
 ## Casewise deletion: pros and cons
@@ -349,7 +416,7 @@ Cons:
 
 # Methods for MAR
 
-## Unconditional (mean) imputation
+## Unconditional (mean) imputation - Bad
 
 -   Replace missing values with the mean of the observed values
 
@@ -366,16 +433,17 @@ d <- c(5, 8, 3, NA, NA)
 #calc mean remove NAs
 d_mean <- mean(d, na.rm = TRUE)
 
-mean(d_mean)
-sd(d, na.rm=TRUE)
+d_mean_imp <- ifelse(is.na(d), d_mean, d) # add mean
+
+d_mean_imp
 ```
 :::
 
 ::: {.column width="50%"}
 ```{r}
-d_mean_imp <- ifelse(is.na(d), d_mean, d) # add mean
 
-sd(d_mean_imp)
+sd(d, na.rm=TRUE) # sd of org dataset
+sd(d_mean_imp) # sd of mean impute dataset
 
 #NANIRE Package 
 #impute_mean(d) %>% head()
@@ -389,18 +457,26 @@ sd(d_mean_imp)
 
 ::: columns
 ::: {.column width="50%"}
--   Run a regression using the complete data to replace the missing vaule
+-   Run a regression using the complete data to replace the missing value
 
-```{=html}
-<!-- -->
+```{r}
+#| eval: false
+#| 
+
+lm(depress~control) # on complete data
+
+imp.regress <- mice(dat, method="norm.predict", m=1, maxit=1) # norm.predict performs regression impute
+
+
 ```
+
 -   All the other related variables in the data set are used to predict the values of the variable with missing data
 
 -   Missing scores have the predicted values provided to replace them
 :::
 
 ::: {.column width="50%"}
-![](/slides/03-Missing_Data/reg_imp.png){fig-align="center"}
+![](images/reg_imp.png){fig-align="center"}
 :::
 :::
 
@@ -408,34 +484,48 @@ sd(d_mean_imp)
 
 -   Regression imputation with added error variance to predicted values
 
-![](/slides/03-Missing_Data/stoch_reg.png){fig-align="center"}
+```{r}
+#| eval: false
+#| 
+mice(data, m=1, method="norm.nob") # perfrom stoch regression 
+
+```
+
+![](images/stoch_reg.png){fig-align="center"}
 
 # MI
 
 ## Multiple Imputation
 
 -   Basically doing conditional imputation several times
+-   Several steps
 
 1.  We make several multiply imputed data sets with the `mice()` function
 
-![](images/Screen Shot 2024-01-04 at 5.05.58 PM.png)
+![](images/Screen%20Shot%202024-01-04%20at%205.05.58%20PM.png){fig-align="center"}
 
 ## Multiple Imputation
 
 2.  We fit our model of choice to each version of the data with the `with()` function
 
-![](images/Screen Shot 2024-01-04 at 5.06.45 PM.png)
+![](images/Screen%20Shot%202024-01-04%20at%205.06.45%20PM.png){fig-align="center"}
 
 ## Multiple Imputation
 
 3.  We then pool (i.e., combine) the results with the `pool()` function
 
-![](images/Screen Shot 2024-01-04 at 5.07.17 PM.png)
+![](images/Screen%20Shot%202024-01-04%20at%205.07.17%20PM.png){fig-align="center"}
+
+## Multiple Imputation
+
+![](images/mice_comp.PNG){fig-align="center" width="666"}
+
+![](){fig-align="center"}
 
 ## 1. Impute with `Mice`
 
 ```{r}
-m=20
+m=5
 # impute several data sets
 imp <- mice(dat, m = m, seed = 24415, method="pmm", print = FALSE)
 
@@ -455,28 +545,28 @@ What is `imp` within `imp`?
 str(imp$imp, max.level = 1)
 
 #get the imputed values for that var
-imp$imp$bmi
+imp$imp$depress
 
 #get the imputed datasets out
 #complete(imp, "full")
 
 ```
 
-------------------------------------------------------------------------
-
-# PMM
+## PMM
 
 ::: columns
 ::: {.column width="50%"}
 -   Predictive mean matching
 
-    -   PMM involves selecting a data point from the original, non-missing data which has a predicted value close to the predicted value of the missing sample.
+    -   For each missing value, a regression model is fitted using the observed (complete) data, where the variable with missing data is the outcome and other variables are predictors
+    -   For a record with a missing value, the fitted model predicts a mean based on the available data
+    -   Instead of directly using this predicted mean to impute the missing value, PMM identifies a set of "donors" from the observed data. These donors are the cases whose predicted means are closest to the predicted mean of the case with the missing value
 :::
 
 ::: {.column width="50%"}
 ![](){fig-align="center"}
 
-![](/slides/03-Missing_Data/PMM.PNG)
+![](images/PMM.PNG){width="1391"}
 :::
 :::
 
@@ -489,7 +579,8 @@ We'll fit a simple statistical model
 
 fit <- with(data = imp, expr = lm(depress ~ control))
 
-summary(fit)
+summary(fit) %>%
+  kable()
 ```
 
 ## 3. `Mice` Pool Results
@@ -505,10 +596,14 @@ tidy(result) %>%
 
 -   `marginaleffects`
 
+    -   Can be used to perform hypothesis tests on coefficients
+
 ```{r}
 library(marginaleffects)
 
 mfx_mice <- avg_slopes(fit)
+
+mfx_mice %>% kable()
 
 ```
 
@@ -528,37 +623,47 @@ ggmice(imp, aes(x = .imp, y = depress)) +
 
 ## ML
 
--   ML identifies parameter estimates that minimize the distances between the model\'s predicted values and the observed data
+-   Determines the most probable settings (parameter estimates) for a statistical model by making the model's predicted outcomes as close as possible to the observed data.
 
--   Each observation\'s contribution to estimation is restricted to the subset of parameters for which there is data
+<!-- -->
 
--   Estimation uses incomplete data, no imputation performed 
+-   Each data point influences the estimation only for the specific parameters related to it, meaning it contributes to the part of the model where data is available.
+
+-   The estimation process operates directly on the data that is present, without attempting to fill in or guess (impute) any missing data.
 
 ## Maximum likelihood
 
--   Implicit imputation
+Implicit imputation
 
-    -   Each participant contributes their observed data
+-   Each participant contributes their observed data
 
-    -   Data are not filled in, but the multivariate normal distribution acts like an imputation machine
+-   Data are not filled in, but the multivariate normal distribution acts like an imputation machine
 
-    -   The location of the observed data implies the probable position of the unseen data, and estimates are adjusted accordingly 
+-   The location of the observed data implies the probable position of the unseen data, and estimates are adjusted accordingly 
 
-    ![](images/Screen Shot 2024-01-04 at 5.30.44 PM.png)
+![](images/Screen%20Shot%202024-01-04%20at%205.30.44%20PM.png){fig-align="center" width="538"}
 
 ## Chronic pain illustration
 
 -   Participants with low perceived control are more likely to have missing depression scores (conditionally MAR)
 
--   The true means are both 20 ![](images/Screen Shot 2024-01-04 at 5.31.57 PM.png)
+-   The true means are both 20
+
+![](images/Screen%20Shot%202024-01-04%20at%205.31.57%20PM.png){fig-align="center" width="598"}
 
 ## Deleting incomplete information
 
+::: columns
+::: {.column width="50%"}
 -   Deleting cases with missing depression scores gives a non-representative sample
 
 -   The perceived control mean is too high (Mpc = 23.1), and the depression mean is too low (Mdep = 17.2) 
+:::
 
-![](images/Screen Shot 2024-01-04 at 5.34.18 PM.png)
+::: {.column width="50%"}
+![](images/Screen%20Shot%202024-01-04%20at%205.34.18%20PM.png){fig-align="center" width="607"}
+:::
+:::
 
 ## Partial data
 
@@ -566,31 +671,41 @@ ggmice(imp, aes(x = .imp, y = depress)) +
 
 -   The partial data records primarily have low perceived control scores 
 
-![](images/Screen Shot 2024-01-04 at 5.35.03 PM.png)
+![](images/Screen%20Shot%202024-01-04%20at%205.35.03%20PM.png){fig-align="center" width="605"}
 
 ## Adjusting perceived control
 
--   Adding low perceived control scores increases the variable\'s variability
+-   Adding low perceived control scores increases the variable's variability
 
 -   The perceived control mean receives a downward adjustment to accommodate the influx of low scores 
 
-![](images/Screen Shot 2024-01-04 at 5.36.26 PM.png)
+![](images/Screen%20Shot%202024-01-04%20at%205.36.26%20PM.png){fig-align="center"}
 
 ## Implicit Imputation
 
 -   Maximum likelihood assumes multivariate normality
 
--    In a normal distribution with a negative correlation, low perceived control scores should pair with high depression 
+-   In a normal distribution with a negative correlation, low perceived control scores should pair with high depression 
 
-![](images/Screen Shot 2024-01-04 at 5.37.37 PM.png)
+![](images/Screen%20Shot%202024-01-04%20at%205.37.37%20PM.png){fig-align="center"}
 
 ## Adjusting Depression Distribution
 
 -   Maximum likelihood intuits the presence of the elevated but unseen depression scores
 
--    The mean and variance of depression increase to accommodate observed perceived control scores at the low end 
+-   The mean and variance of depression increase to accommodate observed perceived control scores at the low end 
 
-## Distinguish Between NMAR and MAR
+![](images/Screen%20Shot%202024-01-04%20at%205.37.37%20PM.png){fig-align="center"}
+
+## ML: Cons
+
+-   Generally limited to normal data, options for mixed metrics are less common
+
+-   Normal-theory methods are biased with interactions and non-linear terms
+
+-   MLM software usually discards observations with missing predictors 
+
+## Distinguish between NMAR and MAR
 
 -   Pray you don't have to 😂
 
@@ -601,11 +716,17 @@ ggmice(imp, aes(x = .imp, y = depress)) +
     -   Auxiliary variables
     -   Collect more data for explaining missingness
 
+## Distinguish between NMAR and MAR
+
+![](images/reddit.jpg){fig-align="center"}
+
 ## Reporting Missing Data
 
 -   Template from [Stepf van Buuren](https://stefvanbuuren.name/fimd/sec-reporting.html)
 
+::: callout-tip
 The *percentage of missing values* across the nine variables varied between *0 and 34%*. In total *1601 out of 3801 records (42%)* were incomplete. Many girls had no score because the nurse felt that the measurement was "unnecessary," or because the girl did not give permission. Older girls had many more missing data. We used *multiple imputation* to create and analyze *40 multiply imputed datasets*. Methodologists currently regard multiple imputation as a state-of-the-art technique because it improves accuracy and statistical power relative to other missing data techniques. *Incomplete variables were imputed under fully conditional specification, using the default settings of the mice 3.0 package (Van Buuren and Groothuis-Oudshoorn 2011)*. The parameters of substantive interest were estimated in each imputed dataset separately, and combined using Rubin's rules. For comparison, *we also performed the analysis on the subset of complete cases.*
+:::
 
 ## Report
 
@@ -620,7 +741,7 @@ The *percentage of missing values* across the nine variables varied between *0 a
 
 ## Is it MCAR, MAR, NMAR?
 
-The post-experiment manipulation-check questionnaires for five participants were accidentally thrown away.
+> The post-experiment manipulation-check questionnaires for five participants were accidentally thrown away.
 
 . . .
 
@@ -628,7 +749,7 @@ The post-experiment manipulation-check questionnaires for five participants were
 
 ## Is it MCAR, MAR, NMAR?
 
-In a 2-day memory experiment, people who know they would do poorly on the memory test are discouraged and don't want to return for the second session.
+> In a 2-day memory experiment, people who know they would do poorly on the memory test are discouraged and don't want to return for the second session
 
 . . .
 
@@ -636,8 +757,20 @@ In a 2-day memory experiment, people who know they would do poorly on the memory
 
 ## Is it MCAR, MAR, NMAR?
 
-There was a problem with one of the auditory stimulus files in an ERP study of speech comprehension during noise, so we discarded any data from item #43.
+> A health psychologist is surveying high school students on marijuana use. Students who are users left these questions blank.
 
 . . .
 
--   MAR
+-   NMAR
+
+## Wrap up
+
+-   When you have missing data, think about WHY they are missing
+
+-   Missing data handled misproperly can bias your expectations
+
+-   MI and ML are good ways to handle missing data!
+
+    -   Bayesian methods are good too :)
+
+-   Also other methods like inverse probability weighting seem to work well.
