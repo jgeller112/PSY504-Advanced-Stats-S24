@@ -1,0 +1,28 @@
+DATA: 
+! raw data with missing values must be in the same folder as this script;
+file = pain.dat;
+VARIABLE:
+! raw data variable names;
+names = id txgrp male age edugroup workhrs exercise paingrps pain
+   anxiety stress control depress interfere disability 
+   dep1-dep7 interf1-interf6 disab1-disab6;
+! select variables for analysis;
+usevariables = depress interfere control pain age txgrp;
+! define pain as binary variable;
+categorical = pain;
+! global missing value code;
+missing = all(999);
+ANALYSIS:
+! ml estimation;
+! normal + categorical variables requires the integration option;
+estimator = ml;
+integration = montecarlo;
+MODEL:
+! predictor variable regression models (factored specification);
+pain on control age txgrp;
+interfere on pain control age txgrp;
+! focal model;
+depress on interfere control pain age txgrp;
+OUTPUT:
+! descriptive statistics;
+sampstat;
