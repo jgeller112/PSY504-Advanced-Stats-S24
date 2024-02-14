@@ -24,22 +24,9 @@ date: 2023-03-20
 
 ### Video
 
-{{< fa video >}}
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/-ngp06-qrtI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-## Class
-
-- Data we are using for class: 
-[Mediation Data](https://raw.githubusercontent.com/doomlab/statsofdoom-files/master/advanced/R/Notes/Mediation%20Moderation/data%206.csv)
-
-## After class
-
-**ignore moderation sections**
-
-[Mediation in R ](https://ademos.people.uic.edu/Chapter14.html#1_what_are_mediation_and_moderation)
+{{< fa video >}} [Amanda Montoya Mediation](https://drive.google.com/file/d/1RTmWZy6iEfiXyImkaCTWSn_734TZf2bc/view)
 
 # Want to read more?
 
-Fossum, J. L., & Montoya, A. K. (2021, December 7). [When to Use Different Tests for Power Analysis and Data Analysis for Between-Subjects Mediation](https://psyarxiv.com/5tm2x/download). https://doi.org/10.31234/osf.io/5tm2x
+Fossum, J. L., & Montoya, A. K. (2021, December 7). [When to Use Different Tests for Power Analysis and Data Analysis for Between-Subjects Mediation](https://journals.sagepub.com/doi/10.1177/25152459231156606)
 

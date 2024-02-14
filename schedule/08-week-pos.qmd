@@ -10,8 +10,6 @@ date: 2023-03-18
 
 - {{< fa book >}}Coxe, S., West, S. G., & Aiken, L. S. (2009). [The Analysis of Count Data: A Gentle Introduction to Poisson Regression and Its Alternatives](/readings/count_data_poisson.pdf). Journal of Personality Assessment, 91(2), 121–136. https://doi.org/10.1080/00223890802634175
 
-- {{< fa book >}} Winter, B., & Bürkner, P.-C. (2021). [Poisson regression for linguists: A tutorial introduction to modelling count data with brms](/readings/brms_poisson.pdf). Language and Linguistics Compass, 15(11), e12439. https://doi.org/10.1111/lnc3.12439
-
 - {{< fa book >}} Ryan, W. H., Evers, E. R. K., & Moore, D. A. (2021). [Poisson Regressions: A Little Fishy](/readings/collabra_2021_fishy.pdf). Collabra: Psychology, 7(1), 27242. https://doi.org/10.1525/collabra.27242
 
 #### Questions

@@ -19,6 +19,8 @@ date: 2024-02-26
 
 - {{< fa book >}} Veríssimo, J. (2021). [Analysis of rating scales: A pervasive problem in bilingualism research and a solution with Bayesian ordinal models](https://files.osf.io/v1/resources/4m2ap/providers/osfstorage/6013ef9a75226b05015161a6?action=download&direct&version=2). Bilingualism: Language and Cognition, 24(5), 842-848. doi:10.1017/S1366728921000316
 
+  - {{< fa video >}} [Veríssimo Talk](https://drive.google.com/drive/folders/1BcfVAl4Jkw5Y0QZrYqpTH7iAUwovLiKX)
+
 #### Questions
 
   - Describe what is meant by an ordinal variable 
