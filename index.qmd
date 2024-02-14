@@ -17,11 +17,11 @@ course-logo: /files/img/eval-hires.png
 ::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
 ### Instructor
 
--   {{< fa user >}}   [{{< var instructor.name >}}](%7B%7B%3C%20var%20instructor.url%20%3E%7D%7D)
+-   {{< fa user >}}   [{{< var instructor.name >}}](instructor.url)
 -   {{< fa university >}}   {{< var instructor.office >}}
--   {{< fa envelope >}}   [{{< var instructor.email >}}](%7B%7B%3C%20var%20instructor.email%20%3E%7D%7D)
--   {{< fa brands twitter >}}   [{{< var instructor.twitter >}}](https://www.twitter.com/%7B%7B%3C%20var%20instructor.twitter%20%3E%7D%7D)
--   {{< fa calendar-check >}}   [Schedule an appointment](%7B%7B%3C%20var%20instructor.appointment_url%20%3E%7D%7D)
+-   {{< fa envelope >}}   [{{< var instructor.email >}}](instructor.email)
+-   {{< fa brands twitter >}}   [{{< var instructor.twitter >}}](https://www.twitter.com/instructor.twitter)
+-   {{< fa calendar-check >}}   [Schedule an appointment](instructor.appointment_url)
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
