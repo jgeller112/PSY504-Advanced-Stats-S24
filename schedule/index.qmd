@@ -28,7 +28,7 @@ Here's your roadmap for the semester!
 | 2 | 2/5/24 | Multilevel modeling | [{{<    fa   book-open-reader >}}](/schedule/02-week-MLM.qmd) | [{{< fa laptop-code   >}}](/slides/02-MLM/mlm-02.html)|  | Jason |
 |  | 2/7/24 | Lab 1 |  |  | [{{< fa pen-ruler >}}](/Labs/01-Lab1.qmd) |  |
 | 3 | 2/12/24 | Missing data | [{{<    fa   book-open-reader >}}](/schedule/03-week.qmd) | [{{< fa laptop-code   >}}](/slides/03-Missing_Data/03-Missing_data.html) |  |Ari|
-|  | 2/14/24 | Lab 2 |  |  | {{< fa pen-ruler >}} |  |
+|  | 2/14/24 | Lab 2 |  |  | [{{< fa pen-ruler >}}](/Labs/Lab2.qmd) |  |
 | 4 | 2/19/24 | Logistic regression | [{{<    fa   book-open-reader >}}](/schedule/04-week-logistic.qmd) | {{< fa laptop-code   >}} |  | Abby  |
 |  | 2/21/24 | Lab 3 |  |  | {{< fa pen-ruler >}} |  |
 | 5 | 2/26/24 | Polytomous models: Ordinal regression | [{{<    fa   book-open-reader >}}](/schedule/05-week-ord.qmd) | {{< fa laptop-code   >}} |  | Faustine |
