@@ -17,11 +17,11 @@ course-logo: /files/img/eval-hires.png
 ::: {.g-col-12 .g-col-sm-6 .g-col-md-4}
 ### Instructor
 
--   {{< fa user >}}   [{{< var instructor.name >}}](instructor.url)
+-   {{< fa user >}}   [{{< var instructor.name >}}](https://www.drjasongeller.com)
 -   {{< fa university >}}   {{< var instructor.office >}}
 -   {{< fa envelope >}}   [{{< var instructor.email >}}](instructor.email)
--   {{< fa brands twitter >}}   [{{< var instructor.twitter >}}](https://www.twitter.com/instructor.twitter)
--   {{< fa calendar-check >}}   [Schedule an appointment](instructor.appointment_url)
+-   {{< fa brands twitter >}}   [{{< var instructor.twitter >}}](https://www.twitter.com/jgeller_phd)
+-   {{< fa calendar-check >}}   [Schedule an appointment](https://calendly.com/jg9120)
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-md-4}

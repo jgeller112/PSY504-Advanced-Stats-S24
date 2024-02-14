@@ -3,14 +3,14 @@ author: Jason Geller
 instructor:
   name: Dr.Jason Geller
   name_no_title: Jason Geller
-  email: "jg9120@princeton.edu"
-  url: "https://www.drjasongeller.com"
+  email: jg9120@princeton.edu
+  url: https://www.drjasongeller.com
   twitter: jgeller_phd
   github: jgeller112
   office: "325 PSH"
   contact_policy: >-
     E-mail is best way to get in contact with me. I will try to respond to all course-related e-mails within 24 hours (*really*), but also remember that life can be busy and chaotic for everyone (including me!), so if I don't respond right away, don't worry!
-  appointment_url: "https://calendly.com/jg9120"
+  appointment_url: https://calendly.com/jg9120
 
 course:
   number: "PSY 504"
