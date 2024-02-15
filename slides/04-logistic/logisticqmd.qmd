@@ -1,0 +1,1046 @@
+---
+title: "Generalized Linear Madness: Logistic Regression"
+subtitle: "Princeton University"
+author: "Jason Geller, PH.D.(he/him)"
+date: 'Updated:`r Sys.Date()`'
+footer: "PSY 503: Foundations of Statistics in Psychology"
+format: 
+  revealjs:
+    theme: blood
+    css: slide-style.css
+    multiplex: true
+    transition: fade
+    slide-number: true
+    incremental: false 
+    chalkboard: true
+    fontsize: "25pt"
+webr:
+  packages: ["tidyverse", "easystats", "broom", "knitr", "emmeans", "ggeffects", "foreign"]
+filters:
+  - webr
+execute:
+  freeze: auto
+  echo: true
+  message: false
+  warning: false
+  fig-align: center
+  fig-width: 12
+  fig-height: 8
+  editor_options: 
+  chunk_output_type: inline
+  code-overflow: wrap
+  html:
+    code-fold: true
+    code-tools: true
+---
+
+## Packages
+
+```{r}
+library(easystats)
+library(effectsize) 
+library(tidyverse)
+library(equatiomatic)
+library(kableExtra)
+library(broom)
+library(emmeans)
+library(marginaleffects)
+
+options(scipen = 999)
+```
+
+-   Access the .qmd document here:
+
+## Today
+
+::: columns
+::: {.column width="50%"}
+-   Nuts and bolts of logistic regression
+
+    -   Binomial/Bernoulli distribution
+    -   Logit link
+    -   Log-odds, odds, probabilities
+    -   Likelihood
+:::
+
+::: {.column width="50%"}
+-   Motivating example: Weight loss, gender, BMI
+
+    -   Modeling fitting
+    -   Parameter interpretation
+    -   Model fit and model diagnostics
+    -   Comparing models
+    -   Visualizing
+    -   Reporting
+:::
+:::
+
+## Linear model
+
+-   Everything so far has included a continuous outcome
+
+-   Model $y$ as a linear function of predictors
+
+$$ Y_i = b_0 + b_1*x + e_i$$
+
+$$Y \sim~Normal(\mu, \sigma)$$
+
+$$
+\epsilon \sim~ Normal(0, \sigma^2)
+$$
+
+## Dichotomous outcomes
+
+The simplest kind of categorical data is each case is binary
+
+```{r, echo=FALSE, fig.align='center', out.width="100%"}
+knitr::include_graphics("images/examples.PNG")
+```
+
+-   Correct/incorrect
+-   Pass/fail
+-   Choose/Don't choose
+-   Support/Not support
+-   Relapse/Not relapse
+
+## Bye bye linear model
+
+![](images/bye.webp){fig-align="center"}
+
+-   Linear models are not appropriate for this type of data
+
+    -   Makes impossible predictions (values not between 0, 1)
+
+    -   Non-normality of residuals
+        -   $\hat{p}$ or (1-$\hat{p}$)
+    -   Heteroskedasticity
+        -   Variance is influenced by $\hat{p}$
+
+## Generalized linear model
+
+> Regression models with non-normal response likelihoods
+
+$$\begin{align*}
+  Y_i & \sim \mathrm{Dist}(\mu_i, \tau)  \\
+  g(\mu_i) & = \eta_i \\
+  \eta_i & = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \ldots
+\end{align*}$$
+
+Where:
+
+-   $y$ is referenced with $\mu$
+
+-   $g$ is link function
+
+-   In logistic regression we use the logit link function:
+
+$$p(y = 1)  = p $$$$log(\frac{p}{1 - p})$$
+
+## What distribution do we use to model this process?
+
+## Bernoulli Distribution
+
+-   We assume that there is **some probability** p of responding correctly
+
+-   We don't know this probability, so we want to **use the data to estimate it**
+
+## Bernoulli Distribution
+
+::: columns
+::: {.column width="50%"}
+> Distribution of a single, discrete binary outcome $$y\sim Bernoulli(p)$$
+
+-   A Bernoulli distribution generates a 1 ("success") with probability p
+-   And a 0 ("failure") with probability 1−p=q
+:::
+
+::: {.column width="50%"}
+<br>
+
+<br>
+
+![](images/bigraph.png){fig-align="center" width="520" height="270"}
+:::
+:::
+
+## Binomial distribution
+
+::: columns
+::: {.column width="50%"}
+> Distribution of discrete counts of independent outcomes over a certain set of trials
+
+$$y\sim binomial(N,p)$$
+
+-   N = number of trials
+
+```{=html}
+<!-- -->
+```
+-    p = probability of "y = 1"
+
+    -   $\mu=E(X)=np$
+
+    -   $Var(X)=np(1-p)$
+
+    -   $SD(X)=\sqrt{np(1-p)} \text{, where \(p\) is the probability of the “success"}$
+:::
+
+::: {.column width="50%"}
+![](images/bigraph2.png){fig-align="center"}
+:::
+:::
+
+## Fitting a logistic regression in R
+
+-   In R we use the `glm` function as opposed to `lm`
+
+```{r, eval=FALSE}
+# use GLM istead of LM
+# family changes
+bi_model <- glm(
+  rvote ~ income,
+  family = binomial(
+    link = "logit"))
+```
+
+::: callout-note
+use `glmer` to perform logistic multilevel model
+:::
+
+## Logit Link
+
+-   The logit link transforms a linear model in the log-odds metric:
+
+$$\begin{equation*}
+\log\left(\frac{p}{1 - p}\right)=b_0+b_1X 
+ \end{equation*}$$
+
+-   To a non-linear model in the probability metric:
+
+$$\begin{equation*} 
+p(logit)=\frac{e^{logit}}{1+e^{logit}}
+\end{equation*}=\frac{exp(logit)}{1+exp(logit)}$$
+
+## Logit link
+
+-   Step 1
+
+    -   Transform probability into odds
+
+        -   The "odds" of an event are just the probability it happens divided by the probability it does not happen
+
+$$\textrm{Odds} = \frac{\# \textrm{successes}}{\# \textrm{failures}}=
+\frac{\# \textrm{successes}/n}{\# \textrm{failures}/n}=
+\frac{p}{1-p}$$
+
+## Logit Link
+
+::: columns
+::: {.column width="50%"}
+-   Step 2
+
+    -   When we convert a probability to odds, odds always \> 0
+
+        -   Asymmetric
+
+        -   Curvy
+
+            -   Problematic for linear model
+
+    -   Solution: take log of the odds
+
+    $$ logit = log(\frac{p}{1-p})$$
+:::
+
+::: {.column width="50%"}
+![](images/odds_fig.png){fig-align="center"}
+:::
+:::
+
+## Logit link
+
+::: columns
+::: {.column width="50%"}
+-   This log odds conversion has a nice property
+
+    -   It converts odds of less than one to negative numbers, because the log of a number between 0 and 1 is always negative
+
+    -   Our data is now linear!
+
+    -   and symmetric
+:::
+
+::: {.column width="50%"}
+![](numberline_logodds.png){width="345"}
+
+```{r}
+#| echo: false
+#| 
+# Manually calculate the logit values and tidy data for the plot
+
+bechdel=fivethirtyeight::bechdel
+
+bechdel <- bechdel  %>% 
+  mutate(pass = ifelse(binary == "FAIL", 0, 1)) 
+
+bechdel_lin<- bechdel %>%
+  dplyr::select(pass, budget_2013)
+
+fit <- glm(
+  data = bechdel,
+  family = binomial,
+  pass ~ 1 + budget_2013)
+
+bechdel_lin$prob <- fit$fitted.values
+
+df_model <- bechdel_lin %>%
+  mutate(logit = log(prob/(1-prob)))
+        
+  ggplot(df_model, aes(y = logit, x = budget_2013))+
+  geom_point(size = 0.5, alpha = 0.5) +
+  geom_smooth(method = "loess") + 
+  theme_lucid(base_size=14)
+```
+:::
+:::
+
+## However...
+
+-   We need a function that scrunches the output of the linear predictor into a range appropriate for this parameter
+
+```{r, echo=FALSE, fig.align='center', out.width="50%"}
+knitr::include_graphics("images/lin2.png")
+```
+
+## Squiggles
+
+-   We need a function that scrunches the output of the linear predictor into a range appropriate for this parameter
+
+-   A squiggle (logistic or Sigmoid curve) to the rescue!
+
+```{r, echo=FALSE, fig.align='center', out.width="100%"}
+
+knitr::include_graphics("images/lin3.png")
+
+```
+
+## Logistic transform
+
+```{r}
+
+knitr::include_graphics("images/lin5.png")
+```
+
+$$p(logit)=\frac{e^{logit}}{1+e^{{logit}}}$$
+
+## Anatomy of logistic model
+
+```{r}
+knitr::include_graphics("images/anatlog.png")
+```
+
+## All together
+
+![Andrew Heiss](images/loglogisticods.PNG){fig-align="center"}
+
+## Probabilities, Odds, and Log Odds
+
+```{r, echo=FALSE, fig.align='center', out.width="100%"}
+knitr::include_graphics("images/relationship.png")
+```
+
+## Probabilities, Odds, and Log Odds
+
+-   **From probabilities to log-odds**
+
+```{r}
+qlogis(.3)
+```
+
+-   **From log-odds to probabilities**
+
+```{r}
+
+plogis(-1)
+```
+
+## Probabilities, Odds, and Log Odds
+
+::: columns
+::: {.column width="50%"}
+![]()
+
+![](images/p-log-odds-1.png)
+:::
+
+::: {.column width="50%"}
+![](images/interp_odds.jpg){fig-align="center"}
+:::
+:::
+
+## Best Fitting Squiggle
+
+-   In standard linear regression we use least squares to find the best fitting line
+
+```{r, echo=FALSE, fig.align='center', out.width="60%"}
+
+knitr::include_graphics("images/lin_fit.png")
+```
+
+## Maximum likelihood estimation
+
+-   We need find where points lie on line and get corresponding logits
+
+::: columns
+::: {.column width="50%"}
+![](images/logit_points.jpeg){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+![](images/logit_line.jpeg)
+:::
+:::
+
+## ML: Logistic Regression
+
+-   Plot them as a function of probability
+
+```{r,echo=FALSE, fig.align='center', out.width="50%"}
+
+knitr::include_graphics("images/max.png")
+
+```
+
+## Now what?
+
+-   We keep rotating the log odds(line) and projecting data on to it and transforming into probabilities
+
+    -   Until we find maximum likelihood!
+
+```{r, echo=FALSE, fig.align='center', out.width="70%"}
+
+knitr::include_graphics("images/mle-many.png")
+
+```
+
+## Slope and intercept parameters
+
+![](images/MLE_1.png){fig-align="center"}
+
+![](images/mle-2.png){fig-align="center"}
+
+## Case Study: Loseing Weight
+
+-   These data are a sample of 500 teens from data collected in 2009 through the U.S. Youth Risk Behavior Surveillance System (YRBSS)
+
+-   Are the odds that young females report trying to lose weight greater than the odds that males do? Is increasing BMI associated with an interest in losing weight, regardless of sex?
+
+```{webr-r}
+
+risk2009.data <- 
+
+```
+
+```{r}
+#| echo: false
+#| 
+risk2009.data <- foreign::read.spss(
+  file = "https://github.com/proback/BeyondMLR/blob/master/data/yrbs09.sav?raw=true",
+  to.data.frame = TRUE)
+
+```
+
+## 
+
+## Trying to lose weight
+
+-   Selected variables:
+
+DV: \*`lose.wt.01`, which is coded 1 when someone indicated they were trying to lost weight and 0 when they were not trying to. This is a dichotomized version of the `lose.wt` factor variable.
+
+-   Our two predictor variables will be:
+
+    -   `sex` and its related dummy variable `female` and `male`
+    -   `bmipct`, which is the percentile for a given BMI for members of the same sex
+
+## Exploratory Data Analysis
+
+-   Here are two versions of comparing `lose.wt.01` by `sex`
+
+::: columns
+::: {.column width="50%"}
+```{webr-r}
+#| echo: false
+#| fig-align: "center"
+#| 
+risk2009 %>% 
+  mutate(lose.wt.01 = factor(lose.wt.01)) %>% 
+  ggplot(aes(x = lose.wt.01)) +
+  geom_bar() +
+  facet_wrap(~ sex)
+
+```
+:::
+
+::: {.column width="50%"}
+```{webr-r}
+#| echo: false
+#| fig-align: "center"
+
+risk2009 %>%
+  ggplot(aes(x = sex, fill = lose.wt)) +
+  geom_bar(position = "fill") +
+  geom_text(stat = 'count', aes(label = scales::percent(..count.. / sum(..count..), accuracy = 1)), 
+            position = position_fill(vjust = 0.5), size = 3) + # Adjust size as needed
+  scale_fill_viridis_d(option = "C", begin = .2) +
+  labs(x = NULL, y = "Percent") + 
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) + # Ensure y-axis labels are in percent format + 
+theme_lucid(base_size=16)
+
+```
+:::
+:::
+
+## Exploratory Data Analysis
+
+-   Here are the histograms for `bmipct`, faceted by `lose.wt`.
+
+```{r, echo=FALSE, out.width="80%", fig.align='center'}
+
+risk2009 %>% 
+  ggplot(aes(x = bmipct)) +
+  geom_histogram(binwidth = 5) +
+  facet_wrap(~ lose.wt, ncol = 1) + 
+  theme_lucid(base_size=18)
+```
+
+## Exploratory Data Analysis
+
+-   Here are the histograms for `bmipct`, faceted by both `lose.wt` and `sex`.
+
+```{r, echo=FALSE, out.width="70%", fig.align='center'}
+
+risk2009 %>% 
+  ggplot(aes(x = bmipct)) +
+  geom_histogram(binwidth = 5) +
+  facet_grid(lose.wt ~ sex) + 
+  theme_lucid(base_size=18)
+```
+
+## Logistic Regression: Fitting Model
+
+-   Let's fit an intercept-only model
+
+$$
+\begin{align*}
+\text{lose.wt.01}_i & \sim \operatorname{Binomial}(n = 1, p_i)\\
+\text{logit}(p_i) & = \beta_0
+\end{align*}
+$$
+
+## Logistic Regression: Fitting Model
+
+```{r}
+# fit
+fit1 <- glm(
+  data = risk2009,
+  family = binomial,
+  lose.wt.01 ~ 1
+  ) 
+fit1 %>% 
+  tidy() %>%
+  kable()
+```
+
+## Hypothesis test for $\beta_j$
+
+-   Hypotheses:
+
+    -   $H_0$: $\beta_j$ = 0
+
+    -    $H_a$: $\beta_j \neq 0$
+
+-   Test Statistic $$z = \frac{\hat{\beta}_j - 0}{SE_{\hat{\beta}_j}}$$
+
+-   P-value: $P(|Z| > |z|)$,
+
+    -   where $Z \sim N(0, 1)$, the Standard Normal distribution
+
+## Confidence interval for $\beta_j$
+
+We can calculate the .vocab\[C% confidence interval\] for $\beta_j$ as the following:\
+$$\Large{\hat{\beta}_j \pm z^* SE_{\hat{\beta}_j}}$$
+
+where $z^*$ is calculated from the $N(0,1)$ distribution
+
+$$\exp\{\hat{\beta}_1 \pm z^* SE(\hat{\beta}_1)\}$$
+
+## Interpreting $\beta_0$
+
+```{r, echo=FALSE}
+tidy(fit1) %>% kable()
+```
+
+-   The intercept $\beta_0$ is in the log-odds metric
+
+    -   When budget = 0, log-odds of Y are 0.04
+
+-   We can convert it to probability
+
+```{r}
+b0 <- coef(fit1)
+
+exp(b0) / (1 + exp(b0))
+
+```
+
+-   Thus, the overall probability of students wanting to lose weight was about .45 or 45%
+
+## Interpreting $\beta_0$
+
+-   Let's check that with the empirical proportions
+
+```{r}
+risk2009 %>% 
+  count(lose.wt.01) %>% 
+  mutate(proportion = n / sum(n)) %>%
+  kable()
+```
+
+-   We can actually do that transformation with the base **R** `plogis()` function.
+
+```{r}
+plogis(b0)
+```
+
+## Logistic Regression
+
+-   Add our binary predictor `female`, which gives us the model
+
+$$
+\begin{align*}
+\text{lose.wt.01}_i & \sim \operatorname{Binomial}(n = 1, p_i) \\
+\text{logit}(p_i) & = \beta_0 + \beta_1 \text{female}_i,
+\end{align*}
+$$
+
+-   Where `female` is an 0/1 dummy variable.
+
+## Fit Model
+
+```{r}
+# fit
+fit2 <- glm(
+  lose.wt.01 ~ 1 + female, 
+  data = risk2009,
+  family = binomial,
+)
+
+```
+
+## Interpreting slope: b1
+
+-   If X is a categorical predictor
+
+    -   The difference in the log-odds between group X and the baseline is \$\$b_1\$
+
+```{webr-r}
+# summarize
+fit2 %>%
+  tidy() %>%
+  kable()
+```
+
+## Coefficient effect size: Odd's Ratio
+
+-   The odds of Y for group X are expected to be exp($b_1$) times the odds of Y for the baseline group
+
+    -   Describe as percentage increase/decrease
+
+        -   *Remember how to interpret logs for DV*
+
+```{r}
+#| eval: false
+exp(new)-1 * 100  # get probability of increase/decrease
+```
+
+## Coefficient Effect Size: Odd's Ratio
+
+```{r}
+tidy(fit2,exponentiate = TRUE) %>%  # get odds ratio %>%
+  kable()
+```
+
+-   Greater than 1: As the continuous variable increases, the event is more likely to occur
+
+-   Less than 1: As the variable increases, the event is less likely to occur
+
+-   Equals 1: As the variable increases, the likelihood of the event does not change
+
+## Interpreting slope: b1
+
+```{r}
+fit2 %>%
+  tidy(exponentiate = TRUE) %>% # get OR
+  kable()
+```
+
+## Predicted probabilities
+
+-   Now we can compute the probabilities for young men and women as follows
+
+```{r, echo=FALSE}
+b0 <- coef(fit2)[1] %>% as.double()
+b1 <- coef(fit2)[2] %>% as.double()
+```
+
+```{r}
+# young men
+plogis(b0 + b1 * 0)
+# young women
+plogis(b0 + b1 * 1)
+```
+
+## `Emmeans`
+
+-   Can use `emmeans` to get probabilities directly from model
+
+    -   Can also get odds ratios for comparisons!
+
+    ```{r}
+
+    emm <- emmeans(fit2, "female", type = "response")
+    emm
+    # get odd ratio for comparison
+    pairs(emm, reverse=TRUE)
+    ```
+
+## Marginal Effects
+
+::: columns
+::: {.column width="50%"}
+-   We can also calculate differences in probabilities
+
+    -   Difference in probabilities is called risk difference
+
+    -   Ratio is called relative risk ratio
+
+-   Marginal effects
+
+    -   Change in probability that the outcome occurs for a 1 unit change in the predictor
+
+        -   Average marginal effect (AME)
+:::
+
+::: {.column width="50%"}
+-   **For categorical variables it is just probability difference between the group**
+
+```{r}
+#can do this with emmeans but requires more steps
+library(marginaleffects) # get predicted probs
+# get marginal effects
+avg_comparisons(fit2, comparison = "difference") %>% 
+  kable()
+```
+:::
+:::
+
+## Logistic Regression Continuous
+
+Now we add our continuous predictor `bmipct`, which gives us the model:
+
+$$
+\begin{align*}
+\text{lose.wt.01}_i & \sim \operatorname{Binomial}(n = 1, p_i) \\
+\text{logit}(p_i) & = \beta_0 + \beta_1 \text{bmipct}_i,
+\end{align*}
+$$
+
+```{r}
+# fit
+fit3 <- glm(
+  data = risk2009,
+  family = binomial,
+  lose.wt.01 ~ 1 + bmipct
+  ) 
+
+fit3 %>% tidy() %>% kable()
+```
+
+## Model 3
+
+```{r}
+# summarize
+fit3 %>%
+  tidy() %>%
+  kable()
+```
+
+-   The coefficient for `bmipct` seems small at 0.036, but recall that `bmipct` ranges from 0 to 100.
+
+    -   Thus a one point increase being a one percentile increase in BMI, which isn't very much
+
+        > What is the OR for this coef? How do we interpret this?
+
+## Marginal effects
+
+-   With continuous variables, obtaining the marginal effects is a bit trickier
+
+    -   Instantaneous rate of change in the predicted probability
+
+        -   Change in the predicted probability for a very small change in X
+
+```{r}
+#effect is computed for each observed value in the original dataset before being averaged
+avg_slopes(fit3)%>%kable(bootstrap="condensed")
+```
+
+## Logistic Multiple Predictors
+
+-   The first will have both `female` and `bmipct` as predictors:
+
+$$
+\begin{align*}
+\text{lose.wt.01}_i & \sim \operatorname{Binomial}(n = 1, p_i) \\
+\text{logit}(p_i) & = \beta_0 + \beta_1 \text{female}_i + \beta_2 \text{bmipct}_i.
+\end{align*}
+$$
+
+-   The second model will add an interaction term between the two predictors:
+
+$$
+\begin{align*}
+\text{lose.wt.01}_i & \sim \operatorname{Binomial}(n = 1, p_i) \\
+\text{logit}(p_i) & = \beta_0 + \beta_1 \text{female}_i + \beta_2 \text{bmipct}_i + \beta_3 \text{female}_i \cdot \text{bmipct}_i.
+\end{align*}
+$$
+
+## Fitting Both Models
+
+```{r, echo=TRUE}
+fit4 <- glm(
+  data = risk2009,
+  family = binomial,
+  lose.wt.01 ~ 1 + female + bmipct
+  )
+
+fit5 <- glm(
+  data = risk2009,
+  family = binomial,
+  lose.wt.01 ~ 1 + female + bmipct + female:bmipct
+  )
+```
+
+## Model 4
+
+```{r, echo=FALSE}
+fit4 <- glm(
+  data = risk2009,
+  family = binomial,
+  lose.wt.01 ~ 1 + female + bmipct
+  )
+
+fit4 %>% tidy() %>% kable()
+```
+
+## Model 5
+
+```{r}
+fit5 <- glm(data = risk2009,
+  family = binomial,
+  lose.wt.01 ~ 1 + female + bmipct + female:bmipct
+  )
+
+fit5 %>%
+  tidy() %>%
+  kable()
+```
+
+## Model Comparisons
+
+```{r, echo=FALSE, out.width="70%", fig.align='center'}
+levels <- c("(Intercept)", "female", "bmipct", "female:bmipct")
+
+bind_rows(
+  tidy(fit1, conf.int = TRUE) %>% mutate(fit = "fit1"),
+  tidy(fit2, conf.int = TRUE) %>% mutate(fit = "fit2"),
+  tidy(fit3, conf.int = TRUE) %>% mutate(fit = "fit3"),
+  tidy(fit4, conf.int = TRUE) %>% mutate(fit = "fit4"),
+  tidy(fit5, conf.int = TRUE) %>% mutate(fit = "fit5")
+) %>% 
+  mutate(term = factor(term, levels = levels)) %>% 
+  
+  ggplot(aes(x = estimate, xmin = conf.low, xmax = conf.high, y = 0)) +
+  geom_vline(xintercept = 0, size = 1/2, linetype = 2, color = "grey50") +
+  geom_pointrange(fatten = 2) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(title = "Coefficient plot",
+       x = "log-odds scale") +
+  theme(strip.text.y = element_text(angle = 0)) +
+  facet_grid(fit ~ term, scales = "free_x")
+```
+
+-   The interaction term `female:bmipct` (i.e., $\beta_3$) would not be statistically significant
+
+## Likelihood ratio test
+
+-   Let's compare the models by performing likelihood ratio test
+
+```{r}
+test_likelihoodratio(fit4, fit5) %>% kable()
+```
+
+## Likelihood ratio test
+
+```{r}
+bind_rows(
+  glance(fit1),
+  glance(fit2),
+  glance(fit3),
+  glance(fit4),
+  glance(fit5)
+) %>% 
+  mutate(fit = str_c("fit", 1:5)) %>% 
+  select(fit, everything()) %>% 
+  kable()
+```
+
+-   When you compare model `fit4` with the interaction model `fit5`, it appears that the interaction term does not add anything
+
+## Model Fit
+
+-   McFadden Psuedo $R^2$
+
+$$R^2 = \frac{SSM}{SST} = \frac{SST-SSE}{SST}=1-\frac{SSE}{SST}$$ $$R_{MF}^2 = 1-\frac{D_{\rm residual}}{D_{\rm null}}$$
+
+-   Tjur's R2 (`easystats`)
+
+```{r, eval=FALSE}
+
+r2_tjur(model)
+
+```
+
+-   Both a ratio indicating how "good" the model fit Model Fit
+
+## Model fit
+
+-   Plotting normal residuals are not really informative/useful
+
+![](images/raw_residuals.png){fig-align="center"}
+
+## Binned residuals
+
+::: columns
+::: {.column width="50%"}
+-   Binned residuals
+
+    -   Calculate raw residuals
+    -   Order observations (probabilities of predictor value)
+        -   Create g bins of approximate equal size
+    -   Calculate average residuals
+    -   Plot average residuals vs. average predicted probability (or predictor value)
+:::
+
+::: {.column width="50%"}
+```{r}
+
+plot(performance::binned_residuals(fit4))
+
+```
+:::
+:::
+
+## Binned residuals
+
+-   Look for patterns
+
+-   Nonlinear trend may be indication that squared term or log transformation is required
+
+-   If bins have average residuals with large magnitude
+
+    -   Look at averages of other predictors across bins
+
+    -   Interaction may be required
+
+## Visualizing
+
+Let's plot the results from `fit4`.
+
+```{r, echo=FALSE}
+nd <- risk2009 %>% 
+  distinct(female, sex) %>% 
+  expand(nesting(female, sex),
+         bmipct = 1:100)
+
+predict(
+  fit4,
+  newdata = nd,
+  se.fit = TRUE
+) %>% 
+  data.frame() %>% 
+  # define the 95% CIs
+  mutate(lwr = fit - 1.96 * se.fit,
+         upr = fit + 1.96 * se.fit) %>% 
+  # drop unneeded columns
+  select(fit, lwr, upr) %>% 
+  # transform to the probability metric
+  mutate_all(.funs = plogis) %>% 
+  # add in the predictor values
+  bind_cols(nd) %>% 
+  
+  ggplot(aes(x = bmipct, y = fit, ymin = lwr, ymax = upr,
+             group = sex, color = sex, fill = sex)) +
+  geom_ribbon(alpha = 1/2, size = 0) +
+  geom_line() +
+  scale_fill_manual(NULL, values = c("red", "blue")) +
+  scale_color_manual(NULL, values = c("red", "blue")) +
+  scale_y_continuous("probability of trying to lose weight",
+                     limits = 0:1, expand = c(0, 0)) +
+  xlab("BMI percentile (by sex)")
+
+```
+
+## Visualizing
+
+```{r, echo=TRUE, fig.align="center", out.width="60%"}
+
+library(ggeffects)
+
+ggemmeans(fit4, terms=c("female")) %>%
+  plot(ci = TRUE, add.data = TRUE)
+
+```
+
+# Assumptions
+
+## Logistic regression assumptions
+
+-   Outcome is dichotomous
+
+-   Observations are independent
+
+-   Linearity (in the log odds)
+
+-   ~~No normality assumptions~~
+
+-   ~~Homogeneity of variance~~
+
+    -   Variance varies with $p$
+
+## Logistic regression assumptions
+
+-   Can plot with `easystats` :)
+
+```{r}
+#| fig-align: "center"
+#| 
+check_model(fit4)
+```
+
+## Table
+
+```{r}
+fit3 %>%
+  modelsummary() 
+```

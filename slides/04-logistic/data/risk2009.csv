@@ -1,0 +1,446 @@
+"","lose.wt","lose.wt.01","sex","sport","sport_fac","sport_num","media","bmipct","female"
+"1","Lose weight",1,"Male","No sports","0 teams",0,3,98,0
+"2","No weight loss",0,"Female","No sports","0 teams",0,1,41,1
+"3","No weight loss",0,"Male","Sports","1 team",1,3,6,0
+"4","No weight loss",0,"Male","No sports","0 teams",0,3,41,0
+"5","Lose weight",1,"Male","No sports","0 teams",0,3,99,0
+"6","No weight loss",0,"Male","No sports","0 teams",0,2,97,0
+"7","Lose weight",1,"Male","No sports","0 teams",0,0,0,0
+"8","Lose weight",1,"Male","Sports","1 team",1,0.5,100,0
+"9","No weight loss",0,"Male","Sports","1 team",1,1,3,0
+"10","No weight loss",0,"Male","Sports","3 or more teams",3,1,8,0
+"11","Lose weight",1,"Female","No sports","0 teams",0,5,99,1
+"12","No weight loss",0,"Male","No sports","0 teams",0,2,13,0
+"13","Lose weight",1,"Female","Sports","1 team",1,1,87,1
+"14","No weight loss",0,"Female","Sports","1 team",1,3,71,1
+"15","No weight loss",0,"Male","Sports","3 or more teams",3,0,93,0
+"16","No weight loss",0,"Female","Sports","1 team",1,0,97,1
+"17","Lose weight",1,"Female","Sports","1 team",1,2,15,1
+"18","No weight loss",0,"Female","Sports","1 team",1,0.5,33,1
+"19","No weight loss",0,"Male","Sports","3 or more teams",3,0.5,28,0
+"20","No weight loss",0,"Female","Sports","1 team",1,1,25,1
+"21","Lose weight",1,"Female","Sports","1 team",1,2,24,1
+"22","No weight loss",0,"Male","Sports","2 teams",2,2,56,0
+"23","Lose weight",1,"Female","No sports","0 teams",0,0,96,1
+"24","No weight loss",0,"Female","No sports","0 teams",0,4,78,1
+"25","Lose weight",1,"Female","Sports","2 teams",2,2,98,1
+"26","No weight loss",0,"Female","No sports","0 teams",0,0,24,1
+"27","Lose weight",1,"Male","Sports","1 team",1,5,81,0
+"28","Lose weight",1,"Female","No sports","0 teams",0,5,96,1
+"29","Lose weight",1,"Female","Sports","3 or more teams",3,5,97,1
+"30","Lose weight",1,"Male","Sports","3 or more teams",3,2,90,0
+"31","Lose weight",1,"Female","No sports","0 teams",0,2,89,1
+"32","Lose weight",1,"Male","Sports","1 team",1,4,67,0
+"33","Lose weight",1,"Female","No sports","0 teams",0,3,97,1
+"34","Lose weight",1,"Male","No sports","0 teams",0,4,97,0
+"35","No weight loss",0,"Male","No sports","0 teams",0,0.5,88,0
+"36","No weight loss",0,"Male","Sports","3 or more teams",3,3,67,0
+"37","No weight loss",0,"Female","Sports","1 team",1,4,62,1
+"38","No weight loss",0,"Male","Sports","1 team",1,3,36,0
+"39","No weight loss",0,"Female","Sports","1 team",1,0.5,15,1
+"40","Lose weight",1,"Female","Sports","2 teams",2,3,75,1
+"41","Lose weight",1,"Female","No sports","0 teams",0,2,93,1
+"42","No weight loss",0,"Female","Sports","1 team",1,1,5,1
+"43","Lose weight",1,"Male","Sports","2 teams",2,0.5,97,0
+"44","Lose weight",1,"Female","Sports","2 teams",2,0.5,85,1
+"45","No weight loss",0,"Male","Sports","2 teams",2,4,64,0
+"46","Lose weight",1,"Female","Sports","2 teams",2,0,52,1
+"47","No weight loss",0,"Female","No sports","0 teams",0,3,34,1
+"48","No weight loss",0,"Male","Sports","3 or more teams",3,1,85,0
+"49","No weight loss",0,"Male","No sports","0 teams",0,1,15,0
+"50","No weight loss",0,"Male","Sports","1 team",1,5,93,0
+"51","Lose weight",1,"Female","No sports","0 teams",0,3,96,1
+"52","No weight loss",0,"Male","No sports","0 teams",0,5,33,0
+"53","No weight loss",0,"Male","No sports","0 teams",0,0,25,0
+"54","No weight loss",0,"Male","Sports","1 team",1,5,68,0
+"55","No weight loss",0,"Male","No sports","0 teams",0,4,74,0
+"56","No weight loss",0,"Male","Sports","1 team",1,1,79,0
+"57","Lose weight",1,"Male","Sports","1 team",1,5,96,0
+"58","Lose weight",1,"Female","No sports","0 teams",0,2,35,1
+"59","No weight loss",0,"Male","Sports","1 team",1,5,84,0
+"60","No weight loss",0,"Female","No sports","0 teams",0,0.5,53,1
+"61","No weight loss",0,"Male","Sports","2 teams",2,3,36,0
+"62","Lose weight",1,"Male","Sports","1 team",1,0.5,92,0
+"63","No weight loss",0,"Female","No sports","0 teams",0,4,52,1
+"64","Lose weight",1,"Male","Sports","1 team",1,1,98,0
+"65","Lose weight",1,"Female","Sports","2 teams",2,0,79,1
+"66","No weight loss",0,"Male","Sports","2 teams",2,3,92,0
+"67","Lose weight",1,"Female","Sports","3 or more teams",3,0.5,97,1
+"68","Lose weight",1,"Male","Sports","3 or more teams",3,0.5,92,0
+"69","No weight loss",0,"Female","No sports","0 teams",0,0,28,1
+"70","No weight loss",0,"Female","Sports","3 or more teams",3,4,51,1
+"71","Lose weight",1,"Female","No sports","0 teams",0,5,37,1
+"72","Lose weight",1,"Female","No sports","0 teams",0,2,87,1
+"73","No weight loss",0,"Female","Sports","3 or more teams",3,5,19,1
+"74","Lose weight",1,"Female","Sports","2 teams",2,4,89,1
+"75","Lose weight",1,"Male","Sports","1 team",1,5,94,0
+"76","No weight loss",0,"Female","Sports","1 team",1,2,44,1
+"77","Lose weight",1,"Female","No sports","0 teams",0,2,72,1
+"78","Lose weight",1,"Male","No sports","0 teams",0,3,97,0
+"79","Lose weight",1,"Female","No sports","0 teams",0,4,57,1
+"80","Lose weight",1,"Female","No sports","0 teams",0,3,96,1
+"81","No weight loss",0,"Female","Sports","1 team",1,1,30,1
+"82","Lose weight",1,"Female","Sports","1 team",1,2,41,1
+"83","Lose weight",1,"Female","Sports","2 teams",2,4,65,1
+"84","No weight loss",0,"Female","Sports","3 or more teams",3,3,41,1
+"85","No weight loss",0,"Male","Sports","1 team",1,3,92,0
+"86","No weight loss",0,"Male","No sports","0 teams",0,3,17,0
+"87","Lose weight",1,"Female","Sports","2 teams",2,4,98,1
+"88","No weight loss",0,"Male","No sports","0 teams",0,2,46,0
+"89","Lose weight",1,"Male","Sports","3 or more teams",3,2,99,0
+"90","No weight loss",0,"Male","Sports","1 team",1,0.5,82,0
+"91","No weight loss",0,"Male","Sports","2 teams",2,5,96,0
+"92","Lose weight",1,"Female","Sports","1 team",1,2,47,1
+"93","Lose weight",1,"Female","Sports","1 team",1,0.5,95,1
+"94","Lose weight",1,"Female","Sports","2 teams",2,1,48,1
+"95","No weight loss",0,"Male","No sports","0 teams",0,3,65,0
+"96","Lose weight",1,"Male","Sports","2 teams",2,1,87,0
+"97","No weight loss",0,"Female","Sports","1 team",1,1,38,1
+"98","No weight loss",0,"Male","Sports","3 or more teams",3,4,94,0
+"99","Lose weight",1,"Female","Sports","2 teams",2,1,74,1
+"100","No weight loss",0,"Female","No sports","0 teams",0,1,12,1
+"101","Lose weight",1,"Female","Sports","3 or more teams",3,2,93,1
+"102","Lose weight",1,"Female","No sports","0 teams",0,0.5,63,1
+"103","No weight loss",0,"Male","Sports","3 or more teams",3,2,66,0
+"104","No weight loss",0,"Male","Sports","3 or more teams",3,1,54,0
+"105","No weight loss",0,"Female","Sports","2 teams",2,2,14,1
+"106","No weight loss",0,"Male","Sports","1 team",1,2,12,0
+"107","No weight loss",0,"Female","Sports","1 team",1,5,92,1
+"108","No weight loss",0,"Male","Sports","3 or more teams",3,3,50,0
+"109","Lose weight",1,"Male","No sports","0 teams",0,3,95,0
+"110","Lose weight",1,"Female","Sports","1 team",1,0.5,55,1
+"111","Lose weight",1,"Male","Sports","1 team",1,0,92,0
+"112","No weight loss",0,"Male","No sports","0 teams",0,0.5,26,0
+"113","Lose weight",1,"Female","Sports","3 or more teams",3,2,71,1
+"114","Lose weight",1,"Male","Sports","2 teams",2,3,70,0
+"115","No weight loss",0,"Male","Sports","2 teams",2,3,71,0
+"116","Lose weight",1,"Female","No sports","0 teams",0,0,93,1
+"117","Lose weight",1,"Male","Sports","1 team",1,3,97,0
+"118","Lose weight",1,"Male","No sports","0 teams",0,0,64,0
+"119","Lose weight",1,"Female","Sports","1 team",1,1,72,1
+"120","Lose weight",1,"Female","No sports","0 teams",0,2,97,1
+"121","Lose weight",1,"Female","Sports","3 or more teams",3,0.5,88,1
+"122","Lose weight",1,"Female","No sports","0 teams",0,0.5,99,1
+"123","No weight loss",0,"Female","Sports","1 team",1,3,18,1
+"124","No weight loss",0,"Male","Sports","2 teams",2,2,66,0
+"125","Lose weight",1,"Female","No sports","0 teams",0,0,40,1
+"126","No weight loss",0,"Female","No sports","0 teams",0,2,51,1
+"127","No weight loss",0,"Male","Sports","2 teams",2,1,67,0
+"128","Lose weight",1,"Female","Sports","1 team",1,0.5,25,1
+"129","No weight loss",0,"Female","No sports","0 teams",0,4,28,1
+"130","No weight loss",0,"Male","Sports","2 teams",2,1,81,0
+"131","No weight loss",0,"Female","No sports","0 teams",0,5,90,1
+"132","No weight loss",0,"Male","Sports","2 teams",2,0.5,98,0
+"133","No weight loss",0,"Male","Sports","2 teams",2,0.5,24,0
+"134","No weight loss",0,"Female","Sports","3 or more teams",3,0.5,21,1
+"135","Lose weight",1,"Female","No sports","0 teams",0,2,87,1
+"136","Lose weight",1,"Female","No sports","0 teams",0,5,30,1
+"137","No weight loss",0,"Female","Sports","1 team",1,0,35,1
+"138","No weight loss",0,"Female","Sports","1 team",1,1,55,1
+"139","No weight loss",0,"Male","Sports","2 teams",2,2,44,0
+"140","Lose weight",1,"Female","No sports","0 teams",0,0.5,88,1
+"141","Lose weight",1,"Male","Sports","1 team",1,2,99,0
+"142","No weight loss",0,"Male","No sports","0 teams",0,1,85,0
+"143","No weight loss",0,"Male","Sports","1 team",1,5,92,0
+"144","No weight loss",0,"Male","Sports","3 or more teams",3,0.5,90,0
+"145","No weight loss",0,"Male","Sports","1 team",1,3,61,0
+"146","No weight loss",0,"Female","No sports","0 teams",0,0.5,55,1
+"147","Lose weight",1,"Female","No sports","0 teams",0,2,83,1
+"148","Lose weight",1,"Male","Sports","1 team",1,3,87,0
+"149","No weight loss",0,"Male","Sports","2 teams",2,2,69,0
+"150","Lose weight",1,"Female","No sports","0 teams",0,3,92,1
+"151","No weight loss",0,"Female","No sports","0 teams",0,2,58,1
+"152","No weight loss",0,"Female","Sports","1 team",1,0,63,1
+"153","No weight loss",0,"Female","No sports","0 teams",0,5,57,1
+"154","No weight loss",0,"Female","Sports","1 team",1,1,6,1
+"155","No weight loss",0,"Male","Sports","2 teams",2,3,48,0
+"156","No weight loss",0,"Male","No sports","0 teams",0,2,44,0
+"157","No weight loss",0,"Female","No sports","0 teams",0,3,98,1
+"158","Lose weight",1,"Female","Sports","1 team",1,5,87,1
+"159","No weight loss",0,"Male","No sports","0 teams",0,1,66,0
+"160","No weight loss",0,"Female","No sports","0 teams",0,3,88,1
+"161","No weight loss",0,"Female","No sports","0 teams",0,0,21,1
+"162","No weight loss",0,"Male","Sports","1 team",1,1,48,0
+"163","No weight loss",0,"Male","No sports","0 teams",0,0.5,26,0
+"164","No weight loss",0,"Female","No sports","0 teams",0,1,17,1
+"165","Lose weight",1,"Female","Sports","2 teams",2,5,83,1
+"166","No weight loss",0,"Male","Sports","3 or more teams",3,0.5,85,0
+"167","No weight loss",0,"Male","Sports","2 teams",2,1,99,0
+"168","Lose weight",1,"Female","No sports","0 teams",0,0.5,98,1
+"169","No weight loss",0,"Female","No sports","0 teams",0,0.5,71,1
+"170","No weight loss",0,"Male","No sports","0 teams",0,3,92,0
+"171","No weight loss",0,"Male","No sports","0 teams",0,2,29,0
+"172","Lose weight",1,"Female","No sports","0 teams",0,0.5,28,1
+"173","Lose weight",1,"Male","No sports","0 teams",0,3,67,0
+"174","No weight loss",0,"Male","No sports","0 teams",0,0,45,0
+"175","No weight loss",0,"Male","No sports","0 teams",0,4,83,0
+"176","No weight loss",0,"Male","Sports","3 or more teams",3,5,95,0
+"177","No weight loss",0,"Female","Sports","2 teams",2,0.5,61,1
+"178","Lose weight",1,"Male","No sports","0 teams",0,1,99,0
+"179","Lose weight",1,"Male","Sports","3 or more teams",3,3,96,0
+"180","Lose weight",1,"Female","Sports","1 team",1,2,44,1
+"181","Lose weight",1,"Male","Sports","1 team",1,2,94,0
+"182","Lose weight",1,"Female","No sports","0 teams",0,5,55,1
+"183","Lose weight",1,"Male","No sports","0 teams",0,5,98,0
+"184","No weight loss",0,"Male","No sports","0 teams",0,4,86,0
+"185","No weight loss",0,"Female","No sports","0 teams",0,1,2,1
+"186","No weight loss",0,"Male","Sports","2 teams",2,2,52,0
+"187","Lose weight",1,"Female","Sports","1 team",1,1,80,1
+"188","Lose weight",1,"Female","No sports","0 teams",0,0,63,1
+"189","Lose weight",1,"Male","No sports","0 teams",0,3,96,0
+"190","No weight loss",0,"Male","No sports","0 teams",0,1,68,0
+"191","Lose weight",1,"Female","No sports","0 teams",0,0.5,76,1
+"192","No weight loss",0,"Female","Sports","1 team",1,2,16,1
+"193","No weight loss",0,"Female","Sports","3 or more teams",3,5,70,1
+"194","No weight loss",0,"Male","No sports","0 teams",0,4,42,0
+"195","Lose weight",1,"Female","No sports","0 teams",0,0,20,1
+"196","Lose weight",1,"Female","Sports","1 team",1,2,75,1
+"197","No weight loss",0,"Male","Sports","2 teams",2,2,98,0
+"198","No weight loss",0,"Male","No sports","0 teams",0,0.5,83,0
+"199","No weight loss",0,"Male","No sports","0 teams",0,4,78,0
+"200","No weight loss",0,"Male","Sports","2 teams",2,5,72,0
+"201","No weight loss",0,"Female","No sports","0 teams",0,5,14,1
+"202","No weight loss",0,"Female","Sports","1 team",1,1,39,1
+"203","No weight loss",0,"Female","Sports","2 teams",2,3,65,1
+"204","No weight loss",0,"Male","Sports","2 teams",2,0.5,91,0
+"205","No weight loss",0,"Male","Sports","2 teams",2,5,7,0
+"206","No weight loss",0,"Female","Sports","2 teams",2,0.5,20,1
+"207","Lose weight",1,"Female","Sports","3 or more teams",3,0.5,30,1
+"208","No weight loss",0,"Female","No sports","0 teams",0,1,5,1
+"209","No weight loss",0,"Male","Sports","3 or more teams",3,3,61,0
+"210","No weight loss",0,"Male","No sports","0 teams",0,5,68,0
+"211","Lose weight",1,"Female","Sports","3 or more teams",3,0,93,1
+"212","Lose weight",1,"Female","Sports","1 team",1,0.5,61,1
+"213","Lose weight",1,"Female","No sports","0 teams",0,0.5,76,1
+"214","No weight loss",0,"Male","Sports","3 or more teams",3,0.5,32,0
+"215","No weight loss",0,"Female","Sports","1 team",1,1,10,1
+"216","Lose weight",1,"Male","Sports","2 teams",2,3,100,0
+"217","Lose weight",1,"Female","Sports","1 team",1,1,75,1
+"218","Lose weight",1,"Female","Sports","1 team",1,1,27,1
+"219","No weight loss",0,"Male","No sports","0 teams",0,2,25,0
+"220","No weight loss",0,"Male","No sports","0 teams",0,2,68,0
+"221","Lose weight",1,"Female","No sports","0 teams",0,1,37,1
+"222","Lose weight",1,"Female","Sports","1 team",1,4,44,1
+"223","Lose weight",1,"Female","Sports","1 team",1,3,78,1
+"224","Lose weight",1,"Female","No sports","0 teams",0,1,40,1
+"225","No weight loss",0,"Female","No sports","0 teams",0,3,52,1
+"226","Lose weight",1,"Male","Sports","1 team",1,0.5,95,0
+"227","Lose weight",1,"Male","Sports","2 teams",2,2,68,0
+"228","No weight loss",0,"Male","Sports","3 or more teams",3,1,74,0
+"229","Lose weight",1,"Female","Sports","1 team",1,0,93,1
+"230","No weight loss",0,"Female","No sports","0 teams",0,5,71,1
+"231","No weight loss",0,"Male","Sports","3 or more teams",3,0.5,72,0
+"232","Lose weight",1,"Female","Sports","3 or more teams",3,1,84,1
+"233","No weight loss",0,"Male","No sports","0 teams",0,5,8,0
+"234","Lose weight",1,"Male","Sports","2 teams",2,0.5,80,0
+"235","Lose weight",1,"Male","No sports","0 teams",0,0,93,0
+"236","Lose weight",1,"Male","No sports","0 teams",0,1,81,0
+"237","No weight loss",0,"Male","Sports","3 or more teams",3,2,60,0
+"238","Lose weight",1,"Female","No sports","0 teams",0,3,64,1
+"239","No weight loss",0,"Male","Sports","1 team",1,1,84,0
+"240","Lose weight",1,"Female","Sports","2 teams",2,0.5,86,1
+"241","Lose weight",1,"Female","No sports","0 teams",0,3,90,1
+"242","No weight loss",0,"Male","Sports","1 team",1,2,99,0
+"243","Lose weight",1,"Male","Sports","2 teams",2,5,94,0
+"244","No weight loss",0,"Male","Sports","2 teams",2,0.5,29,0
+"245","Lose weight",1,"Female","Sports","3 or more teams",3,1,65,1
+"246","No weight loss",0,"Male","No sports","0 teams",0,0,7,0
+"247","No weight loss",0,"Male","Sports","1 team",1,4,58,0
+"248","No weight loss",0,"Female","No sports","0 teams",0,5,0,1
+"249","Lose weight",1,"Male","No sports","0 teams",0,3,55,0
+"250","No weight loss",0,"Male","Sports","1 team",1,0.5,46,0
+"251","No weight loss",0,"Male","Sports","3 or more teams",3,0.5,82,0
+"252","No weight loss",0,"Male","Sports","1 team",1,5,49,0
+"253","Lose weight",1,"Male","No sports","0 teams",0,1,59,0
+"254","Lose weight",1,"Male","Sports","1 team",1,2,99,0
+"255","Lose weight",1,"Male","No sports","0 teams",0,0.5,97,0
+"256","No weight loss",0,"Female","No sports","0 teams",0,2,23,1
+"257","No weight loss",0,"Female","Sports","2 teams",2,3,49,1
+"258","No weight loss",0,"Male","No sports","0 teams",0,5,83,0
+"259","Lose weight",1,"Male","Sports","2 teams",2,3,90,0
+"260","Lose weight",1,"Female","Sports","1 team",1,0,74,1
+"261","Lose weight",1,"Male","No sports","0 teams",0,2,59,0
+"262","Lose weight",1,"Male","Sports","3 or more teams",3,3,79,0
+"263","Lose weight",1,"Male","Sports","1 team",1,4,95,0
+"264","Lose weight",1,"Female","No sports","0 teams",0,2,85,1
+"265","Lose weight",1,"Male","Sports","3 or more teams",3,3,82,0
+"266","No weight loss",0,"Male","Sports","3 or more teams",3,1,57,0
+"267","Lose weight",1,"Male","Sports","3 or more teams",3,0.5,92,0
+"268","No weight loss",0,"Male","Sports","2 teams",2,0,72,0
+"269","No weight loss",0,"Male","No sports","0 teams",0,3,98,0
+"270","No weight loss",0,"Female","No sports","0 teams",0,5,21,1
+"271","No weight loss",0,"Male","Sports","1 team",1,5,54,0
+"272","Lose weight",1,"Male","Sports","2 teams",2,1,98,0
+"273","No weight loss",0,"Male","Sports","3 or more teams",3,1,66,0
+"274","Lose weight",1,"Female","No sports","0 teams",0,2,99,1
+"275","No weight loss",0,"Male","Sports","1 team",1,4,100,0
+"276","Lose weight",1,"Male","No sports","0 teams",0,0.5,34,0
+"277","Lose weight",1,"Female","No sports","0 teams",0,2,99,1
+"278","Lose weight",1,"Female","Sports","3 or more teams",3,2,92,1
+"279","Lose weight",1,"Female","No sports","0 teams",0,2,97,1
+"280","No weight loss",0,"Male","No sports","0 teams",0,0.5,29,0
+"281","No weight loss",0,"Male","Sports","1 team",1,2,43,0
+"282","Lose weight",1,"Female","Sports","2 teams",2,4,63,1
+"283","No weight loss",0,"Female","Sports","2 teams",2,3,23,1
+"284","No weight loss",0,"Female","No sports","0 teams",0,1,62,1
+"285","No weight loss",0,"Male","No sports","0 teams",0,3,36,0
+"286","Lose weight",1,"Male","No sports","0 teams",0,0.5,67,0
+"287","Lose weight",1,"Female","No sports","0 teams",0,4,53,1
+"288","Lose weight",1,"Male","Sports","2 teams",2,0.5,97,0
+"289","No weight loss",0,"Male","Sports","2 teams",2,1,31,0
+"290","Lose weight",1,"Female","No sports","0 teams",0,1,90,1
+"291","Lose weight",1,"Female","Sports","1 team",1,1,70,1
+"292","Lose weight",1,"Female","Sports","1 team",1,0.5,86,1
+"293","No weight loss",0,"Male","No sports","0 teams",0,5,41,0
+"294","No weight loss",0,"Female","No sports","0 teams",0,2,51,1
+"295","No weight loss",0,"Male","Sports","1 team",1,0.5,97,0
+"296","No weight loss",0,"Male","Sports","2 teams",2,0.5,27,0
+"297","No weight loss",0,"Male","Sports","2 teams",2,5,23,0
+"298","No weight loss",0,"Male","No sports","0 teams",0,0.5,0,0
+"299","Lose weight",1,"Female","No sports","0 teams",0,1,46,1
+"300","No weight loss",0,"Male","Sports","2 teams",2,2,95,0
+"301","No weight loss",0,"Male","No sports","0 teams",0,2,95,0
+"302","Lose weight",1,"Female","No sports","0 teams",0,0.5,83,1
+"303","Lose weight",1,"Female","Sports","3 or more teams",3,3,71,1
+"304","No weight loss",0,"Male","Sports","1 team",1,4,92,0
+"305","No weight loss",0,"Female","No sports","0 teams",0,1,68,1
+"306","Lose weight",1,"Male","Sports","1 team",1,3,99,0
+"307","No weight loss",0,"Female","Sports","3 or more teams",3,0.5,82,1
+"308","Lose weight",1,"Female","No sports","0 teams",0,0,90,1
+"309","No weight loss",0,"Male","No sports","0 teams",0,1,90,0
+"310","Lose weight",1,"Female","Sports","1 team",1,2,68,1
+"311","No weight loss",0,"Female","Sports","1 team",1,0.5,65,1
+"312","Lose weight",1,"Female","Sports","2 teams",2,1,47,1
+"313","No weight loss",0,"Male","Sports","2 teams",2,1,35,0
+"314","Lose weight",1,"Female","No sports","0 teams",0,0,83,1
+"315","Lose weight",1,"Female","Sports","2 teams",2,0,65,1
+"316","Lose weight",1,"Male","Sports","3 or more teams",3,2,31,0
+"317","No weight loss",0,"Female","Sports","1 team",1,1,24,1
+"318","Lose weight",1,"Female","No sports","0 teams",0,1,99,1
+"319","No weight loss",0,"Male","Sports","1 team",1,0.5,81,0
+"320","Lose weight",1,"Male","Sports","1 team",1,2,92,0
+"321","Lose weight",1,"Female","No sports","0 teams",0,3,49,1
+"322","Lose weight",1,"Female","Sports","1 team",1,4,67,1
+"323","No weight loss",0,"Male","No sports","0 teams",0,1,63,0
+"324","Lose weight",1,"Male","Sports","1 team",1,3,100,0
+"325","No weight loss",0,"Female","Sports","1 team",1,2,10,1
+"326","No weight loss",0,"Male","Sports","3 or more teams",3,3,85,0
+"327","No weight loss",0,"Male","Sports","3 or more teams",3,2,62,0
+"328","No weight loss",0,"Female","Sports","3 or more teams",3,0.5,22,1
+"329","No weight loss",0,"Male","No sports","0 teams",0,0,26,0
+"330","No weight loss",0,"Male","Sports","3 or more teams",3,0.5,29,0
+"331","Lose weight",1,"Female","Sports","2 teams",2,0.5,61,1
+"332","No weight loss",0,"Male","No sports","0 teams",0,2,17,0
+"333","No weight loss",0,"Female","No sports","0 teams",0,3,30,1
+"334","No weight loss",0,"Male","Sports","2 teams",2,0.5,40,0
+"335","Lose weight",1,"Female","No sports","0 teams",0,2,59,1
+"336","No weight loss",0,"Male","Sports","2 teams",2,0,80,0
+"337","No weight loss",0,"Female","No sports","0 teams",0,3,33,1
+"338","No weight loss",0,"Male","Sports","2 teams",2,5,86,0
+"339","No weight loss",0,"Female","Sports","1 team",1,1,36,1
+"340","Lose weight",1,"Female","No sports","0 teams",0,2,44,1
+"341","Lose weight",1,"Female","Sports","2 teams",2,2,58,1
+"342","Lose weight",1,"Female","Sports","1 team",1,1,44,1
+"343","No weight loss",0,"Male","Sports","1 team",1,4,18,0
+"344","No weight loss",0,"Male","No sports","0 teams",0,0.5,45,0
+"345","No weight loss",0,"Male","Sports","3 or more teams",3,5,94,0
+"346","No weight loss",0,"Male","No sports","0 teams",0,1,49,0
+"347","No weight loss",0,"Female","No sports","0 teams",0,0,42,1
+"348","No weight loss",0,"Female","Sports","1 team",1,1,26,1
+"349","Lose weight",1,"Female","No sports","0 teams",0,2,51,1
+"350","No weight loss",0,"Male","Sports","2 teams",2,5,76,0
+"351","No weight loss",0,"Male","No sports","0 teams",0,3,95,0
+"352","Lose weight",1,"Female","Sports","2 teams",2,0,66,1
+"353","Lose weight",1,"Female","Sports","1 team",1,2,93,1
+"354","No weight loss",0,"Male","Sports","1 team",1,4,61,0
+"355","Lose weight",1,"Female","Sports","2 teams",2,0.5,97,1
+"356","No weight loss",0,"Male","No sports","0 teams",0,1,79,0
+"357","Lose weight",1,"Female","Sports","1 team",1,0.5,83,1
+"358","No weight loss",0,"Female","No sports","0 teams",0,0,10,1
+"359","No weight loss",0,"Male","Sports","1 team",1,0,68,0
+"360","No weight loss",0,"Male","Sports","3 or more teams",3,1,43,0
+"361","Lose weight",1,"Male","Sports","2 teams",2,3,100,0
+"362","Lose weight",1,"Male","No sports","0 teams",0,2,99,0
+"363","Lose weight",1,"Female","Sports","3 or more teams",3,5,67,1
+"364","Lose weight",1,"Female","No sports","0 teams",0,3,96,1
+"365","No weight loss",0,"Male","Sports","3 or more teams",3,2,42,0
+"366","Lose weight",1,"Male","No sports","0 teams",0,4,83,0
+"367","No weight loss",0,"Male","No sports","0 teams",0,0,10,0
+"368","Lose weight",1,"Female","Sports","1 team",1,5,88,1
+"369","No weight loss",0,"Female","Sports","3 or more teams",3,2,88,1
+"370","Lose weight",1,"Male","No sports","0 teams",0,3,100,0
+"371","Lose weight",1,"Male","Sports","1 team",1,0,74,0
+"372","Lose weight",1,"Male","Sports","3 or more teams",3,2,83,0
+"373","No weight loss",0,"Female","Sports","1 team",1,3,53,1
+"374","Lose weight",1,"Female","Sports","3 or more teams",3,1,70,1
+"375","No weight loss",0,"Male","No sports","0 teams",0,1,88,0
+"376","No weight loss",0,"Male","No sports","0 teams",0,2,19,0
+"377","No weight loss",0,"Female","Sports","2 teams",2,0.5,23,1
+"378","Lose weight",1,"Male","No sports","0 teams",0,2,92,0
+"379","No weight loss",0,"Female","No sports","0 teams",0,0.5,31,1
+"380","No weight loss",0,"Male","Sports","1 team",1,2,61,0
+"381","Lose weight",1,"Male","No sports","0 teams",0,1,74,0
+"382","Lose weight",1,"Female","No sports","0 teams",0,0.5,83,1
+"383","No weight loss",0,"Female","No sports","0 teams",0,2,38,1
+"384","Lose weight",1,"Male","Sports","2 teams",2,2,92,0
+"385","Lose weight",1,"Female","Sports","2 teams",2,2,79,1
+"386","Lose weight",1,"Male","No sports","0 teams",0,5,83,0
+"387","No weight loss",0,"Male","Sports","2 teams",2,0.5,88,0
+"388","Lose weight",1,"Male","Sports","1 team",1,5,94,0
+"389","Lose weight",1,"Female","No sports","0 teams",0,1,98,1
+"390","No weight loss",0,"Male","Sports","1 team",1,2,96,0
+"391","No weight loss",0,"Female","Sports","1 team",1,5,43,1
+"392","No weight loss",0,"Male","Sports","2 teams",2,4,64,0
+"393","Lose weight",1,"Male","Sports","2 teams",2,2,98,0
+"394","No weight loss",0,"Male","No sports","0 teams",0,4,64,0
+"395","No weight loss",0,"Male","Sports","1 team",1,3,76,0
+"396","No weight loss",0,"Male","No sports","0 teams",0,2,84,0
+"397","No weight loss",0,"Male","Sports","2 teams",2,0.5,91,0
+"398","No weight loss",0,"Male","Sports","3 or more teams",3,0.5,61,0
+"399","Lose weight",1,"Female","Sports","1 team",1,0.5,85,1
+"400","No weight loss",0,"Female","Sports","1 team",1,0.5,73,1
+"401","Lose weight",1,"Male","Sports","1 team",1,5,67,0
+"402","Lose weight",1,"Female","Sports","2 teams",2,5,8,1
+"403","Lose weight",1,"Male","Sports","3 or more teams",3,5,81,0
+"404","No weight loss",0,"Male","No sports","0 teams",0,3,27,0
+"405","Lose weight",1,"Female","Sports","1 team",1,2,94,1
+"406","Lose weight",1,"Male","No sports","0 teams",0,3,88,0
+"407","Lose weight",1,"Female","Sports","1 team",1,4,78,1
+"408","No weight loss",0,"Female","Sports","1 team",1,1,24,1
+"409","No weight loss",0,"Male","No sports","0 teams",0,3,67,0
+"410","No weight loss",0,"Female","No sports","0 teams",0,0.5,96,1
+"411","Lose weight",1,"Male","Sports","3 or more teams",3,1,97,0
+"412","Lose weight",1,"Male","No sports","0 teams",0,0.5,97,0
+"413","No weight loss",0,"Male","Sports","1 team",1,5,0,0
+"414","No weight loss",0,"Female","Sports","1 team",1,2,44,1
+"415","Lose weight",1,"Female","No sports","0 teams",0,2,96,1
+"416","No weight loss",0,"Female","Sports","1 team",1,5,90,1
+"417","No weight loss",0,"Female","No sports","0 teams",0,3,15,1
+"418","No weight loss",0,"Male","No sports","0 teams",0,5,93,0
+"419","No weight loss",0,"Female","Sports","1 team",1,5,59,1
+"420","Lose weight",1,"Male","Sports","1 team",1,0,87,0
+"421","No weight loss",0,"Female","Sports","1 team",1,5,98,1
+"422","Lose weight",1,"Male","No sports","0 teams",0,3,79,0
+"423","No weight loss",0,"Male","No sports","0 teams",0,3,98,0
+"424","No weight loss",0,"Male","Sports","2 teams",2,0.5,77,0
+"425","No weight loss",0,"Male","No sports","0 teams",0,5,19,0
+"426","Lose weight",1,"Female","No sports","0 teams",0,3,99,1
+"427","Lose weight",1,"Female","No sports","0 teams",0,2,53,1
+"428","No weight loss",0,"Male","Sports","3 or more teams",3,5,54,0
+"429","Lose weight",1,"Female","Sports","1 team",1,4,99,1
+"430","Lose weight",1,"Female","No sports","0 teams",0,5,91,1
+"431","No weight loss",0,"Female","Sports","3 or more teams",3,3,38,1
+"432","No weight loss",0,"Female","Sports","2 teams",2,3,49,1
+"433","No weight loss",0,"Male","Sports","2 teams",2,0,61,0
+"434","No weight loss",0,"Male","Sports","3 or more teams",3,3,25,0
+"435","Lose weight",1,"Female","Sports","2 teams",2,2,94,1
+"436","No weight loss",0,"Male","Sports","3 or more teams",3,0.5,45,0
+"437","No weight loss",0,"Female","No sports","0 teams",0,0.5,45,1
+"438","No weight loss",0,"Male","No sports","0 teams",0,0,1,0
+"439","No weight loss",0,"Male","Sports","2 teams",2,1,67,0
+"440","Lose weight",1,"Female","Sports","1 team",1,5,52,1
+"441","No weight loss",0,"Male","Sports","1 team",1,3,33,0
+"442","No weight loss",0,"Female","No sports","0 teams",0,0.5,43,1
+"443","No weight loss",0,"Male","Sports","2 teams",2,3,40,0
+"444","Lose weight",1,"Female","Sports","2 teams",2,1,39,1
+"445","No weight loss",0,"Male","No sports","0 teams",0,2,34,0
