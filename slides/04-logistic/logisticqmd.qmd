@@ -15,7 +15,7 @@ format:
     chalkboard: true
     fontsize: "25pt"
 webr:
-  packages: ["tidyverse", "easystats", "broom", "knitr", "emmeans", "ggeffects", "foreign"]
+  packages: ["tidyverse", "easystats", "broom", "knitr", "emmeans", "ggeffects"]
 filters:
   - webr
 execute:
@@ -45,6 +45,7 @@ library(kableExtra)
 library(broom)
 library(emmeans)
 library(marginaleffects)
+library(modelsummary)
 
 options(scipen = 999)
 ```
@@ -194,14 +195,32 @@ $$y\sim binomial(N,p)$$
 
 -   In R we use the `glm` function as opposed to `lm`
 
-```{r, eval=FALSE}
-# use GLM istead of LM
-# family changes
-bi_model <- glm(
-  rvote ~ income,
-  family = binomial(
-    link = "logit"))
-```
+    ::: panel-tabset
+    ## Logistic - Bernoulli
+
+    ```{r}
+    #| eval: false 
+    # use GLM istead of LM
+    # family changes
+    bi_model <- glm(
+      rvote ~ income,
+      family = binomial(
+        link = "logit"))
+    ```
+
+    ## Logistic - Binomial
+
+    ```{r}
+    #| eval: false
+    # use GLM istead of LM
+    # family changes
+    # one row # of 1s and 0s instead of multiple rows 
+    bi_model <- glm(
+      cbind(Y, N) ~ income,
+      family = binomial(
+        link = "logit"))
+    ```
+    :::
 
 ::: callout-note
 use `glmer` to perform logistic multilevel model
@@ -271,7 +290,7 @@ $$\textrm{Odds} = \frac{\# \textrm{successes}}{\# \textrm{failures}}=
 :::
 
 ::: {.column width="50%"}
-![](numberline_logodds.png){width="345"}
+![](numberline_logodds.png){fig-align="center" width="345"}
 
 ```{r}
 #| echo: false
@@ -368,9 +387,8 @@ plogis(-1)
 
 ::: columns
 ::: {.column width="50%"}
-![]()
 
-![](images/p-log-odds-1.png)
+![](images/p-log-odds-1.png){fig-align="center"}
 :::
 
 ::: {.column width="50%"}
@@ -425,9 +443,15 @@ knitr::include_graphics("images/mle-many.png")
 
 ## Slope and intercept parameters
 
+::: columns
+::: {.column width="50%"}
 ![](images/MLE_1.png){fig-align="center"}
+:::
 
+::: {.column width="50%"}
 ![](images/mle-2.png){fig-align="center"}
+:::
+:::
 
 ## Case Study: Loseing Weight
 
@@ -437,16 +461,14 @@ knitr::include_graphics("images/mle-many.png")
 
 ```{webr-r}
 
-risk2009.data <- 
+risk2009.data <- read.csv("https://raw.githubusercontent.com/jgeller112/PSY504-Advanced-Stats-S24/main/slides/04-logistic/data/risk2009.csv")
 
 ```
 
 ```{r}
 #| echo: false
 #| 
-risk2009.data <- foreign::read.spss(
-  file = "https://github.com/proback/BeyondMLR/blob/master/data/yrbs09.sav?raw=true",
-  to.data.frame = TRUE)
+risk2009 <- read.csv("https://raw.githubusercontent.com/jgeller112/PSY504-Advanced-Stats-S24/main/slides/04-logistic/data/risk2009.csv")
 
 ```
 
@@ -463,13 +485,13 @@ DV: \*`lose.wt.01`, which is coded 1 when someone indicated they were trying to 
     -   `sex` and its related dummy variable `female` and `male`
     -   `bmipct`, which is the percentile for a given BMI for members of the same sex
 
-## Exploratory Data Analysis
+## Exploratory data analysis
 
 -   Here are two versions of comparing `lose.wt.01` by `sex`
 
 ::: columns
 ::: {.column width="50%"}
-```{webr-r}
+```{r}
 #| echo: false
 #| fig-align: "center"
 #| 
@@ -477,31 +499,32 @@ risk2009 %>%
   mutate(lose.wt.01 = factor(lose.wt.01)) %>% 
   ggplot(aes(x = lose.wt.01)) +
   geom_bar() +
-  facet_wrap(~ sex)
+  facet_wrap(~ sex) + 
+  theme_lucid(base_size=18)
 
 ```
 :::
 
 ::: {.column width="50%"}
-```{webr-r}
+```{r}
 #| echo: false
 #| fig-align: "center"
 
 risk2009 %>%
   ggplot(aes(x = sex, fill = lose.wt)) +
   geom_bar(position = "fill") +
-  geom_text(stat = 'count', aes(label = scales::percent(..count.. / sum(..count..), accuracy = 1)), 
+  geom_text(stat = 'count',size=10,  aes(label = scales::percent(..count.. / sum(..count..), accuracy = 1)), 
             position = position_fill(vjust = 0.5), size = 3) + # Adjust size as needed
   scale_fill_viridis_d(option = "C", begin = .2) +
   labs(x = NULL, y = "Percent") + 
   scale_y_continuous(labels = scales::percent_format(accuracy = 1)) + # Ensure y-axis labels are in percent format + 
-theme_lucid(base_size=16)
+theme_lucid(base_size=18)
 
 ```
 :::
 :::
 
-## Exploratory Data Analysis
+## Exploratory data analysis
 
 -   Here are the histograms for `bmipct`, faceted by `lose.wt`.
 
@@ -527,7 +550,7 @@ risk2009 %>%
   theme_lucid(base_size=18)
 ```
 
-## Logistic Regression: Fitting Model
+## Logistic regression: Fitting model
 
 -   Let's fit an intercept-only model
 
@@ -540,11 +563,26 @@ $$
 
 ## Logistic Regression: Fitting Model
 
-```{r}
-# fit
+```{webr-r}
+# fit model
 fit1 <- glm(
   data = risk2009,
-  family = binomial,
+  family = binomial(link="logit"),
+  lose.wt.01 ~ 1
+  ) 
+fit1 %>% 
+  tidy() %>%
+  kable()
+
+```
+
+```{r}
+#| echo: false
+#| 
+# fit model
+fit1 <- glm(
+  data = risk2009,
+  family = binomial(link="logit"),
   lose.wt.01 ~ 1
   ) 
 fit1 %>% 
@@ -560,20 +598,9 @@ fit1 %>%
 
     -    $H_a$: $\beta_j \neq 0$
 
--   Test Statistic $$z = \frac{\hat{\beta}_j - 0}{SE_{\hat{\beta}_j}}$$
+-   Test Statistic (Wald): $$z = \frac{\hat{\beta}_j - 0}{SE_{\hat{\beta}_j}}$$
 
--   P-value: $P(|Z| > |z|)$,
-
-    -   where $Z \sim N(0, 1)$, the Standard Normal distribution
-
-## Confidence interval for $\beta_j$
-
-We can calculate the .vocab\[C% confidence interval\] for $\beta_j$ as the following:\
-$$\Large{\hat{\beta}_j \pm z^* SE_{\hat{\beta}_j}}$$
-
-where $z^*$ is calculated from the $N(0,1)$ distribution
-
-$$\exp\{\hat{\beta}_1 \pm z^* SE(\hat{\beta}_1)\}$$
+-   CIs: $$\Large{\hat{\beta}_j \pm z^* SE_{\hat{\beta}_j}}$$
 
 ## Interpreting $\beta_0$
 
@@ -583,15 +610,14 @@ tidy(fit1) %>% kable()
 
 -   The intercept $\beta_0$ is in the log-odds metric
 
-    -   When budget = 0, log-odds of Y are 0.04
+    -    Log-odds of Y = 1 is -0.212
 
 -   We can convert it to probability
 
 ```{r}
-b0 <- coef(fit1)
+b0 <- coef(fit1) # get coef
 
-exp(b0) / (1 + exp(b0))
-
+exp(b0) / (1 + exp(b0)) # logistic transform
 ```
 
 -   Thus, the overall probability of students wanting to lose weight was about .45 or 45%
@@ -626,9 +652,18 @@ $$
 
 -   Where `female` is an 0/1 dummy variable.
 
-## Fit Model
-
 ```{r}
+#| echo: false
+
+fit2 <- glm(
+  lose.wt.01 ~ 1 + female, 
+  data = risk2009,
+  family = binomial,
+)
+
+```
+
+```{webr-r}
 # fit
 fit2 <- glm(
   lose.wt.01 ~ 1 + female, 
@@ -638,11 +673,20 @@ fit2 <- glm(
 
 ```
 
-## Interpreting slope: b1
+## Interpreting intercept: \$b_0\$
+
+```{webr-r}
+# fit
+fit2 %>%
+  tidy()
+
+```
+
+## Interpreting slope: $b_1$
 
 -   If X is a categorical predictor
 
-    -   The difference in the log-odds between group X and the baseline is \$\$b_1\$
+    -   Then $b_1$ is the difference in the log-odds between group X and the baseline
 
 ```{webr-r}
 # summarize
@@ -650,6 +694,10 @@ fit2 %>%
   tidy() %>%
   kable()
 ```
+
+. . .
+
+-   Going from men to women, there is a change in the the log odds of wanting to lose weight of 1.09
 
 ## Coefficient effect size: Odd's Ratio
 
@@ -661,40 +709,46 @@ fit2 %>%
 
 ```{r}
 #| eval: false
-exp(new)-1 * 100  # get probability of increase/decrease
+(OR-1) * 100  # get probability of increase/decrease
 ```
 
 ## Coefficient Effect Size: Odd's Ratio
 
-```{r}
+```{webr-r}
 tidy(fit2,exponentiate = TRUE) %>%  # get odds ratio %>%
   kable()
 ```
 
--   Greater than 1: As the continuous variable increases, the event is more likely to occur
+-   Greater than 1: One unit increase, the event is more likely to occur
 
--   Less than 1: As the variable increases, the event is less likely to occur
+-   Less than 1: One unit increase, the event is less likely to occur
 
--   Equals 1: As the variable increases, the likelihood of the event does not change
+-   Equals 1: One unit increase, the likelihood of the event does not change
 
 ## Interpreting slope: b1
 
-```{r}
+```{webr-r}
 fit2 %>%
   tidy(exponentiate = TRUE) %>% # get OR
   kable()
 ```
 
+. . .
+
+-   The odds of wanting to lose weight in females is 2.98 times the odds of wanting to lose weight in men
+
+    -   The odds of females wanting to lose weight is 198% higher than the odds of males wanting to lose weight
+
 ## Predicted probabilities
 
 -   Now we can compute the probabilities for young men and women as follows
 
-```{r, echo=FALSE}
+```{webr-r}
 b0 <- coef(fit2)[1] %>% as.double()
 b1 <- coef(fit2)[2] %>% as.double()
 ```
 
-```{r}
+```{webr-r}
 # young men
 plogis(b0 + b1 * 0)
 # young women
@@ -708,14 +762,13 @@ plogis(b0 + b1 * 1)
     -   Can also get odds ratios for comparisons!
 
     ```{r}
-
     emm <- emmeans(fit2, "female", type = "response")
     emm
     # get odd ratio for comparison
     pairs(emm, reverse=TRUE)
     ```
 
-## Marginal Effects
+## Marginal effects
 
 ::: columns
 ::: {.column width="50%"}
@@ -745,7 +798,7 @@ avg_comparisons(fit2, comparison = "difference") %>%
 :::
 :::
 
-## Logistic Regression Continuous
+## Logistic regression continuous
 
 Now we add our continuous predictor `bmipct`, which gives us the model:
 
@@ -757,6 +810,18 @@ $$
 $$
 
 ```{r}
+#| echo: false
+
+
+fit3 <- glm(
+  data = risk2009,
+  family = binomial,
+  lose.wt.01 ~ 1 + bmipct
+  ) 
+
+```
+
+```{webr-r}
 # fit
 fit3 <- glm(
   data = risk2009,
@@ -764,23 +829,23 @@ fit3 <- glm(
   lose.wt.01 ~ 1 + bmipct
   ) 
 
-fit3 %>% tidy() %>% kable()
 ```
 
 ## Model 3
 
 ```{r}
-# summarize
+#| echo: false
 fit3 %>%
   tidy() %>%
   kable()
+
 ```
 
--   The coefficient for `bmipct` seems small at 0.036, but recall that `bmipct` ranges from 0 to 100.
+> What is the OR for this coef? How do we interpret this?
 
-    -   Thus a one point increase being a one percentile increase in BMI, which isn't very much
+```{webr-r}
 
-        > What is the OR for this coef? How do we interpret this?
+```
 
 ## Marginal effects
 
@@ -815,9 +880,10 @@ $$
 \end{align*}
 $$
 
-## Fitting Both Models
+## Fitting both models
 
-```{r, echo=TRUE}
+```{r}
+#| echo: false
 fit4 <- glm(
   data = risk2009,
   family = binomial,
@@ -829,31 +895,21 @@ fit5 <- glm(
   family = binomial,
   lose.wt.01 ~ 1 + female + bmipct + female:bmipct
   )
+
 ```
 
-## Model 4
-
-```{r, echo=FALSE}
+```{webr-r}
 fit4 <- glm(
   data = risk2009,
   family = binomial,
   lose.wt.01 ~ 1 + female + bmipct
   )
 
-fit4 %>% tidy() %>% kable()
-```
-
-## Model 5
-
-```{r}
-fit5 <- glm(data = risk2009,
+fit5 <- glm(
+  data = risk2009,
   family = binomial,
   lose.wt.01 ~ 1 + female + bmipct + female:bmipct
   )
-
-fit5 %>%
-  tidy() %>%
-  kable()
 ```
 
 ## Model Comparisons
@@ -890,20 +946,7 @@ bind_rows(
 test_likelihoodratio(fit4, fit5) %>% kable()
 ```
 
-## Likelihood ratio test
-
-```{r}
-bind_rows(
-  glance(fit1),
-  glance(fit2),
-  glance(fit3),
-  glance(fit4),
-  glance(fit5)
-) %>% 
-  mutate(fit = str_c("fit", 1:5)) %>% 
-  select(fit, everything()) %>% 
-  kable()
-```
+. . .
 
 -   When you compare model `fit4` with the interaction model `fit5`, it appears that the interaction term does not add anything
 
@@ -965,9 +1008,15 @@ plot(performance::binned_residuals(fit4))
 
 ## Visualizing
 
-Let's plot the results from `fit4`.
+-   Let's plot the results from `fit4`.
 
-```{r, echo=FALSE}
+::: panel-tabset
+## ggplot
+
+```{r}
+#| echo: false
+#| fig-align: "center"
+
 nd <- risk2009 %>% 
   distinct(female, sex) %>% 
   expand(nesting(female, sex),
@@ -999,18 +1048,22 @@ predict(
                      limits = 0:1, expand = c(0, 0)) +
   xlab("BMI percentile (by sex)")
 
+
+
 ```
 
-## Visualizing
+## ggeffects
 
-```{r, echo=TRUE, fig.align="center", out.width="60%"}
-
+```{r}
+#| fig-align: "center"
+#| 
 library(ggeffects)
 
 ggemmeans(fit4, terms=c("female")) %>%
   plot(ci = TRUE, add.data = TRUE)
 
 ```
+:::
 
 # Assumptions
 
@@ -1044,3 +1097,9 @@ check_model(fit4)
 fit3 %>%
   modelsummary() 
 ```
+
+## Reporting
+
+::: callout-tip
+We fitted a logistic model (estimated using ML) sex and bmipct predicting desire to lose weight (formula: lose.wt.01 \~ 1 + female+ bmipct). The model's explanatory power is substantial \*(Tjur's $R^2$ =0.30)\*. Female reported wanting to lose more weight (54%) than males (33%), *beta = 1.86, 95% CI \[1.37, 2.38\], p \< .001; OR = 6.42, 95% CI \[3.93, 10.9\]*. An increase in bmipct was also associated with increased probability of wanting to lose weight, beta = 0.05, 95% CI \[0.04, 0.06\], p \< .001, OR = 1.05, 95% CI \[1.04, 1.06\]. For every 1 point increase in BMI there was a 1% increase in desire to lose weight.
+:::
