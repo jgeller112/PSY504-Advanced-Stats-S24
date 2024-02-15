@@ -30,9 +30,8 @@ div.cell-output cell-output-stdout {
     max-height: 800px;
 }
 
-.qwebr-output-code-area {
-   background-color: red
+.reveal div.qwebr-output-code-area pre {
+   background-color: red;
 }
-
 
 
