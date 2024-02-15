@@ -535,7 +535,7 @@
   // Document level settings ----
 
   // Determine if we need to install R packages
-  globalThis.qwebrInstallRPackagesList = ['tidyverse', 'easystats', 'broom', 'knitr', 'emmeans', 'ggeffects', 'foreign'];
+  globalThis.qwebrInstallRPackagesList = ['tidyverse', 'easystats', 'broom', 'knitr', 'emmeans', 'ggeffects'];
 
   // Specify possible locations to search for the repository
   globalThis.qwebrPackageRepoURLS = ['https://repo.r-wasm.org/'];
@@ -557,7 +557,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"options":{"label":"unnamed-chunk-1","output":"true","classes":"","warning":"true","message":"true","fig-width":7,"context":"interactive","comment":"","fig-height":5,"fig-cap":"","results":"markup","out-height":"","out-width":"700px","dpi":72},"code":"\nrisk2009.data <- read.csv(\"https://raw.githubusercontent.com/jgeller112/PSY504-Advanced-Stats-S24/main/slides/04-logistic/data/risk2009.csv\")","id":1},{"options":{"label":"unnamed-chunk-2","output":"true","classes":"","warning":"true","message":"true","fig-width":7,"context":"interactive","comment":"","fig-height":5,"fig-cap":"","results":"markup","out-height":"","out-width":"700px","dpi":72},"code":"# fit model\nfit1 <- glm(\n  data = risk2009,\n  family = binomial(link=\"logit\"),\n  lose.wt.01 ~ 1\n  ) \nfit1 %>% \n  tidy() %>%\n  kable()","id":2},{"options":{"label":"unnamed-chunk-3","output":"true","classes":"","warning":"true","message":"true","fig-width":7,"context":"interactive","comment":"","fig-height":5,"fig-cap":"","results":"markup","out-height":"","out-width":"700px","dpi":72},"code":"# fit\nfit2 <- glm(\n  lose.wt.01 ~ 1 + female, \n  data = risk2009,\n  family = binomial,\n)","id":3},{"options":{"label":"unnamed-chunk-4","output":"true","classes":"","warning":"true","message":"true","fig-width":7,"context":"interactive","comment":"","fig-height":5,"fig-cap":"","results":"markup","out-height":"","out-width":"700px","dpi":72},"code":"# fit\nfit2 %>%\n  tidy()","id":4},{"options":{"label":"unnamed-chunk-5","output":"true","classes":"","warning":"true","message":"true","fig-width":7,"context":"interactive","comment":"","fig-height":5,"fig-cap":"","results":"markup","out-height":"","out-width":"700px","dpi":72},"code":"# summarize\nfit2 %>%\n  tidy() %>%\n  kable()","id":5},{"options":{"label":"unnamed-chunk-6","output":"true","classes":"","warning":"true","message":"true","fig-width":7,"context":"interactive","comment":"","fig-height":5,"fig-cap":"","results":"markup","out-height":"","out-width":"700px","dpi":72},"code":"tidy(fit2,exponentiate = TRUE) %>%  # get odds ratio %>%\n  kable()","id":6},{"options":{"label":"unnamed-chunk-7","output":"true","classes":"","warning":"true","message":"true","fig-width":7,"context":"interactive","comment":"","fig-height":5,"fig-cap":"","results":"markup","out-height":"","out-width":"700px","dpi":72},"code":"fit2 %>%\n  tidy(exponentiate = TRUE) %>% # get OR\n  kable()","id":7},{"options":{"label":"unnamed-chunk-8","output":"true","classes":"","warning":"true","message":"true","fig-width":7,"context":"interactive","comment":"","fig-height":5,"fig-cap":"","results":"markup","out-height":"","out-width":"700px","dpi":72},"code":"b0 <- coef(fit2)[1] %>% as.double()\nb1 <- coef(fit2)[2] %>% as.double()","id":8},{"options":{"label":"unnamed-chunk-9","output":"true","classes":"","warning":"true","message":"true","fig-width":7,"context":"interactive","comment":"","fig-height":5,"fig-cap":"","results":"markup","out-height":"","out-width":"700px","dpi":72},"code":"# young men\nplogis(b0 + b1 * 0)\n# young women\nplogis(b0 + b1 * 1)","id":9},{"options":{"label":"unnamed-chunk-10","output":"true","classes":"","warning":"true","message":"true","fig-width":7,"context":"interactive","comment":"","fig-height":5,"fig-cap":"","results":"markup","out-height":"","out-width":"700px","dpi":72},"code":"# fit\nfit3 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + bmipct\n  ) ","id":10},{"options":{"label":"unnamed-chunk-11","output":"true","classes":"","warning":"true","message":"true","fig-width":7,"context":"interactive","comment":"","fig-height":5,"fig-cap":"","results":"markup","out-height":"","out-width":"700px","dpi":72},"code":"","id":11},{"options":{"label":"unnamed-chunk-12","output":"true","classes":"","warning":"true","message":"true","fig-width":7,"context":"interactive","comment":"","fig-height":5,"fig-cap":"","results":"markup","out-height":"","out-width":"700px","dpi":72},"code":"fit4 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + female + bmipct\n  )\n\nfit5 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + female + bmipct + female:bmipct\n  )","id":12}];
+  globalThis.qwebrCellDetails = [{"id":1,"code":"\nrisk2009.data <- read.csv(\"https://raw.githubusercontent.com/jgeller112/PSY504-Advanced-Stats-S24/main/slides/04-logistic/data/risk2009.csv\")","options":{"label":"unnamed-chunk-1","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":2,"code":"# fit model\nfit1 <- glm(\n  data = risk2009,\n  family = binomial(link=\"logit\"),\n  lose.wt.01 ~ 1\n  ) \nfit1 %>% \n  tidy() %>%\n  kable()","options":{"label":"unnamed-chunk-2","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":3,"code":"# fit\nfit2 <- glm(\n  lose.wt.01 ~ 1 + female, \n  data = risk2009,\n  family = binomial,\n)","options":{"label":"unnamed-chunk-3","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":4,"code":"# fit\nfit2 %>%\n  tidy()","options":{"label":"unnamed-chunk-4","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":5,"code":"# summarize\nfit2 %>%\n  tidy() %>%\n  kable()","options":{"label":"unnamed-chunk-5","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":6,"code":"tidy(fit2,exponentiate = TRUE) %>%  # get odds ratio %>%\n  kable()","options":{"label":"unnamed-chunk-6","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":7,"code":"fit2 %>%\n  tidy(exponentiate = TRUE) %>% # get OR\n  kable()","options":{"label":"unnamed-chunk-7","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":8,"code":"b0 <- coef(fit2)[1] %>% as.double()\nb1 <- coef(fit2)[2] %>% as.double()","options":{"label":"unnamed-chunk-8","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":9,"code":"# young men\nplogis(b0 + b1 * 0)\n# young women\nplogis(b0 + b1 * 1)","options":{"label":"unnamed-chunk-9","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":10,"code":"# fit\nfit3 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + bmipct\n  ) ","options":{"label":"unnamed-chunk-10","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":11,"code":"","options":{"label":"unnamed-chunk-11","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":12,"code":"fit4 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + female + bmipct\n  )\n\nfit5 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + female + bmipct + female:bmipct\n  )","options":{"label":"unnamed-chunk-12","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}}];
 
   </script>
   <script type="module">
@@ -1434,13 +1434,10 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 
   // Add a click event listener to the reset button
   copyButton.onclick = function () {
-    // Ensure the editor is in focus
-    editor.focus();
-
-    // Retrieve data
+    // Retrieve current code data
     const data = editor.getValue();
     
-    // Set the clipboard contents.
+    // Write code data onto the clipboard.
     navigator.clipboard.writeText(data || "");
   };
   
@@ -1752,7 +1749,11 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 </ul></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<p><img data-src="numberline_logodds.png" width="345"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="numberline_logodds.png" class="quarto-figure quarto-figure-center" width="345"></p>
+</figure>
+</div>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -1828,10 +1829,11 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 <h2>Probabilities, Odds, and Log Odds</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><br></p>
-<p><br></p>
-<p><img data-src=".png"></p>
-<p><img data-src="images/p-log-odds-1.png"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/p-log-odds-1.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
 </div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1842,7 +1844,7 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 </div>
 </section>
 <section id="best-fitting-squiggle" class="slide level2">
-<h2>Best Fitting Squiggle</h2>
+<h2>Best fitting squiggle</h2>
 <ul>
 <li>In standard linear regression we use least squares to find the best fitting line</li>
 </ul>
@@ -1888,15 +1890,21 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 <div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/MLE_1.png" class="quarto-figure quarto-figure-center"></p>
+<p><img data-src="images/intercept_log.png" class="quarto-figure quarto-figure-center"></p>
 </figure>
 </div>
+<ul>
+<li>Intercept moves curve left or right</li>
+</ul>
 </div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/mle-2.png" class="quarto-figure quarto-figure-center"></p>
+<p><img data-src="images/slope_log.png" class="quarto-figure quarto-figure-center"></p>
 </figure>
 </div>
+<ul>
+<li>Slope determines the steepness of the curve</li>
+</ul>
 </div>
 </div>
 </section>
@@ -2688,7 +2696,7 @@ Tests are performed on the log odds ratio scale </code></pre>
 </div>
 </div>
 <div class="footer footer-default">
-<p>PSY 503: Foundations of Statistics in Psychology</p>
+<p>PSY 504: Advanced Statistics</p>
 </div>
 </section></section>
     </div>
@@ -3114,7 +3122,7 @@ Tests are performed on the log odds ratio scale </code></pre>
     // Identify non-interactive cells (in order)
     const filteredEntries = qwebrCellDetails.filter(entry => {
       const contextOption = entry.options && entry.options.context;
-      return ['output', 'setup'].includes(contextOption);
+      return ['output', 'setup'].includes(contextOption) || (contextOption == "interactive" && entry.options && entry.options.autorun === 'true');
     });
 
     // Condition non-interactive cells to only be run after webR finishes its initialization.
@@ -3150,35 +3158,49 @@ Tests are performed on the log odds ratio scale </code></pre>
           const cellCode = entry.code;
           const qwebrCounter = entry.id;
 
-          // Disable further global status updates
-          const activeContainer = document.getElementById(`qwebr-non-interactive-loading-container-${qwebrCounter}`);
-          activeContainer.classList.remove('qwebr-cell-needs-evaluation');
-          activeContainer.classList.add('qwebr-cell-evaluated');
+          if (['output', 'setup'].includes(evalType)) {
+            // Disable further global status updates
+            const activeContainer = document.getElementById(`qwebr-non-interactive-loading-container-${qwebrCounter}`);
+            activeContainer.classList.remove('qwebr-cell-needs-evaluation');
+            activeContainer.classList.add('qwebr-cell-evaluated');
 
-          // Update status on the code cell
-          const activeStatus = document.getElementById(`qwebr-status-text-${qwebrCounter}`);
-          activeStatus.innerText = " Evaluating hidden code cell...";
-          activeStatus.classList.remove('qwebr-cell-needs-evaluation');
-          activeStatus.classList.add('qwebr-cell-evaluated');
+            // Update status on the code cell
+            const activeStatus = document.getElementById(`qwebr-status-text-${qwebrCounter}`);
+            activeStatus.innerText = " Evaluating hidden code cell...";
+            activeStatus.classList.remove('qwebr-cell-needs-evaluation');
+            activeStatus.classList.add('qwebr-cell-evaluated');
+          }
 
           switch (evalType) {
+            case 'interactive':
+              // TODO: Make this more standardized.
+              // At the moment, we're overriding the interactive status update by pretending its
+              // output-like. 
+              const tempOptions = entry.options;
+              tempOptions["context"] = "output"
+              // Run the code in a non-interactive state that is geared to displaying output
+              await qwebrExecuteCode(`${cellCode}`, qwebrCounter, tempOptions);
+              break;
             case 'output':
               // Run the code in a non-interactive state that is geared to displaying output
               await qwebrExecuteCode(`${cellCode}`, qwebrCounter, entry.options);
               break;
             case 'setup':
               const activeDiv = document.getElementById(`qwebr-noninteractive-setup-area-${qwebrCounter}`);
-              //activeDiv.textContent = "Computing hidden webR Startup ...";
               // Run the code in a non-interactive state with all output thrown away
               await mainWebR.evalRVoid(`${cellCode}`);
-              //activeDiv.textContent = "";
               break;
             default: 
               break; 
           }
-          // Disable visibility
-          activeContainer.style.visibility = 'hidden';
-          activeContainer.style.display = 'none';
+
+          if (['output', 'setup'].includes(evalType)) {
+            // Disable further global status updates
+            const activeContainer = document.getElementById(`qwebr-non-interactive-loading-container-${qwebrCounter}`);
+            // Disable visibility
+            activeContainer.style.visibility = 'hidden';
+            activeContainer.style.display = 'none';
+          }
         }
       }
     ).then(

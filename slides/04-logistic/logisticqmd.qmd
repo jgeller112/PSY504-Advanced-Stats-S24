@@ -3,7 +3,7 @@ title: "Generalized Linear Madness: Logistic Regression"
 subtitle: "Princeton University"
 author: "Jason Geller, PH.D.(he/him)"
 date: 'Updated:`r Sys.Date()`'
-footer: "PSY 503: Foundations of Statistics in Psychology"
+footer: "PSY 504: Advanced Statistics"
 format: 
   revealjs:
     theme: blood
@@ -179,11 +179,11 @@ $$y\sim binomial(N,p)$$
 ```
 -    p = probability of "y = 1"
 
-    -   $\mu=E(X)=np$
+    -   $\mu$ =  E(X)=np$
 
-    -   $Var(X)=np(1-p)$
+    -   $\sigma^2(X)=np(1-p)$
 
-    -   $SD(X)=\sqrt{np(1-p)} \text{, where \(p\) is the probability of the “success"}$
+    -   \$\\sigma(X)\$=$\sqrt{np(1-p)}$
 :::
 
 ::: {.column width="50%"}
@@ -355,8 +355,26 @@ $$p(logit)=\frac{e^{logit}}{1+e^{{logit}}}$$
 ## Anatomy of logistic model
 
 ```{r}
+#| echo: false
+#| 
 knitr::include_graphics("images/anatlog.png")
 ```
+
+## Slope and intercept parameters
+
+::: columns
+::: {.column width="50%"}
+![](images/intercept_log.png){fig-align="center"}
+
+-   Intercept moves curve left or right
+:::
+
+::: {.column width="50%"}
+![](images/slope_log.png){fig-align="center"}
+
+-   Slope determines the steepness of the curve
+:::
+:::
 
 ## All together
 
@@ -396,7 +414,7 @@ plogis(-1)
 :::
 :::
 
-## Best Fitting Squiggle
+## Best fitting squiggle
 
 -   In standard linear regression we use least squares to find the best fitting line
 
@@ -440,18 +458,6 @@ knitr::include_graphics("images/max.png")
 knitr::include_graphics("images/mle-many.png")
 
 ```
-
-## Slope and intercept parameters
-
-::: columns
-::: {.column width="50%"}
-![](images/MLE_1.png){fig-align="center"}
-:::
-
-::: {.column width="50%"}
-![](images/mle-2.png){fig-align="center"}
-:::
-:::
 
 ## Case Study: Loseing Weight
 
