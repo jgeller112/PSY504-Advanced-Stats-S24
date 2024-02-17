@@ -1,5 +1,5 @@
 ---
-title: "Generalized Linear Madness: Logistic Regression"
+title: "Generalized Linear Madness: Binary  Outcome Models/Logistic Regression"
 subtitle: "Princeton University"
 author: "Jason Geller, PH.D.(he/him)"
 date: 'Updated:`r Sys.Date()`'
@@ -38,6 +38,8 @@ execute:
 
 ```{r}
 library(easystats)
+library(MASS)
+library(arm) # residual plot
 library(effectsize) 
 library(tidyverse)
 library(equatiomatic)
@@ -50,7 +52,7 @@ library(modelsummary)
 options(scipen = 999)
 ```
 
--   Access the .qmd document here:
+-   Access the .qmd document here: <https://github.com/jgeller112/PSY504-Advanced-Stats-S24/blob/main/slides/04-logistic/logisticqmd.qmd>
 
 ## Today
 
@@ -87,7 +89,7 @@ $$ Y_i = b_0 + b_1*x + e_i$$
 $$Y \sim~Normal(\mu, \sigma)$$
 
 $$
-\epsilon \sim~ Normal(0, \sigma^2)
+\epsilon \sim~ Normal(0, \sigma)
 $$
 
 ## Dichotomous outcomes
@@ -125,9 +127,7 @@ $$\begin{align*}
   Y_i & \sim \mathrm{Dist}(\mu_i, \tau)  \\
   g(\mu_i) & = \eta_i \\
   \eta_i & = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \ldots
-\end{align*}$$
-
-Where:
+\end{align*}$$Where:
 
 -   $y$ is referenced with $\mu$
 
@@ -139,20 +139,22 @@ $$p(y = 1)  = p $$$$log(\frac{p}{1 - p})$$
 
 ## What distribution do we use to model this process?
 
-## Bernoulli Distribution
-
 -   We assume that there is **some probability** p of responding correctly
 
 -   We don't know this probability, so we want to **use the data to estimate it**
 
-## Bernoulli Distribution
+## Bernoulli distribution
 
 ::: columns
 ::: {.column width="50%"}
 > Distribution of a single, discrete binary outcome $$y\sim Bernoulli(p)$$
 
 -   A Bernoulli distribution generates a 1 ("success") with probability p
+
 -   And a 0 ("failure") with probability 1−p=q
+
+    -   $\mu$ = E(X)=p\$
+    -   $\sigma^2(X)=np(1-p)$
 :::
 
 ::: {.column width="50%"}
@@ -179,15 +181,15 @@ $$y\sim binomial(N,p)$$
 ```
 -    p = probability of "y = 1"
 
-    -   $\mu$ =  E(X)=np$
+    -   \$$\mu$ =  E(X)=np$
 
     -   $\sigma^2(X)=np(1-p)$
 
-    -   \$\\sigma(X)\$=$\sqrt{np(1-p)}$
+    -   $\sigma(X)$=$\sqrt{np(1-p)}$
 :::
 
 ::: {.column width="50%"}
-![](images/bigraph2.png){fig-align="center"}
+![](images/bi.png){fig-align="center"}
 :::
 :::
 
@@ -196,35 +198,34 @@ $$y\sim binomial(N,p)$$
 -   In R we use the `glm` function as opposed to `lm`
 
     ::: panel-tabset
-    ## Logistic - Bernoulli
+    ## Bernoulli
 
     ```{r}
-    #| eval: false 
-    # use GLM istead of LM
-    # family changes
-    bi_model <- glm(
-      rvote ~ income,
-      family = binomial(
-        link = "logit"))
+    library(fivethirtyeight)
+    bechdel=fivethirtyeight::bechdel
+
+    #fit <- glm(
+     # data = bechdel,
+     # family = binomial(link="logit"),
+     # binary  ~ 1 + budget_2013)
+
+    bechdel %>% dplyr::select(title, binary) %>% head() %>% kable()
+
     ```
 
-    ## Logistic - Binomial
+    ## Binomial
 
     ```{r}
-    #| eval: false
-    # use GLM istead of LM
-    # family changes
-    # one row # of 1s and 0s instead of multiple rows 
-    bi_model <- glm(
-      cbind(Y, N) ~ income,
-      family = binomial(
-        link = "logit"))
+
+    # one row with total # 1s and 0s instead of multiple rows 
+
+    df=glm(cbind(Deaths, N-Deaths)~Species, family=binomial, data=MASS::snails)
+
+    MASS::snails %>% dplyr::select(Deaths, N) %>% head() %>% kable()
+
+
     ```
     :::
-
-::: callout-note
-use `glmer` to perform logistic multilevel model
-:::
 
 ## Logit Link
 
@@ -272,7 +273,11 @@ $$\textrm{Odds} = \frac{\# \textrm{successes}}{\# \textrm{failures}}=
 :::
 
 ::: {.column width="50%"}
-![](images/odds_fig.png){fig-align="center"}
+![](images/odds_fig.png){fig-align="center" width="508"}
+
+![]()
+
+![](images/numberline_odds.png){fig-align="center" width="495"}
 :::
 :::
 
@@ -284,9 +289,9 @@ $$\textrm{Odds} = \frac{\# \textrm{successes}}{\# \textrm{failures}}=
 
     -   It converts odds of less than one to negative numbers, because the log of a number between 0 and 1 is always negative
 
-    -   Our data is now linear!
+        -   Our data is now linear!
 
-    -   and symmetric
+        -   and symmetric
 :::
 
 ::: {.column width="50%"}
@@ -346,7 +351,8 @@ knitr::include_graphics("images/lin3.png")
 ## Logistic transform
 
 ```{r}
-
+#| echo: false
+#| 
 knitr::include_graphics("images/lin5.png")
 ```
 
@@ -459,7 +465,7 @@ knitr::include_graphics("images/mle-many.png")
 
 ```
 
-## Case Study: Loseing Weight
+## Case Study: Losing Weight
 
 -   These data are a sample of 500 teens from data collected in 2009 through the U.S. Youth Risk Behavior Surveillance System (YRBSS)
 
@@ -488,7 +494,7 @@ DV: \*`lose.wt.01`, which is coded 1 when someone indicated they were trying to 
 
 -   Our two predictor variables will be:
 
-    -   `sex` and its related dummy variable `female` and `male`
+    -   `sex` and its related dummy variable `female`
     -   `bmipct`, which is the percentile for a given BMI for members of the same sex
 
 ## Exploratory data analysis
@@ -506,7 +512,7 @@ risk2009 %>%
   ggplot(aes(x = lose.wt.01)) +
   geom_bar() +
   facet_wrap(~ sex) + 
-  theme_lucid(base_size=18)
+  theme_lucid(base_size=24)
 
 ```
 :::
@@ -524,7 +530,7 @@ risk2009 %>%
   scale_fill_viridis_d(option = "C", begin = .2) +
   labs(x = NULL, y = "Percent") + 
   scale_y_continuous(labels = scales::percent_format(accuracy = 1)) + # Ensure y-axis labels are in percent format + 
-theme_lucid(base_size=18)
+theme_lucid(base_size=24)
 
 ```
 :::
@@ -620,7 +626,7 @@ tidy(fit1) %>% kable()
 
 -   We can convert it to probability
 
-```{r}
+```{webr-r}
 b0 <- coef(fit1) # get coef
 
 exp(b0) / (1 + exp(b0)) # logistic transform
@@ -632,16 +638,15 @@ exp(b0) / (1 + exp(b0)) # logistic transform
 
 -   Let's check that with the empirical proportions
 
-```{r}
+```{webr-r}
 risk2009 %>% 
   count(lose.wt.01) %>% 
-  mutate(proportion = n / sum(n)) %>%
-  kable()
+  mutate(proportion = n / sum(n))
 ```
 
 -   We can actually do that transformation with the base **R** `plogis()` function.
 
-```{r}
+```{webr-r}
 plogis(b0)
 ```
 
@@ -688,6 +693,13 @@ fit2 %>%
 
 ```
 
+-   $b_0$:
+
+```{webr-r}
+
+
+```
+
 ## Interpreting slope: $b_1$
 
 -   If X is a categorical predictor
@@ -707,11 +719,17 @@ fit2 %>%
 
 ## Coefficient effect size: Odd's Ratio
 
--   The odds of Y for group X are expected to be exp($b_1$) times the odds of Y for the baseline group
+-   We can take the `exp()` of the log odds and get OR
 
-    -   Describe as percentage increase/decrease
+    -   The odds of Y for group X (females) are expected to be exp($b_1$) times the odds of Y for the baseline group
 
-        -   *Remember how to interpret logs for DV*
+        -   Greater than 1: One unit increase, the event is more likely to occur
+
+        -   Less than 1: One unit increase, the event is less likely to occur
+
+        -   Equals 1: One unit increase, the likelihood of the event does not change
+
+    -   We can describe the OR in terms of percentage increase/decrease
 
 ```{r}
 #| eval: false
@@ -725,25 +743,11 @@ tidy(fit2,exponentiate = TRUE) %>%  # get odds ratio %>%
   kable()
 ```
 
--   Greater than 1: One unit increase, the event is more likely to occur
-
--   Less than 1: One unit increase, the event is less likely to occur
-
--   Equals 1: One unit increase, the likelihood of the event does not change
-
-## Interpreting slope: b1
-
-```{webr-r}
-fit2 %>%
-  tidy(exponentiate = TRUE) %>% # get OR
-  kable()
-```
-
 . . .
 
 -   The odds of wanting to lose weight in females is 2.98 times the odds of wanting to lose weight in men
 
-    -   The odds of females wanting to lose weight is 198% higher than the odds of males wanting to lose weight
+    -   The odds of females wanting to lose weight are 198% higher than the odds of males wanting to lose weight
 
 ## Predicted probabilities
 
@@ -847,7 +851,11 @@ fit3 %>%
 
 ```
 
-> What is the OR for this coef? How do we interpret this?
+```{webr-r}
+
+```
+
+> What is the OR for these coefs? How do we interpret this?
 
 ```{webr-r}
 
@@ -863,7 +871,7 @@ fit3 %>%
 
 ```{r}
 #effect is computed for each observed value in the original dataset before being averaged
-avg_slopes(fit3)%>%kable(bootstrap="condensed")
+avg_slopes(fit3)%>%kable()
 ```
 
 ## Logistic Multiple Predictors
@@ -962,15 +970,16 @@ test_likelihoodratio(fit4, fit5) %>% kable()
 
 $$R^2 = \frac{SSM}{SST} = \frac{SST-SSE}{SST}=1-\frac{SSE}{SST}$$ $$R_{MF}^2 = 1-\frac{D_{\rm residual}}{D_{\rm null}}$$
 
--   Tjur's R2 (`easystats`)
+```{r}
+#easystats function
+r2_mcfadden(fit4)
 
-```{r, eval=FALSE}
-
-r2_tjur(model)
+#r2_tjur
+#lots others
 
 ```
 
--   Both a ratio indicating how "good" the model fit Model Fit
+-   Not "explained variance" but ratio indicating how "good" the model fit Model Fit
 
 ## Model fit
 
@@ -985,17 +994,16 @@ r2_tjur(model)
 -   Binned residuals
 
     -   Calculate raw residuals
-    -   Order observations (probabilities of predictor value)
-        -   Create g bins of approximate equal size
+    -   Order observations (probabilities of predictor value or DV)
+        -   Create g bins of approximate equal size $\sqrt(n)$
     -   Calculate average residuals
     -   Plot average residuals vs. average predicted probability (or predictor value)
 :::
 
 ::: {.column width="50%"}
 ```{r}
-
-plot(performance::binned_residuals(fit4))
-
+#performance::binned_residuals()
+binnedplot(fitted(fit4), residuals(fit4, type="response"))
 ```
 :::
 :::
@@ -1004,7 +1012,7 @@ plot(performance::binned_residuals(fit4))
 
 -   Look for patterns
 
--   Nonlinear trend may be indication that squared term or log transformation is required
+    -   Nonlinear trend may be indication that squared term or log transformation is required
 
 -   If bins have average residuals with large magnitude
 
@@ -1014,14 +1022,14 @@ plot(performance::binned_residuals(fit4))
 
 ## Visualizing
 
--   Let's plot the results from `fit4`.
-
 ::: panel-tabset
 ## ggplot
 
 ```{r}
 #| echo: false
 #| fig-align: "center"
+#| fig-height: 4
+#| fig-width: 8
 
 nd <- risk2009 %>% 
   distinct(female, sex) %>% 
@@ -1054,18 +1062,17 @@ predict(
                      limits = 0:1, expand = c(0, 0)) +
   xlab("BMI percentile (by sex)")
 
-
-
 ```
 
 ## ggeffects
 
 ```{r}
 #| fig-align: "center"
+#| fig-height: 4
+#| fig-width: 8
 #| 
 library(ggeffects)
-
-ggemmeans(fit4, terms=c("female")) %>%
+ggemmeans(fit4, terms=c("bmipct", "female")) %>%
   plot(ci = TRUE, add.data = TRUE)
 
 ```
@@ -1091,21 +1098,25 @@ ggemmeans(fit4, terms=c("female")) %>%
 
 -   Can plot with `easystats` :)
 
+    ::: callout-note
+    -   Should check binned residuals of the predictor variables as well
+    :::
+
 ```{r}
 #| fig-align: "center"
 #| 
-check_model(fit4)
+check_model(fit4, check=c("binned_residuals", "outliers", "vif"))
 ```
 
 ## Table
 
 ```{r}
-fit3 %>%
+fit4 %>%
   modelsummary() 
 ```
 
 ## Reporting
 
 ::: callout-tip
-We fitted a logistic model (estimated using ML) sex and bmipct predicting desire to lose weight (formula: lose.wt.01 \~ 1 + female+ bmipct). The model's explanatory power is substantial \*(Tjur's $R^2$ =0.30)\*. Female reported wanting to lose more weight (54%) than males (33%), *beta = 1.86, 95% CI \[1.37, 2.38\], p \< .001; OR = 6.42, 95% CI \[3.93, 10.9\]*. An increase in bmipct was also associated with increased probability of wanting to lose weight, beta = 0.05, 95% CI \[0.04, 0.06\], p \< .001, OR = 1.05, 95% CI \[1.04, 1.06\]. For every 1 point increase in BMI there was a 1% increase in desire to lose weight.
+We fitted a logistic model (estimated using ML) with sex and bmipct predicting desire to lose weight (formula: lose.wt.01 \~ 1 + female+ bmipct). The model's explanatory power is substantial (Tjur's $R^2$ =0.30). Females reported wanting to lose more weight (54%) than males (33%), *b= 1.86, 95% CI \[1.37, 2.38\], p \< .001; OR = 6.42, 95% CI \[3.93, 10.9\]*. BMI was also associated with increased probability of wanting to lose weight, b = 0.05, 95% CI \[0.04, 0.06\], p \< .001, OR = 1.05, 95% CI \[1.04, 1.06\]. For every 1 point increase in BMI, there was a 1% (average marginal effect) increase in desire to lose weight.
 :::

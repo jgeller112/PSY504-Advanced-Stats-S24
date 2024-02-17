@@ -11,8 +11,8 @@
   <meta name="generator" content="quarto-1.4.504">
 
   <meta name="author" content="Jason Geller, PH.D.(he/him)">
-  <meta name="dcterms.date" content="2024-02-15">
-  <title>Generalized Linear Madness: Logistic Regression</title>
+  <meta name="dcterms.date" content="2024-02-16">
+  <title>Generalized Linear Madness: Binary Outcome Models/Logistic Regression</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -557,7 +557,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"id":1,"code":"\nrisk2009.data <- read.csv(\"https://raw.githubusercontent.com/jgeller112/PSY504-Advanced-Stats-S24/main/slides/04-logistic/data/risk2009.csv\")","options":{"label":"unnamed-chunk-1","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":2,"code":"# fit model\nfit1 <- glm(\n  data = risk2009,\n  family = binomial(link=\"logit\"),\n  lose.wt.01 ~ 1\n  ) \nfit1 %>% \n  tidy() %>%\n  kable()","options":{"label":"unnamed-chunk-2","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":3,"code":"# fit\nfit2 <- glm(\n  lose.wt.01 ~ 1 + female, \n  data = risk2009,\n  family = binomial,\n)","options":{"label":"unnamed-chunk-3","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":4,"code":"# fit\nfit2 %>%\n  tidy()","options":{"label":"unnamed-chunk-4","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":5,"code":"# summarize\nfit2 %>%\n  tidy() %>%\n  kable()","options":{"label":"unnamed-chunk-5","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":6,"code":"tidy(fit2,exponentiate = TRUE) %>%  # get odds ratio %>%\n  kable()","options":{"label":"unnamed-chunk-6","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":7,"code":"fit2 %>%\n  tidy(exponentiate = TRUE) %>% # get OR\n  kable()","options":{"label":"unnamed-chunk-7","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":8,"code":"b0 <- coef(fit2)[1] %>% as.double()\nb1 <- coef(fit2)[2] %>% as.double()","options":{"label":"unnamed-chunk-8","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":9,"code":"# young men\nplogis(b0 + b1 * 0)\n# young women\nplogis(b0 + b1 * 1)","options":{"label":"unnamed-chunk-9","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":10,"code":"# fit\nfit3 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + bmipct\n  ) ","options":{"label":"unnamed-chunk-10","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":11,"code":"","options":{"label":"unnamed-chunk-11","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}},{"id":12,"code":"fit4 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + female + bmipct\n  )\n\nfit5 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + female + bmipct + female:bmipct\n  )","options":{"label":"unnamed-chunk-12","fig-height":5,"out-height":"","autorun":"false","output":"true","warning":"true","dpi":72,"comment":"","context":"interactive","out-width":"700px","message":"true","classes":"","fig-width":7,"fig-cap":"","results":"markup"}}];
+  globalThis.qwebrCellDetails = [{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-1","out-width":"700px","fig-cap":""},"id":1,"code":"\nrisk2009.data <- read.csv(\"https://raw.githubusercontent.com/jgeller112/PSY504-Advanced-Stats-S24/main/slides/04-logistic/data/risk2009.csv\")"},{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-2","out-width":"700px","fig-cap":""},"id":2,"code":"# fit model\nfit1 <- glm(\n  data = risk2009,\n  family = binomial(link=\"logit\"),\n  lose.wt.01 ~ 1\n  ) \nfit1 %>% \n  tidy() %>%\n  kable()"},{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-3","out-width":"700px","fig-cap":""},"id":3,"code":"b0 <- coef(fit1) # get coef\n\nexp(b0) / (1 + exp(b0)) # logistic transform"},{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-4","out-width":"700px","fig-cap":""},"id":4,"code":"risk2009 %>% \n  count(lose.wt.01) %>% \n  mutate(proportion = n / sum(n))"},{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-5","out-width":"700px","fig-cap":""},"id":5,"code":"plogis(b0)"},{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-6","out-width":"700px","fig-cap":""},"id":6,"code":"# fit\nfit2 <- glm(\n  lose.wt.01 ~ 1 + female, \n  data = risk2009,\n  family = binomial,\n)"},{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-7","out-width":"700px","fig-cap":""},"id":7,"code":"# fit\nfit2 %>%\n  tidy()"},{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-8","out-width":"700px","fig-cap":""},"id":8,"code":"# summarize\nfit2 %>%\n  tidy() %>%\n  kable()"},{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-9","out-width":"700px","fig-cap":""},"id":9,"code":"tidy(fit2,exponentiate = TRUE) %>%  # get odds ratio %>%\n  kable()"},{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-10","out-width":"700px","fig-cap":""},"id":10,"code":"fit2 %>%\n  tidy(exponentiate = TRUE) %>% # get OR\n  kable()"},{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-11","out-width":"700px","fig-cap":""},"id":11,"code":"b0 <- coef(fit2)[1] %>% as.double()\nb1 <- coef(fit2)[2] %>% as.double()"},{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-12","out-width":"700px","fig-cap":""},"id":12,"code":"# young men\nplogis(b0 + b1 * 0)\n# young women\nplogis(b0 + b1 * 1)"},{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-13","out-width":"700px","fig-cap":""},"id":13,"code":"# fit\nfit3 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + bmipct\n  ) "},{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-14","out-width":"700px","fig-cap":""},"id":14,"code":""},{"options":{"context":"interactive","out-height":"","results":"markup","output":"true","autorun":"false","fig-height":5,"warning":"true","dpi":72,"fig-width":7,"classes":"","message":"true","comment":"","label":"unnamed-chunk-15","out-width":"700px","fig-cap":""},"id":15,"code":"fit4 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + female + bmipct\n  )\n\nfit5 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + female + bmipct + female:bmipct\n  )"}];
 
   </script>
   <script type="module">
@@ -1452,7 +1452,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Generalized Linear Madness: Logistic Regression</h1>
+  <h1 class="title">Generalized Linear Madness: Binary Outcome Models/Logistic Regression</h1>
   <p class="subtitle">Princeton University</p>
 
 <div class="quarto-title-authors">
@@ -1463,25 +1463,27 @@ Jason Geller, PH.D.(he/him)
 </div>
 </div>
 
-  <p class="date">2024-02-15</p>
+  <p class="date">2024-02-16</p>
 </section>
 <section id="packages" class="slide level2">
 <h2>Packages</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(easystats)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(effectsize) </span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(equatiomatic)</span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(broom)</span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">library</span>(emmeans)</span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">library</span>(marginaleffects)</span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="fu">library</span>(modelsummary)</span>
-<span id="cb1-10"><a href="#cb1-10"></a></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(arm) <span class="co"># residual plot</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(effectsize) </span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(equatiomatic)</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="fu">library</span>(emmeans)</span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="fu">library</span>(marginaleffects)</span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb1-12"><a href="#cb1-12"></a></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
-<li>Access the .qmd document here:</li>
+<li>Access the .qmd document here: <a href="https://github.com/jgeller112/PSY504-Advanced-Stats-S24/blob/main/slides/04-logistic/logisticqmd.qmd" class="uri">https://github.com/jgeller112/PSY504-Advanced-Stats-S24/blob/main/slides/04-logistic/logisticqmd.qmd</a></li>
 </ul>
 </section>
 <section id="today" class="slide level2">
@@ -1521,7 +1523,7 @@ Jason Geller, PH.D.(he/him)
 <p><span class="math display">\[ Y_i = b_0 + b_1*x + e_i\]</span></p>
 <p><span class="math display">\[Y \sim~Normal(\mu, \sigma)\]</span></p>
 <p><span class="math display">\[
-\epsilon \sim~ Normal(0, \sigma^2)
+\epsilon \sim~ Normal(0, \sigma)
 \]</span></p>
 </section>
 <section id="dichotomous-outcomes" class="slide level2">
@@ -1563,8 +1565,7 @@ Jason Geller, PH.D.(he/him)
   Y_i &amp; \sim \mathrm{Dist}(\mu_i, \tau)  \\
   g(\mu_i) &amp; = \eta_i \\
   \eta_i &amp; = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \ldots
-\end{align*}\]</span></p>
-<p>Where:</p>
+\end{align*}\]</span>Where:</p>
 <ul>
 <li><p><span class="math inline">\(y\)</span> is referenced with <span class="math inline">\(\mu\)</span></p></li>
 <li><p><span class="math inline">\(g\)</span> is link function</p></li>
@@ -1574,24 +1575,25 @@ Jason Geller, PH.D.(he/him)
 </section>
 <section id="what-distribution-do-we-use-to-model-this-process" class="slide level2">
 <h2>What distribution do we use to model this process?</h2>
-</section>
-<section id="bernoulli-distribution" class="slide level2">
-<h2>Bernoulli Distribution</h2>
 <ul>
 <li><p>We assume that there is <strong>some probability</strong> p of responding correctly</p></li>
 <li><p>We don’t know this probability, so we want to <strong>use the data to estimate it</strong></p></li>
 </ul>
 </section>
-<section id="bernoulli-distribution-1" class="slide level2">
-<h2>Bernoulli Distribution</h2>
+<section id="bernoulli-distribution" class="slide level2">
+<h2>Bernoulli distribution</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <blockquote>
 <p>Distribution of a single, discrete binary outcome <span class="math display">\[y\sim Bernoulli(p)\]</span></p>
 </blockquote>
 <ul>
-<li>A Bernoulli distribution generates a 1 (“success”) with probability p</li>
-<li>And a 0 (“failure”) with probability 1−p=q</li>
+<li><p>A Bernoulli distribution generates a 1 (“success”) with probability p</p></li>
+<li><p>And a 0 (“failure”) with probability 1−p=q</p>
+<ul>
+<li><span class="math inline">\(\mu\)</span> = E(X)=p$</li>
+<li><span class="math inline">\(\sigma^2(X)=np(1-p)\)</span></li>
+</ul></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <p><br></p>
@@ -1619,15 +1621,15 @@ Jason Geller, PH.D.(he/him)
 <ul>
 <li>p = probability of “y = 1”</li>
 </ul>
-<pre><code>-   $\mu=E(X)=np$
+<pre><code>-   \$$\mu$ =  E(X)=np$
 
--   $Var(X)=np(1-p)$
+-   $\sigma^2(X)=np(1-p)$
 
--   $SD(X)=\sqrt{np(1-p)} \text{, where \(p\) is the probability of the “success"}$</code></pre>
+-   $\sigma(X)$=$\sqrt{np(1-p)}$</code></pre>
 </div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/bigraph2.png" class="quarto-figure quarto-figure-center"></p>
+<p><img data-src="images/bi.png" class="quarto-figure quarto-figure-center"></p>
 </figure>
 </div>
 </div>
@@ -1638,45 +1640,109 @@ Jason Geller, PH.D.(he/him)
 <ul>
 <li><p>In R we use the <code>glm</code> function as opposed to <code>lm</code></p>
 <div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Logistic - Bernoulli</a></li><li><a href="#tabset-1-2">Logistic - Binomial</a></li></ul>
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Bernoulli</a></li><li><a href="#tabset-1-2">Binomial</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># use GLM istead of LM</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="co"># family changes</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>bi_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb3-4"><a href="#cb3-4"></a>  rvote <span class="sc">~</span> income,</span>
-<span id="cb3-5"><a href="#cb3-5"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(</span>
-<span id="cb3-6"><a href="#cb3-6"></a>    <span class="at">link =</span> <span class="st">"logit"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(fivethirtyeight)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>bechdel<span class="ot">=</span>fivethirtyeight<span class="sc">::</span>bechdel</span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#fit &lt;- glm(</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a> <span class="co"># data = bechdel,</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a> <span class="co"># family = binomial(link="logit"),</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a> <span class="co"># binary  ~ 1 + budget_2013)</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a>bechdel <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(title, binary) <span class="sc">%&gt;%</span> <span class="fu">head</span>() <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">title</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">binary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">21 &amp; Over</td>
+<td style="text-align: left;">FAIL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dredd 3D</td>
+<td style="text-align: left;">PASS</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">12 Years a Slave</td>
+<td style="text-align: left;">FAIL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2 Guns</td>
+<td style="text-align: left;">FAIL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">FAIL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">47 Ronin</td>
+<td style="text-align: left;">FAIL</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
 </div>
 </div>
 <div id="tabset-1-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># use GLM istead of LM</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># family changes</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co"># one row # of 1s and 0s instead of multiple rows </span></span>
-<span id="cb4-4"><a href="#cb4-4"></a>bi_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">cbind</span>(Y, N) <span class="sc">~</span> income,</span>
-<span id="cb4-6"><a href="#cb4-6"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(</span>
-<span id="cb4-7"><a href="#cb4-7"></a>    <span class="at">link =</span> <span class="st">"logit"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># one row with total # 1s and 0s instead of multiple rows </span></span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a>df<span class="ot">=</span><span class="fu">glm</span>(<span class="fu">cbind</span>(Deaths, N<span class="sc">-</span>Deaths)<span class="sc">~</span>Species, <span class="at">family=</span>binomial, <span class="at">data=</span>MASS<span class="sc">::</span>snails)</span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a>MASS<span class="sc">::</span>snails <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(Deaths, N) <span class="sc">%&gt;%</span> <span class="fu">head</span>() <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Deaths</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">N</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
 </div>
 </div>
 </div>
 </div></li>
 </ul>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Note</strong></p>
-</div>
-<div class="callout-content">
-<p>use <code>glmer</code> to perform logistic multilevel model</p>
-</div>
-</div>
-</div>
 </section>
 <section id="logit-link" class="slide level2">
 <h2>Logit Link</h2>
@@ -1791,11 +1857,32 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 </section>
 <section id="anatomy-of-logistic-model" class="slide level2">
 <h2>Anatomy of logistic model</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"images/anatlog.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
-</div>
 <img data-src="images/anatlog.png" width="480" class="r-stretch"></section>
+<section id="slope-and-intercept-parameters" class="slide level2">
+<h2>Slope and intercept parameters</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/intercept_log.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+<ul>
+<li>Intercept moves curve left or right</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/slope_log.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+<ul>
+<li>Slope determines the steepness of the curve</li>
+</ul>
+</div>
+</div>
+</section>
 <section id="all-together" class="slide level2">
 <h2>All together</h2>
 
@@ -1810,7 +1897,7 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 <li><strong>From probabilities to log-odds</strong></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">qlogis</span>(.<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">qlogis</span>(.<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.8472979</code></pre>
 </div>
@@ -1819,7 +1906,7 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 <li><strong>From log-odds to probabilities</strong></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">plogis</span>(<span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">plogis</span>(<span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2689414</code></pre>
 </div>
@@ -1884,32 +1971,8 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 </ul>
 
 <img data-src="images/mle-many.png" class="quarto-figure quarto-figure-center r-stretch" style="width:70.0%"></section>
-<section id="slope-and-intercept-parameters" class="slide level2">
-<h2>Slope and intercept parameters</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="images/intercept_log.png" class="quarto-figure quarto-figure-center"></p>
-</figure>
-</div>
-<ul>
-<li>Intercept moves curve left or right</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="images/slope_log.png" class="quarto-figure quarto-figure-center"></p>
-</figure>
-</div>
-<ul>
-<li>Slope determines the steepness of the curve</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="case-study-loseing-weight" class="slide level2">
-<h2>Case Study: Loseing Weight</h2>
+<section id="case-study-losing-weight" class="slide level2">
+<h2>Case Study: Losing Weight</h2>
 <ul>
 <li><p>These data are a sample of 500 teens from data collected in 2009 through the U.S. Youth Risk Behavior Surveillance System (YRBSS)</p></li>
 <li><p>Are the odds that young females report trying to lose weight greater than the odds that males do? Is increasing BMI associated with an interest in losing weight, regardless of sex?</p></li>
@@ -1929,7 +1992,7 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 <ul>
 <li><p>Our two predictor variables will be:</p>
 <ul>
-<li><code>sex</code> and its related dummy variable <code>female</code> and <code>male</code></li>
+<li><code>sex</code> and its related dummy variable <code>female</code></li>
 <li><code>bmipct</code>, which is the percentile for a given BMI for members of the same sex</li>
 </ul></li>
 </ul>
@@ -2067,15 +2130,8 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 </ul></li>
 <li><p>We can convert it to probability</p></li>
 </ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>b0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit1) <span class="co"># get coef</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a></span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">exp</span>(b0) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(b0)) <span class="co"># logistic transform</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>(Intercept) 
-   0.447191 </code></pre>
-</div>
-</div>
+<div id="qwebr-insertion-location-3"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <ul>
 <li>Thus, the overall probability of students wanting to lose weight was about .45 or 45%</li>
 </ul>
@@ -2085,47 +2141,13 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 <ul>
 <li>Let’s check that with the empirical proportions</li>
 </ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>risk2009 <span class="sc">%&gt;%</span> </span>
-<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">count</span>(lose.wt<span class="fl">.01</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">mutate</span>(<span class="at">proportion =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: right;" data-quarto-table-cell-role="th">lose.wt.01</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">proportion</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">246</td>
-<td style="text-align: right;">0.552809</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">199</td>
-<td style="text-align: right;">0.447191</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-</div>
+<div id="qwebr-insertion-location-4"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <ul>
 <li>We can actually do that transformation with the base <strong>R</strong> <code>plogis()</code> function.</li>
 </ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">plogis</span>(b0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>(Intercept) 
-   0.447191 </code></pre>
-</div>
-</div>
+<div id="qwebr-insertion-location-5"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 <section id="logistic-regression" class="slide level2">
 <h2>Logistic Regression</h2>
@@ -2141,12 +2163,12 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 <ul>
 <li>Where <code>female</code> is an 0/1 dummy variable.</li>
 </ul>
-<div id="qwebr-insertion-location-3"></div>
+<div id="qwebr-insertion-location-6"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 <section id="interpreting-intercept-b_0" class="slide level2">
 <h2>Interpreting intercept: $b_0$</h2>
-<div id="qwebr-insertion-location-4"></div>
+<div id="qwebr-insertion-location-7"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 <section id="interpreting-slope-b_1" class="slide level2">
@@ -2157,7 +2179,7 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 <li>Then <span class="math inline">\(b_1\)</span> is the difference in the log-odds between group X and the baseline</li>
 </ul></li>
 </ul>
-<div id="qwebr-insertion-location-5"></div>
+<div id="qwebr-insertion-location-8"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <div class="fragment">
 <ul>
@@ -2168,7 +2190,11 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 <section id="coefficient-effect-size-odds-ratio" class="slide level2">
 <h2>Coefficient effect size: Odd’s Ratio</h2>
 <ul>
-<li><p>The odds of Y for group X are expected to be exp(<span class="math inline">\(b_1\)</span>) times the odds of Y for the baseline group</p>
+<li>We can take the exp of the log odds and get OR</li>
+</ul>
+<!-- -->
+<ul>
+<li><p>The odds of Y for group X (females) are expected to be exp(<span class="math inline">\(b_1\)</span>) times the odds of Y for the baseline group</p>
 <ul>
 <li><p>Describe as percentage increase/decrease</p>
 <ul>
@@ -2177,12 +2203,12 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>(OR<span class="dv">-1</span>) <span class="sc">*</span> <span class="dv">100</span>  <span class="co"># get probability of increase/decrease</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>(OR<span class="dv">-1</span>) <span class="sc">*</span> <span class="dv">100</span>  <span class="co"># get probability of increase/decrease</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="coefficient-effect-size-odds-ratio-1" class="slide level2">
 <h2>Coefficient Effect Size: Odd’s Ratio</h2>
-<div id="qwebr-insertion-location-6"></div>
+<div id="qwebr-insertion-location-9"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <ul>
 <li><p>Greater than 1: One unit increase, the event is more likely to occur</p></li>
@@ -2192,7 +2218,7 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 </section>
 <section id="interpreting-slope-b1" class="slide level2">
 <h2>Interpreting slope: b1</h2>
-<div id="qwebr-insertion-location-7"></div>
+<div id="qwebr-insertion-location-10"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <div class="fragment">
 <ul>
@@ -2208,9 +2234,9 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 <ul>
 <li>Now we can compute the probabilities for young men and women as follows</li>
 </ul>
-<div id="qwebr-insertion-location-8"></div>
+<div id="qwebr-insertion-location-11"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-<div id="qwebr-insertion-location-9"></div>
+<div id="qwebr-insertion-location-12"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 <section id="emmeans" class="slide level2">
@@ -2221,8 +2247,8 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 <li>Can also get odds ratios for comparisons!</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>emm <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(fit2, <span class="st">"female"</span>, <span class="at">type =</span> <span class="st">"response"</span>)</span>
-<span id="cb17-2"><a href="#cb17-2"></a>emm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>emm <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(fit2, <span class="st">"female"</span>, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>emm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> female  prob     SE  df asymp.LCL asymp.UCL
       0 0.320 0.0307 Inf     0.263     0.383
@@ -2231,8 +2257,8 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 Confidence level used: 0.95 
 Intervals are back-transformed from the logit scale </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># get odd ratio for comparison</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a><span class="fu">pairs</span>(emm, <span class="at">reverse=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># get odd ratio for comparison</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">pairs</span>(emm, <span class="at">reverse=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> contrast          odds.ratio    SE  df null z.ratio p.value
  female1 / female0       2.98 0.589 Inf    1   5.520  &lt;.0001
@@ -2265,11 +2291,11 @@ Tests are performed on the log odds ratio scale </code></pre>
 <li><strong>For categorical variables it is just probability difference between the group</strong></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co">#can do this with emmeans but requires more steps</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a><span class="fu">library</span>(marginaleffects) <span class="co"># get predicted probs</span></span>
-<span id="cb21-3"><a href="#cb21-3"></a><span class="co"># get marginal effects</span></span>
-<span id="cb21-4"><a href="#cb21-4"></a><span class="fu">avg_comparisons</span>(fit2, <span class="at">comparison =</span> <span class="st">"difference"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb21-5"><a href="#cb21-5"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">#can do this with emmeans but requires more steps</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">library</span>(marginaleffects) <span class="co"># get predicted probs</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="co"># get marginal effects</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="fu">avg_comparisons</span>(fit2, <span class="at">comparison =</span> <span class="st">"difference"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-5"><a href="#cb15-5"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table data-quarto-postprocess="true">
 <thead>
@@ -2315,7 +2341,7 @@ Tests are performed on the log odds ratio scale </code></pre>
 \text{logit}(p_i) &amp; = \beta_0 + \beta_1 \text{bmipct}_i,
 \end{align*}
 \]</span></p>
-<div id="qwebr-insertion-location-10"></div>
+<div id="qwebr-insertion-location-13"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 <section id="model-3" class="slide level2">
@@ -2353,10 +2379,14 @@ Tests are performed on the log odds ratio scale </code></pre>
 
 </div>
 </div>
+<ul>
+<li><p><span class="math inline">\(b_0\)</span>:</p></li>
+<li><p><span class="math inline">\(b_1\)</span>:</p></li>
+</ul>
 <blockquote>
 <p>What is the OR for this coef? How do we interpret this?</p>
 </blockquote>
-<div id="qwebr-insertion-location-11"></div>
+<div id="qwebr-insertion-location-14"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 <section id="marginal-effects-1" class="slide level2">
@@ -2371,8 +2401,8 @@ Tests are performed on the log odds ratio scale </code></pre>
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co">#effect is computed for each observed value in the original dataset before being averaged</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a><span class="fu">avg_slopes</span>(fit3)<span class="sc">%&gt;%</span><span class="fu">kable</span>(<span class="at">bootstrap=</span><span class="st">"condensed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">#effect is computed for each observed value in the original dataset before being averaged</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">avg_slopes</span>(fit3)<span class="sc">%&gt;%</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table data-quarto-postprocess="true">
 <thead>
@@ -2428,13 +2458,13 @@ Tests are performed on the log odds ratio scale </code></pre>
 </section>
 <section id="fitting-both-models" class="slide level2">
 <h2>Fitting both models</h2>
-<div id="qwebr-insertion-location-12"></div>
+<div id="qwebr-insertion-location-15"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 <section id="model-comparisons" class="slide level2">
 <h2>Model Comparisons</h2>
 
-<img data-src="logisticqmd_files/figure-revealjs/unnamed-chunk-34-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:70.0%"><ul>
+<img data-src="logisticqmd_files/figure-revealjs/unnamed-chunk-31-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:70.0%"><ul>
 <li>The interaction term <code>female:bmipct</code> (i.e., <span class="math inline">\(\beta_3\)</span>) would not be statistically significant</li>
 </ul>
 </section>
@@ -2444,7 +2474,7 @@ Tests are performed on the log odds ratio scale </code></pre>
 <li>Let’s compare the models by performing likelihood ratio test</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">test_likelihoodratio</span>(fit4, fit5) <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">test_likelihoodratio</span>(fit4, fit5) <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table data-quarto-postprocess="true">
 <thead>
@@ -2499,10 +2529,17 @@ Tests are performed on the log odds ratio scale </code></pre>
 <li>Tjur’s R2 (<code>easystats</code>)</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">r2_tjur</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">r2_mcfadden</span>(fit4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># R2 for Generalized Linear Regression
+       R2: 0.243
+  adj. R2: 0.240</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co">#r2_tjur</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="co">#lots others</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
-<li>Both a ratio indicating how “good” the model fit Model Fit</li>
+<li>Not “explained variance” but ratio indicating how “good” the model fit Model Fit</li>
 </ul>
 </section>
 <section id="model-fit-1" class="slide level2">
@@ -2520,9 +2557,9 @@ Tests are performed on the log odds ratio scale </code></pre>
 <li><p>Binned residuals</p>
 <ul>
 <li>Calculate raw residuals</li>
-<li>Order observations (probabilities of predictor value)
+<li>Order observations (probabilities of predictor value or DV)
 <ul>
-<li>Create g bins of approximate equal size</li>
+<li>Create g bins of approximate equal size <span class="math inline">\(\sqrt(n)\)</span></li>
 </ul></li>
 <li>Calculate average residuals</li>
 <li>Plot average residuals vs.&nbsp;average predicted probability (or predictor value)</li>
@@ -2530,11 +2567,12 @@ Tests are performed on the log odds ratio scale </code></pre>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">plot</span>(performance<span class="sc">::</span><span class="fu">binned_residuals</span>(fit4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co">#performance::binned_residuals()</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="fu">binnedplot</span>(<span class="fu">fitted</span>(fit4), <span class="fu">residuals</span>(fit4, <span class="at">type=</span><span class="st">"response"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="logisticqmd_files/figure-revealjs/unnamed-chunk-37-1.png" width="1152"></p>
+<p><img data-src="logisticqmd_files/figure-revealjs/unnamed-chunk-34-1.png" width="1152"></p>
 </figure>
 </div>
 </div>
@@ -2545,8 +2583,10 @@ Tests are performed on the log odds ratio scale </code></pre>
 <section id="binned-residuals-1" class="slide level2">
 <h2>Binned residuals</h2>
 <ul>
-<li><p>Look for patterns</p></li>
-<li><p>Nonlinear trend may be indication that squared term or log transformation is required</p></li>
+<li><p>Look for patterns</p>
+<ul>
+<li>Nonlinear trend may be indication that squared term or log transformation is required</li>
+</ul></li>
 <li><p>If bins have average residuals with large magnitude</p>
 <ul>
 <li><p>Look at averages of other predictors across bins</p></li>
@@ -2556,9 +2596,6 @@ Tests are performed on the log odds ratio scale </code></pre>
 </section>
 <section id="visualizing" class="slide level2">
 <h2>Visualizing</h2>
-<ul>
-<li>Let’s plot the results from <code>fit4</code>.</li>
-</ul>
 <div class="panel-tabset">
 <ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">ggplot</a></li><li><a href="#tabset-2-2">ggeffects</a></li></ul>
 <div class="tab-content">
@@ -2567,7 +2604,7 @@ Tests are performed on the log odds ratio scale </code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="logisticqmd_files/figure-revealjs/unnamed-chunk-38-1.png" class="quarto-figure quarto-figure-center" width="1152"></p>
+<p><img data-src="logisticqmd_files/figure-revealjs/unnamed-chunk-35-1.png" class="quarto-figure quarto-figure-center" width="1152"></p>
 </figure>
 </div>
 </div>
@@ -2575,14 +2612,14 @@ Tests are performed on the log odds ratio scale </code></pre>
 </div>
 <div id="tabset-2-2">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">library</span>(ggeffects)</span>
-<span id="cb26-2"><a href="#cb26-2"></a></span>
-<span id="cb26-3"><a href="#cb26-3"></a><span class="fu">ggemmeans</span>(fit4, <span class="at">terms=</span><span class="fu">c</span>(<span class="st">"female"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb26-4"><a href="#cb26-4"></a>  <span class="fu">plot</span>(<span class="at">ci =</span> <span class="cn">TRUE</span>, <span class="at">add.data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">library</span>(ggeffects)</span>
+<span id="cb22-2"><a href="#cb22-2"></a></span>
+<span id="cb22-3"><a href="#cb22-3"></a><span class="fu">ggemmeans</span>(fit4, <span class="at">terms=</span><span class="fu">c</span>(<span class="st">"bmipct"</span>, <span class="st">"female"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a>  <span class="fu">plot</span>(<span class="at">ci =</span> <span class="cn">TRUE</span>, <span class="at">add.data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="logisticqmd_files/figure-revealjs/unnamed-chunk-39-1.png" class="quarto-figure quarto-figure-center" width="1152"></p>
+<p><img data-src="logisticqmd_files/figure-revealjs/unnamed-chunk-36-1.png" class="quarto-figure quarto-figure-center" width="1152"></p>
 </figure>
 </div>
 </div>
@@ -2612,18 +2649,33 @@ Tests are performed on the log odds ratio scale </code></pre>
 <section id="logistic-regression-assumptions-1" class="slide level2">
 <h2>Logistic regression assumptions</h2>
 <ul>
-<li>Can plot with <code>easystats</code> :)</li>
+<li><p>Can plot with <code>easystats</code> :)</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Should check binned residuals of the predictor variables as well</li>
+</ul>
+</div>
+</div>
+</div></li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">check_model</span>(fit4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">check_model</span>(fit4, <span class="at">check=</span><span class="fu">c</span>(<span class="st">"binned_residuals"</span>, <span class="st">"outliers"</span>, <span class="st">"vif"</span>,<span class="st">" linearity"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="logisticqmd_files/figure-revealjs/unnamed-chunk-40-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
+<img data-src="logisticqmd_files/figure-revealjs/unnamed-chunk-37-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
 <section id="table" class="slide level2">
 <h2>Table</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>fit3 <span class="sc">%&gt;%</span></span>
-<span id="cb28-2"><a href="#cb28-2"></a>  <span class="fu">modelsummary</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>fit4 <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>  <span class="fu">modelsummary</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table" data-quarto-postprocess="true" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
@@ -2635,19 +2687,27 @@ Tests are performed on the log odds ratio scale </code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: center;">−2.569</td>
+<td style="text-align: center;">−4.259</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
-<td style="text-align: center;">(0.314)</td>
+<td style="text-align: center;">(0.449)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">female</td>
+<td style="text-align: center;">1.861</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: center;">(0.259)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">bmipct</td>
-<td style="text-align: center;">0.036</td>
+<td style="text-align: center;">0.047</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; box-shadow: 0px 1px;"></td>
-<td style="text-align: center; box-shadow: 0px 1px;">(0.004)</td>
+<td style="text-align: center; box-shadow: 0px 1px;">(0.005)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Num.Obs.</td>
@@ -2655,23 +2715,23 @@ Tests are performed on the log odds ratio scale </code></pre>
 </tr>
 <tr class="even">
 <td style="text-align: left;">AIC</td>
-<td style="text-align: center;">529.1</td>
+<td style="text-align: center;">469.0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">BIC</td>
-<td style="text-align: center;">537.3</td>
+<td style="text-align: center;">481.3</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Log.Lik.</td>
-<td style="text-align: center;">−262.557</td>
+<td style="text-align: center;">−231.493</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">F</td>
-<td style="text-align: center;">68.890</td>
+<td style="text-align: center;">45.842</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">RMSE</td>
-<td style="text-align: center;">0.45</td>
+<td style="text-align: center;">0.42</td>
 </tr>
 </tbody>
 </table>
@@ -2691,7 +2751,7 @@ Tests are performed on the log odds ratio scale </code></pre>
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>We fitted a logistic model (estimated using ML) sex and bmipct predicting desire to lose weight (formula: lose.wt.01 ~ 1 + female+ bmipct). The model’s explanatory power is substantial *(Tjur’s <span class="math inline">\(R^2\)</span> =0.30)*. Female reported wanting to lose more weight (54%) than males (33%), <em>beta = 1.86, 95% CI [1.37, 2.38], p &lt; .001; OR = 6.42, 95% CI [3.93, 10.9]</em>. An increase in bmipct was also associated with increased probability of wanting to lose weight, beta = 0.05, 95% CI [0.04, 0.06], p &lt; .001, OR = 1.05, 95% CI [1.04, 1.06]. For every 1 point increase in BMI there was a 1% increase in desire to lose weight.</p>
+<p>We fitted a logistic model (estimated using ML) with sex and bmipct predicting desire to lose weight (formula: lose.wt.01 ~ 1 + female+ bmipct). The model’s explanatory power is substantial *(Tjur’s <span class="math inline">\(R^2\)</span> =0.30)*. Female reported wanting to lose more weight (54%) than males (33%), <em>beta = 1.86, 95% CI [1.37, 2.38], p &lt; .001; OR = 6.42, 95% CI [3.93, 10.9]</em>. An increase in bmipct was also associated with increased probability of wanting to lose weight, beta = 0.05, 95% CI [0.04, 0.06], p &lt; .001, OR = 1.05, 95% CI [1.04, 1.06]. For every 1 point increase in BMI there was a 1% increase in desire to lose weight.</p>
 </div>
 </div>
 </div>
