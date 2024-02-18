@@ -88,23 +88,19 @@ $$ Y_i = b_0 + b_1*x + e_i$$
 
 $$Y \sim~Normal(\mu, \sigma)$$
 
-$$
-\epsilon \sim~ Normal(0, \sigma)
-$$
-
 ## Dichotomous outcomes
 
 The simplest kind of categorical data is each case is binary
-
-```{r, echo=FALSE, fig.align='center', out.width="100%"}
-knitr::include_graphics("images/examples.PNG")
-```
 
 -   Correct/incorrect
 -   Pass/fail
 -   Choose/Don't choose
 -   Support/Not support
 -   Relapse/Not relapse
+
+::: callout-note
+We usually code these as 0s and 1s and model the probability of 1 occurring
+:::
 
 ## Bye bye linear model
 
@@ -115,8 +111,11 @@ knitr::include_graphics("images/examples.PNG")
     -   Makes impossible predictions (values not between 0, 1)
 
     -   Non-normality of residuals
+
         -   $\hat{p}$ or (1-$\hat{p}$)
+
     -   Heteroskedasticity
+
         -   Variance is influenced by $\hat{p}$
 
 ## Generalized linear model
@@ -131,15 +130,11 @@ $$\begin{align*}
 
 -   $y$ is referenced with $\mu$
 
--   $g$ is link function
-
--   In logistic regression we use the logit link function:
-
-$$p(y = 1)  = p $$$$log(\frac{p}{1 - p})$$
+-   $g$ is link function (in logistic regression we use *logit link*)
 
 ## What distribution do we use to model this process?
 
--   We assume that there is **some probability** p of responding correctly
+-   We assume that there is **some probability** p of responding correctly (or selecting what is coded as 1)
 
 -   We don't know this probability, so we want to **use the data to estimate it**
 
@@ -153,8 +148,8 @@ $$p(y = 1)  = p $$$$log(\frac{p}{1 - p})$$
 
 -   And a 0 ("failure") with probability 1−p=q
 
-    -   $\mu$ = E(X)=p\$
-    -   $\sigma^2(X)=np(1-p)$
+    -   $\mu$ = E(X)=p
+    -   $\sigma^2(X)=p(1-p)$
 :::
 
 ::: {.column width="50%"}
@@ -227,7 +222,7 @@ $$y\sim binomial(N,p)$$
     ```
     :::
 
-## Logit Link
+## Logit link
 
 -   The logit link transforms a linear model in the log-odds metric:
 
@@ -269,15 +264,13 @@ $$\textrm{Odds} = \frac{\# \textrm{successes}}{\# \textrm{failures}}=
 
     -   Solution: take log of the odds
 
-    $$ logit = log(\frac{p}{1-p})$$
+    $$ logit = log(\frac{p}{1-p})$
 :::
 
 ::: {.column width="50%"}
+![](images/numberline_odds.png){fig-align="center" width="466"}
+
 ![](images/odds_fig.png){fig-align="center" width="508"}
-
-![]()
-
-![](images/numberline_odds.png){fig-align="center" width="495"}
 :::
 :::
 
@@ -323,7 +316,7 @@ df_model <- bechdel_lin %>%
   ggplot(df_model, aes(y = logit, x = budget_2013))+
   geom_point(size = 0.5, alpha = 0.5) +
   geom_smooth(method = "loess") + 
-  theme_lucid(base_size=14)
+  theme_lucid(base_size=18)
 ```
 :::
 :::
@@ -357,14 +350,6 @@ knitr::include_graphics("images/lin5.png")
 ```
 
 $$p(logit)=\frac{e^{logit}}{1+e^{{logit}}}$$
-
-## Anatomy of logistic model
-
-```{r}
-#| echo: false
-#| 
-knitr::include_graphics("images/anatlog.png")
-```
 
 ## Slope and intercept parameters
 
@@ -525,7 +510,7 @@ risk2009 %>%
 risk2009 %>%
   ggplot(aes(x = sex, fill = lose.wt)) +
   geom_bar(position = "fill") +
-  geom_text(stat = 'count',size=10,  aes(label = scales::percent(..count.. / sum(..count..), accuracy = 1)), 
+  geom_text(stat = 'count',size=14,  aes(label = scales::percent(..count.. / sum(..count..), accuracy = 1)), 
             position = position_fill(vjust = 0.5), size = 3) + # Adjust size as needed
   scale_fill_viridis_d(option = "C", begin = .2) +
   labs(x = NULL, y = "Percent") + 
@@ -546,12 +531,12 @@ risk2009 %>%
   ggplot(aes(x = bmipct)) +
   geom_histogram(binwidth = 5) +
   facet_wrap(~ lose.wt, ncol = 1) + 
-  theme_lucid(base_size=18)
+  theme_lucid(base_size=24)
 ```
 
 ## Exploratory Data Analysis
 
--   Here are the histograms for `bmipct`, faceted by both `lose.wt` and `sex`.
+-   Here are the histograms for `bmipct`, faceted by both `lose.wt` and `sex`
 
 ```{r, echo=FALSE, out.width="70%", fig.align='center'}
 
@@ -559,7 +544,7 @@ risk2009 %>%
   ggplot(aes(x = bmipct)) +
   geom_histogram(binwidth = 5) +
   facet_grid(lose.wt ~ sex) + 
-  theme_lucid(base_size=18)
+  theme_lucid(base_size=24)
 ```
 
 ## Logistic regression: Fitting model
@@ -610,11 +595,11 @@ fit1 %>%
 
     -    $H_a$: $\beta_j \neq 0$
 
--   Test Statistic (Wald): $$z = \frac{\hat{\beta}_j - 0}{SE_{\hat{\beta}_j}}$$
+-   Test Statistic: $$\text{Wald z} = \frac{\hat{\beta}_j - 0}{SE_{\hat{\beta}_j}}$$
 
 -   CIs: $$\Large{\hat{\beta}_j \pm z^* SE_{\hat{\beta}_j}}$$
 
-## Interpreting $\beta_0$
+## Interpreting $b_0$
 
 ```{r, echo=FALSE}
 tidy(fit1) %>% kable()
@@ -634,7 +619,7 @@ exp(b0) / (1 + exp(b0)) # logistic transform
 
 -   Thus, the overall probability of students wanting to lose weight was about .45 or 45%
 
-## Interpreting $\beta_0$
+## Interpreting $b_0$
 
 -   Let's check that with the empirical proportions
 
@@ -644,7 +629,7 @@ risk2009 %>%
   mutate(proportion = n / sum(n))
 ```
 
--   We can actually do that transformation with the base **R** `plogis()` function.
+-   We can actually do that transformation with the base **R** `plogis()` function
 
 ```{webr-r}
 plogis(b0)
@@ -684,7 +669,7 @@ fit2 <- glm(
 
 ```
 
-## Interpreting intercept: \$b_0\$
+## Interpreting intercept: $b_0$
 
 ```{webr-r}
 # fit
@@ -786,8 +771,6 @@ plogis(b0 + b1 * 1)
 
     -   Difference in probabilities is called risk difference
 
-    -   Ratio is called relative risk ratio
-
 -   Marginal effects
 
     -   Change in probability that the outcome occurs for a 1 unit change in the predictor
@@ -852,10 +835,13 @@ fit3 %>%
 ```
 
 ```{webr-r}
+# how do we interpret these 
+b0: 
+b1: 
 
 ```
 
-> What is the OR for these coefs? How do we interpret this?
+> What is the OR for $b_1$? How do we interpret this?
 
 ```{webr-r}
 
@@ -994,7 +980,7 @@ r2_mcfadden(fit4)
 -   Binned residuals
 
     -   Calculate raw residuals
-    -   Order observations (probabilities of predictor value or DV)
+    -   Order observations (probabilities of DV or predictor variable)
         -   Create g bins of approximate equal size $\sqrt(n)$
     -   Calculate average residuals
     -   Plot average residuals vs. average predicted probability (or predictor value)
@@ -1073,7 +1059,7 @@ predict(
 #| 
 library(ggeffects)
 ggemmeans(fit4, terms=c("bmipct", "female")) %>%
-  plot(ci = TRUE, add.data = TRUE)
+  plot(ci = TRUE, add.data = TRUE, jitter=.05)
 
 ```
 :::
@@ -1118,5 +1104,5 @@ fit4 %>%
 ## Reporting
 
 ::: callout-tip
-We fitted a logistic model (estimated using ML) with sex and bmipct predicting desire to lose weight (formula: lose.wt.01 \~ 1 + female+ bmipct). The model's explanatory power is substantial (Tjur's $R^2$ =0.30). Females reported wanting to lose more weight (54%) than males (33%), *b= 1.86, 95% CI \[1.37, 2.38\], p \< .001; OR = 6.42, 95% CI \[3.93, 10.9\]*. BMI was also associated with increased probability of wanting to lose weight, b = 0.05, 95% CI \[0.04, 0.06\], p \< .001, OR = 1.05, 95% CI \[1.04, 1.06\]. For every 1 point increase in BMI, there was a 1% (average marginal effect) increase in desire to lose weight.
+We fitted a logistic model with a logit link (estimated using ML) with sex and bmipct predicting desire to lose weight (formula: lose.wt.01 \~ 1 + female+ bmipct). The model's explanatory power is substantial (Tjur's $R^2$ =0.30). The probability of females wanting to lose weight was 33% higher, *b= 1.86, 95% CI \[1.37, 2.38\], p \< .001; OR = 2.98, 95% CI \[3.93, 10.9\]*. An increase in BMI was associated with an increased probability of wanting to lose weight, b = 0.05, 95% CI \[0.04, 0.06\], p \< .001, OR = 1.05, 95% CI \[1.04, 1.06\]. Looking at the average marginal effect, 1 unit increases in BMI was associated with a 80% increase in desire to lose weight.
 :::
