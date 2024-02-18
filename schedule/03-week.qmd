@@ -15,6 +15,11 @@ date: 2024-02-12
 
 - What are some potential limitations and drawbacks of using multiple imputation to handle missing data?
 
+## Class
+
+{{< video https://www.youtube.com/watch?v=HYidjqOy9YM  width="800" height="400" >}}
+
+
 ### Optional
 
 - [Quantitude Podcast.S4E08 Missing Data: The New State Of The Art With Craig Enders](https://quantitudepod.org/s4e08-craig-enders/)
