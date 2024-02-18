@@ -1,0 +1,11 @@
+---
+title: "Lab 2: Missing Data"
+author: "Jason Geller, Ph.D."
+date: 2024 02 13
+toc: true
+toc_float: true
+---
+
+Lab 2 uses a dataset from the `mice`package. In this lab, you will screen data for missingness, diagnosis mechanisms of missingness (i.e., MAR, MCAR), and apply different methods for dealing with missingness--all in R. Additionally, students will practice data wrangling and visualizing data in `ggplot.`
+
+To access Lab 2, please go here: [Click Here](https://classroom.github.com/a/JPIFz20I)

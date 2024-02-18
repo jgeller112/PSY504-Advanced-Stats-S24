@@ -1,0 +1,21 @@
+---
+title: "Lab 1"
+format: html
+editor: visual
+author: "Jason Geller, Ph.D."
+date: 2023 02 7
+toc: true
+toc_float: true
+---
+
+## Lab 1: Multilevel Modeling
+
+For this lab, we will apply core concepts of multilevel modeling to a dataset from Coyne et al. (2019). Here, you will be engaging in model building/selection, fitting and interpreting results, and visualizing results. This lab is meant to be an introduction to the techniques of multilevel modeling.
+
+> Coyne, M. D., McCoach, D. B., Ware, S., Austin, C. R., Loftus-Rattan, S. M., & Baker, D. L. (2019). Racing Against the Vocabulary Gap: Matthew Effects in Early Vocabulary Instruction and Intervention. *Exceptional Children*, *85*(2), 163--179. <https://doi.org/10.1177/0014402918789162>
+
+To access Lab 10, please [click here](https://classroom.github.com/a/GAEmOvbQ).
+
+## Lab Answers
+
+-   [Lab 1 answers](/lab_ans/01-MLM/Lab-1-MLM-ans.qmd)
