@@ -1,7 +1,7 @@
 ---
 title: "Week 4"
 subtitle: "Logistic Regression"
-date: 2024-02-05
+date: 2024-02-19
 ---
 
 ## Before class
@@ -16,6 +16,11 @@ date: 2024-02-05
     -   What is an odds ratio?
     -   How is logistic regression extended to include non-binary categorical dependent variables?
 
+
+## Class
+
+{{< video https://www.youtube.com/watch?v=PY1v8DKse0g width="800" height="400" >}}
+
 ## After class
 
 ### Textbook
@@ -23,3 +28,12 @@ date: 2024-02-05
 -   {{< fa book >}} Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
 
     -   [Ch.3](/readings/logistic/logistc.pdf)
+    
+## Optionalreading
+
+- Interactions are complex issue
+
+{{< fa book > }} Connor J. McCabe, Max A. Halvorson, Kevin M. King, Xiaolin Cao & Dale S. Kim (2022) Interpreting Interaction Effects in Generalized Linear Models of Nonlinear Probabilities and Counts, Multivariate Behavioral Research, 57:2-3, 243-263, DOI: 10.1080/00273171.2020.1868966
+
+
+
