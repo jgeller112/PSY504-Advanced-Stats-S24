@@ -824,7 +824,7 @@ fit3 <- glm(
 
 ```
 
-## Model 3
+## Logistic regression continuous
 
 ```{r}
 #| echo: false
@@ -859,6 +859,12 @@ b1:
 #effect is computed for each observed value in the original dataset before being averaged
 avg_slopes(fit3)%>%kable()
 ```
+
+. . .
+
+::: callout-tip
+An increase in BMI results in 70% increase in likelihood of wanting to lose weight
+:::
 
 ## Logistic Multiple Predictors
 

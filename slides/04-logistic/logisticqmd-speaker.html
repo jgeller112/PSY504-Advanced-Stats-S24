@@ -557,7 +557,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"id":1,"options":{"comment":"","output":"true","label":"unnamed-chunk-1","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":"\nrisk2009.data <- read.csv(\"https://raw.githubusercontent.com/jgeller112/PSY504-Advanced-Stats-S24/main/slides/04-logistic/data/risk2009.csv\")"},{"id":2,"options":{"comment":"","output":"true","label":"unnamed-chunk-2","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":"# fit model\nfit1 <- glm(\n  data = risk2009,\n  family = binomial(link=\"logit\"),\n  lose.wt.01 ~ 1\n  ) \nfit1 %>% \n  tidy() %>%\n  kable()"},{"id":3,"options":{"comment":"","output":"true","label":"unnamed-chunk-3","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":"b0 <- coef(fit1) # get coef\n\nexp(b0) / (1 + exp(b0)) # logistic transform"},{"id":4,"options":{"comment":"","output":"true","label":"unnamed-chunk-4","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":"risk2009 %>% \n  count(lose.wt.01) %>% \n  mutate(proportion = n / sum(n))"},{"id":5,"options":{"comment":"","output":"true","label":"unnamed-chunk-5","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":"plogis(b0)"},{"id":6,"options":{"comment":"","output":"true","label":"unnamed-chunk-6","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":"# fit\nfit2 <- glm(\n  lose.wt.01 ~ 1 + female, \n  data = risk2009,\n  family = binomial,\n)"},{"id":7,"options":{"comment":"","output":"true","label":"unnamed-chunk-7","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":"# fit\nfit2 %>%\n  tidy()"},{"id":8,"options":{"comment":"","output":"true","label":"unnamed-chunk-8","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":""},{"id":9,"options":{"comment":"","output":"true","label":"unnamed-chunk-9","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":"# summarize\nfit2 %>%\n  tidy() %>%\n  kable()"},{"id":10,"options":{"comment":"","output":"true","label":"unnamed-chunk-10","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":"tidy(fit2,exponentiate = TRUE) %>%  # get odds ratio %>%\n  kable()"},{"id":11,"options":{"comment":"","output":"true","label":"unnamed-chunk-11","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":"b0 <- coef(fit2)[1] %>% as.double()\nb1 <- coef(fit2)[2] %>% as.double()"},{"id":12,"options":{"comment":"","output":"true","label":"unnamed-chunk-12","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":"# young men\nplogis(b0 + b1 * 0)\n# young women\nplogis(b0 + b1 * 1)"},{"id":13,"options":{"comment":"","output":"true","label":"unnamed-chunk-13","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":"# fit\nfit3 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + bmipct\n  ) "},{"id":14,"options":{"comment":"","output":"true","label":"unnamed-chunk-14","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":"# how do we interpret these \n\nb0: \nb1: "},{"id":15,"options":{"comment":"","output":"true","label":"unnamed-chunk-15","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":""},{"id":16,"options":{"comment":"","output":"true","label":"unnamed-chunk-16","message":"true","warning":"true","autorun":"false","results":"markup","fig-cap":"","fig-width":7,"out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","dpi":72},"code":"fit4 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + female + bmipct\n  )\n\nfit5 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + female + bmipct + female:bmipct\n  )"}];
+  globalThis.qwebrCellDetails = [{"id":1,"options":{"context":"interactive","label":"unnamed-chunk-1","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":"\nrisk2009.data <- read.csv(\"https://raw.githubusercontent.com/jgeller112/PSY504-Advanced-Stats-S24/main/slides/04-logistic/data/risk2009.csv\")"},{"id":2,"options":{"context":"interactive","label":"unnamed-chunk-2","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":"# fit model\nfit1 <- glm(\n  data = risk2009,\n  family = binomial(link=\"logit\"),\n  lose.wt.01 ~ 1\n  ) \nfit1 %>% \n  tidy() %>%\n  kable()"},{"id":3,"options":{"context":"interactive","label":"unnamed-chunk-3","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":"b0 <- coef(fit1) # get coef\n\nexp(b0) / (1 + exp(b0)) # logistic transform"},{"id":4,"options":{"context":"interactive","label":"unnamed-chunk-4","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":"risk2009 %>% \n  count(lose.wt.01) %>% \n  mutate(proportion = n / sum(n))"},{"id":5,"options":{"context":"interactive","label":"unnamed-chunk-5","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":"plogis(b0)"},{"id":6,"options":{"context":"interactive","label":"unnamed-chunk-6","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":"# fit\nfit2 <- glm(\n  lose.wt.01 ~ 1 + female, \n  data = risk2009,\n  family = binomial,\n)"},{"id":7,"options":{"context":"interactive","label":"unnamed-chunk-7","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":"# fit\nfit2 %>%\n  tidy()"},{"id":8,"options":{"context":"interactive","label":"unnamed-chunk-8","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":""},{"id":9,"options":{"context":"interactive","label":"unnamed-chunk-9","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":"# summarize\nfit2 %>%\n  tidy() %>%\n  kable()"},{"id":10,"options":{"context":"interactive","label":"unnamed-chunk-10","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":"tidy(fit2,exponentiate = TRUE) %>%  # get odds ratio %>%\n  kable()"},{"id":11,"options":{"context":"interactive","label":"unnamed-chunk-11","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":"b0 <- coef(fit2)[1] %>% as.double()\nb1 <- coef(fit2)[2] %>% as.double()"},{"id":12,"options":{"context":"interactive","label":"unnamed-chunk-12","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":"# young men\nplogis(b0 + b1 * 0)\n# young women\nplogis(b0 + b1 * 1)"},{"id":13,"options":{"context":"interactive","label":"unnamed-chunk-13","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":"# fit\nfit3 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + bmipct\n  ) "},{"id":14,"options":{"context":"interactive","label":"unnamed-chunk-14","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":"# how do we interpret these \nb0: \nb1: "},{"id":15,"options":{"context":"interactive","label":"unnamed-chunk-15","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":""},{"id":16,"options":{"context":"interactive","label":"unnamed-chunk-16","autorun":"false","output":"true","warning":"true","out-height":"","dpi":72,"out-width":"700px","comment":"","results":"markup","fig-cap":"","fig-width":7,"classes":"","fig-height":5,"message":"true"},"code":"fit4 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + female + bmipct\n  )\n\nfit5 <- glm(\n  data = risk2009,\n  family = binomial,\n  lose.wt.01 ~ 1 + female + bmipct + female:bmipct\n  )"}];
 
   </script>
   <script type="module">
@@ -1553,13 +1553,12 @@ Jason Geller, PH.D.(he/him)
 <img data-src="images/bye.webp" class="quarto-figure quarto-figure-center r-stretch"><ul>
 <li><p>Linear models are not appropriate for this type of data</p>
 <ul>
-<li>Makes impossible predictions (values not between 0, 1)</li>
-<li></li>
-<li>Non-normality of residuals
+<li><p>Makes impossible predictions (values not between 0, 1)</p></li>
+<li><p>Non-normality of residuals</p>
 <ul>
 <li><span class="math inline">\(\hat{p}\)</span> or (1-<span class="math inline">\(\hat{p}\)</span>)</li>
 </ul></li>
-<li>Heteroskedasticity
+<li><p>Heteroskedasticity</p>
 <ul>
 <li>Variance is influenced by <span class="math inline">\(\hat{p}\)</span></li>
 </ul></li>
@@ -1809,7 +1808,7 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/odds_fig.png" class="quarto-figure quarto-figure-center" width="508"></p>
+<p><img data-src="images/odds_fig.png" class="quarto-figure quarto-figure-center" width="382"></p>
 </figure>
 </div>
 </div>
@@ -2103,8 +2102,8 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 <li><p>CIs: <span class="math display">\[\Large{\hat{\beta}_j \pm z^* SE_{\hat{\beta}_j}}\]</span></p></li>
 </ul>
 </section>
-<section id="interpreting-beta_0" class="slide level2">
-<h2>Interpreting <span class="math inline">\(\beta_0\)</span></h2>
+<section id="interpreting-b_0" class="slide level2">
+<h2>Interpreting <span class="math inline">\(b_0\)</span></h2>
 <div class="cell">
 <div class="cell-output-display">
 <table data-quarto-postprocess="true">
@@ -2144,7 +2143,7 @@ p(logit)=\frac{e^{logit}}{1+e^{logit}}
 <li>Thus, the overall probability of students wanting to lose weight was about .45 or 45%</li>
 </ul>
 </section>
-<section id="interpreting-b_0" class="slide level2">
+<section id="interpreting-b_0-1" class="slide level2">
 <h2>Interpreting <span class="math inline">\(b_0\)</span></h2>
 <ul>
 <li>Let’s check that with the empirical proportions</li>
@@ -2277,8 +2276,7 @@ Tests are performed on the log odds ratio scale </code></pre>
 <ul>
 <li><p>We can also calculate differences in probabilities</p>
 <ul>
-<li><p>Difference in probabilities is called risk difference</p></li>
-<li><p>Ratio is called relative risk ratio</p></li>
+<li>Difference in probabilities is called risk difference</li>
 </ul></li>
 <li><p>Marginal effects</p>
 <ul>
@@ -2346,8 +2344,8 @@ Tests are performed on the log odds ratio scale </code></pre>
 <div id="qwebr-insertion-location-13"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
-<section id="model-3" class="slide level2">
-<h2>Model 3</h2>
+<section id="logistic-regression-continuous-1" class="slide level2">
+<h2>Logistic regression continuous</h2>
 <div class="cell">
 <div class="cell-output-display">
 <table data-quarto-postprocess="true">
@@ -2432,6 +2430,21 @@ Tests are performed on the log odds ratio scale </code></pre>
 </table>
 
 
+</div>
+</div>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>An increase in BMI results in 70% increase in likelihood of wanting to lose weight</p>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -2555,7 +2568,7 @@ Tests are performed on the log odds ratio scale </code></pre>
 <li><p>Binned residuals</p>
 <ul>
 <li>Calculate raw residuals</li>
-<li>Order observations (probabilities of predictor value or DV)
+<li>Order observations (probabilities of DV or predictor variable)
 <ul>
 <li>Create g bins of approximate equal size <span class="math inline">\(\sqrt(n)\)</span></li>
 </ul></li>
@@ -2612,7 +2625,7 @@ Tests are performed on the log odds ratio scale </code></pre>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">library</span>(ggeffects)</span>
 <span id="cb21-2"><a href="#cb21-2"></a><span class="fu">ggemmeans</span>(fit4, <span class="at">terms=</span><span class="fu">c</span>(<span class="st">"bmipct"</span>, <span class="st">"female"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">plot</span>(<span class="at">ci =</span> <span class="cn">TRUE</span>, <span class="at">add.data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">plot</span>(<span class="at">ci =</span> <span class="cn">TRUE</span>, <span class="at">add.data =</span> <span class="cn">TRUE</span>, <span class="at">jitter=</span>.<span class="dv">05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -2748,7 +2761,7 @@ Tests are performed on the log odds ratio scale </code></pre>
 <p><strong>Tip</strong></p>
 </div>
 <div class="callout-content">
-<p>We fitted a logistic model with a logit link (estimated using ML) with sex and bmipct predicting desire to lose weight (formula: lose.wt.01 ~ 1 + female+ bmipct). The model’s explanatory power is substantial (Tjur’s <span class="math inline">\(R^2\)</span> =0.30). Females reported wanting to lose more weight (54%) than males (33%), <em>b= 1.86, 95% CI [1.37, 2.38], p &lt; .001; OR = 6.42, 95% CI [3.93, 10.9]</em>. An increase in BMI was associated with an increased probability of wanting to lose weight, b = 0.05, 95% CI [0.04, 0.06], p &lt; .001, OR = 1.05, 95% CI [1.04, 1.06]. Looking at the average marginal effect, increases in BMI was associated with a 1% increase in desire to lose weight.</p>
+<p>We fitted a logistic model with a logit link (estimated using ML) with sex and bmipct predicting desire to lose weight (formula: lose.wt.01 ~ 1 + female+ bmipct). The model’s explanatory power is substantial (Tjur’s <span class="math inline">\(R^2\)</span> =0.30). The probability of females wanting to lose weight was 33% higher, <em>b= 1.86, 95% CI [1.37, 2.38], p &lt; .001; OR = 2.98, 95% CI [3.93, 10.9]</em>. An increase in BMI was associated with an increased probability of wanting to lose weight, b = 0.05, 95% CI [0.04, 0.06], p &lt; .001, OR = 1.05, 95% CI [1.04, 1.06]. Looking at the average marginal effect, 1 unit increases in BMI was associated with a 80% increase in desire to lose weight.</p>
 </div>
 </div>
 </div>

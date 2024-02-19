@@ -171,16 +171,17 @@ $$y\sim binomial(N,p)$$
 
 -   N = number of trials
 
-```{=html}
 <!-- -->
+
+-   p = probability of "y = 1"
+
+```         
+-   \$$\mu$ =  E(X)=np$
+
+-   $\sigma^2(X)=np(1-p)$
+
+-   $\sigma(X)$=$\sqrt{np(1-p)}$
 ```
--    p = probability of "y = 1"
-
-    -   \$$\mu$ =  E(X)=np$
-
-    -   $\sigma^2(X)=np(1-p)$
-
-    -   $\sigma(X)$=$\sqrt{np(1-p)}$
 :::
 
 ::: {.column width="50%"}
@@ -264,13 +265,13 @@ $$\textrm{Odds} = \frac{\# \textrm{successes}}{\# \textrm{failures}}=
 
     -   Solution: take log of the odds
 
-    $$ logit = log(\frac{p}{1-p})$
+    \$\$ logit = log(\frac{p}{1-p})\$
 :::
 
 ::: {.column width="50%"}
 ![](images/numberline_odds.png){fig-align="center" width="466"}
 
-![](images/odds_fig.png){fig-align="center" width="508"}
+![](images/odds_fig.png){fig-align="center" width="382"}
 :::
 :::
 
@@ -396,7 +397,6 @@ plogis(-1)
 
 ::: columns
 ::: {.column width="50%"}
-
 ![](images/p-log-odds-1.png){fig-align="center"}
 :::
 
@@ -593,7 +593,7 @@ fit1 %>%
 
     -   $H_0$: $\beta_j$ = 0
 
-    -    $H_a$: $\beta_j \neq 0$
+    -   $H_a$: $\beta_j \neq 0$
 
 -   Test Statistic: $$\text{Wald z} = \frac{\hat{\beta}_j - 0}{SE_{\hat{\beta}_j}}$$
 
@@ -607,7 +607,7 @@ tidy(fit1) %>% kable()
 
 -   The intercept $\beta_0$ is in the log-odds metric
 
-    -    Log-odds of Y = 1 is -0.212
+    -   Log-odds of Y = 1 is -0.212
 
 -   We can convert it to probability
 
@@ -824,7 +824,7 @@ fit3 <- glm(
 
 ```
 
-## Model 3
+## Logistic regression continuous
 
 ```{r}
 #| echo: false
@@ -859,6 +859,12 @@ b1:
 #effect is computed for each observed value in the original dataset before being averaged
 avg_slopes(fit3)%>%kable()
 ```
+
+. . .
+
+::: callout-tip
+An increase in BMI results in 70% increase in likelihood of wanting to lose weight
+:::
 
 ## Logistic Multiple Predictors
 
