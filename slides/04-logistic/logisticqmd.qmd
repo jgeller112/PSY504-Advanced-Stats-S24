@@ -174,14 +174,9 @@ $$y\sim binomial(N,p)$$
 <!-- -->
 
 -   p = probability of "y = 1"
-
-```         
--   \$$\mu$ =  E(X)=np$
-
--   $\sigma^2(X)=np(1-p)$
-
--   $\sigma(X)$=$\sqrt{np(1-p)}$
-```
+    -   $\mu$ = E(X)=np\$
+    -   $\sigma^2(X)=np(1-p)$
+    -    $\sigma(X)$=$\sqrt{np(1-p)}$
 :::
 
 ::: {.column width="50%"}
@@ -265,7 +260,7 @@ $$\textrm{Odds} = \frac{\# \textrm{successes}}{\# \textrm{failures}}=
 
     -   Solution: take log of the odds
 
-    \$\$ logit = log(\frac{p}{1-p})\$
+    $$logit = log(\frac{p}{1-p})$$
 :::
 
 ::: {.column width="50%"}
@@ -468,8 +463,6 @@ risk2009.data <- read.csv("https://raw.githubusercontent.com/jgeller112/PSY504-A
 risk2009 <- read.csv("https://raw.githubusercontent.com/jgeller112/PSY504-Advanced-Stats-S24/main/slides/04-logistic/data/risk2009.csv")
 
 ```
-
-## 
 
 ## Trying to lose weight
 
