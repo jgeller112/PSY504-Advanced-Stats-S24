@@ -29,11 +29,11 @@ date: 2024-02-19
 
     -   [Ch.3](/readings/logistic/logistc.pdf)
     
-## Optionalreading
+## Optional readings
 
 - Interactions are complex issue
 
-{{< fa book > }} Connor J. McCabe, Max A. Halvorson, Kevin M. King, Xiaolin Cao & Dale S. Kim (2022) Interpreting Interaction Effects in Generalized Linear Models of Nonlinear Probabilities and Counts, Multivariate Behavioral Research, 57:2-3, 243-263, DOI: 10.1080/00273171.2020.1868966
+  - Connor J. McCabe, Max A. Halvorson, Kevin M. King, Xiaolin Cao & Dale S. Kim (2022) Interpreting Interaction Effects in Generalized Linear Models of Nonlinear Probabilities and Counts, Multivariate Behavioral Research, 57:2-3, 243-263, DOI: 10.1080/00273171.2020.1868966
 
 
 
