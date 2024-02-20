@@ -1,0 +1,18 @@
+---
+title: "Lab 3: Logistic Regression"
+author: "Jason Geller, Ph.D."
+date: 2024 02 21
+toc: true
+toc_float: true
+---
+
+In this lab, we will be using a logistic model to analyze data from the General Social Survey (GSS).
+
+By the end of the lab you will be able to: 
+
+- Use logistic regression to explore the relationship between a binary response variable and multiple predictor variables
+- Conduct exploratory data analysis for logistic regression
+- Interpret coefficients of logistic regression model
+- Compare models and select the one that best fits the data
+
+To access Lab 3, please go here: [Click here](https://classroom.github.com/a/u6-qVNFu)
