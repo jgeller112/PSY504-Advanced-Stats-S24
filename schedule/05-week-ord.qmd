@@ -4,44 +4,41 @@ subtitle: "Ordinal Regression"
 date: 2024-02-26
 ---
 
+![](ord.png){fig-align="center"}
+
 ## Before class
-
-
 
 ### Articles
 
-**The R package brms (which is a Bayesian data analysis package) is used in the papers below. While it is a Bayesian technique, the output is similar to a regression output.** 
+**The R package brms (which is a Bayesian data analysis package) is used in the papers below. While it is a Bayesian technique, the output is similar to a regression output.**
 
-- {{< fa book >}} Liddell, T. M., & Kruschke, J. K. (2018). [Analyzing ordinal data with metric models: What could possibly go wrong?](https://www.sciencedirect.com/science/article/pii/S0022103117307746?via%3Dihub) Journal of Experimental Social Psychology, 79, 328–348. https://doi.org/10.1016/j.jesp.2018.08.009
+-   {{< fa book >}} Liddell, T. M., & Kruschke, J. K. (2018). [Analyzing ordinal data with metric models: What could possibly go wrong?](https://www.sciencedirect.com/science/article/pii/S0022103117307746?via%3Dihub) Journal of Experimental Social Psychology, 79, 328–348. https://doi.org/10.1016/j.jesp.2018.08.009
 
+-   {{< fa book >}} Bürkner P-C, Vuorre M. [Ordinal Regression Models in Psychology: A Tutorial](https://journals.sagepub.com/doi/epub/10.1177/2515245918823199). Advances in Methods and Practices in Psychological Science. 2019;2(1):77-101. doi:10.1177/2515245918823199
 
-- {{< fa book >}} Bürkner P-C, Vuorre M. [Ordinal Regression Models in Psychology: A Tutorial](https://journals.sagepub.com/doi/epub/10.1177/2515245918823199). Advances in Methods and Practices in Psychological Science. 2019;2(1):77-101. doi:10.1177/2515245918823199
+-   {{< fa book >}} Veríssimo, J. (2021). [Analysis of rating scales: A pervasive problem in bilingualism research and a solution with Bayesian ordinal models](https://files.osf.io/v1/resources/4m2ap/providers/osfstorage/6013ef9a75226b05015161a6?action=download&direct&version=2). Bilingualism: Language and Cognition, 24(5), 842-848. doi:10.1017/S1366728921000316
 
-- {{< fa book >}} Veríssimo, J. (2021). [Analysis of rating scales: A pervasive problem in bilingualism research and a solution with Bayesian ordinal models](https://files.osf.io/v1/resources/4m2ap/providers/osfstorage/6013ef9a75226b05015161a6?action=download&direct&version=2). Bilingualism: Language and Cognition, 24(5), 842-848. doi:10.1017/S1366728921000316
-
-  - {{< fa video >}} [Veríssimo Talk](https://drive.google.com/file/d/1UXOdAcwUQ_DTH6apdR0qk4igkr93ZWsp/view?usp=sharing)
+    -   {{< fa video >}} [Veríssimo Talk](https://drive.google.com/file/d/1UXOdAcwUQ_DTH6apdR0qk4igkr93ZWsp/view?usp=sharing)
 
 #### Questions
 
-  - Describe what is meant by an ordinal variable 
-  
-  - Describe how an ordinal variable can be represented using a latent continuous variable
+-   Describe what is meant by an ordinal variable
 
-  - What is cumulative probability? 
-  
-  - List some common applications of ordinal regression in your field
-  
-  - How do you interpret the coefficients in an ordinal regression model?
-  
-  - What is the proportional odds assumption underlying ordinal regression? What do you do when it is violated?
-  
+-   Describe how an ordinal variable can be represented using a latent continuous variable
+
+-   What is cumulative probability?
+
+-   List some common applications of ordinal regression in your field
+
+-   How do you interpret the coefficients in an ordinal regression model?
+
+-   What is the proportional odds assumption underlying ordinal regression? What do you do when it is violated?
+
 ## After class
 
 ### Textbook
 
-- {{< fa book >}} Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
+-   {{< fa book >}} Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
 
     -   [Ch.4](/readings/ord/ord.pdf)
     -   [Ch.5](/readings/ord/partialodds.pdf)
-    
-
