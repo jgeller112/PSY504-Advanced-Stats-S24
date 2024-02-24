@@ -1,0 +1,624 @@
+---
+title: "I Dont Likert You:  Ordinal Regression"
+subtitle: "Princeton University"
+author: "Jason Geller, PH.D.(he/him)"
+date: 'Updated:`r Sys.Date()`'
+footer: "PSY 504: Advanced Statistics"
+format: 
+  revealjs:
+    theme: blood
+    css: slide-style.css
+    multiplex: true
+    transition: fade
+    slide-number: true
+    incremental: false 
+    chalkboard: true
+    fontsize: "25pt"
+webr:
+  packages: ["tidyverse", "easystats", "broom", "knitr", "emmeans", "ordinal", "ggeffects","foreign"]
+filters:
+  - webr
+execute:
+  freeze: auto
+  echo: true
+  message: false
+  warning: false
+  fig-align: center
+  fig-width: 12
+  fig-height: 8
+  editor_options: 
+  chunk_output_type: inline
+  code-overflow: wrap
+  html:
+    code-fold: true
+    code-tools: true
+---
+
+## Packages
+
+<div>
+
+```{r}
+library(tidyverse)
+library(easystats)
+library(marginaleffects)
+library(effects)
+library(ordinal)
+library(ggeffects)
+library(emmeans)
+library(foreign)
+library(car)
+library(knitr)
+library(patchwork)
+library(MASS)
+
+options(scipen=999)
+```
+
+</div>
+
+-   Follow along here:
+
+## Ordinal Response Variables
+
+-   In psychology many variables have a natural ordering
+
+    -   Grades (e.g., A,BC)
+    -   Education level (e.g., BA, MS, Phd)
+    -   Competitions (e.g., 1st, 2nd, 3rd)
+    -   Economic Status (e.g., wealthy, poor)
+
+-   Most common are Likert scale ("Lick-ert") items
+
+## This is a cat, not a dog?
+
+```{r, echo=FALSE,fig.align='center', out.width="50%"}
+
+knitr::include_graphics("images/Honey.JPG")
+```
+
+1.  Very likely to be a dog
+2.  Somewhat likely to be a dog
+3.  As likely to be cat or dog
+4.  Somewhat likely to be a cat
+5.  Very likely to be a cat
+
+## Methods for analysis
+
+-   Metric models
+    -   Models that assume outcomes have a continuous distribution, e.g. t-test
+    -   Overestimate information in data; common & “simple”
+-   Nonparametric statistics e.g. analyses of signed ranks (R: ?wilcox.test, etc.)
+    -   Underestimate information in data; don’t scale well
+-   Ordinal models
+    -   A zoo of models that treat outcomes appropriately as ordered categories
+
+## “Analyzing ordinal data with metric models: What could possibly go wrong?”
+
+-   Liddell and Kruschke (2018) surveyed 68 Psychology articles and found that every article used metric models
+
+    -   Can lead to false alarms, failures to detect true effects, distorted effect size estimates, and inversions of effects
+
+## “Analyzing ordinal data with metric models: What could possibly go wrong?”
+
+-   Three main shortcomings of metric models:
+
+    -   Response categories may not be (e.g. psychologically) equidistant
+
+    -   Responses can be non-normally distributed
+
+    -   Can treat differences in variances of underlying variable inappropriately
+
+# Proportional-Odds Cumulative Logit Model
+
+## Cumulative model: Latent variable interpretation
+
+::: columns
+::: {.column width="50%"}
+-   A simple motivation
+
+    -   You have a continuous latent variable $\tilde{Y}$ that can be be categorized into bins (K thresholds): $\tau = (\tau_1, \dots, \tau_k)$
+
+        -   Latent Honey's *catness*
+:::
+
+::: {.column width="50%"}
+![](images/ordimage.jpeg){fig-align="center"}
+:::
+:::
+
+## Ordered = Cumulative
+
+::: columns
+::: {.column width="50%"}
+-   We will use the cumulative distribution to model our ordered categories
+
+```{=html}
+<!-- -->
+```
+-   Cumulative probability
+
+    -   $F(x) = P(X \leq x)$
+        -   Preserves order
+:::
+
+::: {.column width="50%"}
+<br>
+
+<br>
+
+![Richard McElreath](images/cum_ord.jpg){fig-alt="Statistical Rethinking" fig-align="center" width="1088"}
+:::
+:::
+
+## Cumulative logit model
+
+|             |                                                        |
+|-------------|--------------------------------------------------------|
+| $P_k$       | Probability of being in category k                     |
+| $C_{pk}$    | Cumulative probability of being in category k or lower |
+| 1- $C_{pk}$ | Probability of being above category k                  |
+
+-   Odds
+
+$$\textrm{Odds} = \frac{\# \textrm{successes}}{\# \textrm{failures}}=
+\frac{\# \textrm{successes}/n}{\# \textrm{failures}/n}=
+\frac{p}{1-p}$$
+
+-   *Cumulative Odds* of being in at least in category k to below category *k* to above category *k*
+
+    $$C_{pk}/1-C_{pk}$$ $$log(C_{pk}/1-C_{pk})$$
+
+## Cumulative logit model
+
+![Richard McElreath](images/cum_logodds.jpg){fig-align="center"}
+
+## Cumulative logit model
+
+![Richard McElreath](images/cut.jpg){fig-align="center"}
+
+## Cumulative logit model
+
+![Richard McElreath](images/cut_outcomes.jpg)
+
+## Cumulative logit ordinal regression model
+
+$$log (\frac{C_{pk}}{1-C_{pk}}) = \alpha - \beta_{j0}$$ $$\begin{array}{rcl} L_1 &=& \alpha_1-\beta_1x_1-\cdots-\beta_p X_p\\ L_2 &=& \alpha_2-\beta_1x_1-\cdots-\beta_p X_p & \\ L_{J-1} &=& \alpha_{J-1}-\beta_1x_1-\cdots-\beta_p X_p \end{array}$$
+
+-   Here we are estimating J-1 equations simultaneously
+
+-   Each equation as a different intercept $\alpha_k$ (thresholds/cut points) but a *common slope* $\beta$
+
+-   Intercepts are always ordered in size $\alpha_1$ \< $\alpha_2$
+
+## Cumulative logit ordinal regression model
+
+$$\begin{array}{rcl} L_1 &=& \alpha_1-\beta_1x_1-\cdots-\beta_p X_p\\ L_2 &=& \alpha_2-\beta_1x_1-\cdots-\beta_p X_p& \\ L_{J-1} &=& \alpha_{J-1}-\beta_1x_1-\cdots-\beta_p X_p \end{array}$$
+
+-   Where:
+
+    -   $\alpha$ (intercepts/thresholds/cut-offs) = Log-odds of falling into or below category
+
+    -   $\beta$ = Slope (constant between categories)
+
+    -   $-$ = Helps with interpretation (positive $b$ higher chance of being in higher categories)
+
+## Cumulative logit ordinal regression model
+
+-   Normal parametrization (with addition)
+
+::: columns
+::: {.column width="50%"}
+-   Higer coefs = higher probability of being in lower categories
+
+![](images/neg_coef.jpg){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+-   lower coefs = lower probablity in lower categories
+
+![](images/neg_coef2.jpg){fig-align="center"}
+:::
+:::
+
+::: callout-warning
+Be very careful—some packages will not add this negative sign so interpretation will be different
+:::
+
+## Proportional odds assumption
+
+-   Assumes slope is equal between categories
+    -   Critical for interpretation!
+
+![](images/oddsassump.jpg){fig-align="center"}
+
+## Data: postgraduate school applications
+
+-   Undergraduate students report how likely they were to apply to graduate school: "Unlikely", "Somewhat Likely", "Very likely"
+
+-   Got additional information: GPA, parent education (college vs. no college), type of schooling (public vs. private)
+
+```{webr-r}
+dat <- read.dta("https://stats.idre.ucla.edu/stat/data/ologit.dta")
+```
+
+```{r}
+#| echo: false
+# load data
+dat <- read.dta("https://stats.idre.ucla.edu/stat/data/ologit.dta")
+
+```
+
+```{r}
+#| echo: false
+
+dat %>% 
+  count(apply) %>% 
+  mutate(proportion = n / sum(n)) %>%
+  kable()
+
+```
+
+## Data: postgraduate school applications
+
+```{r}
+dat <- dat %>%
+  mutate(pared=as.factor(pared), public=as.factor(public))
+
+# make sure ordered properly 
+dat <- dat %>%
+  mutate(apply=ordered(apply))
+
+head(dat$apply) # check to see if ordered
+
+```
+
+## A simple model
+
+$$\text{logit}(p(y_i \leq j)) = \theta_j - \beta_2 \text{parent_education}_i$$
+
+-   Fit the model with `ordinal::clm` can also use `MASS:polr`
+
+```{r}
+library(ordinal) # clm function
+
+```
+
+```{r}
+# link = probit would also be acceptable
+ols1 = clm(apply ~ pared, data=dat, link = "logit")
+
+summary(ols1)
+
+```
+
+## Interpreting output
+
+-   Two parts (2 thresholds and 1 coef) - what's up with that?
+
+    -   Coefficients (slope)
+        -   Can be interpreted similarly to logistic regression
+
+```{r, echo=FALSE}
+
+knitr::kable(tidy(ols1))
+```
+
+```{webr-r}
+
+```
+
+## Interpreting output
+
+-   Thresholds (cut-offs)
+
+    -   Less than or equal to a certain level vs greater than that level
+
+-   j = 1: log-odds of rating = 1 vs. 2-3 (when x = 0)
+
+-   j = 2: log-odds of rating = 1-2 vs. 3 (when x = 0)
+
+```{r, echo=FALSE, fig.align='center', out.width="100%"}
+
+knitr::include_graphics("images/number_line.png")
+
+```
+
+::: callout-note
+Do not really care about these for the most part
+:::
+
+## Cumulative odds ratios
+
+```{r}
+
+knitr::kable(tidy(ols1, exponentiate=TRUE))
+
+```
+
+-   Sometimes odds ratios are more meaningful
+
+    -   Just `exp` the log cumulative odds!
+
+-   Almost 3x more likely to apply to college if parent went to college
+
+## Probabilities
+
+$$p(logit)=\frac{e^{logit}}{1+e^{logit}}\frac{exp(a_k - bx)}{1+exp(a_k - bx)}$$
+
+```{webr-r}
+
+```
+
+## Probabilities
+
+```{r}
+## view a summary of the model
+marginaleffects::marginal_means(ols1, variables="pared") %>% kable()
+
+```
+
+## Model visualizations
+
+```{r, echo=TRUE}
+#| fig-align: "center"
+#| message: false
+plot_predictions(ols1, condition = "pared", type = "prob") + facet_wrap(~group) + labs(x = "Parent Education", y = "predicted probability") +  scale_y_continuous(labels = scales::percent) + theme_lucid(base_size=20)
+
+```
+
+-   How could we make the figure better?
+
+## Marginal effects
+
+```{r}
+avg_comparisons(ols1) %>%
+ kable()
+```
+
+## Testing proportional odds assumption
+
+-   `brant` test
+
+    -   Likelihood of the full ordinal logistic regression model (which makes the proportional odds assumption) to the likelihood of a reduced model that does not make this assumption
+
+        -   You want a ns $\chi^2$ test
+
+```{r}
+library(gofcat)# prop odds assum
+#need to fit different model
+
+brant.test(ols1)
+
+```
+
+## Test proportional odds assumption
+
+if test is violated, there are a few options:
+
+-   Multinomial regression
+
+    -   Use lowest level/rank as reference
+
+-   Adjacent category model
+
+-   non-proportional odds (NPO) model
+
+## Test proportional odds assumption
+
+-   In VGAM, the NPO model is fit using family = cumulative(parallel=FALSE)
+
+```{r}
+library(VGAM)
+# from textbook 
+ols_nom <- VGAM::vglm(apply ~ pared,family=cumulative(parallel = FALSE,  reverse = TRUE), data=dat)
+
+model_parameters(ols_nom) %>%
+  kable()
+```
+
+## Test ordinal assumptions
+
+-   `sure` package: surrogate residuals
+    -   Based on continuous residuals
+-   Can test normality
+-   Linearity
+-   Homoscedasticity
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| eval: false
+#| 
+library(sure)
+library(cowplot)
+
+# for reproducibility
+set.seed(1225) 
+
+surrogate <- gridExtra::grid.arrange( 
+  autoplot.clm(ols1, nsim = 100, what = "qq"),
+  autoplot.clm(ols1, nsim = 100, what = "fitted", alpha = 0.5),
+  autoplot.clm(ols1, nsim = 100, what = "covariate", x = dat$pared,
+           xlab = "Education"),
+  ncol = 2
+)
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| 
+surrogate
+```
+:::
+:::
+
+## Model 2: Add Public School + GPA
+
+-   Let's run this model:
+
+```{r,}
+
+ols2 = clm(apply ~ pared_ + public + gpa, data=dat)
+
+ols2 %>% tidy() %>% kable()
+```
+
+## Interpreting Output
+
+```{r}
+ols2 = clm(apply ~ pared + public + gpa, data=dat)
+
+kable(tidy(ols2))
+
+```
+
+-   Coefs
+
+```{webr}
+
+```
+
+## Test proportional odds assumption
+
+```{r}
+
+brant.test(ols2)
+
+```
+
+## Visualization: stacked area plots (continuous predictors)
+
+```{r,fig.align='center', out.width="100%"}
+library(effects) # stacked plots
+
+stack <- plot(effect("gpa", ols2), style="stacked")
+```
+
+```{r, echo=FALSE, fig.align='center', out.width="100%"}
+stack 
+```
+
+## Visualization: stacked area plots (categorical predictors)
+
+```{r,fig.align='center', out.width="100%"}
+library(effects) # stacked plots
+
+stack <- plot(effect("public", ols2), style="stacked")
+```
+
+```{r, echo=FALSE, fig.align='center', out.width="100%"}
+stack 
+```
+
+## Model 3: Add public school + GPA interaction
+
+```{r}
+
+ols3 = clm(apply ~ public_dev + pared_dev*gpa, data=dat)
+
+ols3 %>% tidy() %>% kable()
+```
+
+## Model Comparisons
+
+-   Likelihood ratio tests (LRT)
+
+    -   Model comparisons
+
+```{r}
+#main effects model vs. interaction
+ols_test <- anova(ols2, ols3)
+
+knitr::kable(ols_test)
+
+```
+
+## Testing significance
+
+```{r}
+#main effects model vs. interaction
+# USE TYPE III IF INTERACTIONS ARE IMPORTANT
+ols_test <- car::Anova(ols3, type="III")
+knitr::kable(ols_test)
+```
+
+## Visualization: Interactions
+
+```{r}
+#interact <- ggemmeans(ols2, terms= c("gpa", "pared"))
+plot_predictions(ols3, condition = c("gpa", "pared_dev"), type = "prob") + facet_wrap(~group)
+
+```
+
+## Pairwise comparisons
+
+-   Results are on the logit (latent scale) by default
+
+```{r}
+# pairwise contrasts
+emmeans(ols3, list(pairwise ~ pared, pairwise ~ public))
+
+```
+
+## Simple slopes
+
+```{r}
+emtrends(ols3,pairwise ~ pared, var="gpa")
+```
+
+## Latent Scale
+
+```{plot(effect("pared:gpa", ols3, latent = TRUE))}
+
+```
+
+## Marginal effects
+
+```{r}
+avg_comparisons(ols3, terms="pared")
+```
+
+## Model fit
+
+-   Pseudo-$R^2$
+
+1 - $LL_{mod} /LL_{null}$
+
+```{r}
+library(easystats)
+#model goodness
+r2_mcfadden(ols3)
+```
+
+## Sample write-up
+
+> A proportional odds model was estimated to investigate factors (parent education, GPA, and public schooling) that influence whether undergraduates apply to graduate school (“unlikely,” “somewhat likely,” “very likely”). The overall model fit was poor, McFadden’s pseudo-R2 = .042. Parent education predicted the likelihood of applying to graduate school, *b* = 1.04, *z* = 3.942, *p* \< .001, OR = 2.82. Students with parents that went to college increased the odds of applying to graduate school by about 182%. Whether parents went to public or private school did not affect whether students applied to graduate school, *b* = -0.06, *z* = -0.197, *p* = .844, OR = 0.94. GPA was also a significant predictor, *b* = 0.615, *z* = 2.363, *p* \< .001, OR = 1.84. Each point increase on GPA was associated with a 84% increase in the likelihood of applying to college.
+
+## Extensions
+
+-   Ordinal regression in `brms`
+
+-   Figure one liner
+
+```{r, eval=FALSE}
+
+ols2_brm = brm(ordered(apply) ~  gpa, data=dat, family = cumulative, cores = 4,chains = 4, backend = "cmdstanr")
+
+```
+
+## Multilevel ordinal regressions
+
+-   Repeated measures designs
+
+-   Clustered/nested designs
+
+```{r, eval=FALSE}
+
+ols2_clmm = clmm()
+
+```
