@@ -31,7 +31,7 @@ Here's your roadmap for the semester!
 |  | 2/14/24 | Lab 2 |  |  | [{{< fa pen-ruler >}}](/Labs/Lab2.qmd) |  |
 | 4 | 2/19/24 | Logistic regression | [{{<    fa   book-open-reader >}}](/schedule/04-week-logistic.qmd) | [{{< fa laptop-code   >}}](/slides/04-logistic/logisticqmd.html) |  | Abby  |
 |  | 2/21/24 | Lab 3 |  |  | [{{< fa pen-ruler >}}](/Labs/Lab3-logistic.qmd) |  |
-| 5 | 2/26/24 | Polytomous models: Ordinal regression | [{{<    fa   book-open-reader >}}](/schedule/05-week-ord.qmd) | {{< fa laptop-code   >}} |  | Faustine |
+| 5 | 2/26/24 | Polytomous models: Ordinal regression | [{{<    fa   book-open-reader >}}](/schedule/05-week-ord.qmd) | [{{< fa laptop-code   >}}](/slides/Ordinal_Regression/05-ordinal-regression.html) |  | Faustine |
 |  | 2/28/24 | Lab 4 |  |  | {{< fa pen-ruler >}} |  |
 | 6 | 3/4/24 | Polytomous models:  Multinomial regression | [{{<    fa   book-open-reader >}}](/schedule/06-week-mult.qmd) | {{< fa laptop-code   >}} |  | Nicole  |
 |  | 3/6/24 | Lab 5 |  |  | {{< fa pen-ruler >}} |  |
