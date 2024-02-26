@@ -34,6 +34,10 @@ date: 2024-02-26
 
 -   What is the proportional odds assumption underlying ordinal regression? What do you do when it is violated?
 
+## Class
+
+{{< video https://www.youtube.com/watch?v=tJe0G-OSKdw width="800" height="400" >}}
+
 ## After class
 
 ### Textbook
