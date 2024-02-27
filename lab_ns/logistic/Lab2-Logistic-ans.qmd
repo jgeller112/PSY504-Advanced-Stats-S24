@@ -434,6 +434,10 @@ ses_plot
 binned_residuals(fit2)
 ```
 
+::: callout-note
+There is some cause for concern as less than 95% of residuals fall within the bounds
+:::
+
 ## Model fit
 
 -   Calculate the $R^2$ for this model
@@ -455,7 +459,9 @@ binned_residuals(fit2, term="age") %>% plot(show_dots=TRUE)
 
 ```
 
--   SES looks non-linear. I would maybe add a sqaured term.
+::: callout-note
+-   SES looks non-linear. I would maybe add a squared term.
+:::
 
 ## Reporting
 
@@ -464,11 +470,15 @@ Let's put this all together in a write-up. Be sure your answer includes the inte
 ::: callout-note
 ## Write-up
 
-Table 1 presents the model coefficients, standard errors, z-values, and p-values, providing insight into the influence of each predictor. A one unit increase in age was associated with a decrease probability of being satisfied with mass transportation spending, b = -0.007, 95% CI \[-0.012, -0.003\], p \< .001, OR = 0.992, 95% CI \[0.987, 0.996\]. Looking at the average marginal effect, 1 unit increases in age were associated with a 0.18% decrease in satisfaction with mass transportation spending. The probability of females being satisfied with mass transportation spending was 6.6% higher, b= 0.27, 95% CI \[0.11, 0.43\], p \< .001; OR = 1.31, 95% CI \[1.15, 1.47\] (Figure 1). A one unit increase in SES was associated with a decresed probability of being satisfied with mass transportation spending, b = -4.81e-03, 95% CI \[-8.14e-03, -1.49e-03\], p = 0.005; Std. beta = -0.12, 95% CI \[-0.20, -0.04\]). Looking at the average marginal effect, 1 unit increases in age were associated with a 0.15% decrease in satisfaction with mass transportation spending (Figure 2). The significant positive effect of the linear term for political views suggests that individuals with more conservative political views are more likely to report satisfaction with mass transportation spending (beta = 1.10, 95% CI \[0.77, 1.44\], p \< .001; Std. beta = 1.10, 95% CI \[0.77,1.44\]) although this trend does not seem to follow perfect linear increase. The probability of extreme conservatives being satisfied with mass transportation spending was 31.9% higher than for extreme liberals (Figure 3).
+Table 1 presents the model coefficients, standard errors, z-values, and p-values, providing insight into the influence of each predictor. A one unit increase in age was associated with a decrease probability of being satisfied with mass transportation spending, b = -0.007, 95% CI \[-0.012, -0.003\], p \< .001, OR = 0.992, 95% CI \[0.987, 0.996\]. Looking at the average marginal effect, 1 unit increases in age were associated with a 18% decrease in satisfaction with mass transportation spending. The probability of females being satisfied with mass transportation spending was 6.6% higher, b= 0.27, 95% CI \[0.11, 0.43\], p \< .001; OR = 1.31, 95% CI \[1.15, 1.47\] (Figure 1). A one unit increase in SES was associated with a decresed probability of being satisfied with mass transportation spending, b = -4.81e-03, 95% CI \[-8.14e-03, -1.49e-03\], p = 0.005; Std. beta = -0.12, 95% CI \[-0.20, -0.04\]). Looking at the average marginal effect, 1 unit increases in age were associated with a 15% decrease in satisfaction with mass transportation spending (Figure 2). There was a significant effect of political views. The probability of extreme conservatives being satisfied with mass transportation spending was 31.9% higher than for extreme liberals (Figure 3).
 :::
 
 ```{r model-summary, results='asis', echo=FALSE , fig.cap="Table 1"}
-modelsummary(fit3)
+
+fit_anova = anova(fit3, test="Chisq")
+
+fit_anova %>%
+  kable()
 ```
 
 ```{r plot-sexviews, fig.cap="Figure 1: Effect of Sex on Satisfaction with Mass Transportation", echo=FALSE}
