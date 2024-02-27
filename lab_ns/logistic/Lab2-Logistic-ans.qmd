@@ -23,12 +23,11 @@ engine: knitr
 
 -   If you are fitting a model, display the model output in a neatly formatted table. (The `gt` `tidy` and `kable` functions can help!). `Modelsummary` also looks good(https://vincentarelbundock.github.io/modelsummary/articles/modelsummary.html)
 
-- If you are creating a plot, use `ggplot` or `base`and make sure they are publication ready. That means there are clear labels for all axes, titles, etc.
+-   If you are creating a plot, use `ggplot` or `base`and make sure they are publication ready. That means there are clear labels for all axes, titles, etc.
 
-- Commit and push your work to GitHub regularly, at least after each exercise. Write short and informative commit messages.
+-   Commit and push your work to GitHub regularly, at least after each exercise. Write short and informative commit messages.
 
--  When you're done, we should be able to knit the final version of the QMD in your GitHub as a HTML.
-
+-   When you're done, we should be able to knit the final version of the QMD in your GitHub as a HTML.
 
 ## Data: General Social Survey
 
@@ -169,7 +168,7 @@ ggplot(data, aes(x = polviews, fill = factor(mass_trans_spend_right))) +
 
 ```
 
-The more conservative one's political views are the more they think the amount of spending on mass transportation is correct. 
+The more conservative one's political views are the more they think the amount of spending on mass transportation is correct.
 
 -   We’d like to use age as a quantitative variable in your model; however, it is currently a character data type because some observations are coded as "89 or older".
 
@@ -227,11 +226,9 @@ p_upper = exp(ci_upper) / (1 + exp(ci_upper))
 
 > Interpret the intercept in the context of the data. Convert the $\beta_0$ parameter out of the log-odds metric to the probability metric. Make sure to include the 95% confidence intervals. Then interpret the results in a sentence or two--what is the basic thing this probability tells us about?
 
+The log-odds of a participant thinking that the spending on mass transportation is "about right" when no other predictors are included in the model is 0.119. The 95% confidence interval for the intercept in log-odds scale ranged from 0.041 to 0.196.
 
-The log-odds of a participant thinking that the spending on mass transportation is "about right" when no other predictors are included in the model is 0.119. The 95% confidence interval for the intercept in log-odds scale ranged from 0.041 to 0.196. 
-
-The overall probability of individuals thinking the amount of spending on mass transportation was about right is 52.9% [95% CI: 51.05% to 54.89%].
-
+The overall probability of individuals thinking the amount of spending on mass transportation was about right is 52.9% \[95% CI: 51.05% to 54.89%\].
 
 > Now let's fit a model using the demographic factors - `age`,`sex`, `sei10` - to predict the odds a person is satisfied with spending on mass transportation. Make any necessary adjustments to the variables so the intercept will have a meaningful interpretation. *Neatly display the model coefficients (do not display the summary output)*
 
@@ -273,9 +270,9 @@ emm_sex <- emmeans(m1, "sex", type = "response")
 
 ```
 
-Being female (as compared to male) is associated with an increase in the log-odds of being satisfied with spending on mass transportation by 0.2557439 units (95% CI [0.09, 0.41]), holding all other variables constant. This equates to the odds of thinking the spending amount is right in females being 1.29 times the odds of thinking this in men (95% CI [1.13, 1.44]).
+Being female (as compared to male) is associated with an increase in the log-odds of being satisfied with spending on mass transportation by 0.2557439 units (95% CI \[0.09, 0.41\]), holding all other variables constant. This equates to the odds of thinking the spending amount is right in females being 1.29 times the odds of thinking this in men (95% CI \[1.13, 1.44\]).
 
-The predicted probability for females to be satisfied with spending on mass transportation is 55.9% (95% CI [53.3%, 58.5%]) and that of males is 49.5% (95% CI [46.7%, 52.4%]).
+The predicted probability for females to be satisfied with spending on mass transportation is 55.9% (95% CI \[53.3%, 58.5%\]) and that of males is 49.5% (95% CI \[46.7%, 52.4%\]).
 
 > Consider the relationship between age and one’s opinion about spending on mass transportation. Interpret the coefficient of age in terms of the logs odds and OR of being satisfied with spending on mass transportation. Please include the 95% CIs around each estimate.
 
@@ -292,9 +289,7 @@ ci_upper_or = 0.9937922 + 1.96 * 0.0016609
 
 ```
 
-A one unit increase in age is associated with a decrease in the log-odds of being satisfied with spending on mass transportation by 0.00616 units (95% CI [-0.0106, -0.00169]), holding all other variables constant. 
-The odds ratio is less than 1 (0.9938530), which confirms the negative relationship implied by the log-odds coefficient. Specifically, for each additional unit of age, the odds of being satisfied with mass transportation spending decrease by a factor of about 0.994, or approximately 0.6% per unit increase in age, holding other factors constant (95% CI [0.989, 0.998]).
-
+A one unit increase in age is associated with a decrease in the log-odds of being satisfied with spending on mass transportation by 0.00616 units (95% CI \[-0.0106, -0.00169\]), holding all other variables constant. The odds ratio is less than 1 (0.9938530), which confirms the negative relationship implied by the log-odds coefficient. Specifically, for each additional unit of age, the odds of being satisfied with mass transportation spending decrease by a factor of about 0.994, or approximately 0.6% per unit increase in age, holding other factors constant (95% CI \[0.989, 0.998\]).
 
 > Consider the relationship between SES and one’s opinion about spending on mass transportation. Interpret the coefficient of SES in terms of the logs odds and OR of being satisfied with spending on mass transportation. Please include the 95% CIs around each estimate.
 
@@ -310,9 +305,7 @@ ci_upper_or = 0.9938530 + 1.96 * 0.0022824
 
 ```
 
-A one unit increase in SES index is associated with a decrease in the log-odds of being satisfied with spending on mass transportation by 0.0062 units (95% CI [-0.0107, -0.0017]), holding all other variables constant. 
-The odds ratio is less than 1 (0.9937922), which confirms the negative relationship implied by the log-odds coefficient. Specifically, for each additional unit of SES index, the odds of being satisfied with mass transportation spending decrease by a factor of about 0.993, or approximately 0.7% per unit increase in SES index, holding other factors constant (95% CI [0.989, 0.998]).
-
+A one unit increase in SES index is associated with a decrease in the log-odds of being satisfied with spending on mass transportation by 0.0062 units (95% CI \[-0.0107, -0.0017\]), holding all other variables constant. The odds ratio is less than 1 (0.9937922), which confirms the negative relationship implied by the log-odds coefficient. Specifically, for each additional unit of SES index, the odds of being satisfied with mass transportation spending decrease by a factor of about 0.993, or approximately 0.7% per unit increase in SES index, holding other factors constant (95% CI \[0.989, 0.998\]).
 
 ## Marginal effects
 
@@ -326,18 +319,17 @@ avg_comparisons(m1, comparison = "difference") %>%
 
 ```
 
-- The marginal effect of age is -0.0015153 (95% CI [-0.0026, -0.0004]). So, for each additional unit increase of age, the probability of being satisfied with mass transportation spending decreases by approximately 0.15 percentage points, holding other factors constant (p < 0.01). 
+-   The marginal effect of age is -0.0015153 (95% CI \[-0.0026, -0.0004\]). So, for each additional unit increase of age, the probability of being satisfied with mass transportation spending decreases by approximately 0.15 percentage points, holding other factors constant (p \< 0.01).
 
-- The marginal effect of SES is -0.0015304 (95% CI [-0.0023, -0.0007]). For each one-unit increase in the socioeconomic index, the probability of being satisfied with mass transportation spending decreases by approximately 0.15 percentage points, holding other variables constant. 
+-   The marginal effect of SES is -0.0015304 (95% CI \[-0.0023, -0.0007\]). For each one-unit increase in the socioeconomic index, the probability of being satisfied with mass transportation spending decreases by approximately 0.15 percentage points, holding other variables constant.
 
-- The marginal effect for being female compared to male is 0.0630688 (95% CI [0.024, 0.101]). This indicates that females are, on average, about 6.31 percentage points more likely than males to be satisfied with mass transportation spending, holding other factors constant.
+-   The marginal effect for being female compared to male is 0.0630688 (95% CI \[0.024, 0.101\]). This indicates that females are, on average, about 6.31 percentage points more likely than males to be satisfied with mass transportation spending, holding other factors constant.
 
 ## Model comparison
 
-- Now let’s see whether a person’s political views has a significant impact on their odds of being satisfied with spending on mass transportation, after accounting for the demographic factors.
+-   Now let’s see whether a person’s political views has a significant impact on their odds of being satisfied with spending on mass transportation, after accounting for the demographic factors.
 
-> Conduct a drop-in-deviance/likelihood ratio test to determine if polviews is a significant predictor of attitude towards spending on mass transportation.
-Name these two models `fit2` and `fit3`, respectively. Compare the two models.
+> Conduct a drop-in-deviance/likelihood ratio test to determine if polviews is a significant predictor of attitude towards spending on mass transportation. Name these two models `fit2` and `fit3`, respectively. Compare the two models.
 
 ```{r}
 
@@ -360,7 +352,7 @@ test_likelihoodratio(fit2, fit3) %>% kable()
 
 > Is the model with polviews better than the model without?
 
-- Yes. 
+-   Yes.
 
 ## Visualization
 
@@ -436,7 +428,7 @@ ses_plot
 
 ## Model Assumptions
 
-- Is the logistic model a good choice for this data? 
+-   Is the logistic model a good choice for this data?
 
 ```{r}
 binned_residuals(fit2)
@@ -444,7 +436,7 @@ binned_residuals(fit2)
 
 ## Model fit
 
-- Calculate the $R^2$ for this model
+-   Calculate the $R^2$ for this model
 
 ```{r}
 
@@ -463,31 +455,30 @@ binned_residuals(fit2, term="age") %>% plot(show_dots=TRUE)
 
 ```
 
-- SES looks non-linear. I would maybe add a sqaured term. 
+-   SES looks non-linear. I would maybe add a sqaured term.
 
 ## Reporting
 
-Let's put this all together in a write-up.  Be sure your answer includes the interpretation of the model coefficients and associated hypothesis tests or confidence intervals used to support your response. Include a table of the results (using `modelsummary`) and figures highlighting significant effects. Make sure your write-up is in APA style and the figures and tables are publication-ready. 
+Let's put this all together in a write-up. Be sure your answer includes the interpretation of the model coefficients and associated hypothesis tests or confidence intervals used to support your response. Include a table of the results (using `modelsummary`) and figures highlighting significant effects. Make sure your write-up is in APA style and the figures and tables are publication-ready.
 
-Table 1 presents the model coefficients, standard errors, z-values, and p-values, providing insight into the influence of each predictor. A one unit increase in age was associated with a decresed probability of being satisfied with mass transportation spending, b = -0.007, 95% CI [-0.012, -0.003], p < .001, OR = 0.992, 95% CI [0.987, 0.996]. Looking at the average marginal effect, 1 unit increases in age were associated with a 0.18% decrease in satisfaction with mass transportation spending. The probability of females being satisfied with mass transportation spending was 6.6% higher, b= 0.27, 95% CI [0.11, 0.43], p < .001; OR = 1.31, 95% CI [1.15, 1.47] (Figure 1). A one unit increase in SES was associated with a decresed probability of being satisfied with mass transportation spending, b = -4.81e-03, 95% CI [-8.14e-03, -1.49e-03], p = 0.005; Std. beta = -0.12, 95% CI [-0.20, -0.04]). Looking at the average marginal effect, 1 unit increases in age were associated with a 0.15% decrease in satisfaction with mass transportation spending (Figure 2). The significant positive effect of the linear term for political views suggests that individuals with more conservative political views are more likely to report satisfaction with mass transportation spending (beta = 1.10, 95% CI [0.77, 1.44], p < .001; Std. beta = 1.10, 95% CI [0.77,1.44]) although this trend does not seem to follow perfect linear increase. The probability of extreme conservatives being satisfied with mass transportation spending was 31.9% higher than for extreme liberals (Figure 3).
+::: callout-note
+## Write-up
 
+Table 1 presents the model coefficients, standard errors, z-values, and p-values, providing insight into the influence of each predictor. A one unit increase in age was associated with a decrease probability of being satisfied with mass transportation spending, b = -0.007, 95% CI \[-0.012, -0.003\], p \< .001, OR = 0.992, 95% CI \[0.987, 0.996\]. Looking at the average marginal effect, 1 unit increases in age were associated with a 0.18% decrease in satisfaction with mass transportation spending. The probability of females being satisfied with mass transportation spending was 6.6% higher, b= 0.27, 95% CI \[0.11, 0.43\], p \< .001; OR = 1.31, 95% CI \[1.15, 1.47\] (Figure 1). A one unit increase in SES was associated with a decresed probability of being satisfied with mass transportation spending, b = -4.81e-03, 95% CI \[-8.14e-03, -1.49e-03\], p = 0.005; Std. beta = -0.12, 95% CI \[-0.20, -0.04\]). Looking at the average marginal effect, 1 unit increases in age were associated with a 0.15% decrease in satisfaction with mass transportation spending (Figure 2). The significant positive effect of the linear term for political views suggests that individuals with more conservative political views are more likely to report satisfaction with mass transportation spending (beta = 1.10, 95% CI \[0.77, 1.44\], p \< .001; Std. beta = 1.10, 95% CI \[0.77,1.44\]) although this trend does not seem to follow perfect linear increase. The probability of extreme conservatives being satisfied with mass transportation spending was 31.9% higher than for extreme liberals (Figure 3).
+:::
 
 ```{r model-summary, results='asis', echo=FALSE , fig.cap="Table 1"}
 modelsummary(fit3)
 ```
 
-
 ```{r plot-sexviews, fig.cap="Figure 1: Effect of Sex on Satisfaction with Mass Transportation", echo=FALSE}
 sex_plot
 ```
-
 
 ```{r plot-sesviews, fig.cap="Figure 2: Effect of SES  on Satisfaction with Mass Transportation", echo=FALSE}
 ses_plot
 ```
 
-
 ```{r plot-polviews, fig.cap="Figure 3: Effect of Political Views on Satisfaction with Mass Transportation", echo=FALSE}
 pol_plot
-
-
+```
