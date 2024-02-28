@@ -176,6 +176,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#visualization" id="toc-visualization" class="nav-link" data-scroll-target="#visualization">Visualization</a></li>
   <li><a href="#model-assumptions" id="toc-model-assumptions" class="nav-link" data-scroll-target="#model-assumptions">Model Assumptions</a></li>
   <li><a href="#model-fit" id="toc-model-fit" class="nav-link" data-scroll-target="#model-fit">Model fit</a></li>
+  <li><a href="#testing-polviews" id="toc-testing-polviews" class="nav-link" data-scroll-target="#testing-polviews">Testing Polviews</a></li>
   <li><a href="#reporting" id="toc-reporting" class="nav-link" data-scroll-target="#reporting">Reporting</a></li>
   </ul>
 </nav>
@@ -1046,6 +1047,67 @@ Note
 </div>
 </div>
 </section>
+<section id="testing-polviews" class="level2">
+<h2 class="anchored" data-anchor-id="testing-polviews">Testing Polviews</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>(fit3, <span class="st">"polviews"</span>) <span class="sc">%&gt;%</span> <span class="fu">pairs</span>() <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p.value <span class="sc">&lt;</span> .<span class="dv">05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> contrast                                 estimate    SE  df z.ratio p.value
+ Extremely liberal - Moderate               -0.927 0.195 Inf  -4.750  &lt;.0001
+ Extremely liberal - Slghtly conservative   -0.849 0.213 Inf  -3.990  0.0013
+ Extremely liberal - Conservative           -0.994 0.211 Inf  -4.712  0.0001
+ Extremely liberal - Extrmly conservative   -1.340 0.279 Inf  -4.799  &lt;.0001
+ Liberal - Moderate                         -0.709 0.131 Inf  -5.418  &lt;.0001
+ Liberal - Slghtly conservative             -0.631 0.156 Inf  -4.056  0.0010
+ Liberal - Conservative                     -0.776 0.153 Inf  -5.065  &lt;.0001
+ Liberal - Extrmly conservative             -1.123 0.239 Inf  -4.693  0.0001
+ Slightly liberal - Extrmly conservative    -0.733 0.241 Inf  -3.040  0.0382
+
+Results are averaged over the levels of: sex 
+Results are given on the log odds ratio (not the response) scale. 
+P value adjustment: tukey method for comparing a family of 7 estimates </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>(fit3, <span class="st">"polviews"</span>, <span class="at">type=</span><span class="st">"response"</span>) <span class="sc">%&gt;%</span> <span class="fu">pairs</span>() <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p.value <span class="sc">&lt;</span> .<span class="dv">05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> contrast                                 odds.ratio     SE  df null z.ratio
+ Extremely liberal / Moderate                  0.396 0.0772 Inf    1  -4.750
+ Extremely liberal / Slghtly conservative      0.428 0.0910 Inf    1  -3.990
+ Extremely liberal / Conservative              0.370 0.0781 Inf    1  -4.712
+ Extremely liberal / Extrmly conservative      0.262 0.0731 Inf    1  -4.799
+ Liberal / Moderate                            0.492 0.0644 Inf    1  -5.418
+ Liberal / Slghtly conservative                0.532 0.0828 Inf    1  -4.056
+ Liberal / Conservative                        0.460 0.0705 Inf    1  -5.065
+ Liberal / Extrmly conservative                0.325 0.0778 Inf    1  -4.693
+ Slightly liberal / Extrmly conservative       0.480 0.1159 Inf    1  -3.040
+ p.value
+  &lt;.0001
+  0.0013
+  0.0001
+  &lt;.0001
+  &lt;.0001
+  0.0010
+  &lt;.0001
+  0.0001
+  0.0382
+
+Results are averaged over the levels of: sex 
+P value adjustment: tukey method for comparing a family of 7 estimates 
+Tests are performed on the log odds ratio scale </code></pre>
+</div>
+</div>
+<ul>
+<li><p>Conservatives are 2-3x more likely to support mass transit spending compared to extremely liberal and liberal</p></li>
+<li><p>Extreme liberals are (.26, .34. .45)x likely to support spending compared to conservatives, moderates and slight conservatives</p></li>
+<li><p>Extrm conservatives are 2-3X more likely to support mass spending than libearls and slight liberals</p></li>
+<li><p>Liberals are (.49, .53)x likely to support spending than moderates and slight conservatives.</p></li>
+</ul>
+</section>
 <section id="reporting" class="level2">
 <h2 class="anchored" data-anchor-id="reporting">Reporting</h2>
 <p>Let’s put this all together in a write-up. Be sure your answer includes the interpretation of the model coefficients and associated hypothesis tests or confidence intervals used to support your response. Include a table of the results (using <code>modelsummary</code>) and figures highlighting significant effects. Make sure your write-up is in APA style and the figures and tables are publication-ready.</p>
@@ -1059,7 +1121,7 @@ Write-up
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Table 1 presents the model coefficients, standard errors, z-values, and p-values, providing insight into the influence of each predictor. A one unit increase in age was associated with a decrease probability of being satisfied with mass transportation spending, b = -0.007, 95% CI [-0.012, -0.003], p &lt; .001, OR = 0.992, 95% CI [0.987, 0.996]. Looking at the average marginal effect, 1 unit increases in age were associated with a 18% decrease in satisfaction with mass transportation spending. The probability of females being satisfied with mass transportation spending was 6.6% higher, b= 0.27, 95% CI [0.11, 0.43], p &lt; .001; OR = 1.31, 95% CI [1.15, 1.47] (Figure 1). A one unit increase in SES was associated with a decresed probability of being satisfied with mass transportation spending, b = -4.81e-03, 95% CI [-8.14e-03, -1.49e-03], p = 0.005; Std. beta = -0.12, 95% CI [-0.20, -0.04]). Looking at the average marginal effect, 1 unit increases in age were associated with a 15% decrease in satisfaction with mass transportation spending (Figure 2). There was a significant effect of political views. The probability of extreme conservatives being satisfied with mass transportation spending was 31.9% higher than for extreme liberals (Figure 3).</p>
+<p>Table 1 presents the model coefficients, standard errors, z-values, and p-values, providing insight into the influence of each predictor. A one unit increase in age was associated with a decrease probability of being satisfied with mass transportation spending, b = -0.007, 95% CI [-0.012, -0.003], p &lt; .001, OR = 0.992, 95% CI [0.987, 0.996]. Looking at the average marginal effect, 1 unit increases in age were associated with a 18% decrease in satisfaction with mass transportation spending. The probability of females being satisfied with mass transportation spending was 6.6% higher, b= 0.27, 95% CI [0.11, 0.43], p &lt; .001; OR = 1.31, 95% CI [1.15, 1.47] (Figure 1). A one unit increase in SES was associated with a decresed probability of being satisfied with mass transportation spending, b = -4.81e-03, 95% CI [-8.14e-03, -1.49e-03], p = 0.005; Std. beta = -0.12, 95% CI [-0.20, -0.04]). Looking at the average marginal effect, 1 unit increases in age were associated with a 15% decrease in satisfaction with mass transportation spending (Figure 2). There was a significant effect of political views. Looking at pairwise comparisons, The probability of extreme conservatives being satisfied with mass transportation spending was 31.9% higher than for extreme liberals (Figure 3).</p>
 </div>
 </div>
 <div class="cell-output-display">
