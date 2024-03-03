@@ -1,0 +1,628 @@
+---
+title: "Multinomial Regression"
+subtitle: "Princeton University"
+author: "Jason Geller, PH.D.(he/him)"
+date: 'Updated:`r Sys.Date()`'
+footer: "PSY 504: Advanced Statistics"
+format: 
+  revealjs:
+    theme: blood
+    css: slide-style.css
+    multiplex: true
+    transition: fade
+    slide-number: true
+    incremental: false 
+    chalkboard: true
+    fontsize: "25pt"
+webr:
+  packages: ["tidyverse", "easystats", "broom", "knitr","nnet", "emmeans", "ordinal", "ggeffects","NHANES"]
+filters:
+  - webr
+execute:
+  freeze: auto
+  echo: true
+  message: false
+  warning: false
+  fig-align: center
+  fig-width: 12
+  fig-height: 8
+  editor_options: 
+  chunk_output_type: inline
+  code-overflow: wrap
+  html:
+    code-fold: true
+    code-tools: true
+---
+
+## Packages
+
+```{r}
+library(tidyverse)
+library(easystats)
+library(marginaleffects)
+library(viridis)
+library(ggeasy)
+library(effects)
+library(ordinal)
+library(ggeffects)
+library(emmeans)
+library(foreign)
+library(car)
+library(knitr)
+library(patchwork)
+library(cowplot)
+library(MASS)
+
+options(scipen=999)
+
+```
+
+-   You can follow along here:
+
+## Outline
+
+::: columns
+::: {.column width="50%"}
+-   Introduce multinomial logistic regression
+
+    -   Multinomial distribution
+    -   Realtionship between logistic, ordinal and multinomial regression
+
+-   Motivating example: `NHANES` dataset
+:::
+
+::: {.column width="50%"}
+![](ordmult.jpeg){fig-align="center"}
+:::
+:::
+
+## Multinomial distribution
+
+-   Extension of Bernoulli and binomial distributions
+
+-   When you have more than two outcomes and fixed number of trials
+
+$$P(X_1 = x_1, X_2 = x_2, \ldots, X_k = x_k) = \frac{n!}{x_1! x_2! \cdots x_k!} p_1^{x_1} p_2^{x_2} \cdots p_k^{x_k}$$
+
+-   $X$ = \# of times events occur
+-   $p$ = probability of occurrence
+-   $n$ = \# of trials
+
+$$\text{Mean of } X_i = E[X_i] = n \cdot p_i$$$$\text{Variance of } X_i = \text{Var}(X_i) = n \cdot p_i \cdot (1 - p_i)$$
+
+## Multinomial Logistic Regression
+
+-   In ordinal regression:
+
+$$\begin{array}{rcl} L_1 &=& \alpha_1-\beta_1x_1-\cdots-\beta_p X_p\\ L_2 &=& \alpha_2-\beta_1x_1-\cdots-\beta_p X_p & \\ L_{J-1} &=& \alpha_{J-1}-\beta_1x_1-\cdots-\beta_p X_p \end{array}$$
+
+-   In the multinomial logistic model:
+
+$$\begin{array}{rcl} L_1 &=& \alpha_1+\beta_1x_1+\cdots+\beta_p X_p\\ L_2 &=& \alpha_2+\beta_2x_1+\cdots+\beta_p X_p & \\ L_{J-1} &=& \alpha_{J-1}+\beta_jx_1+\cdots+\beta_p X_p \end{array}$$
+
+## Multinomial logistic regression
+
+-   Choose a baseline category. Let's choose $y=0$. Then,
+
+$$P(y_i = 0|x_i) = P_{i0}$$ and $$P(y_i = 1|x_i) = P_{i1}$$
+
+$$\log\bigg(\frac{p_{i1}}{p_{i0}}\bigg) = \beta_{0k} + \beta_{1k} x_i$$
+
+-   Slope: $\beta_1$: when x increases by one unit, the odds of Y = 1 vs. baseline is expected to multiply by a factor or $exp(\beta)$
+
+-   Intercept: $\beta_0$: when x = 0 the odds of Y = 1 is expected to be $exp(\beta)$
+
+## Multinomial Logistic Regression
+
+-   Geller et al.(2018)
+
+    -   Which of the following best describes your pattern of study?
+
+        -   Light cram
+        -   Heavy cram
+        -   Space out
+
+-   Let "Space out" be the baseline category. Then
+
+$$\log\bigg(\frac{\pi_{light }}{\pi_{space}}\bigg) = \beta_{0B} + \beta_{1B}x_i \\[10pt]
+\log\bigg(\frac{\pi_{heavy}}{\pi_{space}}\bigg) = \beta_{0C} + \beta_{1C} x_i$$
+
+## Summary
+
+-   Multinomial logistic regression models the probabilities of j response categories (j-1)
+
+    -   Typically these compare each of the first m-1 categories to the last (reference) category
+
+        -   1 vs. m, 2 vs.m, 3 vs. m
+
+-   Logits for any pair of categories can be calculated from the m-1 fitted ones
+
+## NHANES data
+
+-   [National Health and Nutrition Examination Survey](https://www.cdc.gov/nchs/nhanes/index.htm) is conducted by the National Center for Health Statistics (NCHS)
+
+-   The goal is to *"assess the health and nutritional status of adults and children in the United States"*
+
+-   This survey includes an interview and a physical examination
+
+## NHANES data
+
+-   We will use the data from the <font class="vocab">`NHANES`</font> R package
+
+-   Contains 75 variables for the 2009 - 2010 and 2011 - 2012 sample years
+
+-   The data in this package is modified for educational purposes and should **not** be used for research
+
+-   Original data can be obtained from the [NCHS website](https://www.cdc.gov/nchs/data_access/index.htm) for research purposes
+
+-   Type <font class="vocab">`?NHANES`</font> in console to see list of variables and definitions
+
+## Health rating vs. age & physical activity
+
+-   **Question**: Can we use a person's age and whether they do regular physical activity to predict their self-reported health rating?
+
+-   We will analyze the following variables:
+
+    -   <font class="vocab">`HealthGen`: </font>Self-reported rating of participant's health in general. Excellent, Vgood, Good, Fair, or Poor.
+
+    -   <font class="vocab">`Age`: </font>Age at time of screening (in years). Participants 80 or older were recorded as 80.
+
+    -   <font class="vocab">`PhysActive`: </font>Participant does moderate to vigorous-intensity sports, fitness or recreational activities
+
+## The data
+
+```{webr-r}
+nhanes_adult <- NHANES %>%
+  #only use ages 18+
+  filter(Age >= 18) %>%
+  #select 4 vars from the full dataset
+  dplyr::select(HealthGen, Education, Age, PhysActive)  %>%
+  # get rid of nas
+  drop_na()
+
+```
+
+```{r}
+#| echo: false
+#| 
+library(NHANES)
+nhanes_adult <- NHANES %>%
+  #only use ages 18+
+  filter(Age >= 18) %>%
+  #select 4 vars from the full dataset
+  dplyr::select(HealthGen, Education, Age, PhysActive) %>%
+  mutate(PhysActive_yes=relevel(PhysActive, ref="Yes")) %>%
+  # get rid of nas
+  drop_na() 
+```
+
+```{r}
+glimpse(nhanes_adult)
+```
+
+## Exploratory data analysis
+
+```{r echo = F, fig.align="center", out.width = "50%"}
+
+library(patchwork)
+
+p1 <- ggplot(data = nhanes_adult, aes(x = Age)) + 
+  geom_histogram() +
+  labs(title = "Distribution of Age")
+p2 <- ggplot(data = nhanes_adult, aes(x = PhysActive)) + 
+  geom_bar() +
+  labs(title = "Moderate or vigorous sport or exercise")
+p3 <- ggplot(data = nhanes_adult, aes(x = HealthGen)) + 
+  geom_bar() +
+  labs(title = "Self-reported rating of overall health")
+
+p3+(p1/p2)
+
+```
+
+## Exploratory data analysis
+
+```{r echo = F,fig.align="center",out.width="80%", fig.width=14, fig.height=8}
+p1 <- ggplot(data = nhanes_adult, aes(x = HealthGen, y = Age)) +
+  geom_boxplot(fill = "steelblue") + 
+  labs(title = "Age vs. Health Rating") +
+  coord_flip()
+p2 <- ggplot(data = nhanes_adult, aes(x = PhysActive, fill = HealthGen)) +
+  geom_bar(position = "fill") +
+  labs(y = "Proportion", 
+       title = "Physical Activity vs. Health Rating") 
+p1 + p2
+```
+
+## Multinomial model in R
+
+-   Use the <font class="vocab">`multinom()`</font> function in the `nnet` package
+
+```{webr-r}
+library(nnet)# multinom 
+
+health_m <- multinom(HealthGen ~ PhysActive + Age, 
+                     data = nhanes_adult)
+summary(health_m)
+```
+
+```{r, echo = F, results = "hide"}
+library(nnet)# multinom 
+
+health_m <- multinom(HealthGen ~ PhysActive + Age, 
+                     data = nhanes_adult)
+summary(health_m)
+```
+
+## Output results
+
+```{webr-r}
+model_parameters(health_m, exponentiate = FALSE)%>%  filter(Response=="Fair") %>%
+  kable(digits = 3, format = "markdown")
+```
+
+```{webr-r}
+model_parameters(health_m, exponentiate = TRUE)%>%  filter(Response=="Fair") %>%
+  kable(digits = 3, format = "markdown")
+```
+
+## Fair vs. excellent health
+
+The baseline category for the model is `Excellent`
+
+The model equation for the log-odds a person rates themselves as having "Fair" health vs. "Excellent" is
+
+$$\log\Big(\frac{\hat{\pi}_{Fair}}{\hat{\pi}_{Excellent}}\Big) = 1.03  + 0.001 ~ \text{age} - 1.66 ~ \text{PhysActive}$$
+
+## Fair vs. excellent health: Interpretations
+
+$$\log\Big(\frac{\hat{\pi}_{Fair}}{\hat{\pi}_{Excellent}}\Big) = 1.03  + \color{Red} {0.001} ~ \text{age} - 1.66 ~ \text{PhysActive}$$
+
+. . .
+
+-   For each additional year in age, the odds a person rates themselves as having fair health versus excellent health are expected to multiply by `r round(exp(0.001), 3)` (exp(0.001)), holding physical activity constant.
+
+    -   As Age ⬆️, more likely to report Fair vs. Excellent health
+
+## Fair vs. excellent health: Interpretations
+
+$$\log\Big(\frac{\hat{\pi}_{Fair}}{\hat{\pi}_{Excellent}}\Big) = 1.03  + 0.001 ~ \text{age} \color{Red}{- 1.66} ~ \text{PhysActive}$$
+
+. . .
+
+-   The odds a person who does physical activity will rate themselves as having fair health versus excellent health are expected to be `r round(exp(-1.66 ),3)` `(exp(-1.66))` times the odds for a person who doesn't do physical activity, holding age constant.
+
+    -   A person who does physical activity is more likely to rate themselves in Excellent vs. Fair health
+
+## Interpretations
+
+$$\log\Big(\frac{\hat{\pi}_{Fair}}{\hat{\pi}_{Excellent}}\Big) = \color{Red}{1.03}  + 0.001 ~ \text{age} - 1.66 ~ \text{PhysActive}$$
+
+. . .
+
+-   The odds a 0 year old person who doesn't do physical activity rates themselves as having fair health vs. excellent health are `r round(exp(1.03),3)` `(exp(1.03))`.
+
+`r emo::ji("warning")` **Need to mean-center age for the intercept to have a meaningful interpretation!**
+
+## Good vs. Excellent health
+
+```{webr-r}
+model_parameters(health_m, exponentiate = FALSE)%>%  filter(Response=="Good") %>%
+  kable(digits = 3, format = "markdown")
+
+```
+
+```{webr-r}
+model_parameters(health_m, exponentiate = TRUE) %>% 
+  filter(Response=="Good") %>%
+  kable(digits = 3, format = "markdown")
+```
+
+## Good vs. Excellent health
+
+The baseline category for the model is `Excellent`
+
+The model equation for the log-odds a person rates themselves as having "Good" health vs. "Excellent" is
+
+$$\log\Big(\frac{\hat{\pi}_{Good}}{\hat{\pi}_{Excellent}}\Big) = 1.99  - 0.003   ~ \text{age} - 1.011 ~ \text{PhysActive}$$
+
+## Interpretations
+
+$$\log\Big(\frac{\hat{\pi}_{Good}}{\hat{\pi}_{Excellent}}\Big) = 1.99 \color{Red}{- 0.003}   ~ \text{age} - 1.011 ~ \text{PhysActive}$$
+
+. . .
+
+For each additional year in age, the odds a person rates themselves as having "Good" health versus "Excellent" health are expected to multiply by `r round(exp(-0.003), 3)` (exp(-0.003)), holding physical activity constant
+
+-   
+
+    -   As Age ⬆️, higher probability to report excellant health vs. good health
+
+## Interpretations
+
+$$\log\Big(\frac{\hat{\pi}_{Good}}{\hat{\pi}_{Excellent}}\Big) = {1.99}  - 0.003     ~ \text{age} \color{Red}{- 1.011} ~ \text{PhysActive}$$
+
+. . .
+
+-   The odds a person who does physical activity will rate themselves as having "Good" health versus "Excellent" health are expected to be `r round(exp(-1.01),3)` `(exp(-1.01))` times the odds for a person who doesn't do physical activity, holding age constant
+
+    -   A person who does physical activity ⬆️ rate themselves in Excellent vs. good health
+
+## Interpretations
+
+$$\log\Big(\frac{\hat{\pi}_{Good}}{\hat{\pi}_{Excellent}}\Big) = \color{Red}{1.99}  - 0.003  ~ \text{age} - 1.011 ~ \text{PhysActive}$$
+
+. . .
+
+-   The odds a 0 year old person who doesn't do physical activity rates themselves as having Good health vs. Excellent health are `r round(exp(1.99),3)` `(exp(1.99))`.
+
+<!-- -->
+
+-   Those reporting no physical activity are more likely to report Good vs. Excellent health
+
+`r emo::ji("warning")` **Need to mean-center age for the intercept to have a meaningful interpretation!**
+
+## Change baseline
+
+<br> <br>
+
+```{r, eval=FALSE}
+
+nhanes_adult %>%
+  mutate(HealthGen = relevel(as.factor(HealthGen), ref= "Poor"))
+#relevel modle to change baseline
+```
+
+## Model
+
+-   Fit LRT and test for main effects/interactions
+
+```{r}
+
+car::Anova(health_m) %>% 
+  kable()
+
+```
+
+## Comparisons
+
+-   `emmeans` approach
+
+    -   Log odds (category vs. reference) for the difference between variables (`PhysActive`)
+
+```{webr-r}
+
+multi_an <- emmeans(health_m, ~ PhysActive|HealthGen) # get education 
+coefs = contrast(regrid(multi_an, "log"),"trt.vs.ctrl1", by="PhysActive") # make sure logit and response vs. baseline
+contrast(coefs, "revpairwise", by = "contrast") %>% kable() # This line performs additional contrasts on the results obtained from the previous step (coefs).
+
+```
+
+## Comparisons
+
+```{r}
+
+multi_an <- emmeans(health_m, ~ PhysActive|HealthGen) # get education 
+coefs = contrast(regrid(multi_an, "log"),"trt.vs.ctrl1", by="PhysActive") # make sure logit and response vs. baseline
+contrast(coefs, "revpairwise", by = "contrast") %>% kable() # This line performs additional contrasts on the results obtained from the previous step (coefs).
+
+```
+
+## NHANES: Predicted probabilities: `PhysActive`
+
+```{r echo = T}
+#calculate predicted probabilities
+ggemmeans(health_m, terms=c("PhysActive")) %>%
+  kable(format = "markdown", digits = 3)
+```
+
+## Plot predicted probabilities: `PhysActive`
+
+```{r}
+#| fig-align: "center"
+#| 
+ ggemmeans(health_m, terms=c("PhysActive")) %>%   ggplot(., aes(x = x, y = predicted, fill = response.level)) + 
+  geom_bar(stat = "identity" ) +
+    geom_text(aes(label = round(predicted, 3)), color="white", position = position_fill(vjust = 0.5),size=5)  + 
+  easy_add_legend_title("Response") + 
+  labs(x="Physical Health", "Predicted Probablity") + 
+  theme(text = element_text(size = 30)) +  
+  scale_fill_viridis(discrete = TRUE) + 
+  theme_lucid(base_size=25)
+
+```
+
+## Plot predicted probabilities: `Age`
+
+```{r}
+#| fig-align: "center"
+#| 
+ggpredict(health_m, terms=c("Age")) %>%
+ggplot(., aes(x=x, y=predicted, fill=response.level)) + 
+    geom_area(alpha=0.6 , size=.5, colour="white") + 
+    labs(x="Age", y="Predicted Probablity") + 
+    scale_fill_viridis(discrete = T) +
+   easy_add_legend_title("Response") + 
+    theme_lucid(base_size=25)
+```
+
+# Model selection
+
+## Add `Education` to the model?
+
+-   We consider adding the participants' `Education` level to the model
+
+    -   Education takes values `8thGrade`, `9-11thGrade`, `HighSchool`, `SomeCollege`, and `CollegeGrad`
+
+-   Models we're testing:
+
+    -   Reduced Model: `Age`, `PhysActive`
+    -   Full Model: `Age`, `PhysActive`, `Education`
+
+$$\begin{align}&H_0: \beta_{8thGrade} = \beta_{9-11thGrade} = \beta_{HighSchool} = \beta_{SomeCollege} = \beta_{CollegeGrad} = 0\\
+&H_a: \text{ at least one }\beta_j \text{ is not equal to }0\end{align}$$
+
+## Add `Education` to the model?
+
+```{r echo = T, eval = F}
+#| message: false
+#| 
+model_red <- multinom(HealthGen ~ Age + PhysActive, 
+               data = nhanes_adult)
+model_full <- multinom(HealthGen ~ Age + PhysActive + 
+                         Education, 
+               data = nhanes_adult)
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| results: hide
+
+model_red <- multinom(HealthGen ~ Age + PhysActive, 
+               data = nhanes_adult)
+model_full <- multinom(HealthGen ~ Age + PhysActive + 
+                         Education, 
+               data = nhanes_adult)
+
+```
+
+## Add `Education` to the model?
+
+```{r echo = T}
+anova(model_full, model_full, test = "Chisq") %>%
+  kable(format = "markdown")
+```
+
+At least one coefficient associated with `Education` is non-zero. Therefore, we will include `Education` in the model.
+
+## Full model
+
+```{r}
+
+car::Anova(model_full, type="II") %>%
+  kable(format = "markdown", digits = 3)
+
+```
+
+## Comparisons
+
+-   Use `emmeans` to extract the log odds coefs for comparisons of interest
+
+```{r}
+multi_an <- emmeans(model_full, ~ Education|HealthGen) # get education 
+coefs = contrast(regrid(multi_an, "log"),"trt.vs.ctrl1", by="Education") # make sure logit and response vs. baseline
+contrast(coefs, "revpairwise", by = "contrast") # This line performs additional contrasts on the results obtained from the previous step (coefs).
+```
+
+## Predicted Probabilities: `Education`
+
+```{r}
+#| fig-align: "center"
+
+plot_edu <- ggemmeans(model_full, terms=c("Education")) %>%
+  ggplot(aes(x = x, y = predicted, fill = response.level))  +  
+  geom_bar(stat = "identity" ) + 
+   geom_text(aes(label = round(predicted, 3)), color="white", position = position_fill(vjust = 0.5),size=5) + 
+  easy_add_legend_title("Response") + 
+  labs(x="Education", "Predicted Probablity") + 
+  scale_fill_viridis(discrete = TRUE)
+
+```
+
+```{r, echo=FALSE, fig.align='center', out.width="50%", fig.retina=4}
+
+plot_edu
+
+```
+
+# Checking Assumptions
+
+## Assumptions for multinomial logistic regression
+
+-   Same assumptions as logistic regression
+    -   Fit separate logistic regressions to check for linearity, outliers, and multicollinearity
+
+```{r}
+
+nhanes_adult <- nhanes_adult %>%
+  mutate(Excellent = factor(if_else(HealthGen == "Excellent", "1", "0")), 
+         Vgood = factor(if_else(HealthGen == "Vgood", "1", "0")), 
+         Good = factor(if_else(HealthGen == "Good", "1", "0")), 
+         Fair = factor(if_else(HealthGen == "Fair", "1", "0")), 
+         Poor = factor(if_else(HealthGen == "Poor", "1", "0"))
+  )
+
+# fit sep logistic models
+
+```
+
+```{r}
+#| eval: false
+performance::check_model()
+```
+
+## Model fit
+
+-   Mcfadden's $R^2$
+
+```{r}
+#| eval: false
+r2_mcfadden()
+
+```
+
+## Effect Size
+
+-   Convert to Cohen's *d*
+
+$$ d = \frac{log(OR)*\sqrt(3)}{{\pi}}$$
+
+-   Recommended by a reviewer once
+
+```{r, eval=F}
+# easystats effectszie package
+
+effectsize::oddsratio_to_d()
+
+```
+
+## Write-up
+
+-   Report full model results
+    -   $\chi^2$ test
+        -   Age, $\chi^2 (4)$ = 19.30, *p* \< .05
+        -   PhysActive, $\chi^2 (4)$ = 242.63, *p* \< .05
+        -   Education, $\chi^2 (16)$ = 489.13, *p* \< .05
+-   Model fit: $R^2$
+
+::: callout-note
+-   Read the textbook chapter for example
+:::
+
+## Write-up
+
+-   Significant differences between all levels of self-reported health and variables of interest
+
+    -   Table with included ORs (see next slide for example)
+
+    -   Figure showing predicted probabilities
+
+## OR table (Geller et al., 2018)
+
+```{r, echo=FALSE, fig.align="center", out.width="100%"}
+knitr::include_graphics("oddsratios.png")
+```
+
+## Advanced Applications
+
+-   Multilevel multinomial models
+
+    -   brms
+    -   `mclogit` https://cran.r-project.org/web/packages/mclogit/mclogit.pdf
+
+```{r, eval=FALSE}
+
+health_m <- brm(HealthGen ~ PhysActive + Age, family=categorical, cores = 4, chains = 4, backend = "cmdstanr", data = nhanes_adult)
+
+```
