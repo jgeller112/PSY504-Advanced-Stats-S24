@@ -33,7 +33,7 @@ Here's your roadmap for the semester!
 |  | 2/21/24 | Lab 3 |  |  | [{{< fa pen-ruler >}}](/Labs/Lab3-logistic.qmd) |  |
 | 5 | 2/26/24 | Polytomous models: Ordinal regression | [{{<    fa   book-open-reader >}}](/schedule/05-week-ord.qmd) | [{{< fa laptop-code   >}}](/slides/Ordinal_Regression/05-ordinal-regression.html) |  | Faustine |
 |  | 2/28/24 | Lab 4 |  |  | [{{< fa pen-ruler >}}](/Labs/Lab4-Ord.qmd) |  |
-| 6 | 3/4/24 | Polytomous models:  Multinomial regression | [{{<    fa   book-open-reader >}}](/schedule/06-week-mult.qmd) | {{< fa laptop-code   >}} |  | Nicole  |
+| 6 | 3/4/24 | Polytomous models:  Multinomial regression | [{{<    fa   book-open-reader >}}](/schedule/06-week-mult.qmd) | [{{< fa laptop-code   >}}](/slides/06-Multinom/06-multinom.html) |  | Nicole  |
 |  | 3/6/24 | Lab 5 |  |  | {{< fa pen-ruler >}} |  |
 | 7 | Spring Break |   |  |  |  |  |
 | 8 | 3/18/24 | Poisson regression | [{{<    fa   book-open-reader >}}](/schedule/08-week-pos.qmd) | {{< fa laptop-code   >}} |  | Kennedy |

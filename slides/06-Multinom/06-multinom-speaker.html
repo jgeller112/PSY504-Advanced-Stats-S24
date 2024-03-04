@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.504">
 
   <meta name="author" content="Jason Geller, PH.D.(he/him)">
-  <meta name="dcterms.date" content="2024-03-03">
+  <meta name="dcterms.date" content="2024-03-04">
   <title>Multinomial Regression</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -555,7 +555,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"options":{"autorun":"false","comment":"","output":"true","label":"unnamed-chunk-1","out-height":"","context":"interactive","results":"markup","warning":"true","dpi":72,"classes":"","message":"true","fig-height":5,"fig-cap":"","out-width":"700px","fig-width":7},"id":1,"code":"nhanes_adult <- NHANES %>%\n  #only use ages 18+\n  filter(Age >= 18) %>%\n  #select 4 vars from the full dataset\n  dplyr::select(HealthGen, Education, Age, PhysActive)  %>%\n  # get rid of nas\n  drop_na()"},{"options":{"autorun":"false","comment":"","output":"true","label":"unnamed-chunk-2","out-height":"","context":"interactive","results":"markup","warning":"true","dpi":72,"classes":"","message":"true","fig-height":5,"fig-cap":"","out-width":"700px","fig-width":7},"id":2,"code":"library(nnet)# multinom \n\nhealth_m <- multinom(HealthGen ~ PhysActive + Age, \n                     data = nhanes_adult)\nsummary(health_m)"},{"options":{"autorun":"false","comment":"","output":"true","label":"unnamed-chunk-3","out-height":"","context":"interactive","results":"markup","warning":"true","dpi":72,"classes":"","message":"true","fig-height":5,"fig-cap":"","out-width":"700px","fig-width":7},"id":3,"code":"model_parameters(health_m, exponentiate = FALSE)%>%  filter(Response==\"Fair\") %>%\n  kable(digits = 3, format = \"markdown\")"},{"options":{"autorun":"false","comment":"","output":"true","label":"unnamed-chunk-4","out-height":"","context":"interactive","results":"markup","warning":"true","dpi":72,"classes":"","message":"true","fig-height":5,"fig-cap":"","out-width":"700px","fig-width":7},"id":4,"code":"model_parameters(health_m, exponentiate = TRUE)%>%  filter(Response==\"Fair\") %>%\n  kable(digits = 3, format = \"markdown\")"},{"options":{"autorun":"false","comment":"","output":"true","label":"unnamed-chunk-5","out-height":"","context":"interactive","results":"markup","warning":"true","dpi":72,"classes":"","message":"true","fig-height":5,"fig-cap":"","out-width":"700px","fig-width":7},"id":5,"code":"model_parameters(health_m, exponentiate = FALSE)%>%  filter(Response==\"Good\") %>%\n  kable(digits = 3, format = \"markdown\")"},{"options":{"autorun":"false","comment":"","output":"true","label":"unnamed-chunk-6","out-height":"","context":"interactive","results":"markup","warning":"true","dpi":72,"classes":"","message":"true","fig-height":5,"fig-cap":"","out-width":"700px","fig-width":7},"id":6,"code":"model_parameters(health_m, exponentiate = TRUE) %>% \n  filter(Response==\"Good\") %>%\n  kable(digits = 3, format = \"markdown\")"},{"options":{"autorun":"false","comment":"","output":"true","label":"unnamed-chunk-7","out-height":"","context":"interactive","results":"markup","warning":"true","dpi":72,"classes":"","message":"true","fig-height":5,"fig-cap":"","out-width":"700px","fig-width":7},"id":7,"code":"\nmulti_an <- emmeans(health_m, ~ PhysActive|HealthGen) # get education \ncoefs = contrast(regrid(multi_an, \"log\"),\"trt.vs.ctrl1\", by=\"PhysActive\") # make sure logit and response vs. baseline the difference in logs odds is equal to the log of the odds\ncontrast(coefs, \"revpairwise\", by = \"contrast\") %>% kable() # This line performs additional contrasts on the results obtained from the previous step (coefs)."}];
+  globalThis.qwebrCellDetails = [{"id":1,"code":"nhanes_adult <- NHANES %>%\n  #only use ages 18+\n  filter(Age >= 18) %>%\n  #select 4 vars from the full dataset\n  dplyr::select(HealthGen, Education, Age, PhysActive)  %>%\n  # get rid of nas\n  drop_na()","options":{"message":"true","context":"interactive","out-width":"700px","fig-height":5,"warning":"true","results":"markup","comment":"","fig-width":7,"classes":"","autorun":"false","out-height":"","fig-cap":"","output":"true","dpi":72,"label":"unnamed-chunk-1"}},{"id":2,"code":"library(nnet)# multinom \n\nhealth_m <- multinom(HealthGen ~ PhysActive + Age, \n                     data = nhanes_adult)\nsummary(health_m)","options":{"message":"true","context":"interactive","out-width":"700px","fig-height":5,"warning":"true","results":"markup","comment":"","fig-width":7,"classes":"","autorun":"false","out-height":"","fig-cap":"","output":"true","dpi":72,"label":"unnamed-chunk-2"}},{"id":3,"code":"model_parameters(health_m, exponentiate = FALSE)%>%  filter(Response==\"Fair\") %>%\n  kable(digits = 3, format = \"markdown\")","options":{"message":"true","context":"interactive","out-width":"700px","fig-height":5,"warning":"true","results":"markup","comment":"","fig-width":7,"classes":"","autorun":"false","out-height":"","fig-cap":"","output":"true","dpi":72,"label":"unnamed-chunk-3"}},{"id":4,"code":"model_parameters(health_m, exponentiate = TRUE)%>%  filter(Response==\"Fair\") %>%\n  kable(digits = 3, format = \"markdown\")","options":{"message":"true","context":"interactive","out-width":"700px","fig-height":5,"warning":"true","results":"markup","comment":"","fig-width":7,"classes":"","autorun":"false","out-height":"","fig-cap":"","output":"true","dpi":72,"label":"unnamed-chunk-4"}},{"id":5,"code":"model_parameters(health_m, exponentiate = FALSE)%>%  filter(Response==\"Good\") %>%\n  kable(digits = 3, format = \"markdown\")","options":{"message":"true","context":"interactive","out-width":"700px","fig-height":5,"warning":"true","results":"markup","comment":"","fig-width":7,"classes":"","autorun":"false","out-height":"","fig-cap":"","output":"true","dpi":72,"label":"unnamed-chunk-5"}},{"id":6,"code":"model_parameters(health_m, exponentiate = TRUE) %>% \n  filter(Response==\"Good\") %>%\n  kable(digits = 3, format = \"markdown\")","options":{"message":"true","context":"interactive","out-width":"700px","fig-height":5,"warning":"true","results":"markup","comment":"","fig-width":7,"classes":"","autorun":"false","out-height":"","fig-cap":"","output":"true","dpi":72,"label":"unnamed-chunk-6"}},{"id":7,"code":"\nmulti_an <- emmeans(health_m, ~ PhysActive|HealthGen) # get education \ncoefs = contrast(regrid(multi_an, \"log\"),\"trt.vs.ctrl1\", by=\"PhysActive\") # make sure logit and response vs. baseline the difference in logs odds is equal to the log of the odds\ncontrast(coefs, \"revpairwise\", by = \"contrast\") %>% kable() # This line performs additional contrasts on the results obtained from the previous step (coefs).","options":{"message":"true","context":"interactive","out-width":"700px","fig-height":5,"warning":"true","results":"markup","comment":"","fig-width":7,"classes":"","autorun":"false","out-height":"","fig-cap":"","output":"true","dpi":72,"label":"unnamed-chunk-7"}}];
 
   </script>
   <script type="module">
@@ -1461,7 +1461,7 @@ Jason Geller, PH.D.(he/him)
 </div>
 </div>
 
-  <p class="date">2024-03-03</p>
+  <p class="date">2024-03-04</p>
 </section>
 <section id="packages" class="slide level2">
 <h2>Packages</h2>
@@ -1690,10 +1690,16 @@ $ PhysActive_yes &lt;fct&gt; No, No, No, No, Yes, Yes, Yes, Yes, Yes, Yes, Yes, 
 <h2>Good vs.&nbsp;Excellent health</h2>
 <div id="qwebr-insertion-location-5"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="good-vs.-excellent-health-1" class="slide level2">
+<h2>Good vs.&nbsp;Excellent health</h2>
+<ul>
+<li>Get OR</li>
+</ul>
 <div id="qwebr-insertion-location-6"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
-<section id="good-vs.-excellent-health-1" class="slide level2">
+<section id="good-vs.-excellent-health-2" class="slide level2">
 <h2>Good vs.&nbsp;Excellent health</h2>
 <p>The baseline category for the model is <code>Excellent</code></p>
 <p>The model equation for the log-odds a person rates themselves as having “Good” health vs.&nbsp;“Excellent” is</p>
@@ -1880,7 +1886,7 @@ $ PhysActive_yes &lt;fct&gt; No, No, No, No, Yes, Yes, Yes, Yes, Yes, Yes, Yes, 
 <h2>Comparisons</h2>
 <ul>
 <li><p>For continuous predictors, <code>emmeans</code> uses marginal effects at the mean (MEM)</p></li>
-<li><p>We can use <code>marginaleffects</code> to get average effect of <code>Ag</code>e</p></li>
+<li><p>We can use <code>marginaleffects</code> to get average effect of <code>Age</code></p></li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">avg_slopes</span>(</span>
@@ -2410,7 +2416,7 @@ P value adjustment: tukey method for comparing a family of 5 estimates </code></
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>health_m <span class="ot">&lt;-</span> <span class="fu">brm</span>(HealthGen <span class="sc">~</span> PhysActive <span class="sc">+</span> Age, <span class="at">family=</span>categorical, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">data =</span> nhanes_adult)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>health_m <span class="ot">&lt;-</span> <span class="fu">brm</span>(HealthGen <span class="sc">~</span> PhysActive <span class="sc">+</span> Age, <span class="at">family=</span>categorical, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">data =</span> nhanes_adult)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="footer footer-default">
 <p>PSY 504: Advanced Statistics</p>
