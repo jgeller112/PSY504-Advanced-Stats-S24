@@ -10,3 +10,7 @@ In this lab, you will explore a dataset containing information about "The Great 
 
 
 To access Lab 4, please go here: [Click here](https://classroom.github.com/a/s_gqDxSP)
+
+## Lab Answers
+
+- [Lab 4 Answers](/lab_ns/ord/ord_lab_ans.qmd)

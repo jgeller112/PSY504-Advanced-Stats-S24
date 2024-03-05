@@ -24,4 +24,6 @@ date: 2023-02-27
   - Describe a process for safely simplifying a multinomial logistic regression model by removing input variables.
 
 
+## Class
 
+{{< video https://youtu.be/VC_-1IsUiBY width="800" height="400" >}}
