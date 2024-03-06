@@ -8,4 +8,4 @@ toc_float: true
 
 In this lab, we will be using data from `eightythirtyfive` looking at factors that influence voting behavior.
 
-To access Lab 4, please go here: [Click here](https://classroom.github.com/a/RZ8R_GoW)
+To access Lab 5, please go here: [Click here](https://classroom.github.com/a/RZ8R_GoW)
