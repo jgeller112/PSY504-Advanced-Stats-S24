@@ -1,0 +1,808 @@
+---
+title: "Poisson (🐟), Negative Binomial, and Zero-Inflated Models"
+subtitle: "Princeton University"
+author: "Jason Geller, PH.D.(he/him)"
+date: 'Updated:`r Sys.Date()`'
+footer: "PSY 504: Advanced Statistics"
+format: 
+  revealjs:
+    theme: blood
+    css: slide-style.css
+    multiplex: true
+    transition: fade
+    slide-number: true
+    incremental: false 
+    chalkboard: true
+    fontsize: "25pt"
+webr:
+  packages: ["tidyverse", "easystats", "broom", "knitr", "emmeans", "ggeffects", "lme4", "pscl", "glmmTMB"]
+filters:
+  - webr
+execute:
+  freeze: auto
+  echo: true
+  message: false
+  warning: false
+  fig-align: center
+  fig-width: 12
+  fig-height: 8
+  editor_options: 
+  chunk_output_type: inline
+  code-overflow: wrap
+  html:
+    code-fold: true
+    code-tools: true
+---
+
+## Packages
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(tidymodels)
+library(emoji)
+library(GGally)
+library(easystats)
+library(interactions)
+library(performance)
+library(kableExtra)
+library(ggeffects)
+library(lme4)
+library(emmeans)
+library(broom.mixed)
+library(DHARMa)
+library(xaringanExtra)
+library(knitr)
+library(patchwork)
+library(viridis)
+library(ggfortify)
+library(gridExtra)
+library(pscl) # zip 
+library(glmmTMB) # zero inflated glmer 
+
+```
+
+## The count
+
+-   Today's lectrue brought to you by the number 8
+
+```{r, echo=F, out.width="100%", fig.align='center'}
+
+knitr::include_graphics("images/count.jpeg")
+```
+
+## Poisson distribution {data-link="Poisson distribution"}
+
+```{r}
+#| echo: false
+#| fig-align: "center"
+#| 
+
+set.seed(2000)
+sim1 <- rpois(100000,1)
+sim2 <- rpois(100000,5)
+sim3 <- rpois(100000,50)
+pois_sim <- tibble (
+  sim1 = sim1, 
+  sim2 = sim2, 
+  sim3 = sim3
+)
+
+ggplot(data = pois_sim, aes(x = sim1)) +
+  geom_histogram() +
+  labs(x = "", title = "lambda:1") + 
+  theme_lucid(base_size=25)
+
+
+```
+
+## Poisson distribution
+
+Let $Y$ be the number of events in a given unit of time or space. Then $Y$ can be modeled using a .vocab[Poisson distribution]
+
+$$P(Y=y) = \frac{e^{-\lambda}\lambda^y}{y!} \hspace{10mm} y=0,1,2,\ldots, \infty$$
+
+-   $E(Y) = Var(Y) = \lambda$ (*just the mean number of events*)
+-   The distribution is typically skewed right, particularly if $\lambda$ is small
+-   The distribution becomes more symmetric as $\lambda$ increases
+    -   If $\lambda$ is sufficiently large, it can be approximated using a normal distribution
+
+## Poisson distribution
+
+```{r}
+#| fig-align: "center"
+#| echo: false
+#| 
+set.seed(2000)
+sim1 <- rpois(100000,1)
+sim2 <- rpois(100000,5)
+sim3 <- rpois(100000,50)
+pois_sim <- tibble (
+  sim1 = sim1, 
+  sim2 = sim2, 
+  sim3 = sim3
+)
+p1 <- ggplot(data = pois_sim, aes(x = sim1)) +
+  geom_histogram() +
+  labs(x = "", title = "lambda:1")
+p2 <- ggplot(data = pois_sim, aes(x = sim2)) +
+  geom_histogram() +
+  labs(x = "", title = "lambda:5")
+p3 <- ggplot(data = pois_sim, aes(x = sim3)) +
+  geom_histogram() +
+  labs(x = "", title = "lambda:50")
+p1 + p2 + p3 
+```
+
+```{r echo = F}
+sum1 <- c(mean(sim1), var(sim1))
+sum2 <- c(mean(sim2), var(sim2))
+sum3 <- c(mean(sim3), var(sim3))
+data <- rbind(sum1,sum2,sum3)
+rownames(data) <- c("lambda = 1", "lambda = 5","lambda = 50")
+colnames(data) <- c("Mean", "Variance")
+kable(data,format="html")
+```
+
+## Examples
+
+The annual number of earthquakes registering at least 2.5 on the Richter Scale and having an epicenter within 40 miles of downtown Memphis follows a Poisson distribution with mean 6.5. **What is the probability there will be 3 or fewer such earthquakes next year?**
+
+$$P(Y<=y) = \frac{e^{-6.5}6.5^0} {0!}+
+\frac{e^{-6.5}6.5^1} {1!} + 
+ \frac{e^{-6.5}6.5^2} {2!} + 
+  \frac{e^{-6.5}6.5^3} {3!}$$
+
+```{webr-r}
+a=(exp(-6.5) * 6.5^0) / factorial(0)
+b=(exp(-6.5) * 6.5^1) / factorial(1)
+c=(exp(-6.5) * 6.5^2) / factorial(2)
+d=(exp(-6.5) * 6.5^3) / factorial(3)
+
+ppois(3, 6.5)
+```
+
+## Examples
+
+-   Exact count
+
+    -   Let's say you read, on average, 10 pages an hour. **What is the probability you will read 8 pages in an hour?**
+
+. . .
+
+$$P(Y=y)= \frac{e^{-10}10^8} {8!}$$
+
+```{webr-r}
+
+prob <- (exp(-10) * 10^8) / factorial(8)
+
+dpois(x=8, lambda=10)
+
+prob
+
+```
+
+# Poisson regression
+
+## Preferential viewing task
+
+-   The data: viewing behavior to emotional faces
+
+```{r, fig.align='center', echo=FALSE}
+
+include_graphics("images/faces.png")
+
+```
+
+## Preferential viewing task
+
+**Response**:
+
+-   Number of fixations to each face
+
+-   **Predictors**:
+
+    -   `Emotion`: Anger vs. Happy (within-S)
+    -   `Group`: Control vs. Stuttering (between subject)
+
+## The data
+
+```{r}
+hh_data <- read.csv("https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/Poisson/data/tobii_aoi_study1.csv")
+```
+
+## The data
+
+```{r, echo=TRUE}
+hh_data <- hh_data %>% dplyr::select(ID, Number_of_fixations, emotion, Group) %>%
+  filter(emotion=="Anger"| emotion=="Happy")
+
+head(hh_data) %>%
+  kable()
+  
+```
+
+## Response variable
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| 
+ggplot(data = hh_data, aes(x = Number_of_fixations)) +
+  geom_histogram() + 
+  labs(title = "Total number of fixations")
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+
+hh_data %>% ungroup() %>%
+  summarise(mean = mean(Number_of_fixations), var = var(Number_of_fixations), ratio=mean/var) %>%
+  kable(digits = 3)
+
+
+```
+:::
+:::
+
+## Why the least-squares model doesn't work
+
+The goal is to model $\lambda$, the expected number of fixations on faces, as a function of the predictors (covariates)
+
+. . .
+
+We might be tempted to try a linear model $$\lambda_i = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \dots + \beta_px_{ip}$$
+
+. . .
+
+This model won't work because...
+
+-   It could produce negative values of $\lambda$ for certain values of the predictors
+
+-   The equal variance assumption required to conduct inference for linear regression is violated
+
+## Poisson regression model
+
+If $Y_i \sim Poisson$ with $\lambda = \lambda_i$ for the given values $x_{i1}, \ldots, x_{ip}$, then
+
+\
+$$\log(\lambda_i) = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_p x_{ip}$$
+
+. . .
+
+-   Each observation can have a different value of $\lambda$ based on its value of the predictors $x_1, \ldots, x_p$
+
+-   $\lambda$ determines the mean and variance, so we don't need to estimate a separate error term
+
+## Assumptions for Poisson regression
+
+-   **Poisson response**: The response variable is a count per unit of time or space, described by a Poisson distribution, at each level of the predictor(s)
+
+-   **Independence**: The observations must be independent of one another
+
+-   **Linearity**: The log of the mean rate, $\log(\lambda)$, must be a linear function of the predictor(s)
+
+-   **Mean = Variance**: The mean must equal the variance
+
+## Poisson vs. multiple linear regression
+
+```{r, OLSpois, fig.align="center",out.width="60%", fig.cap='Regression models: Linear regression (left) and Poisson regression (right).',echo=FALSE, warning=FALSE, message=FALSE}
+## Sample data for graph of OLS normality assumption
+## Code from https://stackoverflow.com/questions/31794876/ggplot2-how-to-curve-small-gaussian-densities-on-a-regression-line?rq=1
+set.seed(0)
+dat <- data.frame(x=(x=runif(10000, 0, 50)),
+                  y=rnorm(10000, 10*x, 100))
+## breaks: where you want to compute densities
+breaks <- seq(0, max(dat$x), len=5)
+dat$section <- cut(dat$x, breaks)
+## Get the residuals
+dat$res <- residuals(lm(y ~ x, data=dat))
+## Compute densities for each section, flip the axes, add means 
+## of sections.  Note: densities need to be scaled in relation 
+## to section size (2000 here)
+dens <- do.call(rbind, lapply(split(dat, dat$section), function(x) {
+  d <- density(x$res, n=5000)
+  res <- data.frame(x=max(x$x)- d$y*1000, y=d$x+mean(x$y))
+  res <- res[order(res$y), ]
+  ## Get some data for normal lines as well
+  xs <- seq(min(x$res), max(x$res), len=5000)
+  res <- rbind(res, data.frame(y=xs + mean(x$y),
+                x=max(x$x) - 1000*dnorm(xs, 0, sd(x$res))))
+  res$type <- rep(c("empirical", "normal"), each=5000)
+  res
+}))
+dens$section <- rep(levels(dat$section), each=10000)
+ols_assume <- ggplot(dat, aes(x, y)) +
+  geom_point(size = 0.1, alpha = .25) +
+  geom_smooth(method="lm", fill=NA, lwd=2) +
+  geom_path(data=dens[dens$type=="normal",], 
+            aes(x, y, group=section), 
+            color="salmon", lwd=1.1) +
+  theme_bw() +
+  geom_vline(xintercept=breaks, lty=2)
+# Now make Poisson regression picture
+set.seed(0)
+dat <- data.frame(x=(x=runif(1000, 0, 20)),
+                  y=rpois(1000, exp(.1*x)))
+## breaks: where you want to compute densities
+breaks <- seq(2, max(dat$x), len=5)
+dat$section <- cut(dat$x, breaks)
+## Get the residuals
+dat$res <- dat$y - .1*dat$x
+## Compute densities for each section, flip the axes, add means
+## of sections.  Note: densities need to be scaled in relation 
+## to section size
+dens <- do.call(rbind, lapply(split(dat, dat$section), function(x) {
+  d <- density(x$res, n=500)
+  res <- data.frame(x=max(x$x)- d$y*10, y=d$x+mean(x$y))
+  res <- res[order(res$y), ]
+  ## Get some data for poisson lines as well
+  xs <- seq(min(x$y), max(x$y), len=500)
+  res <- rbind(res, data.frame(y=xs,
+          x=max(x$x) - 10*dpois(round(xs), exp(.1*max(x$x)))))
+  res$type <- rep(c("empirical", "poisson"), each=500)
+  res
+}))
+dens$section <- rep(levels(dat$section), each=1000)
+pois_assume <- ggplot(dat, aes(x, jitter(y, .25))) +
+  geom_point(size = 0.1) +
+  geom_smooth(method="loess", fill=NA, lwd=2) +
+  geom_path(data=dens[dens$type=="poisson",], 
+            aes(x, y, group=section), 
+            color="salmon", lwd=1.1) +
+  theme_bw() + ylab("y") + xlab("x") +
+  geom_vline(xintercept=breaks, lty=2)
+grid.arrange(ols_assume, pois_assume, ncol = 2)
+```
+
+.footnote\[From [BMLR Figure 4.1](https://bookdown.org/roback/bookdown-BeyondMLR/ch-poissonreg.html#a-graphical-look-at-poisson-regression)\]
+
+# Poisson regression: Fitting and Interpretation
+
+## Poisson regression: Fitting and Interpretation
+
+```{r, echo=FALSE}
+# contrast coding
+hh_data_contrast <- hh_data %>%
+  mutate(emotion=ifelse(emotion=="Anger", 0.5, -0.5), Group=ifelse(Group=="S", 0.5, -0.5))
+```
+
+-   `glm`
+
+```{r, eval=TRUE}
+
+# regular glm 
+model_glm <- glm(Number_of_fixations ~ emotion*Group, data = hh_data, family = poisson(link = "log")) # change family to poisson
+
+```
+
+-   `glmer`
+
+```{r}
+# fit poisson model# change family to poisson
+# repeated measures poisson
+#dummy coded
+model1 <- glmer(Number_of_fixations ~ emotion+ Group + (1|ID), data = hh_data, family = poisson)
+#contrast coded (0.5, -0.5)
+model1_cont <- glmer(Number_of_fixations ~ emotion+ Group + (1|ID), data = hh_data_contrast, family = poisson(link = "log")) # change family to poisson
+```
+
+## Poisson regression: Fitting and interpretation
+
+```{r}
+parameters::model_parameters(model1_cont, exponentiate = FALSE) %>% kable(digits = 3, format = "markdown")
+```
+
+## Poisson regression: Fitting and interpretation
+
+-   Mean counts = more interpretable
+
+```{r, fig.align='center', echo=FALSE}
+
+knitr::include_graphics("images/log_poi.png")
+
+```
+
+## Poisson regression: Fitting and interpretation
+
+-   Incidence rate ratios (IRR)
+
+    -   The IRR for a one-unit change in $x_i$ is exp $(\beta)$
+
+    -   The coefficient tells you how changes in X affect the rate at which Y occurs
+
+```{r, echo=FALSE}
+model_parameters(model1_cont, exponentiate = TRUE) %>% 
+  knitr::kable(digits = 3, format = "markdown")
+```
+
+## Poisson regression: Fitting and interpretation
+
+```{r, echo=FALSE}
+model_parameters(model1_cont, exponentiate = FALSE) %>%
+  knitr::kable(digits = 3, format = "markdown")
+```
+
+-   exp($\alpha$) = Overall mean count
+
+## Poisson regression: Fitting and interpretation
+
+::: panel-tabset
+## Log
+
+```{r}
+model_parameters(model1_cont, effects="fixed") %>% 
+  knitr::kable(digits = 3, format = "markdown") %>% kableExtra::row_spec(2, bold= T, color="red", background = "white")
+```
+
+## Exp
+
+```{r}
+model_parameters(model1_cont, exponentiate = TRUE, effects="fixed") %>% 
+  knitr::kable(digits = 3, format = "markdown") %>% kableExtra::row_spec(2, bold= T, color="red", background = "white")
+```
+:::
+
+::: callout-important
+-.08 = Angry faces have -.08 fewer log fixations than happy faces, 
+  - or - exp(-.08) = `r round(exp(-.08), 3)`x that of happy faces
+    - The expected number of fixations is 8% lower for angry faces vs. happy faces
+:::
+
+## Main effect: `emotion`
+
+-   Mean counts for each condition
+
+```{r}
+marginaleffects::marginal_means(model1, "emotion") %>% 
+  kable(digits = 3, format = "markdown")
+```
+
+## Marginal Effects
+
+-   Difference in counts
+
+```{r}
+
+marginaleffects::avg_comparisons(model1, variables = "emotion") %>%
+  kable()
+
+```
+
+::: callout-important
+
+Happy faces had .33  more fixations than Angry daces
+:::
+
+
+## Poisson regression: Fitting and interpretation
+
+::: panel-tabset
+## Log
+
+```{r}
+model_parameters(model1_cont, effects="fixed") %>% 
+  knitr::kable(digits = 3, format = "markdown") %>% kableExtra::row_spec(., row=3, bold= T, color="red", background = "white")
+
+```
+
+## Exp
+
+```{r}
+model_parameters(model1_cont, exponentiate = TRUE, effects="fixed") %>% 
+  knitr::kable(digits = 3, format = "markdown") %>% kableExtra::row_spec(., row=3, bold= T, color="red", background = "white")
+
+```
+:::
+
+::: callout-important
+.085 = Stuttering group has .085 more log fixations than Control group, or
+
+-   exp(0.85) = `r round(exp(.085), 3)`x that of Control group
+
+  - The expected number of fixations is 8% higher  for angry faces vs. happy faces
+:::
+
+## Main effect: `Group`
+
+-   Marginal mean counts
+
+```{r}
+marginaleffects::marginal_means(model1, "Group") %>% 
+  kable(digits = 3, format = "markdown")
+
+```
+
+::: callout-important
+
+Stuttering had .33  more fixations than Control group. 
+:::
+
+
+## Marginal Effects
+
+-   Difference in counts
+
+```{r}
+
+marginaleffects::avg_comparisons(model1, variables = "Group") %>%
+  kable()
+
+```
+
+## Full model
+
+-   LRT test for more complex models
+
+```{r}
+#overall model
+mod_1 <- car::Anova(model1, type="II")
+
+mod_1 %>% kable(digits = 3, format = "markdown")
+```
+
+## Visualizing poisson regression
+
+-   Used expected/predicted values
+
+```{r, fig.align='center', out.width="60%"}
+ggemmeans(model1, terms=c("emotion", "Group")) %>%
+  plot()
+```
+
+## Model 2: Add interaction
+
+```{r}
+model2 <- glmer(Number_of_fixations ~ emotion*Group+ (1|ID), data = hh_data_contrast, family = poisson)
+
+model_parameters(model2) %>% 
+    kable(digits = 3, format = "markdown")
+
+```
+
+## Add `emotion*Group` to the model?
+
+-   `r emoji("check")` Conduct a drop-in-deviance LR test
+
+```{r}
+anova(model1_cont, model2, test="chisq") %>% 
+  kable()
+```
+
+. . .
+
+-   `r emoji("check")` Yes!
+
+## Interaction: `Group*emotion`
+
+-   Simple effects test done on the *response* (count)
+
+```{r}
+
+marginaleffects::avg_comparisons(
+    model_glm,
+    variables  = "Group", 
+    by="emotion") %>%
+  kable()
+
+```
+
+. . .
+
+- More fixations to Angry faces vs. Happy faces for stuttering group
+
+## Assumptions
+
+```{r, fig.align="center", out.width="60%"}
+performance::check_model(model2, check = c("pp_check", "outliers", "overdispersion"))
+```
+
+## Overdispersion
+
+**Overdispersion**: There is more variability in the response than what is implied by the Poisson model
+
+```{r echo = F}
+hh_data %>%
+  summarise(mean = mean(Number_of_fixations), var = var(Number_of_fixations)) %>%
+  kable(digits = 3)
+```
+
+```{r echo = F}
+hh_data %>%
+  group_by(emotion) %>%
+  summarise(mean = mean(Number_of_fixations), var = var(Number_of_fixations), ratio=mean/var) %>%
+  kable(digits = 3)
+
+```
+
+```{r, echo=F}
+
+hh_data %>%
+  group_by(Group) %>%
+  summarise(mean = mean(Number_of_fixations), var = var(Number_of_fixations), ratio=mean/var) %>%
+  kable(digits = 3)
+
+```
+
+## Testing for overdispersion
+
+-   `Easystats`
+
+```{r}
+
+check_overdispersion(model1)
+
+```
+
+## Why overdispersion matters
+
+-   If there is overdispersion, then there is more variation in the response than what's implied by a Poisson model. This means:
+
+`r emoji("x")` The standard errors of the model coefficients are artificially small
+
+`r emoji("x")` The p-values are artificially small
+
+`r emoji("x")` This could lead to models that are more complex than what is needed
+
+## Why overdispersion matters
+
+-   We can take overdispersion into account by:
+
+    -   Inflating standard errors by multiplying them by a dispersion factor
+
+    -   **Using a negative-binomial regression model**
+
+# Negative binomial regression model
+
+## Negative binomial regression model
+
+-   Another approach to handle overdispersion is to use a **negative binomial regression model**
+-   
+-   Basically a poisson model, but allowing for a dispersion parameter *r*
+
+$$Var(Y) = \mu + \frac{\mu^2}{r}$$
+
+-   Makes the counts more dispersed than with a single parameter
+
+## Running negative binomial
+
+-   `glmer.nb` (nested data)
+
+```{r}
+#use to run neg binomial
+m.nb_c <- glmer.nb(Number_of_fixations ~ emotion*Group + (1|ID), data=hh_data_contrast, verbose=FALSE)
+
+```
+
+```{r}
+#| echo: false
+
+model_parameters(m.nb_c, conf.int =TRUE) %>%
+  kable(digits = 3, format = "markdown")
+```
+
+## Running negative binomial
+
+-   `glm.nb` (non-nested/between-subjects)
+
+```{r eval=F}
+library(MASS)
+#use to run neg binomial
+m.nb <- glm.nb(Number_of_fixations ~ emotion*Group, data=hh_data)
+```
+
+## Visualize negative binomial
+
+-   Same as Poisson (show expected counts)
+
+```{r, fig.align='center', out.width="60%", echo=F}
+plot(ggemmeans(m.nb, terms=c("Group", 'emotion'))) +
+  theme_lucid(base_size = 25)
+```
+
+## Effect sizes
+
+-   Psuedo-$R^2$
+
+```{r}
+
+performance::r2(model1_cont) # glmer
+#performance::r2_mcfadden(model1) # glm
+
+partR2::partR2(model1_cont,data=hh_data, 
+  partvars = c("Group", "emotion"),
+  R2_type = "marginal", nboot = 10, CI = 0.95
+)
+
+```
+
+-   [RecountD](https://stefany.shinyapps.io/RcountD/)
+
+    -   Cohen's *d*
+
+## Reporting a poisson regression
+
+-   State your hypothesis, statistical test, its link function, and justify the use of a poisson regression
+
+    -   We hypothesized that years that had more water main breaks would have fewer renewable projects approved. The number of renewable projects approved by the City of Toronto represented a count of rare events, which violated the normality assumption required for traditional regression. Thus, a poisson regression with a log link function was used to predict the number of renewable projects in Toronto in a given year using R 4.0.4 (R Core Team, 2020). Prior to the analysis, the number of water main breaks was mean centered. Furthermore, the number of water main breaks was divided by 100 to improve interpretation of the slopes. Effect sizes that approximate Cohen’s d were calculated using the RCountD Shiny App (Coxe, 2018).
+
+## Reporting a Poisson Regression
+
+-   State the full model and your results
+
+    -   The number of renewable projects in a given year were modeled as a function of water main breaks in the same year. As shown in Figure 1, this analysis revealed that years with more water main breaks had fewer renewable projects approved, b = -0.15, SE = 0.06, z(11) = -2.56, p = 0.01, d = -0.27
+
+## Reporting a negative binomial regression
+
+-   State your hypothesis, statistical test, its link function, and justify the use of a negative binomial regression
+
+    -   We hypothesized that people with more opportunity for conflict (i.e., who had more social interactions) would report more interpersonal conflicts over 10 days. The number of conflicts during the 10 days represented frequency counts, which violated the normality assumption required for traditional regression, but these counts were also zero-inflated as most people did not have any interpersonal conflicts during this time. Thus, a negative binomial regression was used to predict the number of interpersonal conflicts using the MASS package (Venables & Ripley, 2002) in R 4.0.4 (R Core Team, 2020). Effect sizes that approximate Cohen’s d were calculated using the RCountD Shiny App (Coxe, 2018).
+
+## Reporting a negative binomial regression
+
+-   State the full model and your results
+
+    -   The number of interpersonal conflicts were modelled as a function of social interactions and typical mood, and the covariates of age, sex, student status, public transit use, alcohol use, and average daily mood. As shown in Figure 1, this analysis revealed that people who had more social interactions were slightly more likely to have interpersonal conflicts, b = 0.06, SE = 0.01, z(52) = 5.16, p \< 0.01, d = .05. The estimates for the full model are provided in Table 1.
+
+## Zero-inflation
+
+-   Too many zeros can bias your results
+
+    -   Overdispersion in poisson models
+
+    -   Problematic for negative binomial model as well
+
+        -   Assumes 0s are part of the same process (but might not be)
+
+```{r}
+performance::check_zeroinflation(model1_cont)
+```
+
+# Zero-inflated Models
+
+## ZIP Models
+
+
+-   Two parts
+
+    -   Count model
+
+        -   True zeros (sampling 0s)
+
+            -   Poisson or negative binomial
+
+    -   Zeros model
+
+        -   Excess zeros (structural 0s)
+
+            -   Uses a binomial logistic model
+
+                -   0 vs. not 0 
+
+## ZIP Model
+
+-   `pscl` package `zeroinfl`
+
+-   `glmmTB` package for multilevel zero-inflated models
+
+```{r}
+# pscl
+zif_model <- zeroinfl(Number_of_fixations ~ emotion*Group, data=hh_data) 
+```
+
+```{r}
+# glmmTB
+model_zip_glmer <- glmmTMB(Number_of_fixations ~ emotion*Group +(1|ID), 
+                               data = hh_data,
+                               ziformula = ~1, #estimate zero inflate
+                               family = nbinom2)
+```
+
+## Model Comparison: Poisson or Neg Binom?
+
+```{r}
+#can test poisson vs. negative likelihood bc nested
+test_likelihoodratio(model1_cont, m.nb_c)
+
+```
