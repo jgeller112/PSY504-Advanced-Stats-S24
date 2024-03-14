@@ -557,7 +557,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"code":"a=(exp(-6.5) * 6.5^0) / factorial(0)\nb=(exp(-6.5) * 6.5^1) / factorial(1)\nc=(exp(-6.5) * 6.5^2) / factorial(2)\nd=(exp(-6.5) * 6.5^3) / factorial(3)\n\nppois(3, 6.5)","options":{"results":"markup","fig-cap":"","fig-width":7,"label":"unnamed-chunk-1","comment":"","context":"interactive","message":"true","autorun":"false","classes":"","out-height":"","dpi":72,"output":"true","fig-height":5,"warning":"true","out-width":"700px"},"id":1},{"code":"\nprob <- (exp(-10) * 10^8) / factorial(8)\n\ndpois(x=8, lambda=10)\n\nprob","options":{"results":"markup","fig-cap":"","fig-width":7,"label":"unnamed-chunk-2","comment":"","context":"interactive","message":"true","autorun":"false","classes":"","out-height":"","dpi":72,"output":"true","fig-height":5,"warning":"true","out-width":"700px"},"id":2},{"code":"hh_data <- read.csv(\"https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/Poisson/data/tobii_aoi_study1.csv\")","options":{"results":"markup","fig-cap":"","fig-width":7,"label":"unnamed-chunk-3","comment":"","context":"interactive","message":"true","autorun":"false","classes":"","out-height":"","dpi":72,"output":"true","fig-height":5,"warning":"true","out-width":"700px"},"id":3},{"code":"\nhh_data_contrast <- hh_data %>%\n  mutate(emotion=ifelse(emotion==\"Anger\", 0.5, -0.5), Group=ifelse(Group==\"S\", 0.5, -0.5))","options":{"results":"markup","fig-cap":"","fig-width":7,"label":"unnamed-chunk-4","comment":"","context":"interactive","message":"true","autorun":"false","classes":"","out-height":"","dpi":72,"output":"true","fig-height":5,"warning":"true","out-width":"700px"},"id":4},{"code":"# fit poisson model# change family to poisson\n# repeated measures poisson\nmodel1_cont <- glmer(Number_of_fixations ~ emotion+ Group + (1|ID), data = hh_data_contrast, family = poisson(link = \"log\")) # change family to poisson","options":{"results":"markup","fig-cap":"","fig-width":7,"label":"unnamed-chunk-5","comment":"","context":"interactive","message":"true","autorun":"false","classes":"","out-height":"","dpi":72,"output":"true","fig-height":5,"warning":"true","out-width":"700px"},"id":5},{"code":"","options":{"results":"markup","fig-cap":"","fig-width":7,"label":"unnamed-chunk-6","comment":"","context":"interactive","message":"true","autorun":"false","classes":"","out-height":"","dpi":72,"output":"true","fig-height":5,"warning":"true","out-width":"700px"},"id":6}];
+  globalThis.qwebrCellDetails = [{"code":"a=(exp(-6.5) * 6.5^0) / factorial(0)\nb=(exp(-6.5) * 6.5^1) / factorial(1)\nc=(exp(-6.5) * 6.5^2) / factorial(2)\nd=(exp(-6.5) * 6.5^3) / factorial(3)\n\nppois(3, 6.5)","options":{"fig-height":5,"autorun":"false","message":"true","fig-width":7,"warning":"true","context":"interactive","comment":"","output":"true","classes":"","results":"markup","fig-cap":"","out-width":"700px","label":"unnamed-chunk-1","out-height":"","dpi":72},"id":1},{"code":"\nprob <- (exp(-10) * 10^8) / factorial(8)\n\ndpois(x=8, lambda=10)\n\nprob","options":{"fig-height":5,"autorun":"false","message":"true","fig-width":7,"warning":"true","context":"interactive","comment":"","output":"true","classes":"","results":"markup","fig-cap":"","out-width":"700px","label":"unnamed-chunk-2","out-height":"","dpi":72},"id":2},{"code":"hh_data <- read.csv(\"https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/Poisson/data/tobii_aoi_study1.csv\")","options":{"fig-height":5,"autorun":"false","message":"true","fig-width":7,"warning":"true","context":"interactive","comment":"","output":"true","classes":"","results":"markup","fig-cap":"","out-width":"700px","label":"unnamed-chunk-3","out-height":"","dpi":72},"id":3},{"code":"\nhh_data_contrast <- hh_data %>%\n  mutate(emotion=ifelse(emotion==\"Anger\", 0.5, -0.5), Group=ifelse(Group==\"S\", 0.5, -0.5))","options":{"fig-height":5,"autorun":"false","message":"true","fig-width":7,"warning":"true","context":"interactive","comment":"","output":"true","classes":"","results":"markup","fig-cap":"","out-width":"700px","label":"unnamed-chunk-4","out-height":"","dpi":72},"id":4},{"code":"# fit poisson model# change family to poisson\n# repeated measures poisson\nmodel1_cont <- glmer(Number_of_fixations ~ emotion+ Group + (1|ID), data = hh_data_contrast, family = poisson(link = \"log\")) # change family to poisson","options":{"fig-height":5,"autorun":"false","message":"true","fig-width":7,"warning":"true","context":"interactive","comment":"","output":"true","classes":"","results":"markup","fig-cap":"","out-width":"700px","label":"unnamed-chunk-5","out-height":"","dpi":72},"id":5},{"code":"","options":{"fig-height":5,"autorun":"false","message":"true","fig-width":7,"warning":"true","context":"interactive","comment":"","output":"true","classes":"","results":"markup","fig-cap":"","out-width":"700px","label":"unnamed-chunk-6","out-height":"","dpi":72},"id":6}];
 
   </script>
   <script type="module">
@@ -1468,17 +1468,14 @@ Jason Geller, PH.D.(he/him)
 <section id="today" class="slide level2">
 <h2>Today</h2>
 <ul>
-<li><p>Motivating example: Stuttering and fixations to faces</p>
-<ul>
-<li><p>Poisson and negative binomial models</p>
+<li><p>Poisson, negative binomial, and zero-inflated models</p>
 <ul>
 <li><p>Fitting and interpretation in R</p></li>
 <li><p>Visualization</p></li>
 <li><p>Effect sizes</p></li>
 <li><p>Reporting</p></li>
 </ul></li>
-<li><p>Extensions: Zero-inflated models</p></li>
-</ul></li>
+<li><p>Motivating example: Stuttering and fixations to faces</p></li>
 </ul>
 </section>
 <section id="packages" class="slide level2">
@@ -2854,85 +2851,54 @@ Y_i \sim NegBinom(\mu_i, \phi)
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co">#use to run neg binomial</span></span>
 <span id="cb23-2"><a href="#cb23-2"></a><span class="co">#lme4</span></span>
-<span id="cb23-3"><a href="#cb23-3"></a>m.nb_c <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">glmer.nb</span>(Number_of_fixations <span class="sc">~</span> emotion<span class="sc">*</span>Group <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>ID), <span class="at">data=</span>hh_data_contrast, <span class="at">verbose=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-3"><a href="#cb23-3"></a>m.nb_c <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">glmer.nb</span>(Number_of_fixations <span class="sc">~</span> emotion<span class="sc">*</span>Group <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>ID), <span class="at">data=</span>hh_data_contrast, <span class="at">verbose=</span><span class="cn">FALSE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<table style="width:100%;">
-<colgroup>
-<col style="width: 17%">
-<col style="width: 14%">
-<col style="width: 7%">
-<col style="width: 6%">
-<col style="width: 8%">
-<col style="width: 9%">
-<col style="width: 8%">
-<col style="width: 10%">
-<col style="width: 7%">
-<col style="width: 9%">
-</colgroup>
+<table>
+<caption>Fixed Effects</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Parameter</th>
-<th style="text-align: right;">Coefficient</th>
-<th style="text-align: right;">SE</th>
-<th style="text-align: right;">CI</th>
-<th style="text-align: right;">CI_low</th>
-<th style="text-align: right;">CI_high</th>
-<th style="text-align: right;">z</th>
-<th style="text-align: right;">df_error</th>
-<th style="text-align: right;">p</th>
-<th style="text-align: left;">Effects</th>
+<th style="text-align: center;">Log-Mean</th>
+<th style="text-align: center;">SE</th>
+<th style="text-align: center;">95% CI</th>
+<th style="text-align: center;">z</th>
+<th style="text-align: center;">p</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">1.351</td>
-<td style="text-align: right;">0.035</td>
-<td style="text-align: right;">0.95</td>
-<td style="text-align: right;">1.283</td>
-<td style="text-align: right;">1.419</td>
-<td style="text-align: right;">39.044</td>
-<td style="text-align: right;">Inf</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: left;">fixed</td>
+<td style="text-align: center;">1.35</td>
+<td style="text-align: center;">0.03</td>
+<td style="text-align: center;">(1.28, 1.42)</td>
+<td style="text-align: center;">39.04</td>
+<td style="text-align: center;">&lt; .001</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">emotion</td>
-<td style="text-align: right;">-0.095</td>
-<td style="text-align: right;">0.032</td>
-<td style="text-align: right;">0.95</td>
-<td style="text-align: right;">-0.158</td>
-<td style="text-align: right;">-0.032</td>
-<td style="text-align: right;">-2.938</td>
-<td style="text-align: right;">Inf</td>
-<td style="text-align: right;">0.003</td>
-<td style="text-align: left;">fixed</td>
+<td style="text-align: center;">-0.09</td>
+<td style="text-align: center;">0.03</td>
+<td style="text-align: center;">(-0.16, -0.03)</td>
+<td style="text-align: center;">-2.94</td>
+<td style="text-align: center;">0.003</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Group</td>
-<td style="text-align: right;">0.089</td>
-<td style="text-align: right;">0.067</td>
-<td style="text-align: right;">0.95</td>
-<td style="text-align: right;">-0.043</td>
-<td style="text-align: right;">0.221</td>
-<td style="text-align: right;">1.319</td>
-<td style="text-align: right;">Inf</td>
-<td style="text-align: right;">0.187</td>
-<td style="text-align: left;">fixed</td>
+<td style="text-align: center;">0.09</td>
+<td style="text-align: center;">0.07</td>
+<td style="text-align: center;">(-0.04, 0.22)</td>
+<td style="text-align: center;">1.32</td>
+<td style="text-align: center;">0.187</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">emotion:Group</td>
-<td style="text-align: right;">0.148</td>
-<td style="text-align: right;">0.063</td>
-<td style="text-align: right;">0.95</td>
-<td style="text-align: right;">0.024</td>
-<td style="text-align: right;">0.271</td>
-<td style="text-align: right;">2.340</td>
-<td style="text-align: right;">Inf</td>
-<td style="text-align: right;">0.019</td>
-<td style="text-align: left;">fixed</td>
+<td style="text-align: left;">emotion × Group</td>
+<td style="text-align: center;">0.15</td>
+<td style="text-align: center;">0.06</td>
+<td style="text-align: center;">(0.02, 0.27)</td>
+<td style="text-align: center;">2.34</td>
+<td style="text-align: center;">0.019</td>
 </tr>
 </tbody>
 </table>
@@ -2942,7 +2908,7 @@ Y_i \sim NegBinom(\mu_i, \phi)
 <section id="running-negative-binomial-1" class="slide level2">
 <h2>Running negative binomial</h2>
 <ul>
-<li><code>glm.nb</code> (non-nested/between-subjects)</li>
+<li><code>glm.nb</code> from <code>MASS</code> package (non-nested/between-subjects)</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co">#use to run neg binomial</span></span>
@@ -2955,7 +2921,10 @@ Y_i \sim NegBinom(\mu_i, \phi)
 <ul>
 <li>Same as Poisson (show expected counts)</li>
 </ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">plot</span>(<span class="fu">ggemmeans</span>(m.nb, <span class="at">terms=</span><span class="fu">c</span>(<span class="st">"emotion"</span>, <span class="st">'Group'</span>)), <span class="at">show_data=</span><span class="cn">TRUE</span>, <span class="at">jitter=</span>.<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
+</div>
 <img data-src="07-Poisson_files/figure-revealjs/unnamed-chunk-44-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:60.0%"></section>
 <section id="model-comparison-poisson-or-neg-binom" class="slide level2">
 <h2>Model comparison: Poisson or Neg Binom?</h2>
@@ -2963,8 +2932,8 @@ Y_i \sim NegBinom(\mu_i, \phi)
 <li>Can test poisson vs.&nbsp;negative binomial with LRT because they are nested</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">test_likelihoodratio</span>(model2, m.nb_c) <span class="sc">%&gt;%</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">test_likelihoodratio</span>(model2, m.nb_c) <span class="sc">%&gt;%</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <thead>
@@ -3008,19 +2977,19 @@ Y_i \sim NegBinom(\mu_i, \phi)
 <li>Psuedo-<span class="math inline">\(R^2\)</span></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>performance<span class="sc">::</span><span class="fu">r2</span>(model1_cont) <span class="co"># glmer</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>performance<span class="sc">::</span><span class="fu">r2</span>(model1_cont) <span class="co"># glmer</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># R2 for Mixed Models
 
   Conditional R2: 0.125
      Marginal R2: 0.014</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co">#performance::r2_mcfadden(model1) # glm</span></span>
-<span id="cb28-2"><a href="#cb28-2"></a></span>
-<span id="cb28-3"><a href="#cb28-3"></a>partR2<span class="sc">::</span><span class="fu">partR2</span>(model1_cont,<span class="at">data=</span>hh_data, </span>
-<span id="cb28-4"><a href="#cb28-4"></a>  <span class="at">partvars =</span> <span class="fu">c</span>(<span class="st">"Group"</span>, <span class="st">"emotion"</span>),</span>
-<span id="cb28-5"><a href="#cb28-5"></a>  <span class="at">R2_type =</span> <span class="st">"marginal"</span>, <span class="at">nboot =</span> <span class="dv">10</span>, <span class="at">CI =</span> <span class="fl">0.95</span></span>
-<span id="cb28-6"><a href="#cb28-6"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co">#performance::r2_mcfadden(model1) # glm</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a></span>
+<span id="cb29-3"><a href="#cb29-3"></a>partR2<span class="sc">::</span><span class="fu">partR2</span>(model1_cont,<span class="at">data=</span>hh_data, </span>
+<span id="cb29-4"><a href="#cb29-4"></a>  <span class="at">partvars =</span> <span class="fu">c</span>(<span class="st">"Group"</span>, <span class="st">"emotion"</span>),</span>
+<span id="cb29-5"><a href="#cb29-5"></a>  <span class="at">R2_type =</span> <span class="st">"marginal"</span>, <span class="at">nboot =</span> <span class="dv">10</span>, <span class="at">CI =</span> <span class="fl">0.95</span></span>
+<span id="cb29-6"><a href="#cb29-6"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
@@ -3117,7 +3086,7 @@ computed using a Wald z-distribution approximation.</code></pre>
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>performance<span class="sc">::</span><span class="fu">check_zeroinflation</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>performance<span class="sc">::</span><span class="fu">check_zeroinflation</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Check for zero-inflation
 
@@ -3165,25 +3134,25 @@ computed using a Wald z-distribution approximation.</code></pre>
 <li><p><code>glmmTB</code> package for multilevel zero-inflated models</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co"># pscl </span></span>
-<span id="cb34-2"><a href="#cb34-2"></a><span class="co"># neg binom model </span></span>
-<span id="cb34-3"><a href="#cb34-3"></a>zif_model <span class="ot">&lt;-</span> <span class="fu">zeroinfl</span>(Number_of_fixations <span class="sc">~</span> emotion<span class="sc">*</span>Group, <span class="at">dist=</span><span class="fu">c</span>(<span class="st">"negbin"</span>), <span class="at">link=</span><span class="fu">c</span>(<span class="st">"log"</span>), <span class="at">data=</span>hh_data_contrast) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co"># pscl </span></span>
+<span id="cb35-2"><a href="#cb35-2"></a><span class="co"># neg binom model </span></span>
+<span id="cb35-3"><a href="#cb35-3"></a>zif_model <span class="ot">&lt;-</span> <span class="fu">zeroinfl</span>(Number_of_fixations <span class="sc">~</span> emotion<span class="sc">*</span>Group, <span class="at">dist=</span><span class="fu">c</span>(<span class="st">"negbin"</span>), <span class="at">link=</span><span class="fu">c</span>(<span class="st">"log"</span>), <span class="at">data=</span>hh_data_contrast) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co"># glmmTB</span></span>
-<span id="cb35-2"><a href="#cb35-2"></a>model_zip_glmer <span class="ot">&lt;-</span> <span class="fu">glmmTMB</span>(Number_of_fixations <span class="sc">~</span> emotion<span class="sc">*</span>Group <span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>ID), </span>
-<span id="cb35-3"><a href="#cb35-3"></a>                               <span class="at">data =</span> hh_data_contrast,</span>
-<span id="cb35-4"><a href="#cb35-4"></a>                               <span class="at">ziformula =</span> <span class="sc">~</span><span class="dv">1</span>, <span class="co">#estimate zero inflated</span></span>
-<span id="cb35-5"><a href="#cb35-5"></a>                               <span class="at">family =</span> nbinom2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co"># glmmTB</span></span>
+<span id="cb36-2"><a href="#cb36-2"></a>model_zip_glmer <span class="ot">&lt;-</span> <span class="fu">glmmTMB</span>(Number_of_fixations <span class="sc">~</span> emotion<span class="sc">*</span>Group <span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>ID), </span>
+<span id="cb36-3"><a href="#cb36-3"></a>                               <span class="at">data =</span> hh_data_contrast,</span>
+<span id="cb36-4"><a href="#cb36-4"></a>                               <span class="at">ziformula =</span> <span class="sc">~</span><span class="dv">1</span>, <span class="co">#estimate zero inflated # add variables here</span></span>
+<span id="cb36-5"><a href="#cb36-5"></a>                               <span class="at">family =</span> nbinom2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="zi-model-1" class="slide level2">
 <h2>ZI model</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co"># pscl</span></span>
-<span id="cb36-2"><a href="#cb36-2"></a><span class="fu">model_parameters</span>(</span>
-<span id="cb36-3"><a href="#cb36-3"></a>  model_zip_glmer) <span class="sc">%&gt;%</span></span>
-<span id="cb36-4"><a href="#cb36-4"></a>  <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co"># pscl</span></span>
+<span id="cb37-2"><a href="#cb37-2"></a><span class="fu">model_parameters</span>(</span>
+<span id="cb37-3"><a href="#cb37-3"></a>  model_zip_glmer) <span class="sc">%&gt;%</span></span>
+<span id="cb37-4"><a href="#cb37-4"></a>  <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <caption># Fixed Effects (Count Model)</caption>
@@ -3291,10 +3260,13 @@ computed using a Wald z-distribution approximation.</code></pre>
 </table>
 </div>
 </div>
+</section></section>
+<section id="fin" class="title-slide slide level1 center">
+<h1>Fin</h1>
 <div class="footer footer-default">
 <p>PSY 504: Advanced Statistics</p>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 

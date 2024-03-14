@@ -36,19 +36,17 @@ execute:
 
 ## Today
 
+-   Poisson, negative binomial, and zero-inflated models
+
+    -   Fitting and interpretation in R
+
+    -   Visualization
+
+    -   Effect sizes
+
+    -   Reporting
+
 -   Motivating example: Stuttering and fixations to faces
-
-    -   Poisson and negative binomial models
-
-        -   Fitting and interpretation in R
-
-        -   Visualization
-
-        -   Effect sizes
-
-        -   Reporting
-
-    -   Extensions: Zero-inflated models
 
 ## Packages
 
@@ -692,19 +690,19 @@ $$Var(Y) = \mu + \frac{\mu^2}{\phi}$$
 ```{r}
 #use to run neg binomial
 #lme4
-m.nb_c <- lme4::glmer.nb(Number_of_fixations ~ emotion*Group + (1|ID), data=hh_data_contrast, verbose=FALSE)
+m.nb_c <- lme4::glmer.nb(Number_of_fixations ~ emotion*Group + (1|ID), data=hh_data_contrast, verbose=FALSE) 
 
 ```
 
 ```{r}
 #| echo: false
 model_parameters(m.nb_c, conf.int =TRUE, effects="fixed") %>%
-  kable(digits = 3, format = "markdown")
+  print_md()
 ```
 
 ## Running negative binomial
 
--   `glm.nb` (non-nested/between-subjects)
+-   `glm.nb` from `MASS` package (non-nested/between-subjects)
 
 ```{r eval=T}
 #use to run neg binomial
@@ -716,7 +714,7 @@ m.nb <- MASS::glm.nb(Number_of_fixations ~ emotion*Group, data=hh_data)
 
 -   Same as Poisson (show expected counts)
 
-```{r, fig.align='center', out.width="60%", echo=F}
+```{r, fig.align='center', out.width="60%", echo=T}
 plot(ggemmeans(m.nb, terms=c("emotion", 'Group')), show_data=TRUE, jitter=.2)
 ```
 
