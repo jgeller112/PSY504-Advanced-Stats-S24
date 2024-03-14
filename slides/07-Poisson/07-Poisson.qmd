@@ -36,17 +36,19 @@ execute:
 
 ## Today
 
--   Poisson, negative binomial, and zero-inflated models
+-   GLMs for count data
 
-    -   Fitting and interpretation in R
+    -   Poisson, negative binomial (overdispersion), and zero-inflated (excess zeros) models
 
-    -   Visualization
+        -   Fitting and interpretation in R
 
-    -   Effect sizes
+        -   Visualization
 
-    -   Reporting
+        -   Effect sizes
 
--   Motivating example: Stuttering and fixations to faces
+        -   Reporting
+
+    -   Running example: Stuttering and fixations to faces
 
 ## Packages
 
