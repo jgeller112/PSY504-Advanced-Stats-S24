@@ -557,7 +557,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"code":"a=(exp(-6.5) * 6.5^0) / factorial(0)\nb=(exp(-6.5) * 6.5^1) / factorial(1)\nc=(exp(-6.5) * 6.5^2) / factorial(2)\nd=(exp(-6.5) * 6.5^3) / factorial(3)\n\nppois(3, 6.5)","id":1,"options":{"warning":"true","context":"interactive","out-width":"700px","comment":"","fig-width":7,"autorun":"false","message":"true","label":"unnamed-chunk-1","results":"markup","dpi":72,"fig-height":5,"classes":"","output":"true","fig-cap":"","out-height":""}},{"code":"\nprob <- (exp(-10) * 10^8) / factorial(8)\n\ndpois(x=8, lambda=10)\n\nprob","id":2,"options":{"warning":"true","context":"interactive","out-width":"700px","comment":"","fig-width":7,"autorun":"false","message":"true","label":"unnamed-chunk-2","results":"markup","dpi":72,"fig-height":5,"classes":"","output":"true","fig-cap":"","out-height":""}},{"code":"hh_data <- read.csv(\"https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/Poisson/data/tobii_aoi_study1.csv\")","id":3,"options":{"warning":"true","context":"interactive","out-width":"700px","comment":"","fig-width":7,"autorun":"false","message":"true","label":"unnamed-chunk-3","results":"markup","dpi":72,"fig-height":5,"classes":"","output":"true","fig-cap":"","out-height":""}},{"code":"\nhh_data_contrast <- hh_data %>%\n  mutate(emotion=ifelse(emotion==\"Anger\", 0.5, -0.5), Group=ifelse(Group==\"S\", 0.5, -0.5))","id":4,"options":{"warning":"true","context":"interactive","out-width":"700px","comment":"","fig-width":7,"autorun":"false","message":"true","label":"unnamed-chunk-4","results":"markup","dpi":72,"fig-height":5,"classes":"","output":"true","fig-cap":"","out-height":""}},{"code":"# fit poisson model# change family to poisson\n# repeated measures poisson\nmodel1_cont <- glmer(Number_of_fixations ~ emotion+ Group + (1|ID), data = hh_data_contrast, family = poisson(link = \"log\")) # change family to poisson","id":5,"options":{"warning":"true","context":"interactive","out-width":"700px","comment":"","fig-width":7,"autorun":"false","message":"true","label":"unnamed-chunk-5","results":"markup","dpi":72,"fig-height":5,"classes":"","output":"true","fig-cap":"","out-height":""}},{"code":"","id":6,"options":{"warning":"true","context":"interactive","out-width":"700px","comment":"","fig-width":7,"autorun":"false","message":"true","label":"unnamed-chunk-6","results":"markup","dpi":72,"fig-height":5,"classes":"","output":"true","fig-cap":"","out-height":""}}];
+  globalThis.qwebrCellDetails = [{"options":{"autorun":"false","context":"interactive","classes":"","fig-width":7,"output":"true","label":"unnamed-chunk-1","comment":"","message":"true","results":"markup","dpi":72,"warning":"true","out-width":"700px","fig-height":5,"fig-cap":"","out-height":""},"code":"a=(exp(-6.5) * 6.5^0) / factorial(0)\nb=(exp(-6.5) * 6.5^1) / factorial(1)\nc=(exp(-6.5) * 6.5^2) / factorial(2)\nd=(exp(-6.5) * 6.5^3) / factorial(3)\n\nppois(3, 6.5)","id":1},{"options":{"autorun":"false","context":"interactive","classes":"","fig-width":7,"output":"true","label":"unnamed-chunk-2","comment":"","message":"true","results":"markup","dpi":72,"warning":"true","out-width":"700px","fig-height":5,"fig-cap":"","out-height":""},"code":"\nprob <- (exp(-10) * 10^8) / factorial(8)\n\ndpois(x=8, lambda=10)\n\nprob","id":2},{"options":{"autorun":"false","context":"interactive","classes":"","fig-width":7,"output":"true","label":"unnamed-chunk-3","comment":"","message":"true","results":"markup","dpi":72,"warning":"true","out-width":"700px","fig-height":5,"fig-cap":"","out-height":""},"code":"hh_data <- read.csv(\"https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/Poisson/data/tobii_aoi_study1.csv\")","id":3},{"options":{"autorun":"false","context":"interactive","classes":"","fig-width":7,"output":"true","label":"unnamed-chunk-4","comment":"","message":"true","results":"markup","dpi":72,"warning":"true","out-width":"700px","fig-height":5,"fig-cap":"","out-height":""},"code":"\nhh_data_contrast <- hh_data %>%\n  mutate(emotion=ifelse(emotion==\"Anger\", 0.5, -0.5), Group=ifelse(Group==\"S\", 0.5, -0.5))","id":4},{"options":{"autorun":"false","context":"interactive","classes":"","fig-width":7,"output":"true","label":"unnamed-chunk-5","comment":"","message":"true","results":"markup","dpi":72,"warning":"true","out-width":"700px","fig-height":5,"fig-cap":"","out-height":""},"code":"# fit poisson model# change family to poisson\n# repeated measures poisson\nmodel1_cont <- glmer(Number_of_fixations ~ emotion+ Group + (1|ID), data = hh_data_contrast, family = poisson(link = \"log\")) # change family to poisson","id":5},{"options":{"autorun":"false","context":"interactive","classes":"","fig-width":7,"output":"true","label":"unnamed-chunk-6","comment":"","message":"true","results":"markup","dpi":72,"warning":"true","out-width":"700px","fig-height":5,"fig-cap":"","out-height":""},"code":"","id":6}];
 
   </script>
   <script type="module">
@@ -1470,7 +1470,7 @@ Jason Geller, PH.D.(he/him)
 <ul>
 <li><p>GLMs for count data</p>
 <ul>
-<li><p>Poisson, negative binomial, and zero-inflated models</p>
+<li><p>Poisson, negative binomial (overdispersion), and zero-inflated (excess zeros) models</p>
 <ul>
 <li><p>Fitting and interpretation in R</p></li>
 <li><p>Visualization</p></li>
@@ -2876,7 +2876,7 @@ Y_i \sim NegBinom(\mu_i, \phi)
 <td style="text-align: center;">1.35</td>
 <td style="text-align: center;">0.03</td>
 <td style="text-align: center;">(1.28, 1.42)</td>
-<td style="text-align: center;">39.04</td>
+<td style="text-align: center;">38.82</td>
 <td style="text-align: center;">&lt; .001</td>
 </tr>
 <tr class="even">
@@ -2884,24 +2884,24 @@ Y_i \sim NegBinom(\mu_i, \phi)
 <td style="text-align: center;">-0.09</td>
 <td style="text-align: center;">0.03</td>
 <td style="text-align: center;">(-0.16, -0.03)</td>
-<td style="text-align: center;">-2.94</td>
+<td style="text-align: center;">-2.93</td>
 <td style="text-align: center;">0.003</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Group</td>
 <td style="text-align: center;">0.09</td>
 <td style="text-align: center;">0.07</td>
-<td style="text-align: center;">(-0.04, 0.22)</td>
-<td style="text-align: center;">1.32</td>
-<td style="text-align: center;">0.187</td>
+<td style="text-align: center;">(-0.05, 0.22)</td>
+<td style="text-align: center;">1.30</td>
+<td style="text-align: center;">0.194</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">emotion × Group</td>
 <td style="text-align: center;">0.15</td>
 <td style="text-align: center;">0.06</td>
 <td style="text-align: center;">(0.02, 0.27)</td>
-<td style="text-align: center;">2.34</td>
-<td style="text-align: center;">0.019</td>
+<td style="text-align: center;">2.31</td>
+<td style="text-align: center;">0.021</td>
 </tr>
 </tbody>
 </table>
@@ -2966,8 +2966,8 @@ Y_i \sim NegBinom(\mu_i, \phi)
 <td style="text-align: left;">glmerMod</td>
 <td style="text-align: right;">6</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">0.0051114</td>
-<td style="text-align: right;">0.9430045</td>
+<td style="text-align: right;">0.00511</td>
+<td style="text-align: right;">0.9430124</td>
 </tr>
 </tbody>
 </table>
