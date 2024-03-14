@@ -825,7 +825,7 @@ zif_model <- zeroinfl(Number_of_fixations ~ emotion*Group, dist=c("negbin"), lin
 # glmmTB
 model_zip_glmer <- glmmTMB(Number_of_fixations ~ emotion*Group +(1|ID), 
                                data = hh_data_contrast,
-                               ziformula = ~1, #estimate zero inflated
+                               ziformula = ~1, #estimate zero inflated # add variables here
                                family = nbinom2)
 ```
 
@@ -837,3 +837,5 @@ model_parameters(
   model_zip_glmer) %>%
   print_md()
 ```
+
+# Fin
