@@ -53,16 +53,15 @@ execute:
 ## Packages
 
 ```{r}
-library(tidyverse)
-library(emoji)
-library(easystats)
-library(kableExtra)
-library(ggeffects)
-library(lme4)
-library(DHARMa)
+library(tidyverse) # data wrangling
+library(emoji) # emojis 
+library(easystats) # performance
+library(kableExtra) # table formatting
+library(ggeffects) # plot 
+library(lme4) # glmer 
 library(knitr)
-library(patchwork)
-library(viridis)
+library(patchwork) # combine plots
+library(viridis) # colors
 library(gridExtra)
 library(pscl) # zip 
 library(glmmTMB) # zero inflated glmer 
@@ -432,8 +431,8 @@ model_parameters(model1_cont, exponentiate = TRUE, effects="fixed") %>%
 :::
 
 ::: callout-important
--   Angry faces have -.08 fewer log fixations than happy faces or
-    -   exp(-.08) = `r round(exp(-.08), 3)`x that of happy faces. The expected number of fixations is 8% lower for angry faces vs. happy faces
+-   Angry faces have .08 fewer log fixations than happy faces or
+    - exp(-.08) = `r round(exp(-.08), 3)`x that of happy faces. The expected number of fixations is 8% lower for angry faces vs. happy faces
 :::
 
 ## Main effect: `emotion`
@@ -441,8 +440,8 @@ model_parameters(model1_cont, exponentiate = TRUE, effects="fixed") %>%
 -   Marginal mean counts for each condition
 
 ```{r}
-marginaleffects::marginal_means(model1, "emotion") %>% 
-  kable(digits = 3, format = "markdown")
+marginaleffects::avg_predictions(model1, variables="emotion") %>%
+  kable()
 ```
 
 ## Marginal Effects
@@ -497,9 +496,9 @@ model_parameters(model1_cont, exponentiate = TRUE, effects="fixed") %>%
 :::
 
 ::: callout-important
--   .085 = Stuttering group has .085 more log fixations than Control group, or
+-   Stuttering group has .09 more log fixations than Control group, or
 
-    -   exp(0.85) = `r round(exp(.085), 3)`x that of Control group. The expected number of fixations is 9% higher for Control vs. stuttering
+    -   exp(0.85) = `r round(exp(.09), 3)`x that of Control group. The expected number of fixations is 9% higher for Control vs. stuttering
 :::
 
 ## Main effect: `Group`
@@ -507,7 +506,7 @@ model_parameters(model1_cont, exponentiate = TRUE, effects="fixed") %>%
 -   Marginal mean counts
 
 ```{r}
-marginaleffects::marginal_means(model1, "Group") %>% 
+marginaleffects::avg_predictions(model1, variables="Group") %>% 
   kable(digits = 3, format = "markdown")
 
 ```
@@ -629,6 +628,12 @@ hh_data %>%
 
 ## Testing for overdispersion
 
+```{r}
+#| message: true
+# easystats
+performance::check_overdispersion(model2)
+```
+
 $$
 \text{Pearson residual}_i = \frac{\text{observed} - \text{predicted}}{\text{std. error}} = \frac{y_i - \hat{\lambda}_i}{\sqrt{\hat{\lambda}_i}}
 $$
@@ -642,12 +647,6 @@ $$
 $$
 
 -   If ratio is 1, good model fit (no overdispersion)
-
-```{r}
-#| message: true
-# easystats
-performance::check_overdispersion(model2)
-```
 
 ## Why overdispersion matters
 
@@ -735,8 +734,6 @@ test_likelihoodratio(model2, m.nb_c) %>%
 
 ```{r}
 performance::r2(model1_cont) # glmer
-#performance::r2_mcfadden(model1) # glm
-
 partR2::partR2(model1_cont,data=hh_data, 
   partvars = c("Group", "emotion"),
   R2_type = "marginal", nboot = 10, CI = 0.95
@@ -747,7 +744,12 @@ partR2::partR2(model1_cont,data=hh_data,
 
 -   Simpler models
 
-    -   Pseudo-\$R\^2\$ (overall model)
+    -   Pseudo- $R^2$ (overall model)
+
+```{r}
+#| eval: false
+    performance::r2_mcfadden(model1) # glm
+```
 
     -   IRR (individual effect)
 
