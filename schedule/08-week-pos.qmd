@@ -28,6 +28,10 @@ date: 2023-03-18
   
 ## After class
 
+- Class video: 
+
+{{< video https://www.youtube.com/watch?v=_VTuGSWOWyc width="800" height="400" >}}
+
 ### Textbook
 
 - {{< fa book >}} Xing Liu (2023). Categorical Data Analysis and Multilevel Modeling Using R (1st edition). SAGE Publications Ltd.
