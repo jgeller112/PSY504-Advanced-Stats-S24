@@ -36,7 +36,7 @@ Here's your roadmap for the semester!
 | 6 | 3/4/24 | Polytomous models:  Multinomial regression | [{{<    fa   book-open-reader >}}](/schedule/06-week-mult.qmd) | [{{< fa laptop-code   >}}](/slides/06-Multinom/06-multinom.html) |  | Nicole  |
 |  | 3/6/24 | Lab 5 |  |  | [{{< fa pen-ruler >}}](/Labs/Lab5-mult.qmd) |  |
 | 7 | Spring Break |   |  |  |  |  |
-| 8 | 3/18/24 | Poisson regression | [{{<    fa   book-open-reader >}}](/schedule/08-week-pos.qmd) | {{< fa laptop-code   >}} |  | Kennedy |
+| 8 | 3/18/24 | Poisson regression | [{{<    fa   book-open-reader >}}](/schedule/08-week-pos.qmd) | [{{< fa laptop-code   >}}](/slides/07-Poisson/07-Poisson.html) |  | Kennedy |
 |  | 3/20/24 | Lab 6  |  |  | {{< fa pen-ruler >}} |  |
 | 9 | 3/25/24 | Bayesian analysis | [{{<    fa   book-open-reader >}}](/schedule/09-week-bayes.qmd) | {{< fa laptop-code   >}} |  | Alex and Ham  |
 |  | 3/27/24 | Lab 7 |  | {{< fa laptop-code >}} | {{< fa pen-ruler >}} |  |
