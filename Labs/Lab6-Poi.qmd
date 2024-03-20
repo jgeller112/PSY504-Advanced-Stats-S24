@@ -1,0 +1,15 @@
+---
+title: "Lab 5"
+format: html
+editor: visual
+author: "Jason Geller, Ph.D."
+date: 2024 03 20
+toc: true
+toc_float: true
+---
+
+## Lab 5: Poisson Regression and Negative Binomial Regression
+
+In Lab 5, you will follow a preregistered document that will ask you to preform an analysis on data from the General Social Survey (GSS). It is up to you to decide which model to run. Please follow the the preregistered document closely.
+
+To access Lab 5, please [Click here](https://classroom.github.com/a/evl_aLLA)
