@@ -9,3 +9,7 @@ toc_float: true
 In this lab, we will be using data from `eightythirtyfive` looking at factors that influence voting behavior.
 
 To access Lab 5, please go here: [Click here](https://classroom.github.com/a/RZ8R_GoW)
+
+## LAB Answers
+
+[Click here](/lab_ns/multinom/Lab5_multinom_ANS.qmd)
