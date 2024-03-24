@@ -1,0 +1,362 @@
+---
+    title: "Lab 4 - Answers"
+    author:
+      - name: Jason Geller
+    date: last-modified
+    format:
+      html:
+        self-contained: true
+        anchor-sections: true
+        code-tools: true
+        code-fold: true
+        fig-width: 8
+        fig-height: 4
+        code-block-bg: "#f1f3f5"
+        code-block-border-left: "#31BAE9"
+        mainfont: Source Sans Pro
+        theme: journal
+        toc: true
+        toc-depth: 3
+        toc-location: left
+        captions: true
+        cap-location: margin
+        table-captions: true
+        tbl-cap-location: margin
+        reference-location: margin
+      pdf:
+        pdf-engine: lualatex
+        toc: false
+        number-sections: true
+        number-depth: 2
+        top-level-division: section
+        reference-location: document
+        listings: false
+        header-includes:
+          \usepackage{marginnote, here, relsize, needspace, setspace}
+          \def\it{\emph}
+
+    comments:
+      hypothesis: false
+
+    execute:
+      warning: false
+      message: false
+---
+
+## Data
+
+The data for this assignment comes from an online Ipsos survey that was conducted for the FiveThirtyEight article ["Why Many Americans Don't Vote"](https://projects.fivethirtyeight.com/non-voters-poll-2020-election/). You can read more about the survey design and respondents in the README of the [GitHub repo](https://github.com/fivethirtyeight/data/tree/master/non-voters) for the data.
+
+Respondents were asked a variety of questions about their political beliefs, thoughts on multiple issues, and voting behavior. We will focus on using the demographic variables and someone's party identification to understand whether a person is a probable voter.
+
+The variables we'll focus on were (definitions from the codebook in data set GitHub repo):
+
+-   `ppage`: Age of respondent
+
+-   `educ`: Highest educational attainment category.\
+
+-   `race`: Race of respondent, census categories. Note: all categories except Hispanic were non-Hispanic.
+
+-   `gender`: Gender of respondent
+
+-   `income_cat`: Household income category of respondent
+
+-   `Q30`: Response to the question "Generally speaking, do you think of yourself as a..."
+
+    -   1: Republican
+    -   2: Democrat
+    -   3: Independent
+    -   4: Another party, please specify
+    -   5: No preference
+    -   -1: No response
+
+-   `voter_category`: past voting behavior:
+
+    -   **always**: respondent voted in all or all-but-one of the elections they were eligible in
+    -   **sporadic**: respondent voted in at least two, but fewer than all-but-one of the elections they were eligible in
+    -   **rarely/never**: respondent voted in 0 or 1 of the elections they were eligible in
+
+You can read in the data directly from the GitHub repo:
+
+```{r}
+library(nnet)
+library(car)
+library(tidyverse)
+library(emmeans)
+library(ggeffects)
+library(knitr)
+library(patchwork)
+library(broom)
+library(parameters)
+library(easystats)
+```
+
+```{r}
+
+voter_data <- read_csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/non-voters/nonvoters_data.csv")
+```
+
+# Lab
+
+-   The variable `Q30` contains the respondent's political party identification. Make a new variable that simplifies `Q30` into four categories: "Democrat", "Republican", "Independent", "Other" ("Other" also includes respondents who did not answer the question).
+
+    ```{r}
+
+    voter_data <- voter_data %>%
+      mutate(pol_ident_new = case_when(
+        Q30==1 ~ "Rep", 
+        Q30==2 ~ "Dem", 
+        Q30==3 ~ "Indep", 
+        TRUE ~ "Other"
+      ))
+
+
+
+    ```
+
+-   The variable `voter_category` identifies the respondent's past voter behavior. Relevel the variable to make rarely/never the baseline level, followed by sporadic, then always
+
+    ```{r}
+
+    voter_data$voter_category <- factor(voter_data$voter_category, levels =c("rarely/never", "sporadic", "always"))
+
+
+    ```
+
+```{r}
+# center var
+voter_data$ppage <- datawizard::center(voter_data$ppage)
+
+```
+
+-   In the [FiveThirtyEight article](https://projects.fivethirtyeight.com/non-voters-poll-2020-election/), the authors include visualizations of the relationship between the voter category and demographic variables such as race, age, education, etc. Select two demographic variables. For each variable, try to replicate the visualizations and interpret the plot to describe its relationship with voter category. Have fun with it: https://www.mikelee.co/posts/2020-02-08-recreate-fivethirtyeight-chicklet-stacked-bar-chart-in-ggplot2.
+
+    ```{r}
+
+     # library
+    library(ggplot2)
+    library(viridis)
+    library(cowplot)
+
+
+    voter_data$race <- factor(voter_data$race, levels =c("Black", "Hispanic", "Other/Mixed", "White"))
+
+    p_race <- ggplot(data = voter_data, aes(x = fct_rev(race), fill = voter_category)) +
+      geom_bar(position = "fill") +
+        labs(x="Race", y="Percentage") +
+      theme(text = element_text(size = 16)) +  
+       scale_x_discrete(limits = rev(levels("race")))+
+      scale_fill_viridis(discrete = TRUE) + 
+      scale_y_continuous(labels = scales::percent_format(accuracy = 1)) + 
+      coord_flip()
+
+    p_race
+
+
+    ```
+
+    ```{r}
+
+    voter_data <- voter_data %>%
+      mutate(pol =  fct_relevel(pol_ident_new,"Dem", "Rep", "Indep", "Other"))
+      
+      
+    p_id <- ggplot(voter_data, aes(x = fct_rev(pol), fill = voter_category)) +
+      geom_bar(position = "fill") +
+        labs(x="Political ID", y="Percentage") + 
+      theme(text = element_text(size = 16)) +  
+      scale_fill_viridis(discrete = TRUE) + 
+      scale_y_continuous(labels = scales::percent_format(accuracy = 1)) + 
+      coord_flip()
+
+    p_id
+
+    ```
+
+    ```{r}
+    library(patchwork)
+    p_id+ p_race + plot_layout(guides = "collect") + plot_annotation(title = 'Demographic information of survey repsondents, by voting history')
+
+    ```
+
+-   Fit a model using mean-centered age, race, gender, income, and education to predict voter category. Show the code used to fit the model, but do **not** display the model output.
+
+```{r}
+#| results: hide
+#| 
+    library(nnet)
+
+    mm <- multinom(voter_category~ ppage + race + gender+ income_cat + educ, data=voter_data)
+
+
+    model_parameters(mm)
+
+
+```
+
+-   *Should party identification be added to the model?*
+
+```{r}
+#| message: false
+#| results: hide
+
+
+mm_red<- multinom(voter_category~ ppage + race + gender+ income_cat + educ, data=voter_data)
+
+mm_full <- multinom(voter_category~ ppage + race + gender+ income_cat + educ + pol, data=voter_data)
+
+    anova(mm_red, mm_full)
+
+```
+
+    > Yes. It should be included.
+
+**Use the model you select for the remainder of the assignment**.
+
+## LRT 
+
+-   Run the full model and report overall significance of each of the terms
+
+    ```{r}
+#| results: hide
+
+    mm_use <- multinom(voter_category~ ppage+ educ + pol, data=voter_data)
+
+    tidy(car::Anova(mm_use)) %>%
+      kable()
+
+    ```
+
+    > ppage, $\chi^2(2)$ = 666.41, educ, $\chi^2(4)$ = 252.81, p \< .001, and pol $\chi^2(6)$ = 171.91, p \< .001
+
+    ```{r}
+
+    mm_use %>%
+      tidy() %>%
+      kable()
+
+    ```
+
+e.
+
+
+## Marginal Effects Political Group - Emmeans
+
+```{r}
+multi_an <- emmeans(mm_use, ~ pol|voter_category)
+# uses baseline as contrast of interest
+# can change this to get other baselines
+# use trt.vs.ctrl" #ref = newbaseline
+coefs = contrast(regrid(multi_an, "log"),"trt.vs.ctrl1",  by="pol")
+
+update(coefs, by = "contrast") %>% 
+  kable(format = "markdown", digits = 3)
+```
+
+> For every political party listed, voting is more likely. That is, Democrats (sporadic - (rarely/never) `r exp(0.963)`, Republicans(sporadic - (rarely/never `r exp(0.92)`, and Independents (sporadic - (rarely/never`r exp(0.60)` were more likely to sporadically vote compared to rarely/never. Voters affiliated with a political party were also more likely to always vote compared to never/rarely vote (Democrats:`r exp(0.608)`; Republicans: `r exp(0.61)`; Independents: `r exp(0.14)` ). The exception here is Other. Others were more likely to rarely vote compared to always vote (`r exp(-.723)`
+
+## Marginal Effects of Education - Emmeans
+
+```{r}
+multi_an <- emmeans(mm_use, ~ educ|voter_category)
+# uses baseline as contrast of interest
+# can change this to get other baselines
+# use trt.vs.ctrl" #ref = newbaseline
+coefs = contrast(regrid(multi_an, "log"),"trt.vs.ctrl1",  by="educ")
+
+update(coefs, by = "contrast") %>% 
+  kable(format = "markdown", digits = 3)
+```
+
+> College educated (OR = `r exp(1.10)`), High school or less (OR = `r exp(.112)`), and Some college (OR = `r exp(.112)`) were more likely to sporadically vote compared to rarely/never. College educated voters (OR = `r exp(.112)`), and some college (OR = `r exp(.112)`) were always more likely to vote compared to rarely/never. High school or less (OR = `r exp(-.629)`) were less likely to always vote compared to rarely/never.
+
+- Next, plot the predicted probabilities of voter category as a function of Age and Party ID
+
+    ```{r}
+    ggemmeans(mm_use, terms = c("ppage")) %>% ggplot(., aes(x = x, y = predicted, fill = response.level)) +
+      geom_area() + 
+      geom_rug(sides = "b", position = "jitter", alpha = .5) + 
+      labs(x = "\nAge", y = "Predicted Probablity\n", title = "Predicted Probabilities of Voting Frequency by Age") +
+      scale_fill_manual(
+        name = NULL,
+        values = c("always" = "#F6B533", "sporadic" = "#D07EA2", "rarely/never" = "#9854F7"),
+        labels = c("RARELY OR NEVER VOTE    ", "SOMETIMES VOTE    ", "ALMOST ALWAYS VOTE    "),
+        breaks = c("rarely/never", "sporadic", "always")
+      ) +
+      theme_minimal()
+
+    ```
+
+    ```{r}
+    ggemmeans(mm_use, terms = c("educ")) %>% ggplot(., aes(x = x, y = predicted,fill = response.level)) +
+      geom_bar(stat = "identity" ) +
+      geom_text(aes(label = round(predicted, 3)), color="white", position = position_fill(vjust = 0.5), size = 4)  + 
+      labs(x = "\nEducation", y = "Predicted Probablity\n", title = "Predicted Probabilities of Voting Frequency by Educational Attainment") +
+      scale_fill_manual(
+        name = NULL,
+        values = c("always" = "#F6B533", "sporadic" = "#D07EA2", "rarely/never" = "#9854F7"),
+        labels = c("RARELY OR NEVER VOTE    ", "SOMETIMES VOTE    ", "ALMOST ALWAYS VOTE    "),
+        breaks = c("rarely/never", "sporadic", "always")
+      ) +
+      theme_minimal()
+
+    ```
+
+    ```{r}
+    ggemmeans(mm_use, terms = c("pol")) %>% ggplot(., aes(x = x, y = predicted,fill = response.level)) + 
+      geom_bar(stat = "identity" ) +
+      geom_text(aes(label = round(predicted, 3)), color="white", position = position_fill(vjust = 0.5), size = 4)  + 
+      labs(x = "\nEducation", y = "Predicted Probablity\n", title = "Predicted Probabilities of Voting Frequency by Party Identification") +
+      scale_fill_manual(
+        name = NULL,
+        values = c("always" = "#F6B533", "sporadic" = "#D07EA2", "rarely/never" = "#9854F7"),
+        labels = c("RARELY OR NEVER VOTE    ", "SOMETIMES VOTE    ", "ALMOST ALWAYS VOTE    "),
+        breaks = c("rarely/never", "sporadic", "always")
+      ) +
+      theme_minimal()
+
+    ```
+
+    ## Write-up
+
+### Differences between political groups and voting behavior - Emmeans
+
+```{r}
+multi_an <- emmeans(mm_use, ~ pol|voter_category)
+# uses baseline as contrast of interest
+# can change this to get other baselines
+# use trt.vs.ctrl" #ref = newbaseline
+
+coefs = contrast(regrid(multi_an, "log"),"trt.vs.ctrl1",  by="pol")
+
+update(coefs, by = "contrast") %>% 
+  kable(format = "markdown", digits = 3)
+
+# get difference between yes-no and fair-excellent
+contrast(coefs, "revpairwise", by = "contrast") %>%
+  kable(format = "markdown", digits = 3)
+
+```
+
+### Differences between education level and voting behavior - Emmeans
+
+```{r}
+multi_an <- emmeans(mm_use, ~ educ|voter_category)
+# uses baseline as contrast of interest
+# can change this to get other baselines
+# use trt.vs.ctrl" #ref = newbaseline
+coefs = contrast(regrid(multi_an, "log"),"trt.vs.ctrl1",  by="educ")
+
+update(coefs, by = "contrast") %>% 
+  kable(format = "markdown", digits = 3)
+
+# get difference between yes-no and fair-excellent
+contrast(coefs, "revpairwise", by = "contrast") %>%
+  kable(format = "markdown", digits = 3)
+```
+
+> A multinomial model was estimated using the `nnet` package in R to investigate whether political party identification (Democrat, Independent, Republican, Other), education (high school or less, some college, college degree), and age (grand mean centered; M = 51.69) influence voting frequency (rarely or never vote, vote sporadically, almost always vote). All three predictors were significantly associated with voting frequency: party identification, $\chi^2$ (6) = 171.91, p \< .001; education, $\chi^2$ (4) = 252.81, p \< .001; and age, $\chi^2$ (2) = 666.41, p \< .001, $R^2_{mcfadden}$ = .09. The odds of Independents (and those who support other parties or none) voting sporadically (versus rarely or never) were lower. Specifically, independents were `r  OR = exp(-0.363)` times less likely compared to Democrats, `r OR = exp(-0.324 )` lower compared to Republicans. Others were `r exp(-0.909)` times lower compared to Democrats, `r OR = exp(-0.871)` lower compared to Republicans. The odds that Republicans, relative to Democrats, voted sporadically was negligible. The pattern of results is similar when comparing the odds of always voting versus rarely or never voting. Supporters of all other parties in our data had lower odds of always voting compared to Democrats (Independents: OR = `r exp(-0.464)`; Other: OR = `r exp(-1.33)`) and Republicans (Independents: OR = `r exp(-0.462)`; Other: OR = `r exp(-1.32)`.
+
+> Those with high school and some college education were more likely to rarely vote compared to sporadically vote compared to college educated persons (High School: OR = `r exp(-0.989)`, p \< .001) and some college (OR = `r exp(-0.372)`, p \< .001) or always (High School: OR = `r exp(-1.41)`, p \< .001) and (some college: OR = `r exp(-0.429)`, *p* \< .001). Stated a bit differently, college voters were more likely to vote than those with a high school or some college education. We also see that those with some college education vs. High school or less were more likely to sporadically vote (Some College: OR = `r exp(0.616)`, *p* \< .001) or always vote (Some College: OR = `r exp(.981)`, p \< .001) compared to rarely/never vote.
+
+> For each one-year increase in age beyond 52 (the mean), the odds of voting sporadically (versus rarely or never) were 1.05 times higher (p \< .001) relative to the baseline voter. They were 1.06 times higher for always voting (versus rarely or never).
