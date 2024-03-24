@@ -1,0 +1,961 @@
+---
+title: "Bayesian Data Analysis in R"
+subtitle: "Princeton University"
+author: "Jason Geller, PH.D.(he/him)"
+date: 'Updated:`r Sys.Date()`'
+footer: "PSY 504: Advanced Statistics"
+format: 
+  revealjs:
+    theme: blood
+    css: slide-style.css
+    multiplex: true
+    transition: fade
+    slide-number: true
+    incremental: false 
+    chalkboard: true
+    fontsize: "25pt"
+webr:
+  packages: ["tidyverse", "easystats", "broom", "knitr", "emmeans", "ggeffects","brms"]
+filters:
+  - webr
+execute:
+  freeze: auto
+  echo: true
+  message: false
+  warning: false
+  fig-align: center
+  fig-width: 12
+  fig-height: 8
+  editor_options: 
+  chunk_output_type: inline
+  code-overflow: wrap
+  html:
+    code-fold: true
+    code-tools: true
+---
+
+## Packages
+
+```{r}
+library(tidyverse)
+library(tidybayes)
+library(brms) # run bayesian models
+library(emoji)
+library(emmeans)
+library(easystats)
+library(ggdist)
+library(marginaleffects)
+library(ggeffects)
+library(knitr)
+library(gghalves)
+library(ggokabeito)
+library(ggbeeswarm)
+
+options(scipen=999)
+```
+
+-   Follow along \[here\]()
+
+## Today
+
+<br> <br>
+
+-   A gentle introduction to Bayesian data analysis
+
+-   Learn how to conduct, interpret, and report a simple Bayesian regression using `brms`
+
+## The rise of Bayesian statistics
+
+![](images/bayes_pop.jpg)
+
+## Bayesian statistics as a tool
+
+::: columns
+::: {.column width="50%"}
+-   Google or search X
+
+    -   A lot of discussion on philosophical issues:
+
+        -   Subjective vs. objective probabilities
+        -   Frequentist vs. Bayesian (why I am better than you are)
+        -   p-values vs. subjective probabilities
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: false
+
+include_graphics("images/bayespower.jpg")
+```
+:::
+:::
+
+## What is Bayesian data analysis?
+
+-   It is when you use probability to represent uncertainty in all parts of a statistical model (update beliefs accordingly)
+
+. . .
+
+-   A flexible extension of maximum likelihood *(hey I know what that is!)*
+
+. . .
+
+-   Can be computationally intensive and hard!
+
+## What is Bayesian data analysis?
+
+-   A method for figuring out unknowns that requires three things:
+
+1.  Prior (what we know before data is collected)
+
+2.  Data
+
+3.  Generative models
+
+## Generative model
+
+```{r, fig.align='center', echo=FALSE, out.width="65%"}
+
+include_graphics("images/gen.jpg")
+
+```
+
+## Bayes' rule
+
+$$\begin{align}
+\underbrace{ p(\theta \mid \text{data})}_{\substack{\text{Posterior beliefs}}} \,\,\, = \,\,\,
+\underbrace{ p(\theta)}_{\substack{\text{Prior beliefs} }}
+\,\,\,\, \times
+\overbrace{\underbrace{\frac{p( \text{data} \mid \theta)}{p( \text{data})}}}^{\substack{\text{Prediction for specific }\theta }}_{\substack{\text{sum} \\\text{across all }  \theta's}}.
+\end{align}$$
+
+-   $p(\theta \mid \text{data})$ - The question you always wanted to test (posterior)
+
+-   $p(\theta)$ - expectation/prior belief (priors)
+
+-   $p(data \mid \theta)$ - How well data fits given estimated parameter value (likelihood)
+
+-   $p(data \mid M_k)$ - Marginal likelihood or evidence
+
+## Bayes' rule
+
+```{r, fig.align='center', echo=FALSE, out.width="100%"}
+
+include_graphics("images/bayes_fig.jpg")
+
+```
+
+## Bayes' rule
+
+-   Proportional formula
+
+$$p(\theta \mid \text{data}) \propto p(\theta) \times p(\text{data} \mid \theta)$$
+
+## Bayesian belief updating
+
+![](images/bayes-steps.png){fig-align="center"}
+
+## Working example
+
+-   We are interested in the percentage of dog people in the US
+
+-   People can be classified at dog people or cat people
+
+-   Data:
+
+    -   0 = Cat person
+    -   1 = Dog person
+
+Parameters:
+
+-   $\theta$ = Proportion of dog people
+
+## Bayesian belief updating
+
+-   Prior Probability
+
+    -   An unconditional probability distribution representing belief about a parameter BEFORE DATA COLLECTION
+
+![](images/step1.png){fig-align="center"}
+
+::: notes
+We start off with a prior distribution that captures the state of knowledge about parameters before the data collection. The wider the distribution the less knowledge we have. The most extreme prior someone can have is a point prior (here green) on one value. This means that prior to seeing the data, the person thinks that only this and no other value is technically possible. Different people can have different prior distributions, for example, the blue person has considerable more uncertainty about the prior parameter than the blue person.
+:::
+
+## Bayesian belief updating
+
+```{r, fig.align='center', echo=FALSE}
+
+knitr::include_graphics("images/diffpriors.png")
+
+```
+
+## Bayesian belief updating
+
+-   Prior odds
+
+    -   Compares the relative plausibility of two models before data collection
+
+$$\frac{p(M1)}{p(M2)}$$
+
+![](images/step2.png){fig-align="center"}
+
+::: notes
+Imagine a third person who is asked to make a judgement about the prior expectations of two people. In most cases, without seeing the data, this third person will be impartial - and thus assign the same prior probabilities to both models. \# Note that we are talking of people and models interchangeably.
+:::
+
+## Declaring Priors
+
+You have to identify:
+
+-   Distribution of every statistic you want to estimate, including the dependent variable and each parameter of its distribution
+    -   (e.g., DV \~ N( $\mu$ , $\sigma$))
+-   Expected values for the location and spread of the distributions
+
+## How to choose
+
+-   People argue about priors
+
+    -   Priors differ in how informative they are
+
+    -   Priors differ in how proper they are
+
+-   Creates two camps:
+
+    -   “Subjective Bayesians” vs. “Objective Bayesians"
+
+## Informativeness of priors
+
+-   Informative Priors (“Subjective Bayesians”)
+
+    -   Prior distributions that are specific about the values of model parameters (e.g., true correlation ≈ N(μ = -0.5)
+
+-   Non-informative Priors (“Objective Bayesians”)
+
+    -   Usually, uniform distributions that includes all values of a parameter (e.g., -1 ≤ true correlation ≤ +1, with every value having equal probability)
+
+-   Weakly-informative priors (“WIP”; Most Bayesians)
+
+    -   Specifying the distribution (e.g., Normal), with starting values known to bias estimates the least
+
+## Informativeness of priors
+
+-   People vary in how strongly they state their prior beliefs
+
+-   If you state your belief strongly
+
+    -   E.g., the true correlation is \~N(0.3, 0.06)
+        -   Pitfall: Your beliefs have greater influence over the shape of the posterior distribution
+
+-   If you state your belief weakly
+
+    -   E.g., true correlation is equally likely at any real value between -1 and 1
+        -   Pitfall: You run the risk of overestimating the relative densities of the posterior distribution to the prior distribution
+
+## Bayesian belief updating
+
+-   Prior prediction distribution
+
+    -   Makes a prediction about plausibility of the data
+
+        -   What is the probability to observe 0, 1, 2, … dog people in a random sample of 5 people given our model?
+
+![](images/prior_predictive.png){fig-align="center"}
+
+::: notes
+From the prior expectations about a parameter we can derive prior predictions for the data (X). For example, if data 0-5 are technically possible, the green model (which was the one with the spike prior) predicts that it is very likely to draw values 2 and 3, whereas it is very unlikely to draw values 0 and 5. On the other hand, the blue model (which contained more uncertainty about the parameter) makes much less precise predictions. All data values are somewhat likely to happen according to this model – even extreme values such as 0 and 5. If we look at the probabilities of all possible data values, we get a prior predictive distribution
+:::
+
+## Bayesian belief updating
+
+![](images/bayes_data.png){fig-align="center"}
+
+::: notes
+The next step is data collection. Remember that everything we discussed so far happened without any knowledge about real data. As the data roll in, you could get a result like “We tried out procedure X, and were successful in 3 out of 5 trials”.
+:::
+
+## Bayesian belief updating
+
+-   Marginal Likelihood
+
+    -   How plausible are the observed data under the model?
+
+        -   Evaluation of the prior predictive distribution at the observed data
+
+```{r, fig.align='center', echo=FALSE}
+
+include_graphics("images/marg_like.png")
+
+```
+
+::: notes
+As soon as you have the data, you can check how well they fit the predictions of the models. In a Bayesian context, we think of prediction adequacy (or prediction errors) in terms of a match between the model and the data. If the data match the model well, the predictive adequacy is high / the prediction error is low. If there is no good match between model and data, the predictive adequacy is low / the prediction error is high. Now, how can we quantify this “matchingness”? Via the prior predictive distributions: Here, you can see again the prior predictive distributions of the two models. You can see that for the given data (x = 3), the green model made better predictions than the blue model, because the green model thought that the given data were more likely beforehand. This likelihood of the data under a model is called “marginal likelihood” or “Bayesian evidence”.
+:::
+
+## Bayesian belief updating
+
+![](images/marginallike.png){fig-align="center" width="1001"}
+
+## Bayes factors
+
+::: columns
+::: {.column width="50%"}
+-   Frequentists have *p* values
+
+-   Bayesians have Bayes factors (BF)
+
+    -   Tells you how much more likely the observed data are under one model than under another model
+
+    -   Can be interpreted as degree of relative evidence for a model
+
+        $$\text{Bayes factor} (BF) = \frac{P(\mathcal{D}|M_1)}{P(\mathcal{D}|M_2)}$$
+:::
+
+::: {.column width="50%"}
+![](images/bayes-bf2.png){fig-align="center"}
+:::
+:::
+
+-   $BF_{12}$ \> 1: More evidence for M1
+
+-   $BF_{12}$ \< 1: More evidence for M2
+
+## Bayesian belief updating
+
+![](images/bayes-BF.png){fig-align="center"}
+
+## Bayes factors
+
+-   How convincing is the evidence that M1 is better than M2?
+
+    -   Moderate to strong evidence (BF \> 3) to publish in psych
+
+```{r, fig.align='center', echo=FALSE}
+
+include_graphics("images/bf.png")
+
+```
+
+## Bayesian belief updating
+
+-   A posterior distribution is a conditional probability distribution that represents belief about a parameter, taking the evidence into account
+
+```{r, fig.align='center', echo=FALSE}
+
+include_graphics("images/step6.png")
+
+```
+
+::: notes
+Let’s see how our knowledge is updated by the data. Remember the two persons from the beginning? One said: Everything apart from a parameter value of 0.5 is literally not possible (see green line). One had considerable uncertainty and did not rule out any parameter value, and therefore formulated a wide prior distribution (here dotted blue). The posterior distribution shows us how these prior expectations should be transformed after seeing the data. Here, the posterior distribution of the blue person is pictured with a blue solid line. There are certain parameter values that gained in plausibility, while others decreased in plausibility. For the “green person”, the prior distribution is not updated at all. Why does that happen? Since the person logically excluded all parameter values apart from 0.5, they also get a probability of zero after seeing the data. Just imagine: If you are 100% sure that Santa Claus does not exist, you won’t believe in him although you find presents in your stocking on Christmas day, get told stories about him, and saw a reindeer with a red nose in your back yard.
+:::
+
+## Bayesian belief updating
+
+-   Posterior
+
+    -   Credible intervals (Highest Density Intervals)
+
+        -   With a probability of x%, the parameter lies within this interval
+        -   Defined by the posterior distribution
+
+```{r, fig.align='center', echo=FALSE, out.width="70%"}
+
+knitr::include_graphics("images/step7.png")
+
+```
+
+## Bayesian belief updating
+
+![](images/post_odds.png){fig-align="center"}
+
+::: notes
+Of course, after seeing the data, a third person would believe more in the model that predicted the data better (in this case model 1). This means that the posterior odds of the person changed in comparison to the prior odds. How can we quantify how much the belief changed? By multiplying the prior odds with the Bayes factor. Remember that the BF told us how much to believe in one model compared to the other, so this is straightforward: We multiply what we believed before with what we should believe when we see the data and get what we should believe after we have seen the data. In this case, the posterior model odds are 1.46, that means that an impartial judge who had no preference before would think that the green model is 1.46 times more likely than the blue model after seeing the data.
+:::
+
+## Today
+
+<br> <br>
+
+-   `r emoji("check")` Understand basic concepts of Bayesian statistics
+
+-   Learn how to conduct and interpret a simple Bayesian regression using `brms`
+
+## Bayesian regression example
+
+-   Does synchronous attendance and average viewing matter in hybrid courses?
+
+    -   33 students in Fall 2020 statistics course
+
+        -   Looked at:
+
+            -   Grade `Final course grade`: Min: 30 Max: 97
+            -   sync `Mode of attendance`: (0=asynchronous; 1=synchronous)
+            -   avgView `Average standardized viewing time for recorded lectures`: in minutes
+
+## Data
+
+```{r}
+data<-read.csv("https://osf.io/sxk2a/download")
+```
+
+```{r, eval=FALSE}
+library(brms) # run bayes lm 
+library(marginaleffects) # get posteriors 
+library(ggeffects) # graph
+library(easystats) # easystats packages # bayesttestR 
+library(bayesplot) # graph trace plots
+```
+
+## `avgView` plot
+
+```{r, echo=FALSE, out.width="70%"}
+#| fig-align: "center"
+# The ggplot function takes the data as argument, and then the variables
+# related to aesthetic features such as the x and y axes.
+ggplot(data, aes(x = avgView, y = grade)) +
+  geom_point(size=3) + # This adds the points
+  geom_smooth(method = "lm")  + 
+  theme_lucid(base_size=25)# This adds a regression line
+```
+
+## `sync` plot
+
+```{r, echo=FALSE, fig.align='center', out.width="70%"}
+
+library(gghalves)
+library(ggokabeito)
+library(ggbeeswarm)
+
+data$sync_cat<-ifelse(data$sync==0, "Async", "Sync")
+data$sync_cont<-ifelse(data$sync_cat=="Async", -.5, .5)
+
+
+# Visualise distributions and observations
+
+ggplot(data, aes(x = sync_cat, y = grade)) +
+  geom_half_point(aes(color = sync_cat), 
+                  transformation = position_quasirandom(width = 0.1),
+                  side = "l", size = 2, alpha = 0.5) +
+  geom_half_boxplot(aes(fill = sync_cat), side = "r") + 
+  scale_fill_okabe_ito() +
+  scale_color_okabe_ito() +
+  guides(color = "none", fill = "none") +
+  labs(x = "Sync", y = "Grade") +
+  theme_lucid(base_size=24)
+
+
+```
+
+## Simple regression
+
+```{r}
+lm_class <- lm(grade~avgView+sync_cont, data=data)
+
+model_parameters(lm_class) %>%
+  print_md()
+```
+
+## `brms`
+
+-   Bayesian regression models in Stan (`brms`)
+
+```{r}
+#| results: hide
+#| 
+brm_class1 <- brm(grade~avgView+sync_cont, data=data, 
+family= gaussian(),#distribution
+prior=NULL, 
+chains=4, # how many chains are run
+core=4, #computer cores to use
+warmup = 2000, # warm-up for MCMC 
+iter = 5000) # number of MCMC samples
+
+```
+
+## Computing the posterior
+
+-   Markov chain Monte Carlo (MCMC) sampler!
+
+-   Given possible priors and your data, a computer uses a Monte Carlo sampling technique to build stochastic Markov Chains, a process referred to as MCMC
+
+-   We run multiple chains (e.g., 4 chains in `brms`) with equal numbers of iterations (e.g., 5000 iterations) in each chain to estimate convergence/stability
+
+-   MCMC chains contain samples from the posterior distribution of the theory given the data
+
+## Markov Chain (MC)
+
+::: columns
+::: {.column width="50%"}
+![](images/MC.png){fig-align="center" width="212"}
+
+![](images/mc.GIF)
+:::
+
+::: {.column width="50%"}
+-   Chain of discrete events, moving forward in time
+    -   Probability of each event is a conditional probability, given the last event
+-   Each event is wholly predicted by the immediately preceding event
+-   They can stay the same/loop
+-   Future events can be predicted by knowing only the current event
+:::
+:::
+
+## Monte Carlo (MC)
+
+-   Monte Carlo simulations involve simulating a random process and then directly averaging the values of interest.
+
+```{webr-r}
+# Define the number of simulations
+n_simulations <- 100
+# Define the sample size for each simulation
+sample_size <- 100
+# Define the mean and standard deviation for the normal distribution
+mean <- 1
+sd <- 1
+# Initialize a vector to store the mean of each simulation
+simulation_means <- numeric(n_simulations)
+# Perform the simulations
+for(i in 1:n_simulations) {
+  sample_data <- rnorm(n = sample_size, mean = mean, sd = sd)
+  simulation_means[i] <- mean(sample_data)
+}
+# Print the results
+print(simulation_means)
+
+```
+
+# MCMC in action
+
+-   https://chi-feng.github.io/mcmc-demo/app.html
+
+## MCMC diagnostics
+
+-   Trace plots
+
+    -   Look for the fuzzy ***caterpillars***
+
+```{r, fig.align='center', out.width="40%"}
+
+bayesplot::color_scheme_set("mix-blue-red")
+bayesplot::mcmc_trace(brm_class1, pars = c("b_avgView"), 
+           facet_args = list(ncol = 1, strip.position = "left"))
+
+```
+
+## MCMC Diagnostics
+
+-   Bad plots
+
+```{r, echo=F}
+knitr::include_graphics("images/bad.jpeg")
+
+```
+
+## Other diagnostics
+
+```{r}
+kable(diagnostic_posterior(brm_class1), digits=3)
+```
+
+-   $\hat{R}$
+
+    -   Measure of consistency of Markov chains
+
+        -   Should be close to 1 (not larger than 1.01)
+
+    -   Ratio of variance (like *F* test)
+
+## Other Diagnostics
+
+```{r}
+kable(diagnostic_posterior(brm_class1), digits=3)
+```
+
+-   Effective sample size (ESS)
+
+    -   MCMC chains are autocorrelated
+
+    -   Number of independent pieces there is in autocorrelated chains (Krushke, 2015, p182-3)
+
+    -   Should be \> 1000
+
+## Priors
+
+```{r}
+prior_summary(brm_class1)
+```
+
+## Weakly informative priors
+
+-   Normal(0, 10)
+
+```{r}
+#| echo: false
+#| 
+x=distribution_normal(30, 0, 100)
+plot(density(x))
+```
+
+## Visualize prior predictive distribution
+
+-   Make sure prior distribution makes sensible predictions (if using informative priors)
+
+::: columns
+::: {.column width="50%"}
+```{r,warning=F, message=F, results='hide'}
+# set prior
+prior1 <- prior(cauchy(0, .707), class=b)
+prior2 <- prior(normal(0, 10), class = b)
+prior3 <- prior(normal(0, .51), class = b)
+
+#include prior 
+# only sample from prior so we can plot it and look
+brm_class_prior <- brm(grade~avgView, data=data,
+sample_prior="only", #use this to check prior pulls 
+prior=prior2, # add in prior information 
+family= gaussian(),  
+warmup = 2000,
+iter = 5000)
+
+# check prior
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+pp_check(brm_class_prior)
+```
+:::
+:::
+
+## Describing the posterior
+
+-   A point-estimate which is a one-value summary (similar to the $\beta$ in frequentist regressions)
+
+    -   mean/median
+
+-   A credible interval representing the associated uncertainty
+
+-   Some indices of significance, giving information about the relative importance of this effect (e.g., Bayes Factors)
+
+## Posterior distribution plot
+
+```{r, fig.align='center', out.width="60%"}
+pp_check(brm_class1, type="stat_grouped", group="sync_cont")
+```
+
+## Posterior distribution plot
+
+```{r}
+
+pp_check(brm_class1,group="avgView")
+
+```
+
+## Point-estimate
+
+```{r}
+
+model_parameters(brm_class1) %>%
+  kable()
+
+```
+
+## Uncertainty: Credible intervals
+
+- Credible intervals (high density intervals)
+
+```{r}
+posteriors <- get_parameters(brm_class1)
+resuls=hdi(posteriors$b_avgView, ci=0.95)
+```
+
+```{r, echo=F, fig.align='center', out.width="100%"}
+include_graphics("hdi_avg.jpg")
+```
+
+## Uncertainty: Credible intervals
+
+```{r}
+library(see)
+
+posteriors <- get_parameters(brm_class1)
+results=hdi(posteriors$b_sync_cont, ci=0.95)
+
+```
+
+```{r, echo=F, fig.align='center', out.width="100%"}
+
+include_graphics("hdi_sync.jpg")
+
+```
+
+## Visualizing uncertainty: `avgView`
+
+::: columns
+::: {.column width="50%"}
+```{r}
+
+#get predictions from margainaleffects
+pred <- predictions(brm_class1,
+                    newdata = datagrid(
+        avgView = seq(6, 75, by = 5))) %>%
+        posterior_draws()
+
+pred_fig <- ggplot(pred, aes(x = avgView, y = draw)) +
+    stat_lineribbon() +
+    scale_fill_brewer(palette = "Reds") +
+    labs(x = "Average Watch Time (min)",
+         y = "Grades (predicted)",
+         fill = "")
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| 
+
+pred_fig 
+```
+:::
+:::
+
+## Visualizing uncertainty: `sync`
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| eval: false
+#| 
+
+pred <- avg_predictions(brm_class1, variables = "sync_cont") %>%  posterior_draws()
+
+pred$sync_cont<-as.factor(pred$sync_cont)
+
+ggplot(pred, aes(x = draw, y = sync_cont, fill = sync_cont)) +
+  stat_halfeye()  +
+  scale_fill_viridis_d(option = "plasma", end = 0.8) +
+  guides(fill = "none") +
+  labs(x ="Class", y = "Grades",
+       caption = "80% and 95% credible intervals shown in black") +
+  theme_lucid(base_size=25)
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: false
+
+pred <- avg_predictions(brm_class1, variables = "sync_cont") %>%  posterior_draws()
+
+pred$sync_cont<-as.factor(pred$sync_cont)
+
+ggplot(pred, aes(x = draw, y = sync_cont, fill = sync_cont)) +
+  stat_halfeye()  +
+  scale_fill_viridis_d(option = "plasma", end = 0.8) +
+  guides(fill = "none") +
+  labs(x ="Class", y = "Grades",
+       caption = "80% and 95% credible intervals shown in black") +
+  theme_lucid(base_size=25)
+```
+:::
+:::
+
+## Descriptives
+
+```{r}
+
+describe_posterior(
+  brm_class1,
+  effects = "fixed",
+  component = "all",
+  test=c("p_direction"), 
+  centrality = "all"
+) %>%
+  kable()
+
+```
+
+::: callout-note
+pd is pretty cool! It tells us how much of the distribution is completely positive or negative. It is correlated with p values!
+:::
+
+## Significance
+
+-   Does the credible interval for `avgView` contain 0?
+
+    -   If yes, "not significant"
+
+    -   If no, "significant"
+
+```{r}
+
+hdi(posteriors$b_avgView, ci=0.95)
+
+```
+
+. . .
+
+-   It does not in our case so significant!
+
+## Significance
+
+-   Does the credible interval for `sync_cont` contain 0?
+
+    -   If yes, "not significant"
+
+    -   If no, "significant"
+
+```{r}
+
+hdi(posteriors$b_sync_cont, ci=0.95)
+
+```
+
+. . .
+
+-   It doest in our case so not significant!
+
+## Significant differences
+
+-   Use `marginaleffects` to get mean differences between variables
+
+```{r}
+
+marginaleffects::avg_comparisons(brm_class1, variables="sync_cont")  %>%
+  kable()
+```
+
+## Adding prior to our model
+
+```{r, message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+
+brm_class_cat <- brm(grade~avgView + sync_cont, prior=prior2, 
+data=data,
+family=gaussian(), 
+sample_prior="yes") # make sure to sample prior
+```
+
+## Significant differences: BFs
+
+-   Is the effect 0?
+
+-   Use `bayesfactor_parameter` function to test a model with the observed effect to a model with the effect at 0
+
+```{r, warning=F, message=F}
+library(bayestestR) # bayes functions easystats
+# contrast
+#BF only if you use weakly-strong priors 
+BF <- bayestestR::bayesfactor_parameters(brm_class_cat, null = 0)
+
+BF
+
+```
+
+## Model comparisons: BF
+
+-   Use `bayestestR::bayesfactor_models` to get a BF for full models selection
+
+```{r, echo=TRUE, message=F, warning=F, results='hide'}
+# Model 1: grade ~ sync + avgView
+#save_pars for bayes factors
+brm_class1 <- brm(grade~avgView + sync, data=data , family = gaussian(), prior=prior2, sample_prior="yes", save_pars = save_pars(all=TRUE), warmup = 2000, iter = 5000)
+#grade ~ avgView
+brm_class2 <- brm(grade~avgView, data=data, prior=prior2, family = gaussian(), sample_prior="yes", save_pars = save_pars(all=TRUE), 
+    warmup = 2000, iter = 5000)
+```
+
+```{r}
+#| eval: false
+#| 
+# testing models
+# compared to intercept-only or null model
+bayesfactor_models(brm_class1, brm_class2)
+```
+
+ ## Significant differences: BFs
+ 
+ - `avgview` effect is 15 times more likely than effect of 0. 
+
+```{r}
+
+BF <- bayestestR::bayesfactor_parameters(brm_class2, null = 0)
+
+BF
+
+```
+
+
+## Original question
+
+-   Do my students’ course grades depend on whether they attend lectures synchronously or asynchronously and average viewing time?
+
+  - Only `avgView`
+        -   BF favored a model with only `avgView`
+          -   Strong evidence that effect not zero (BF = 15)
+        - Weak evidence for an effect of mode of attendance
+
+        
+-   What do we get from Bayesian analysis that we don't get from regular linear regression?
+
+## Reporting Bayesian analysis
+
+```{r, echo=T, message=F, warning=F, results='hide', eval=F}
+report_bayes=report::report(brm_class1)
+```
+
+1.  Include which prior settings were used
+2.  Justify the prior settings (particularly for informed priors in a testing scenario)
+3.  Include a plot of the prior and posterior distribution
+4.  Report the posterior mean/median and x% credible intervals
+5.  If relevant, report the results from both estimation and hypothesis testing
+6.  Include BFs for model comparisons or parameters
+7.  Include model convergence diagnostics (trace plot, $\hat R$, ESS)
+
+## Bayesian pros
+
+-   Quantify the amount of support for one hypothesis relative to another
+
+-   Priors
+
+-   Parsimony is rewarded
+
+-   Sample size does not affect estimates as much as it does the likelihood
+
+-   Optional stopping is okay
+
+## Bayesian cons:
+
+-   Priors (can be good and bad)
+
+-   Computationally intensive
+
+## Caveat: What can Bayes not do?
+
+-   Ban questionable research practices (e.g., HARKing)
+
+-   Provide a remedy for:
+
+    -   Small sample sizes
+    -   Unrepresentative samples
+    -   Poor experimental design
+
+## Resources
+
+![](images/book1.png){fig-align="center"}
+
+## Resources
+
+![](images/book2.png){fig-align="center"}
+
+-   Check out the awesome YouTube videos that go through each chapter.
+
+## Resources
+
+![](images/clipboard-1935275650.png){fig-align="center"}
+
+Free!
