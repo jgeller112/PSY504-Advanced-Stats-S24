@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.504">
 
   <meta name="author" content="Jason Geller, PH.D.(he/him)">
-  <meta name="dcterms.date" content="2024-03-24">
+  <meta name="dcterms.date" content="2024-03-25">
   <title>Bayesian Data Analysis in R</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -555,7 +555,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"options":{"autorun":"false","fig-height":5,"results":"markup","context":"interactive","label":"unnamed-chunk-1","output":"true","fig-width":7,"classes":"","dpi":72,"out-width":"700px","comment":"","message":"true","fig-cap":"","warning":"true","out-height":""},"id":1,"code":"# Define the number of simulations\nn_simulations <- 100\n# Define the sample size for each simulation\nsample_size <- 100\n# Define the mean and standard deviation for the normal distribution\nmean <- 0\nsd <- 1\n# Initialize a vector to store the mean of each simulation\nsimulation_means <- numeric(n_simulations)\n# Perform the simulations\nfor(i in 1:n_simulations) {\n  sample_data <- rnorm(n = sample_size, mean = mean, sd = sd)\n  simulation_means[i] <- mean(sample_data)\n}\n# Print the results\nprint(simulation_means)"}];
+  globalThis.qwebrCellDetails = [{"code":"# Define the number of simulations\nn_simulations <- 100\n# Define the sample size for each simulation\nsample_size <- 100\n# Define the mean and standard deviation for the normal distribution\nmean <- 0\nsd <- 1\n# Initialize a vector to store the mean of each simulation\nsimulation_means <- numeric(n_simulations)\n# Perform the simulations\nfor(i in 1:n_simulations) {\n  sample_data <- rnorm(n = sample_size, mean = mean, sd = sd)\n  simulation_means[i] <- mean(sample_data)\n}\n# Print the results\nprint(simulation_means)","options":{"comment":"","label":"unnamed-chunk-1","results":"markup","classes":"","message":"true","output":"true","autorun":"false","fig-cap":"","context":"interactive","fig-height":5,"out-width":"700px","fig-width":7,"warning":"true","dpi":72,"out-height":""},"id":1}];
 
   </script>
   <script type="module">
@@ -1461,7 +1461,7 @@ Jason Geller, PH.D.(he/him)
 </div>
 </div>
 
-  <p class="date">2024-03-24</p>
+  <p class="date">2024-03-25</p>
 </section>
 <section id="packages" class="slide level2">
 <h2>Packages</h2>
@@ -1893,8 +1893,8 @@ Jason Geller, PH.D.(he/him)
 <h2>Today</h2>
 <p><br> <br></p>
 <ul>
-<li><p>☑️ Understand basic concepts of Bayesian statistics</p></li>
-<li><p>Learn how to conduct and interpret a simple Bayesian regression using <code>brms</code></p></li>
+<li><p>✅ Understand basic concepts of Bayesian statistics</p></li>
+<li><p>Learn how to conduct, interpret, and report a simple Bayesian regression using <code>brms</code></p></li>
 </ul>
 </section>
 <section id="bayesian-regression-example" class="slide level2">
@@ -2092,20 +2092,20 @@ Jason Geller, PH.D.(he/him)
 <tr class="odd">
 <td style="text-align: left;">b_avgView</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">8631.602</td>
+<td style="text-align: right;">9259.394</td>
 <td style="text-align: right;">0.002</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">b_Intercept</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">8157.932</td>
-<td style="text-align: right;">0.104</td>
+<td style="text-align: right;">8740.288</td>
+<td style="text-align: right;">0.101</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">b_sync_cont</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">9056.828</td>
-<td style="text-align: right;">0.086</td>
+<td style="text-align: right;">9146.728</td>
+<td style="text-align: right;">0.085</td>
 </tr>
 </tbody>
 </table>
@@ -2140,20 +2140,20 @@ Jason Geller, PH.D.(he/him)
 <tr class="odd">
 <td style="text-align: left;">b_avgView</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">8631.602</td>
+<td style="text-align: right;">9259.394</td>
 <td style="text-align: right;">0.002</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">b_Intercept</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">8157.932</td>
-<td style="text-align: right;">0.104</td>
+<td style="text-align: right;">8740.288</td>
+<td style="text-align: right;">0.101</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">b_sync_cont</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">9056.828</td>
-<td style="text-align: right;">0.086</td>
+<td style="text-align: right;">9146.728</td>
+<td style="text-align: right;">0.085</td>
 </tr>
 </tbody>
 </table>
@@ -2298,9 +2298,9 @@ Jason Geller, PH.D.(he/him)
 <col style="width: 5%">
 <col style="width: 13%">
 <col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 11%">
 <col style="width: 10%">
-<col style="width: 10%">
-<col style="width: 9%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -2319,46 +2319,46 @@ Jason Geller, PH.D.(he/him)
 <tr class="odd">
 <td style="text-align: left;">b_Intercept</td>
 <td style="text-align: left;">conditional</td>
-<td style="text-align: right;">56.1736271</td>
+<td style="text-align: right;">55.9231245</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">37.8657008</td>
-<td style="text-align: right;">74.932880</td>
+<td style="text-align: right;">37.6170991</td>
+<td style="text-align: right;">74.68348</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">1.0000030</td>
-<td style="text-align: right;">8157.932</td>
+<td style="text-align: right;">1.0003206</td>
+<td style="text-align: right;">8740.288</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">b_avgView</td>
 <td style="text-align: left;">conditional</td>
-<td style="text-align: right;">0.4598636</td>
+<td style="text-align: right;">0.4628732</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">0.1534783</td>
-<td style="text-align: right;">0.765322</td>
-<td style="text-align: right;">0.9983333</td>
-<td style="text-align: right;">1.0000910</td>
-<td style="text-align: right;">8631.602</td>
+<td style="text-align: right;">0.1484054</td>
+<td style="text-align: right;">0.76939</td>
+<td style="text-align: right;">0.9975000</td>
+<td style="text-align: right;">1.0003704</td>
+<td style="text-align: right;">9259.394</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">b_sync_cont</td>
 <td style="text-align: left;">conditional</td>
-<td style="text-align: right;">0.3314724</td>
+<td style="text-align: right;">0.2891878</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">-15.7014760</td>
-<td style="text-align: right;">16.248224</td>
-<td style="text-align: right;">0.5185000</td>
-<td style="text-align: right;">0.9999753</td>
-<td style="text-align: right;">9056.828</td>
+<td style="text-align: right;">-15.6304456</td>
+<td style="text-align: right;">16.22306</td>
+<td style="text-align: right;">0.5124167</td>
+<td style="text-align: right;">1.0001924</td>
+<td style="text-align: right;">9146.728</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">sigma</td>
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">15.1856036</td>
+<td style="text-align: right;">15.2307741</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">12.0698813</td>
-<td style="text-align: right;">19.762215</td>
+<td style="text-align: right;">12.1105087</td>
+<td style="text-align: right;">19.93560</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">0.9998091</td>
-<td style="text-align: right;">9442.098</td>
+<td style="text-align: right;">0.9999485</td>
+<td style="text-align: right;">8229.021</td>
 </tr>
 </tbody>
 </table>
@@ -2427,7 +2427,7 @@ Jason Geller, PH.D.(he/him)
 <span id="cb19-3"><a href="#cb19-3"></a>pred<span class="sc">$</span>sync_cont<span class="ot">&lt;-</span><span class="fu">as.factor</span>(pred<span class="sc">$</span>sync_cont)</span>
 <span id="cb19-4"><a href="#cb19-4"></a></span>
 <span id="cb19-5"><a href="#cb19-5"></a><span class="fu">ggplot</span>(pred, <span class="fu">aes</span>(<span class="at">x =</span> draw, <span class="at">y =</span> sync_cont, <span class="at">fill =</span> sync_cont)) <span class="sc">+</span></span>
-<span id="cb19-6"><a href="#cb19-6"></a>  <span class="fu">stat_halfeye</span>(<span class="at">color=</span><span class="st">"red"</span>)  <span class="sc">+</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a>  <span class="fu">stat_halfeye</span>(<span class="at">.width=</span><span class="fu">c</span>(.<span class="dv">8</span>, .<span class="dv">95</span>))  <span class="sc">+</span></span>
 <span id="cb19-7"><a href="#cb19-7"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"plasma"</span>, <span class="at">end =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
 <span id="cb19-8"><a href="#cb19-8"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
 <span id="cb19-9"><a href="#cb19-9"></a>  <span class="fu">labs</span>(<span class="at">x =</span><span class="st">"Class"</span>, <span class="at">y =</span> <span class="st">"Grades"</span>,</span>
@@ -2469,7 +2469,7 @@ Jason Geller, PH.D.(he/him)
 <col style="width: 9%">
 <col style="width: 4%">
 <col style="width: 10%">
-<col style="width: 8%">
+<col style="width: 7%">
 <col style="width: 8%">
 <col style="width: 8%">
 <col style="width: 7%">
@@ -2495,57 +2495,57 @@ Jason Geller, PH.D.(he/him)
 <td style="text-align: left;">2</td>
 <td style="text-align: left;">b_Intercept</td>
 <td style="text-align: left;">conditional</td>
-<td style="text-align: right;">56.1736271</td>
-<td style="text-align: right;">56.1633346</td>
-<td style="text-align: right;">56.9703802</td>
+<td style="text-align: right;">55.9231245</td>
+<td style="text-align: right;">56.0918814</td>
+<td style="text-align: right;">54.8431997</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">37.8657008</td>
-<td style="text-align: right;">74.932880</td>
+<td style="text-align: right;">37.6170991</td>
+<td style="text-align: right;">74.68348</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">1.0000030</td>
-<td style="text-align: right;">8157.932</td>
+<td style="text-align: right;">1.0003206</td>
+<td style="text-align: right;">8740.288</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1</td>
 <td style="text-align: left;">b_avgView</td>
 <td style="text-align: left;">conditional</td>
-<td style="text-align: right;">0.4598636</td>
-<td style="text-align: right;">0.4601448</td>
-<td style="text-align: right;">0.4393392</td>
+<td style="text-align: right;">0.4628732</td>
+<td style="text-align: right;">0.4609308</td>
+<td style="text-align: right;">0.4656337</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">0.1534783</td>
-<td style="text-align: right;">0.765322</td>
-<td style="text-align: right;">0.9983333</td>
-<td style="text-align: right;">1.0000910</td>
-<td style="text-align: right;">8631.602</td>
+<td style="text-align: right;">0.1484054</td>
+<td style="text-align: right;">0.76939</td>
+<td style="text-align: right;">0.9975000</td>
+<td style="text-align: right;">1.0003704</td>
+<td style="text-align: right;">9259.394</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">3</td>
 <td style="text-align: left;">b_sync_cont</td>
 <td style="text-align: left;">conditional</td>
-<td style="text-align: right;">0.3314724</td>
-<td style="text-align: right;">0.3648665</td>
-<td style="text-align: right;">0.0288552</td>
+<td style="text-align: right;">0.2891878</td>
+<td style="text-align: right;">0.2969615</td>
+<td style="text-align: right;">0.0410414</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">-15.7014760</td>
-<td style="text-align: right;">16.248224</td>
-<td style="text-align: right;">0.5185000</td>
-<td style="text-align: right;">0.9999753</td>
-<td style="text-align: right;">9056.828</td>
+<td style="text-align: right;">-15.6304456</td>
+<td style="text-align: right;">16.22306</td>
+<td style="text-align: right;">0.5124167</td>
+<td style="text-align: right;">1.0001924</td>
+<td style="text-align: right;">9146.728</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">4</td>
 <td style="text-align: left;">sigma</td>
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">15.1856036</td>
-<td style="text-align: right;">15.3820059</td>
-<td style="text-align: right;">14.7052578</td>
+<td style="text-align: right;">15.2307741</td>
+<td style="text-align: right;">15.4246352</td>
+<td style="text-align: right;">14.4535446</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">12.0698813</td>
-<td style="text-align: right;">19.762215</td>
+<td style="text-align: right;">12.1105087</td>
+<td style="text-align: right;">19.93560</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">0.9998091</td>
-<td style="text-align: right;">9442.098</td>
+<td style="text-align: right;">0.9999485</td>
+<td style="text-align: right;">8229.021</td>
 </tr>
 </tbody>
 </table>
@@ -2578,7 +2578,7 @@ Jason Geller, PH.D.(he/him)
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">hdi</span>(posteriors<span class="sc">$</span>b_avgView, <span class="at">ci=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          [,1]      [,2]
-[1,] 0.1569493 0.7677001</code></pre>
+[1,] 0.1685986 0.7857546</code></pre>
 </div>
 </div>
 <div class="fragment">
@@ -2599,8 +2599,8 @@ Jason Geller, PH.D.(he/him)
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">hdi</span>(posteriors<span class="sc">$</span>b_sync_cont, <span class="at">ci=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>          [,1]    [,2]
-[1,] -15.70118 16.2506</code></pre>
+<pre><code>          [,1]     [,2]
+[1,] -14.96214 16.84957</code></pre>
 </div>
 </div>
 <div class="fragment">
@@ -2632,9 +2632,9 @@ Jason Geller, PH.D.(he/him)
 <tr class="odd">
 <td style="text-align: left;">sync_cont</td>
 <td style="text-align: left;">+1</td>
-<td style="text-align: right;">0.3314724</td>
-<td style="text-align: right;">-15.70148</td>
-<td style="text-align: right;">16.24822</td>
+<td style="text-align: right;">0.2891878</td>
+<td style="text-align: right;">-15.63045</td>
+<td style="text-align: right;">16.22306</td>
 </tr>
 </tbody>
 </table>
@@ -2674,9 +2674,9 @@ Jason Geller, PH.D.(he/him)
 
 Parameter   |       BF
 ----------------------
-(Intercept) | 7.58e+03
-avgView     |     1.48
-sync_cont   |    0.635
+(Intercept) | 7.85e+03
+avgView     |     2.05
+sync_cont   |    0.632
 
 * Evidence Against The Null: 0</code></pre>
 </div>
@@ -2718,8 +2718,8 @@ sync_cont   |    0.635
 
 Parameter   |       BF
 ----------------------
-(Intercept) | 1.79e+07
-avgView     |     6.71
+(Intercept) | 8.37e+05
+avgView     |     8.93
 
 * Evidence Against The Null: 0</code></pre>
 </div>

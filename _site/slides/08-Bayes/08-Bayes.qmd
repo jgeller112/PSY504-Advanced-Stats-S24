@@ -390,7 +390,7 @@ Of course, after seeing the data, a third person would believe more in the model
 
 -   `r emoji("check")` Understand basic concepts of Bayesian statistics
 
--   Learn how to conduct and interpret a simple Bayesian regression using `brms`
+-   Learn how to conduct, interpret, and report a simple Bayesian regression using `brms`
 
 ## Bayesian regression example
 
@@ -770,7 +770,7 @@ pred <- avg_predictions(brm_class1, variables = "sync_cont") %>%  posterior_draw
 pred$sync_cont<-as.factor(pred$sync_cont)
 
 ggplot(pred, aes(x = draw, y = sync_cont, fill = sync_cont)) +
-  stat_halfeye(color="red")  +
+  stat_halfeye(.width=c(.8, .95))  +
   scale_fill_viridis_d(option = "plasma", end = 0.8) +
   guides(fill = "none") +
   labs(x ="Class", y = "Grades",
