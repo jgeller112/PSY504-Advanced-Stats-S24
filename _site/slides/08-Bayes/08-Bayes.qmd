@@ -801,6 +801,8 @@ ggplot(pred, aes(x = draw, y = sync_cont, fill = sync_cont)) +
 
 ## Descriptives
 
+-   `bayestestR` from `easystats`
+
 ```{r}
 
 describe_posterior(
@@ -914,10 +916,11 @@ brm_class2 <- brm(grade~avgView, data=data, prior=prior2, family = gaussian(), s
 bayesfactor_models(brm_class1, brm_class2)
 ```
 
+-   `avgview` only model is 15 times more likely than a model with
+
 ## Significant differences: BFs
 
--   `avgview` effect is 15 times more likely than effect of 0
-    -   Not 0
+-   Is the effect 0?
 
 ```{r}
 
@@ -926,6 +929,10 @@ BF <- bayestestR::bayesfactor_parameters(brm_class2, null = 0)
 BF
 
 ```
+
+. . .
+
+-   Not 0!
 
 ## Original question
 

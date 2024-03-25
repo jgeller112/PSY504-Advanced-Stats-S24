@@ -555,7 +555,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"code":"# Define the number of simulations\nn_simulations <- 100\n# Define the sample size for each simulation\nsample_size <- 100\n# Define the mean and standard deviation for the normal distribution\nmean <- 0\nsd <- 1\n# Initialize a vector to store the mean of each simulation\nsimulation_means <- numeric(n_simulations)\n# Perform the simulations\nfor(i in 1:n_simulations) {\n  sample_data <- rnorm(n = sample_size, mean = mean, sd = sd)\n  simulation_means[i] <- mean(sample_data)\n}\n# Print the results\nprint(simulation_means)","options":{"comment":"","label":"unnamed-chunk-1","results":"markup","classes":"","message":"true","output":"true","autorun":"false","fig-cap":"","context":"interactive","fig-height":5,"out-width":"700px","fig-width":7,"warning":"true","dpi":72,"out-height":""},"id":1}];
+  globalThis.qwebrCellDetails = [{"id":1,"code":"# Define the number of simulations\nn_simulations <- 100\n# Define the sample size for each simulation\nsample_size <- 100\n# Define the mean and standard deviation for the normal distribution\nmean <- 0\nsd <- 1\n# Initialize a vector to store the mean of each simulation\nsimulation_means <- numeric(n_simulations)\n# Perform the simulations\nfor(i in 1:n_simulations) {\n  sample_data <- rnorm(n = sample_size, mean = mean, sd = sd)\n  simulation_means[i] <- mean(sample_data)\n}\n# Print the results\nprint(simulation_means)","options":{"comment":"","results":"markup","output":"true","context":"interactive","classes":"","label":"unnamed-chunk-1","out-width":"700px","message":"true","fig-height":5,"dpi":72,"fig-width":7,"warning":"true","fig-cap":"","out-height":"","autorun":"false"}}];
 
   </script>
   <script type="module">
@@ -1893,7 +1893,7 @@ Jason Geller, PH.D.(he/him)
 <h2>Today</h2>
 <p><br> <br></p>
 <ul>
-<li><p>✅ Understand basic concepts of Bayesian statistics</p></li>
+<li><p>✔️ Understand basic concepts of Bayesian statistics</p></li>
 <li><p>Learn how to conduct, interpret, and report a simple Bayesian regression using <code>brms</code></p></li>
 </ul>
 </section>
@@ -2092,20 +2092,20 @@ Jason Geller, PH.D.(he/him)
 <tr class="odd">
 <td style="text-align: left;">b_avgView</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">9259.394</td>
+<td style="text-align: right;">8095.976</td>
 <td style="text-align: right;">0.002</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">b_Intercept</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">8740.288</td>
-<td style="text-align: right;">0.101</td>
+<td style="text-align: right;">7808.583</td>
+<td style="text-align: right;">0.106</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">b_sync_cont</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">9146.728</td>
-<td style="text-align: right;">0.085</td>
+<td style="text-align: right;">8430.598</td>
+<td style="text-align: right;">0.088</td>
 </tr>
 </tbody>
 </table>
@@ -2140,20 +2140,20 @@ Jason Geller, PH.D.(he/him)
 <tr class="odd">
 <td style="text-align: left;">b_avgView</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">9259.394</td>
+<td style="text-align: right;">8095.976</td>
 <td style="text-align: right;">0.002</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">b_Intercept</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">8740.288</td>
-<td style="text-align: right;">0.101</td>
+<td style="text-align: right;">7808.583</td>
+<td style="text-align: right;">0.106</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">b_sync_cont</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">9146.728</td>
-<td style="text-align: right;">0.085</td>
+<td style="text-align: right;">8430.598</td>
+<td style="text-align: right;">0.088</td>
 </tr>
 </tbody>
 </table>
@@ -2290,17 +2290,17 @@ Jason Geller, PH.D.(he/him)
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">model_parameters</span>(brm_class1) <span class="sc">%&gt;%</span></span>
 <span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table style="width:100%;">
+<table>
 <colgroup>
 <col style="width: 13%">
 <col style="width: 13%">
 <col style="width: 12%">
 <col style="width: 5%">
 <col style="width: 13%">
+<col style="width: 12%">
 <col style="width: 10%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 9%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -2319,46 +2319,46 @@ Jason Geller, PH.D.(he/him)
 <tr class="odd">
 <td style="text-align: left;">b_Intercept</td>
 <td style="text-align: left;">conditional</td>
-<td style="text-align: right;">55.9231245</td>
+<td style="text-align: right;">56.1081268</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">37.6170991</td>
-<td style="text-align: right;">74.68348</td>
+<td style="text-align: right;">37.9189596</td>
+<td style="text-align: right;">74.4253086</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">1.0003206</td>
-<td style="text-align: right;">8740.288</td>
+<td style="text-align: right;">1.000133</td>
+<td style="text-align: right;">7808.583</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">b_avgView</td>
 <td style="text-align: left;">conditional</td>
-<td style="text-align: right;">0.4628732</td>
+<td style="text-align: right;">0.4607521</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">0.1484054</td>
-<td style="text-align: right;">0.76939</td>
-<td style="text-align: right;">0.9975000</td>
-<td style="text-align: right;">1.0003704</td>
-<td style="text-align: right;">9259.394</td>
+<td style="text-align: right;">0.1552417</td>
+<td style="text-align: right;">0.7643979</td>
+<td style="text-align: right;">0.9981667</td>
+<td style="text-align: right;">1.000185</td>
+<td style="text-align: right;">8095.976</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">b_sync_cont</td>
 <td style="text-align: left;">conditional</td>
-<td style="text-align: right;">0.2891878</td>
+<td style="text-align: right;">0.1500866</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">-15.6304456</td>
-<td style="text-align: right;">16.22306</td>
-<td style="text-align: right;">0.5124167</td>
-<td style="text-align: right;">1.0001924</td>
-<td style="text-align: right;">9146.728</td>
+<td style="text-align: right;">-16.0022041</td>
+<td style="text-align: right;">16.1195131</td>
+<td style="text-align: right;">0.5085833</td>
+<td style="text-align: right;">1.000009</td>
+<td style="text-align: right;">8430.598</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">sigma</td>
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">15.2307741</td>
+<td style="text-align: right;">15.2143574</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">12.1105087</td>
-<td style="text-align: right;">19.93560</td>
+<td style="text-align: right;">12.0759234</td>
+<td style="text-align: right;">19.9478332</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">0.9999485</td>
-<td style="text-align: right;">8229.021</td>
+<td style="text-align: right;">0.999842</td>
+<td style="text-align: right;">9835.194</td>
 </tr>
 </tbody>
 </table>
@@ -2449,6 +2449,9 @@ Jason Geller, PH.D.(he/him)
 </section>
 <section id="descriptives" class="slide level2">
 <h2>Descriptives</h2>
+<ul>
+<li><code>bayestestR</code> from <code>easystats</code></li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">describe_posterior</span>(</span>
 <span id="cb20-2"><a href="#cb20-2"></a>  brm_class1,</span>
@@ -2459,7 +2462,7 @@ Jason Geller, PH.D.(he/him)
 <span id="cb20-7"><a href="#cb20-7"></a>) <span class="sc">%&gt;%</span></span>
 <span id="cb20-8"><a href="#cb20-8"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table style="width:100%;">
+<table>
 <colgroup>
 <col style="width: 2%">
 <col style="width: 10%">
@@ -2469,9 +2472,9 @@ Jason Geller, PH.D.(he/him)
 <col style="width: 9%">
 <col style="width: 4%">
 <col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 8%">
 <col style="width: 7%">
-<col style="width: 8%">
-<col style="width: 8%">
 <col style="width: 7%">
 </colgroup>
 <thead>
@@ -2495,57 +2498,57 @@ Jason Geller, PH.D.(he/him)
 <td style="text-align: left;">2</td>
 <td style="text-align: left;">b_Intercept</td>
 <td style="text-align: left;">conditional</td>
-<td style="text-align: right;">55.9231245</td>
-<td style="text-align: right;">56.0918814</td>
-<td style="text-align: right;">54.8431997</td>
+<td style="text-align: right;">56.1081268</td>
+<td style="text-align: right;">56.1065958</td>
+<td style="text-align: right;">56.0963472</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">37.6170991</td>
-<td style="text-align: right;">74.68348</td>
+<td style="text-align: right;">37.9189596</td>
+<td style="text-align: right;">74.4253086</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">1.0003206</td>
-<td style="text-align: right;">8740.288</td>
+<td style="text-align: right;">1.000133</td>
+<td style="text-align: right;">7808.583</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">1</td>
 <td style="text-align: left;">b_avgView</td>
 <td style="text-align: left;">conditional</td>
-<td style="text-align: right;">0.4628732</td>
-<td style="text-align: right;">0.4609308</td>
-<td style="text-align: right;">0.4656337</td>
+<td style="text-align: right;">0.4607521</td>
+<td style="text-align: right;">0.4612745</td>
+<td style="text-align: right;">0.4597294</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">0.1484054</td>
-<td style="text-align: right;">0.76939</td>
-<td style="text-align: right;">0.9975000</td>
-<td style="text-align: right;">1.0003704</td>
-<td style="text-align: right;">9259.394</td>
+<td style="text-align: right;">0.1552417</td>
+<td style="text-align: right;">0.7643979</td>
+<td style="text-align: right;">0.9981667</td>
+<td style="text-align: right;">1.000185</td>
+<td style="text-align: right;">8095.976</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">3</td>
 <td style="text-align: left;">b_sync_cont</td>
 <td style="text-align: left;">conditional</td>
-<td style="text-align: right;">0.2891878</td>
-<td style="text-align: right;">0.2969615</td>
-<td style="text-align: right;">0.0410414</td>
+<td style="text-align: right;">0.1500866</td>
+<td style="text-align: right;">0.2300579</td>
+<td style="text-align: right;">-0.1950979</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">-15.6304456</td>
-<td style="text-align: right;">16.22306</td>
-<td style="text-align: right;">0.5124167</td>
-<td style="text-align: right;">1.0001924</td>
-<td style="text-align: right;">9146.728</td>
+<td style="text-align: right;">-16.0022041</td>
+<td style="text-align: right;">16.1195131</td>
+<td style="text-align: right;">0.5085833</td>
+<td style="text-align: right;">1.000009</td>
+<td style="text-align: right;">8430.598</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">4</td>
 <td style="text-align: left;">sigma</td>
 <td style="text-align: left;">sigma</td>
-<td style="text-align: right;">15.2307741</td>
-<td style="text-align: right;">15.4246352</td>
-<td style="text-align: right;">14.4535446</td>
+<td style="text-align: right;">15.2143574</td>
+<td style="text-align: right;">15.4178415</td>
+<td style="text-align: right;">14.9705088</td>
 <td style="text-align: right;">0.95</td>
-<td style="text-align: right;">12.1105087</td>
-<td style="text-align: right;">19.93560</td>
+<td style="text-align: right;">12.0759234</td>
+<td style="text-align: right;">19.9478332</td>
 <td style="text-align: right;">1.0000000</td>
-<td style="text-align: right;">0.9999485</td>
-<td style="text-align: right;">8229.021</td>
+<td style="text-align: right;">0.999842</td>
+<td style="text-align: right;">9835.194</td>
 </tr>
 </tbody>
 </table>
@@ -2577,8 +2580,8 @@ Jason Geller, PH.D.(he/him)
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">hdi</span>(posteriors<span class="sc">$</span>b_avgView, <span class="at">ci=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>          [,1]      [,2]
-[1,] 0.1685986 0.7857546</code></pre>
+<pre><code>         [,1]      [,2]
+[1,] 0.147268 0.7573743</code></pre>
 </div>
 </div>
 <div class="fragment">
@@ -2600,7 +2603,7 @@ Jason Geller, PH.D.(he/him)
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">hdi</span>(posteriors<span class="sc">$</span>b_sync_cont, <span class="at">ci=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          [,1]     [,2]
-[1,] -14.96214 16.84957</code></pre>
+[1,] -16.16049 15.95037</code></pre>
 </div>
 </div>
 <div class="fragment">
@@ -2632,9 +2635,9 @@ Jason Geller, PH.D.(he/him)
 <tr class="odd">
 <td style="text-align: left;">sync_cont</td>
 <td style="text-align: left;">+1</td>
-<td style="text-align: right;">0.2891878</td>
-<td style="text-align: right;">-15.63045</td>
-<td style="text-align: right;">16.22306</td>
+<td style="text-align: right;">0.1500866</td>
+<td style="text-align: right;">-16.0022</td>
+<td style="text-align: right;">16.11951</td>
 </tr>
 </tbody>
 </table>
@@ -2674,9 +2677,9 @@ Jason Geller, PH.D.(he/him)
 
 Parameter   |       BF
 ----------------------
-(Intercept) | 7.85e+03
-avgView     |     2.05
-sync_cont   |    0.632
+(Intercept) | 2.17e+04
+avgView     |     1.85
+sync_cont   |    0.637
 
 * Evidence Against The Null: 0</code></pre>
 </div>
@@ -2700,14 +2703,14 @@ sync_cont   |    0.632
 <span id="cb30-2"><a href="#cb30-2"></a><span class="co"># compared to intercept-only or null model</span></span>
 <span id="cb30-3"><a href="#cb30-3"></a><span class="fu">bayesfactor_models</span>(brm_class1, brm_class2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<ul>
+<li><code>avgview</code> only model is 15 times more likely than a model with</li>
+</ul>
 </section>
 <section id="significant-differences-bfs-2" class="slide level2">
 <h2>Significant differences: BFs</h2>
 <ul>
-<li><code>avgview</code> effect is 15 times more likely than effect of 0
-<ul>
-<li>Not 0</li>
-</ul></li>
+<li>Is the effect 0?</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>BF <span class="ot">&lt;-</span> bayestestR<span class="sc">::</span><span class="fu">bayesfactor_parameters</span>(brm_class2, <span class="at">null =</span> <span class="dv">0</span>)</span>
@@ -2718,11 +2721,16 @@ sync_cont   |    0.632
 
 Parameter   |       BF
 ----------------------
-(Intercept) | 8.37e+05
-avgView     |     8.93
+(Intercept) | 1.69e+05
+avgView     |     9.29
 
 * Evidence Against The Null: 0</code></pre>
 </div>
+</div>
+<div class="fragment">
+<ul>
+<li>Not 0!</li>
+</ul>
 </div>
 </section>
 <section id="original-question" class="slide level2">
