@@ -22,10 +22,19 @@ date: 2024-03-25
   - How do you calculate them?
   - How do we interpret Bayes Factors? 
 
+## After Class
+
+- Part 1: 
+
+  - {{< video https://www.youtube.com/watch?v=uJijaP1KY6E width="800" height="400" >}}
+
+- Part 2:
+
+  - {{< video https://www.youtube.com/watch?v=GC7S0dZvj-o width="800" height="400" >}}
 
 ### Video
 
-- Paul giving a nice talk about brms and bayes 
+- Paul (creator of `brms` giving a nice talk about `brms` and Bayes 
   - https://drive.google.com/file/d/1fgqfJT-NVmyivoyMRkt4R7XNs8QlWv76/view?usp=drive_link
 
 ### Optional
