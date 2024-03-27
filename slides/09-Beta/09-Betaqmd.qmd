@@ -45,6 +45,12 @@ execute:
 
     -   Example: reading accuracy and dyslexia
 
+-   Other beta models
+
+    -   ZOIB
+
+    -   Ordered beta
+
 ## Package
 
 ```{r}
@@ -57,20 +63,25 @@ library(ordbetareg)
 library(knitr)
 ```
 
--   Follow along here:
+-   Follow along here: <https://github.com/jgeller112/PSY504-Advanced-Stats-S24/blob/main/slides/09-Beta/09-Betaqmd.qmd>
 
 ## The beta distribution
 
 ::: columns
 ::: {.column width="50%"}
--   Continuous distribution for 0 \< y \< 1.
-    -   Rates and proportions
+-   Rates, proportions, and percentages
+    -   Continuous distribution for 0 \< y \< 1
         -   Important: Not including 0 or 1!
 -   Two parameters:
     -   Shape 1 and shape 2
+        -   Controls location, spread, skew
 :::
 
 ::: {.column width="50%"}
+<br>
+
+<br>
+
 ```{r}
 #| echo: false
 #| 
@@ -98,7 +109,7 @@ ggplot() +
 
 ## Shape parameter
 
-> Let’s say that there’s an exam with 10 points where most people score a 6/10
+> Let’s say that there’s an exam worth 10 points where most people score a 6/10
 
 $$
 \frac{\text{Number correct}}{\text{Number correct} + \text{Number incorrect}}
@@ -151,11 +162,19 @@ $$ Variance = $$ \mu \cdot (1 - \mu)/ (1 + \phi)$$
 
 -   Higher $\phi$ lower variance
 
-## Beta Regression
+# Beta Regression
+
+## Beta regression 
 
 -   Here were are going to use the `betareg` package to run frequentist version.
 
+```{webr-r}
+library(betareg)
+
+```
+
 ```{r}
+#| echo: false
 
 library(betareg)
 
@@ -192,7 +211,15 @@ data("ReadingSkills", package = "betareg")
 
 -   Contrast code the `dyslexia` variable
 
+```{webr-r}
+#dev code
+ReadingSkills$dyslexia<-ifelse(ReadingSkills$dyslexia=="no", -.5, .5)
+
+```
+
 ```{r}
+#| echo: false
+#| 
 #dev code
 ReadingSkills$dyslexia<-ifelse(ReadingSkills$dyslexia=="no", -.5, .5)
 
@@ -263,7 +290,7 @@ model_beta <- betareg(accuracy ~ dyslexia*iq  |dyslexia + iq , data = ReadingSki
 
 ## Beta Regression
 
--   We model precision for each variable by inserting variables after the \|
+-   We model precision for each variable by inserting variables after the `|`
 
 ```{webr-r}
 
@@ -299,11 +326,12 @@ model_parameters(model_beta, exponentiate = TRUE,  component = "precision") %>%
 
 ```{r}
 #probs 
-avg_predictions(model_beta, variables="dyslexia")
+avg_predictions(model_beta, variables="dyslexia") %>%
+  kable()
 
 ```
 
--   Risk difference
+## Marginal effects
 
 ```{r}
 #get differnece 
@@ -313,8 +341,36 @@ avg_comparisons(model_beta)
 ::: callout-note
 -   For 1-unit increase in \`iq\` there is an increase of 2 percentage points on reading accuracy
 
--   Dyslexia (sync) vs. online (async) decreases grades by 5 percentage points- not statistically significant
+-   Dyslexia (sync) vs. online (async) decreases grades by 5 percentage points - not statistically significant
 :::
+
+## Model comparison
+
+-   LRT
+
+```{r}
+# before | is mean after is phi/variance
+model_beta_main <- betareg(accuracy ~ dyslexia*iq  |dyslexia + iq , 
+                      data = ReadingSkills, 
+                      link = "logit")
+
+# estimate only one phi
+# before | is mean after is phi/variance
+model_beta_inter <- betareg(accuracy ~ dyslexia+iq , 
+                      data = ReadingSkills, 
+                      link = "logit")
+
+test_likelihoodratio(model_beta_main, model_beta_inter)
+
+
+```
+
+## LRT
+
+```{r}
+car::Anova(model_beta) %>% 
+  kable()
+```
 
 ## Interaction
 
@@ -325,14 +381,13 @@ marginaleffects::avg_slopes(
     variables  = "iq", 
     by="dyslexia") %>%
   kable()
-
 ```
 
 ::: callout-note
 For those with dyslexia, an increase in iq deceases reading accuracy by 2 percentage points, $b$ = -.02, *SE* = 0.01, 95% CI \[-0.04, .00\], *p* = .051. However, this is not statistically significant. For those without dyslexia, reading accuracy improves by 10 percentage points for 1 unit increase in iq, $b$ = -.02, *SE* = 0.01, 95% CI \[0.027, .163\] *p* = .006.
 :::
 
-## Visualization
+## Visualization - Interaction
 
 ```{r}
 
@@ -364,7 +419,6 @@ model_beta_nophi <- betareg(accuracy ~ dyslexia*iq ,
                       link = "logit")
 
 test_likelihoodratio(model_beta, model_beta_nophi)
-
 
 ```
 
