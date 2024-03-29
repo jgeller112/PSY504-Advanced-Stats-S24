@@ -1,7 +1,7 @@
 ---
-    title: "Lab 6 - Poisson - Answers"
-    author:
-      - name: Jason Geller
+title: "Lab 6 - Poisson - Answers"
+author:
+  - name: Jason Geller
     date: last-modified
     format:
       html:
@@ -11,6 +11,8 @@
         code-fold: true
         fig-width: 8
         fig-height: 4
+        code-block-bg: "#f1f3f5"
+        code-block-border-left: "#31BAE9"
         mainfont: Source Sans Pro
         theme: journal
         toc: true
