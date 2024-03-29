@@ -13,3 +13,7 @@ toc_float: true
 In Lab 5, you will follow a preregistered document that will ask you to preform an analysis on data from the General Social Survey (GSS). It is up to you to decide which model to run. Please follow the the preregistered document closely.
 
 To access Lab 5, please [Click here](https://classroom.github.com/a/evl_aLLA)
+
+## Answers
+
+-   [Lab Answers](/lab_ns/Poisson/poisson_lab_ans.qmd)

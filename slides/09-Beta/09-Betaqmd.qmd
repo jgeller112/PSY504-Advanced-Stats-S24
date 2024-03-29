@@ -39,9 +39,9 @@ execute:
 -   Beta regression
 
     -   The beta distribution
-        -   Shapes, means, and precision
+        -   Shapes, mean and precision
 
--   Running a Beta regression in R
+-   Running a beta regression in R
 
     -   Example: reading accuracy and dyslexia
 
@@ -73,7 +73,7 @@ library(knitr)
     -   Continuous distribution for 0 \< y \< 1
         -   Important: Not including 0 or 1!
 -   Two parameters:
-    -   Shape 1 and shape 2
+    -   Shape 1 and Shape 2
         -   Controls location, spread, skew
 :::
 
@@ -164,7 +164,7 @@ $$ Variance = $$ \mu \cdot (1 - \mu)/ (1 + \phi)$$
 
 # Beta Regression
 
-## Beta regression 
+## Beta regression
 
 -   Here were are going to use the `betareg` package to run frequentist version.
 
@@ -194,7 +194,7 @@ library(betareg)
 
             -   `dyslexia` : (yes/no; 0.5. -0.5)
 
-            -   `iq` score: nonverbal IQ z-scored
+            -   `iq` score: nonverbal IQ (z-scored)
 
 ## Data
 
@@ -228,21 +228,6 @@ ReadingSkills$dyslexia<-ifelse(ReadingSkills$dyslexia=="no", -.5, .5)
 ## Regular LM
 
 ```{r}
-
-#| echo: false
-#| 
-
-# before | is mean after is phi/variance
-model_lm <- lm(accuracy ~ dyslexia*iq,  
-                      data = ReadingSkills)
-
-model_parameters(model_lm) %>% 
-  print_md()
-```
-
-```{webr-r}
-
-# before | is mean after is phi/variance
 model_lm <- lm(accuracy ~ dyslexia*iq,  
                       data = ReadingSkills)
 
@@ -261,15 +246,20 @@ check_model(model_lm)
 
 ```
 
+## Regular LM
+
+-   Models using proportions or probabilities:
+
+    -   Asymmetry
+
+    -   Heteoroscadacity
+
 ## Beta Regression
 
 -   To the rescue!
 
 $$
-\begin{align*}
-accuracy_i \sim \text{Beta}(\mu_i, \phi) \\
-logit(\mu)= \beta_0 + \beta_1 \text{iq}_i + \beta_2 \text{dyslexia}_i
-\end{align*}
+accuracy_i \sim \text{Beta}(\mu_i, \phi)
 $$
 
 -   Model has two parts
@@ -278,7 +268,9 @@ $$
 
     -   $\phi$
 
--   We take the logit so $\mu$ is between \[0,1\]
+    $$logit(\mu)= \beta_0 + \beta_1 \text{iq}_i + \beta_2 \text{dyslexia}_i + \beta_3 \text{dyslexia}_i*\text{iq}_i$$
+
+-   We use the logit link so $\mu$ is between \[0,1\]
 
 ```{r}
 #| echo: false
@@ -335,28 +327,29 @@ avg_predictions(model_beta, variables="dyslexia") %>%
 
 ```{r}
 #get differnece 
-avg_comparisons(model_beta)
+avg_comparisons(model_beta) %>%
+  kable()
 ```
 
 ::: callout-note
--   For 1-unit increase in \`iq\` there is an increase of 2 percentage points on reading accuracy
+-   For 1-unit increase in `iq` there is an increase of 2 percentage points on reading accuracy
 
--   Dyslexia (sync) vs. online (async) decreases grades by 5 percentage points - not statistically significant
+-   Dyslexia decreases reading accuracy by 25 percentage points
 :::
 
 ## Model comparison
 
 -   LRT
 
-```{r}
+```{webr-r}
 # before | is mean after is phi/variance
-model_beta_main <- betareg(accuracy ~ dyslexia*iq  |dyslexia + iq , 
+model_beta_inter <- betareg(accuracy ~ dyslexia*iq  |dyslexia + iq , 
                       data = ReadingSkills, 
                       link = "logit")
 
 # estimate only one phi
 # before | is mean after is phi/variance
-model_beta_inter <- betareg(accuracy ~ dyslexia+iq , 
+model_beta_main <- betareg(accuracy ~ dyslexia+iq|dyslexia + iq , 
                       data = ReadingSkills, 
                       link = "logit")
 
@@ -368,11 +361,14 @@ test_likelihoodratio(model_beta_main, model_beta_inter)
 ## LRT
 
 ```{r}
-car::Anova(model_beta) %>% 
+## use type 3 if interactions important
+car::Anova(model_beta, type="III") %>% 
   kable()
 ```
 
 ## Interaction
+
+-   Simple slopes analysis comparing AME for `iq` at each level of `dyslexia` variable
 
 ```{r}
 
@@ -390,21 +386,19 @@ For those with dyslexia, an increase in iq deceases reading accuracy by 2 percen
 ## Visualization - Interaction
 
 ```{r}
+#| fig-align: "center"
+#| 
+ggemmeans(model_beta, terms=c("iq", "dyslexia")) %>% 
+  plot(show_data=TRUE)+ theme_blackboard()
 
-ggemmeans(model_beta, terms=c("iq", "dyslexia")) %>% plot(show_data=TRUE) +theme_blackboard()
-
-```
-
-## LRT
-
-```{r}
-
-car::Anova(model_beta) %>% 
-  kable()
 
 ```
+
+-   IQ and Accuracy does not seem to be related to dyslexia
 
 ## Model Comparisons
+
+-   Do we need a precision parameters for each variable?
 
 ```{r}
 # before | is mean after is phi/variance
@@ -436,7 +430,7 @@ test_likelihoodratio(model_beta, model_beta_nophi)
 
 ::: columns
 ::: {.column width="50%"}
-![Matti](images/clipboard-1675279432.png){fig-alt="Figure 1: Example slider scale from https://blog.surveyhero.com/2018/09/03/new-question-type-slider/"}
+![Matti Vuorre](images/clipboard-1675279432.png){fig-alt="Figure 1: Example slider scale from https://blog.surveyhero.com/2018/09/03/new-question-type-slider/" fig-align="center"}
 :::
 
 ::: {.column width="50%"}
@@ -450,9 +444,9 @@ test_likelihoodratio(model_beta, model_beta_nophi)
 ::: {.column width="50%"}
 -   Three processes
 
-1.  A logistic regression model that predicts if outcomes are extreme (0 or 1) or not (between 0 and 1) ($\alpha$ or `zoi` in {brms)
+1.  A logistic regression model that predicts if outcome is either (1) 0 or 1 or (2) not exactly 0 or 1 ($\alpha$ or `zoi` in brms)
 
-2.  A logistic regression model that predicts predicts if the extreme values are 1 ($\gamma$ or `coi` in brms)
+2.  A logistic regression model that predicts if the 0 or 1 outcomes are either (1) 0 or (2) 1 ($\gamma$ or `coi` in brms)
 
 3.  A beta regression model that predicts the non-extreme (0 or 1) values) ($\mu$ and $\phi$)
 :::
@@ -511,7 +505,9 @@ brm(
 
 ## Ordered beta
 
--   Can become a huge model with lots of parameters to estimate!
+-   ZOIB can become complex with lots of parameters to estimate!
+
+    -   Can take a long time to run
 
 -   Ordered beta regression is a special case of ZOIB
 
@@ -523,19 +519,68 @@ brm(
 library(ordbetareg)
 ```
 
-## Ordered beta
+## Ordered beta regression
 
--   We can create three ordered categories to use as an outcome variable: (1) exactly 0, (2) somewhere between 0 and 1, and (3) exactly 1
+-   We can create three ordered categories to use as an outcome variable: (1) exactly 0 (cutzero), (2) somewhere between 0 and 1, and (3) exactly 1 (cutone)
 
     -   1 and 3 are modeled as with ordinal logits (exactly 0 and exactly 1) and 2 is modeled as a beta logits
 
-    -   We can just interpret this similarly to beta regression while still including those zeros and ones
+    -   We can just interpret this similarly to beta regression while still including zeros and ones
 
 ## Ordered beta
 
--   Look at sample output
-
+::: columns
+::: {.column width="50%"}
 ```{r}
+#| eval: false
+#| 
+m_full_ordbeta <- ordbetareg(
+  bf(
+    province_count ~ 
+      issue_arts_and_culture), 
+  data = data,
+  true_bounds = c(1, 32), # does not have to be between 0-1/0-100
+  ...
+)
+```
+:::
 
+::: {.column width="50%"}
+```{r}
+#| eval: false
+##  Family: ord_beta_reg 
+##   Links: mu = identity; phi = identity; cutzero = identity; cutone = identity 
+## Formula: province_count ~ issue_arts_and_culture + issue_education + issue_industry_association + issue_economy_and_trade + issue_charity_and_humanitarian + issue_general + issue_health + issue_environment + issue_science_and_technology + local_connect + years_since_law + year_registered_cat 
+##    Data: data (Number of observations: 593) 
+##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup draws = 4000
+## 
+## Population-Level Effects: 
+##                                    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept                             -0.23      0.33    -0.89     0.44 1.00     1039     1305
+## issue_arts_and_cultureTRUE             1.31      0.43     0.47     2.16 1.00     1790     2390
+## Family Specific Parameters: 
+##         Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## phi         2.19      0.20     1.82     2.62 1.00     3657     2577
+## cutzero    -1.26      0.13    -1.53    -1.00 1.00     2438     2762
+## cutone      0.34      0.07     0.19     0.47 1.00     3377     2878
+## 
+## Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).
 
 ```
+:::
+:::
+
+## Summary
+
+-   Beta regression is an excellent choice for modeling percentages, proportions, and ratios
+
+-   If you have 0s and 1s, alternatives exist
+
+    -   ZOIB or ordered beta regression (Bayesian framework)
+
+-   Not a whole lot of examples using these kind of models, but hopefully this gives you a good start!
+
+# Fin

@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.504">
 
   <meta name="author" content="Jason Geller, PH.D.(he/him)">
-  <meta name="dcterms.date" content="2024-03-27">
+  <meta name="dcterms.date" content="2024-03-29">
   <title>Beta Regression in R</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -555,7 +555,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"code":"#| \nggplot() +\n  geom_function(fun = dbeta, args = list(shape1 = , shape2 = ),\n                aes(color = \"Beta(shape1 = 6, shape2 = 4)\")) +\n  scale_color_viridis_d(option = \"plasma\", name = \"\") +\n  theme_lucid(base_size=18) +\n  theme(legend.position = \"bottom\")","id":1,"options":{"fig-width":7,"fig-height":5,"classes":"","read-only":"false","autorun":"false","label":"unnamed-chunk-1","results":"markup","warning":"true","output":"true","out-width":"700px","context":"interactive","fig-cap":"","echo":"false","dpi":72,"fig-align":"center","out-height":"","message":"true","comment":""}},{"code":"library(betareg)","id":2,"options":{"warning":"true","fig-width":7,"results":"markup","output":"true","out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","message":"true","read-only":"false","comment":"","fig-cap":"","autorun":"false","label":"unnamed-chunk-2","dpi":72}},{"code":"data(\"ReadingSkills\", package = \"betareg\")","id":3,"options":{"warning":"true","fig-width":7,"results":"markup","output":"true","out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","message":"true","read-only":"false","comment":"","fig-cap":"","autorun":"false","label":"unnamed-chunk-3","dpi":72}},{"code":"#dev code\nReadingSkills$dyslexia<-ifelse(ReadingSkills$dyslexia==\"no\", -.5, .5)","id":4,"options":{"warning":"true","fig-width":7,"results":"markup","output":"true","out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","message":"true","read-only":"false","comment":"","fig-cap":"","autorun":"false","label":"unnamed-chunk-4","dpi":72}},{"code":"\n# before | is mean after is phi/variance\nmodel_lm <- lm(accuracy ~ dyslexia*iq,  \n                      data = ReadingSkills)\n\nmodel_parameters(model_lm) %>% \n  print_md()","id":5,"options":{"warning":"true","fig-width":7,"results":"markup","output":"true","out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","message":"true","read-only":"false","comment":"","fig-cap":"","autorun":"false","label":"unnamed-chunk-5","dpi":72}},{"code":"\n# before | is mean after is phi/variance\nmodel_beta <- betareg(accuracy ~ dyslexia*iq  |dyslexia + iq ,\n                      data = ReadingSkills, \n                      link = \"logit\")","id":6,"options":{"warning":"true","fig-width":7,"results":"markup","output":"true","out-width":"700px","context":"interactive","fig-height":5,"classes":"","out-height":"","message":"true","read-only":"false","comment":"","fig-cap":"","autorun":"false","label":"unnamed-chunk-6","dpi":72}}];
+  globalThis.qwebrCellDetails = [{"options":{"output":"true","results":"markup","out-width":"700px","fig-height":5,"context":"interactive","autorun":"false","warning":"true","fig-cap":"","out-height":"","echo":"false","fig-align":"center","read-only":"false","message":"true","fig-width":7,"label":"unnamed-chunk-1","dpi":72,"comment":"","classes":""},"code":"#| \nggplot() +\n  geom_function(fun = dbeta, args = list(shape1 = , shape2 = ),\n                aes(color = \"Beta(shape1 = 6, shape2 = 4)\")) +\n  scale_color_viridis_d(option = \"plasma\", name = \"\") +\n  theme_lucid(base_size=18) +\n  theme(legend.position = \"bottom\")","id":1},{"options":{"classes":"","output":"true","results":"markup","out-height":"","fig-height":5,"context":"interactive","autorun":"false","comment":"","warning":"true","read-only":"false","message":"true","dpi":72,"label":"unnamed-chunk-2","out-width":"700px","fig-width":7,"fig-cap":""},"code":"library(betareg)","id":2},{"options":{"classes":"","output":"true","results":"markup","out-height":"","fig-height":5,"context":"interactive","autorun":"false","comment":"","warning":"true","read-only":"false","message":"true","dpi":72,"label":"unnamed-chunk-3","out-width":"700px","fig-width":7,"fig-cap":""},"code":"data(\"ReadingSkills\", package = \"betareg\")","id":3},{"options":{"classes":"","output":"true","results":"markup","out-height":"","fig-height":5,"context":"interactive","autorun":"false","comment":"","warning":"true","read-only":"false","message":"true","dpi":72,"label":"unnamed-chunk-4","out-width":"700px","fig-width":7,"fig-cap":""},"code":"#dev code\nReadingSkills$dyslexia<-ifelse(ReadingSkills$dyslexia==\"no\", -.5, .5)","id":4},{"options":{"classes":"","output":"true","results":"markup","out-height":"","fig-height":5,"context":"interactive","autorun":"false","comment":"","warning":"true","read-only":"false","message":"true","dpi":72,"label":"unnamed-chunk-5","out-width":"700px","fig-width":7,"fig-cap":""},"code":"\n# before | is mean after is phi/variance\nmodel_beta <- betareg(accuracy ~ dyslexia*iq  |dyslexia + iq ,\n                      data = ReadingSkills, \n                      link = \"logit\")","id":5},{"options":{"classes":"","output":"true","results":"markup","out-height":"","fig-height":5,"context":"interactive","autorun":"false","comment":"","warning":"true","read-only":"false","message":"true","dpi":72,"label":"unnamed-chunk-6","out-width":"700px","fig-width":7,"fig-cap":""},"code":"# before | is mean after is phi/variance\nmodel_beta_inter <- betareg(accuracy ~ dyslexia*iq  |dyslexia + iq , \n                      data = ReadingSkills, \n                      link = \"logit\")\n\n# estimate only one phi\n# before | is mean after is phi/variance\nmodel_beta_main <- betareg(accuracy ~ dyslexia+iq|dyslexia + iq , \n                      data = ReadingSkills, \n                      link = \"logit\")\n\ntest_likelihoodratio(model_beta_main, model_beta_inter)\n","id":6}];
 
   </script>
   <script type="module">
@@ -1463,7 +1463,7 @@ Jason Geller, PH.D.(he/him)
 </div>
 </div>
 
-  <p class="date">2024-03-27</p>
+  <p class="date">2024-03-29</p>
 </section>
 <section id="today" class="slide level2">
 <h2>Today</h2>
@@ -1472,10 +1472,10 @@ Jason Geller, PH.D.(he/him)
 <ul>
 <li>The beta distribution
 <ul>
-<li>Shapes, means, and precision</li>
+<li>Shapes, mean and precision</li>
 </ul></li>
 </ul></li>
-<li><p>Running a Beta regression in R</p>
+<li><p>Running a beta regression in R</p>
 <ul>
 <li>Example: reading accuracy and dyslexia</li>
 </ul></li>
@@ -1515,7 +1515,7 @@ Jason Geller, PH.D.(he/him)
 </ul></li>
 <li>Two parameters:
 <ul>
-<li>Shape 1 and shape 2
+<li>Shape 1 and Shape 2
 <ul>
 <li>Controls location, spread, skew</li>
 </ul></li>
@@ -1609,7 +1609,7 @@ Jason Geller, PH.D.(he/him)
 <li><p>IVs:</p>
 <ul>
 <li><p><code>dyslexia</code> : (yes/no; 0.5. -0.5)</p></li>
-<li><p><code>iq</code> score: nonverbal IQ z-scored</p></li>
+<li><p><code>iq</code> score: nonverbal IQ (z-scored)</p></li>
 </ul></li>
 </ul></li>
 </ul></li>
@@ -1631,15 +1631,11 @@ Jason Geller, PH.D.(he/him)
 <section id="regular-lm" class="slide level2">
 <h2>Regular LM</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#| </span></span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>model_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(accuracy <span class="sc">~</span> dyslexia<span class="sc">*</span>iq,  </span>
+<span id="cb2-2"><a href="#cb2-2"></a>                      <span class="at">data =</span> ReadingSkills)</span>
 <span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># before | is mean after is phi/variance</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>model_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(accuracy <span class="sc">~</span> dyslexia<span class="sc">*</span>iq,  </span>
-<span id="cb2-6"><a href="#cb2-6"></a>                      <span class="at">data =</span> ReadingSkills)</span>
-<span id="cb2-7"><a href="#cb2-7"></a></span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="fu">model_parameters</span>(model_lm) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-9"><a href="#cb2-9"></a>  <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="fu">model_parameters</span>(model_lm) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-5"><a href="#cb2-5"></a>  <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <colgroup>
@@ -1697,31 +1693,37 @@ Jason Geller, PH.D.(he/him)
 </table>
 </div>
 </div>
-<div id="qwebr-insertion-location-5"></div>
-<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 <section id="regular-lm-1" class="slide level2">
 <h2>Regular LM</h2>
 
 <img data-src="09-Betaqmd_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
+<section id="regular-lm-2" class="slide level2">
+<h2>Regular LM</h2>
+<ul>
+<li><p>Models using proportions or probabilities:</p>
+<ul>
+<li><p>Asymmetry</p></li>
+<li><p>Heteoroscadacity</p></li>
+</ul></li>
+</ul>
+</section>
 <section id="beta-regression-2" class="slide level2">
 <h2>Beta Regression</h2>
 <ul>
 <li>To the rescue!</li>
 </ul>
 <p><span class="math display">\[
-\begin{align*}
-accuracy_i \sim \text{Beta}(\mu_i, \phi) \\
-logit(\mu)= \beta_0 + \beta_1 \text{iq}_i + \beta_2 \text{dyslexia}_i
-\end{align*}
+accuracy_i \sim \text{Beta}(\mu_i, \phi)
 \]</span></p>
 <ul>
 <li><p>Model has two parts</p>
 <ul>
 <li><p><span class="math inline">\(\mu\)</span></p></li>
 <li><p><span class="math inline">\(\phi\)</span></p></li>
-</ul></li>
-<li><p>We take the logit so <span class="math inline">\(\mu\)</span> is between [0,1]</p></li>
+</ul>
+<p><span class="math display">\[logit(\mu)= \beta_0 + \beta_1 \text{iq}_i + \beta_2 \text{dyslexia}_i + \beta_3 \text{dyslexia}_i*\text{iq}_i\]</span></p></li>
+<li><p>We use the logit link so <span class="math inline">\(\mu\)</span> is between [0,1]</p></li>
 </ul>
 </section>
 <section id="beta-regression-3" class="slide level2">
@@ -1729,7 +1731,7 @@ logit(\mu)= \beta_0 + \beta_1 \text{iq}_i + \beta_2 \text{dyslexia}_i
 <ul>
 <li>We model precision for each variable by inserting variables after the <code>|</code></li>
 </ul>
-<div id="qwebr-insertion-location-6"></div>
+<div id="qwebr-insertion-location-5"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 <section id="interpretation" class="slide level2">
@@ -1908,15 +1910,59 @@ logit(\mu)= \beta_0 + \beta_1 \text{iq}_i + \beta_2 \text{dyslexia}_i
 <h2>Marginal effects</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">#get differnece </span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">avg_comparisons</span>(model_beta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-     Term Contrast Estimate Std. Error     z Pr(&gt;|z|)    S    2.5 % 97.5 %
- dyslexia       +1  -0.2450     0.0524 -4.67   &lt;0.001 18.4 -0.34777 -0.142
- iq             +1   0.0274     0.0130  2.10   0.0353  4.8  0.00188  0.053
-
-Columns: term, contrast, estimate, std.error, statistic, p.value, s.value, conf.low, conf.high 
-Type:  response </code></pre>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">avg_comparisons</span>(model_beta) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table>
+<colgroup>
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: left;">contrast</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p.value</th>
+<th style="text-align: right;">s.value</th>
+<th style="text-align: right;">conf.low</th>
+<th style="text-align: right;">conf.high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">dyslexia</td>
+<td style="text-align: left;">+1</td>
+<td style="text-align: right;">-0.2450026</td>
+<td style="text-align: right;">0.0524356</td>
+<td style="text-align: right;">-4.672451</td>
+<td style="text-align: right;">0.0000030</td>
+<td style="text-align: right;">18.358064</td>
+<td style="text-align: right;">-0.3477744</td>
+<td style="text-align: right;">-0.1422308</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">iq</td>
+<td style="text-align: left;">+1</td>
+<td style="text-align: right;">0.0274402</td>
+<td style="text-align: right;">0.0130397</td>
+<td style="text-align: right;">2.104362</td>
+<td style="text-align: right;">0.0353469</td>
+<td style="text-align: right;">4.822273</td>
+<td style="text-align: right;">0.0018829</td>
+<td style="text-align: right;">0.0529975</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="callout callout-note callout-titled callout-style-default">
@@ -1929,8 +1975,8 @@ Type:  response </code></pre>
 </div>
 <div class="callout-content">
 <ul>
-<li><p>For 1-unit increase in `iq` there is an increase of 2 percentage points on reading accuracy</p></li>
-<li><p>Dyslexia (sync) vs.&nbsp;online (async) decreases grades by 5 percentage points - not statistically significant</p></li>
+<li><p>For 1-unit increase in <code>iq</code> there is an increase of 2 percentage points on reading accuracy</p></li>
+<li><p>Dyslexia decreases reading accuracy by 25 percentage points</p></li>
 </ul>
 </div>
 </div>
@@ -1941,34 +1987,15 @@ Type:  response </code></pre>
 <ul>
 <li>LRT</li>
 </ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># before | is mean after is phi/variance</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>model_beta_main <span class="ot">&lt;-</span> <span class="fu">betareg</span>(accuracy <span class="sc">~</span> dyslexia<span class="sc">*</span>iq  <span class="sc">|</span>dyslexia <span class="sc">+</span> iq , </span>
-<span id="cb8-3"><a href="#cb8-3"></a>                      <span class="at">data =</span> ReadingSkills, </span>
-<span id="cb8-4"><a href="#cb8-4"></a>                      <span class="at">link =</span> <span class="st">"logit"</span>)</span>
-<span id="cb8-5"><a href="#cb8-5"></a></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="co"># estimate only one phi</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="co"># before | is mean after is phi/variance</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a>model_beta_inter <span class="ot">&lt;-</span> <span class="fu">betareg</span>(accuracy <span class="sc">~</span> dyslexia<span class="sc">+</span>iq , </span>
-<span id="cb8-9"><a href="#cb8-9"></a>                      <span class="at">data =</span> ReadingSkills, </span>
-<span id="cb8-10"><a href="#cb8-10"></a>                      <span class="at">link =</span> <span class="st">"logit"</span>)</span>
-<span id="cb8-11"><a href="#cb8-11"></a></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="fu">test_likelihoodratio</span>(model_beta_main, model_beta_inter)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># Likelihood-Ratio-Test (LRT) for Model Comparison (ML-estimator)
-
-Name             |   Model | df | df_diff |  Chi2 |      p
-----------------------------------------------------------
-model_beta_main  | betareg |  7 |         |       |       
-model_beta_inter | betareg |  4 |      -3 | 31.90 | &lt; .001</code></pre>
-</div>
-</div>
+<div id="qwebr-insertion-location-6"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 <section id="lrt" class="slide level2">
 <h2>LRT</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(model_beta) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="do">## use type 3 if interactions important</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>car<span class="sc">::</span><span class="fu">Anova</span>(model_beta, <span class="at">type=</span><span class="st">"III"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <thead>
@@ -1981,21 +2008,27 @@ model_beta_inter | betareg |  4 |      -3 | 31.90 | &lt; .001</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">dyslexia</td>
+<td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">90.311491</td>
+<td style="text-align: right;">61.84003</td>
 <td style="text-align: right;">0.0000000</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">iq</td>
+<td style="text-align: left;">dyslexia</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">1.302092</td>
-<td style="text-align: right;">0.2538314</td>
+<td style="text-align: right;">26.99045</td>
+<td style="text-align: right;">0.0000002</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">iq</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13.34291</td>
+<td style="text-align: right;">0.0002594</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">dyslexia:iq</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">19.189200</td>
+<td style="text-align: right;">19.18920</td>
 <td style="text-align: right;">0.0000118</td>
 </tr>
 </tbody>
@@ -2005,12 +2038,15 @@ model_beta_inter | betareg |  4 |      -3 | 31.90 | &lt; .001</code></pre>
 </section>
 <section id="interaction" class="slide level2">
 <h2>Interaction</h2>
+<ul>
+<li>Simple slopes analysis comparing AME for <code>iq</code> at each level of <code>dyslexia</code> variable</li>
+</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>marginaleffects<span class="sc">::</span><span class="fu">avg_slopes</span>(</span>
-<span id="cb11-2"><a href="#cb11-2"></a>    model_beta,</span>
-<span id="cb11-3"><a href="#cb11-3"></a>    <span class="at">variables  =</span> <span class="st">"iq"</span>, </span>
-<span id="cb11-4"><a href="#cb11-4"></a>    <span class="at">by=</span><span class="st">"dyslexia"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>marginaleffects<span class="sc">::</span><span class="fu">avg_slopes</span>(</span>
+<span id="cb8-2"><a href="#cb8-2"></a>    model_beta,</span>
+<span id="cb8-3"><a href="#cb8-3"></a>    <span class="at">variables  =</span> <span class="st">"iq"</span>, </span>
+<span id="cb8-4"><a href="#cb8-4"></a>    <span class="at">by=</span><span class="st">"dyslexia"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table style="width:100%;">
 <colgroup>
@@ -2096,65 +2132,33 @@ model_beta_inter | betareg |  4 |      -3 | 31.90 | &lt; .001</code></pre>
 </section>
 <section id="visualization---interaction" class="slide level2">
 <h2>Visualization - Interaction</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">ggemmeans</span>(model_beta, <span class="at">terms=</span><span class="fu">c</span>(<span class="st">"iq"</span>, <span class="st">"dyslexia"</span>)) <span class="sc">%&gt;%</span> <span class="fu">plot</span>(<span class="at">show_data=</span><span class="cn">TRUE</span>) <span class="sc">+</span><span class="fu">theme_blackboard</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ggemmeans</span>(model_beta, <span class="at">terms=</span><span class="fu">c</span>(<span class="st">"iq"</span>, <span class="st">"dyslexia"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">plot</span>(<span class="at">show_data=</span><span class="cn">TRUE</span>)<span class="sc">+</span> <span class="fu">theme_blackboard</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="09-Betaqmd_files/figure-revealjs/unnamed-chunk-16-1.png" width="1152" class="r-stretch"></section>
-<section id="lrt-1" class="slide level2">
-<h2>LRT</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(model_beta) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">Df</th>
-<th style="text-align: right;">Chisq</th>
-<th style="text-align: right;">Pr(&gt;Chisq)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">dyslexia</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">90.311491</td>
-<td style="text-align: right;">0.0000000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">iq</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1.302092</td>
-<td style="text-align: right;">0.2538314</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">dyslexia:iq</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">19.189200</td>
-<td style="text-align: right;">0.0000118</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<img data-src="09-Betaqmd_files/figure-revealjs/unnamed-chunk-15-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"><ul>
+<li>IQ and Accuracy does not seem to be related to dyslexia</li>
+</ul>
 </section>
 <section id="model-comparisons" class="slide level2">
 <h2>Model Comparisons</h2>
+<ul>
+<li>Do we need a precision parameters for each variable?</li>
+</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># before | is mean after is phi/variance</span></span>
-<span id="cb14-2"><a href="#cb14-2"></a>model_beta <span class="ot">&lt;-</span> <span class="fu">betareg</span>(accuracy <span class="sc">~</span> dyslexia<span class="sc">*</span>iq  <span class="sc">|</span>dyslexia <span class="sc">+</span> iq , </span>
-<span id="cb14-3"><a href="#cb14-3"></a>                      <span class="at">data =</span> ReadingSkills, </span>
-<span id="cb14-4"><a href="#cb14-4"></a>                      <span class="at">link =</span> <span class="st">"logit"</span>)</span>
-<span id="cb14-5"><a href="#cb14-5"></a></span>
-<span id="cb14-6"><a href="#cb14-6"></a><span class="co"># estimate only one phi</span></span>
-<span id="cb14-7"><a href="#cb14-7"></a><span class="co"># before | is mean after is phi/variance</span></span>
-<span id="cb14-8"><a href="#cb14-8"></a>model_beta_nophi <span class="ot">&lt;-</span> <span class="fu">betareg</span>(accuracy <span class="sc">~</span> dyslexia<span class="sc">*</span>iq , </span>
-<span id="cb14-9"><a href="#cb14-9"></a>                      <span class="at">data =</span> ReadingSkills, </span>
-<span id="cb14-10"><a href="#cb14-10"></a>                      <span class="at">link =</span> <span class="st">"logit"</span>)</span>
-<span id="cb14-11"><a href="#cb14-11"></a></span>
-<span id="cb14-12"><a href="#cb14-12"></a><span class="fu">test_likelihoodratio</span>(model_beta, model_beta_nophi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># before | is mean after is phi/variance</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>model_beta <span class="ot">&lt;-</span> <span class="fu">betareg</span>(accuracy <span class="sc">~</span> dyslexia<span class="sc">*</span>iq  <span class="sc">|</span>dyslexia <span class="sc">+</span> iq , </span>
+<span id="cb10-3"><a href="#cb10-3"></a>                      <span class="at">data =</span> ReadingSkills, </span>
+<span id="cb10-4"><a href="#cb10-4"></a>                      <span class="at">link =</span> <span class="st">"logit"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5"></a></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co"># estimate only one phi</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="co"># before | is mean after is phi/variance</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>model_beta_nophi <span class="ot">&lt;-</span> <span class="fu">betareg</span>(accuracy <span class="sc">~</span> dyslexia<span class="sc">*</span>iq , </span>
+<span id="cb10-9"><a href="#cb10-9"></a>                      <span class="at">data =</span> ReadingSkills, </span>
+<span id="cb10-10"><a href="#cb10-10"></a>                      <span class="at">link =</span> <span class="st">"logit"</span>)</span>
+<span id="cb10-11"><a href="#cb10-11"></a></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="fu">test_likelihoodratio</span>(model_beta, model_beta_nophi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Likelihood-Ratio-Test (LRT) for Model Comparison (ML-estimator)
 
@@ -2187,7 +2191,7 @@ model_beta_nophi | betareg |  5 |      -2 | 29.10 | &lt; .001</code></pre>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/clipboard-1675279432.png"></p>
-<figcaption>Matti</figcaption>
+<figcaption>Matti Vuorre</figcaption>
 </figure>
 </div>
 </div><div class="column" style="width:50%;">
@@ -2203,23 +2207,23 @@ model_beta_nophi | betareg |  5 |      -2 | 29.10 | &lt; .001</code></pre>
 <li>Three processes</li>
 </ul>
 <ol type="1">
-<li><p>A logistic regression model that predicts if outcomes are extreme (0 or 1) or not (between 0 and 1) (<span class="math inline">\(\alpha\)</span> or <code>zoi</code> in {brms)</p></li>
-<li><p>A logistic regression model that predicts predicts if the extreme values are 1 (<span class="math inline">\(\gamma\)</span> or <code>coi</code> in brms)</p></li>
+<li><p>A logistic regression model that predicts if outcome is either (1) 0 or 1 or (2) not exactly 0 or 1 (<span class="math inline">\(\alpha\)</span> or <code>zoi</code> in brms)</p></li>
+<li><p>A logistic regression model that predicts if the 0 or 1 outcomes are either (1) 0 or (2) 1 (<span class="math inline">\(\gamma\)</span> or <code>coi</code> in brms)</p></li>
 <li><p>A beta regression model that predicts the non-extreme (0 or 1) values) (<span class="math inline">\(\mu\)</span> and <span class="math inline">\(\phi\)</span>)</p></li>
 </ol>
 </div><div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">brm</span>(</span>
-<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">bf</span>(</span>
-<span id="cb16-3"><a href="#cb16-3"></a>    outcome <span class="sc">~</span> covariates,  <span class="co"># The mean of the 0-1 values, or mu</span></span>
-<span id="cb16-4"><a href="#cb16-4"></a>    phi <span class="sc">~</span> covariates,  <span class="co"># The precision of the 0-1 values, or phi</span></span>
-<span id="cb16-5"><a href="#cb16-5"></a>    zoi <span class="sc">~</span> covariates,  <span class="co"># The zero-or-one-inflated part, or alpha</span></span>
-<span id="cb16-6"><a href="#cb16-6"></a>    coi <span class="sc">~</span> covariates  <span class="co"># The one-inflated part, conditional on the 0s, or gamma</span></span>
-<span id="cb16-7"><a href="#cb16-7"></a>  ),</span>
-<span id="cb16-8"><a href="#cb16-8"></a>  <span class="at">data =</span> whatever,</span>
-<span id="cb16-9"><a href="#cb16-9"></a>  <span class="at">family =</span> <span class="fu">zero_one_inflated_beta</span>(),</span>
-<span id="cb16-10"><a href="#cb16-10"></a>  ...</span>
-<span id="cb16-11"><a href="#cb16-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">brm</span>(</span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">bf</span>(</span>
+<span id="cb12-3"><a href="#cb12-3"></a>    outcome <span class="sc">~</span> covariates,  <span class="co"># The mean of the 0-1 values, or mu</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>    phi <span class="sc">~</span> covariates,  <span class="co"># The precision of the 0-1 values, or phi</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>    zoi <span class="sc">~</span> covariates,  <span class="co"># The zero-or-one-inflated part, or alpha</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a>    coi <span class="sc">~</span> covariates  <span class="co"># The one-inflated part, conditional on the 0s, or gamma</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a>  ),</span>
+<span id="cb12-8"><a href="#cb12-8"></a>  <span class="at">data =</span> whatever,</span>
+<span id="cb12-9"><a href="#cb12-9"></a>  <span class="at">family =</span> <span class="fu">zero_one_inflated_beta</span>(),</span>
+<span id="cb12-10"><a href="#cb12-10"></a>  ...</span>
+<span id="cb12-11"><a href="#cb12-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -2227,36 +2231,39 @@ model_beta_nophi | betareg |  5 |      -2 | 29.10 | &lt; .001</code></pre>
 <section id="zoib---output" class="slide level2">
 <h2>ZOIB - Output</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="do">##  Family: zero_one_inflated_beta </span></span>
-<span id="cb17-2"><a href="#cb17-2"></a><span class="do">##   Links: mu = logit; phi = log; zoi = logit; coi = logit </span></span>
-<span id="cb17-3"><a href="#cb17-3"></a><span class="do">## Formula: Rating ~ group </span></span>
-<span id="cb17-4"><a href="#cb17-4"></a><span class="do">##          phi ~ group</span></span>
-<span id="cb17-5"><a href="#cb17-5"></a><span class="do">##          zoi ~ group</span></span>
-<span id="cb17-6"><a href="#cb17-6"></a><span class="do">##          coi ~ group</span></span>
-<span id="cb17-7"><a href="#cb17-7"></a><span class="do">##    Data: dat (Number of observations: 100) </span></span>
-<span id="cb17-8"><a href="#cb17-8"></a><span class="do">##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;</span></span>
-<span id="cb17-9"><a href="#cb17-9"></a><span class="do">##          total post-warmup draws = 4000</span></span>
-<span id="cb17-10"><a href="#cb17-10"></a><span class="do">## </span></span>
-<span id="cb17-11"><a href="#cb17-11"></a><span class="do">## Population-Level Effects: </span></span>
-<span id="cb17-12"><a href="#cb17-12"></a><span class="do">##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
-<span id="cb17-13"><a href="#cb17-13"></a><span class="do">## Intercept         0.33      0.16     0.03     0.64 1.00     7221     2600</span></span>
-<span id="cb17-14"><a href="#cb17-14"></a><span class="do">## phi_Intercept     1.50      0.24     1.00     1.94 1.00     6306     3106</span></span>
-<span id="cb17-15"><a href="#cb17-15"></a><span class="do">## zoi_Intercept    -0.80      0.32    -1.44    -0.18 1.00     7341     2983</span></span>
-<span id="cb17-16"><a href="#cb17-16"></a><span class="do">## coi_Intercept     0.62      0.56    -0.40     1.75 1.00     6324     3166</span></span>
-<span id="cb17-17"><a href="#cb17-17"></a><span class="do">## groupB            0.91      0.21     0.50     1.32 1.00     6770     2984</span></span>
-<span id="cb17-18"><a href="#cb17-18"></a><span class="do">## phi_groupB        0.48      0.33    -0.15     1.14 1.00     5750     2654</span></span>
-<span id="cb17-19"><a href="#cb17-19"></a><span class="do">## zoi_groupB        0.08      0.43    -0.75     0.91 1.00     7812     3178</span></span>
-<span id="cb17-20"><a href="#cb17-20"></a><span class="do">## coi_groupB       -0.87      0.75    -2.35     0.52 1.00     6093     2866</span></span>
-<span id="cb17-21"><a href="#cb17-21"></a><span class="do">## </span></span>
-<span id="cb17-22"><a href="#cb17-22"></a><span class="do">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
-<span id="cb17-23"><a href="#cb17-23"></a><span class="do">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
-<span id="cb17-24"><a href="#cb17-24"></a><span class="do">## scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="do">##  Family: zero_one_inflated_beta </span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="do">##   Links: mu = logit; phi = log; zoi = logit; coi = logit </span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="do">## Formula: Rating ~ group </span></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="do">##          phi ~ group</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="do">##          zoi ~ group</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="do">##          coi ~ group</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="do">##    Data: dat (Number of observations: 100) </span></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="do">##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="do">##          total post-warmup draws = 4000</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a><span class="do">## </span></span>
+<span id="cb13-11"><a href="#cb13-11"></a><span class="do">## Population-Level Effects: </span></span>
+<span id="cb13-12"><a href="#cb13-12"></a><span class="do">##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="do">## Intercept         0.33      0.16     0.03     0.64 1.00     7221     2600</span></span>
+<span id="cb13-14"><a href="#cb13-14"></a><span class="do">## phi_Intercept     1.50      0.24     1.00     1.94 1.00     6306     3106</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a><span class="do">## zoi_Intercept    -0.80      0.32    -1.44    -0.18 1.00     7341     2983</span></span>
+<span id="cb13-16"><a href="#cb13-16"></a><span class="do">## coi_Intercept     0.62      0.56    -0.40     1.75 1.00     6324     3166</span></span>
+<span id="cb13-17"><a href="#cb13-17"></a><span class="do">## groupB            0.91      0.21     0.50     1.32 1.00     6770     2984</span></span>
+<span id="cb13-18"><a href="#cb13-18"></a><span class="do">## phi_groupB        0.48      0.33    -0.15     1.14 1.00     5750     2654</span></span>
+<span id="cb13-19"><a href="#cb13-19"></a><span class="do">## zoi_groupB        0.08      0.43    -0.75     0.91 1.00     7812     3178</span></span>
+<span id="cb13-20"><a href="#cb13-20"></a><span class="do">## coi_groupB       -0.87      0.75    -2.35     0.52 1.00     6093     2866</span></span>
+<span id="cb13-21"><a href="#cb13-21"></a><span class="do">## </span></span>
+<span id="cb13-22"><a href="#cb13-22"></a><span class="do">## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
+<span id="cb13-23"><a href="#cb13-23"></a><span class="do">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
+<span id="cb13-24"><a href="#cb13-24"></a><span class="do">## scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="ordered-beta" class="slide level2">
 <h2>Ordered beta</h2>
 <ul>
-<li><p>Can become a huge model with lots of parameters to estimate!</p></li>
+<li><p>ZOIB can become complex with lots of parameters to estimate!</p>
+<ul>
+<li>Can take a long time to run</li>
+</ul></li>
 <li><p>Ordered beta regression is a special case of ZOIB</p>
 <ul>
 <li><p>Robert Kubinec developed it</p></li>
@@ -2264,28 +2271,76 @@ model_beta_nophi | betareg |  5 |      -2 | 29.10 | &lt; .001</code></pre>
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">library</span>(ordbetareg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">library</span>(ordbetareg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="ordered-beta-1" class="slide level2">
-<h2>Ordered beta</h2>
+<section id="ordered-beta-regression" class="slide level2">
+<h2>Ordered beta regression</h2>
 <ul>
-<li><p>We can create three ordered categories to use as an outcome variable: (1) exactly 0, (2) somewhere between 0 and 1, and (3) exactly 1</p>
+<li><p>We can create three ordered categories to use as an outcome variable: (1) exactly 0 (cutzero), (2) somewhere between 0 and 1, and (3) exactly 1 (cutone)</p>
 <ul>
 <li><p>1 and 3 are modeled as with ordinal logits (exactly 0 and exactly 1) and 2 is modeled as a beta logits</p></li>
-<li><p>We can just interpret this similarly to beta regression while still including those zeros and ones</p></li>
+<li><p>We can just interpret this similarly to beta regression while still including zeros and ones</p></li>
 </ul></li>
 </ul>
 </section>
-<section id="ordered-beta-2" class="slide level2">
+<section id="ordered-beta-1" class="slide level2">
 <h2>Ordered beta</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>m_full_ordbeta <span class="ot">&lt;-</span> <span class="fu">ordbetareg</span>(</span>
+<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">bf</span>(</span>
+<span id="cb15-3"><a href="#cb15-3"></a>    province_count <span class="sc">~</span> </span>
+<span id="cb15-4"><a href="#cb15-4"></a>      issue_arts_and_culture), </span>
+<span id="cb15-5"><a href="#cb15-5"></a>  <span class="at">data =</span> data,</span>
+<span id="cb15-6"><a href="#cb15-6"></a>  <span class="at">true_bounds =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">32</span>), <span class="co"># does not have to be between 0-1/0-100</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>  ...</span>
+<span id="cb15-8"><a href="#cb15-8"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="do">##  Family: ord_beta_reg </span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="do">##   Links: mu = identity; phi = identity; cutzero = identity; cutone = identity </span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="do">## Formula: province_count ~ issue_arts_and_culture + issue_education + issue_industry_association + issue_economy_and_trade + issue_charity_and_humanitarian + issue_general + issue_health + issue_environment + issue_science_and_technology + local_connect + years_since_law + year_registered_cat </span></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="do">##    Data: data (Number of observations: 593) </span></span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="do">##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a><span class="do">##          total post-warmup draws = 4000</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a><span class="do">## </span></span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="do">## Population-Level Effects: </span></span>
+<span id="cb16-9"><a href="#cb16-9"></a><span class="do">##                                    Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb16-10"><a href="#cb16-10"></a><span class="do">## Intercept                             -0.23      0.33    -0.89     0.44 1.00     1039     1305</span></span>
+<span id="cb16-11"><a href="#cb16-11"></a><span class="do">## issue_arts_and_cultureTRUE             1.31      0.43     0.47     2.16 1.00     1790     2390</span></span>
+<span id="cb16-12"><a href="#cb16-12"></a><span class="do">## Family Specific Parameters: </span></span>
+<span id="cb16-13"><a href="#cb16-13"></a><span class="do">##         Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
+<span id="cb16-14"><a href="#cb16-14"></a><span class="do">## phi         2.19      0.20     1.82     2.62 1.00     3657     2577</span></span>
+<span id="cb16-15"><a href="#cb16-15"></a><span class="do">## cutzero    -1.26      0.13    -1.53    -1.00 1.00     2438     2762</span></span>
+<span id="cb16-16"><a href="#cb16-16"></a><span class="do">## cutone      0.34      0.07     0.19     0.47 1.00     3377     2878</span></span>
+<span id="cb16-17"><a href="#cb16-17"></a><span class="do">## </span></span>
+<span id="cb16-18"><a href="#cb16-18"></a><span class="do">## Draws were sampled using sample(hmc). For each parameter, Bulk_ESS</span></span>
+<span id="cb16-19"><a href="#cb16-19"></a><span class="do">## and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
+<span id="cb16-20"><a href="#cb16-20"></a><span class="do">## scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
 <ul>
-<li>Look at sample output</li>
+<li><p>Beta regression is an excellent choice for modeling percentages, proportions, and ratios</p></li>
+<li><p>If you have 0s and 1s, alternatives exist</p>
+<ul>
+<li>ZOIB or ordered beta regression (Bayesian framework)</li>
+</ul></li>
+<li><p>Not a whole lot of examples using these kind of models, but hopefully this gives you a good start!</p></li>
 </ul>
+</section></section>
+<section id="fin" class="title-slide slide level1 center">
+<h1>Fin</h1>
 <div class="footer footer-default">
 <p>PSY 504: Advanced Statistics</p>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
