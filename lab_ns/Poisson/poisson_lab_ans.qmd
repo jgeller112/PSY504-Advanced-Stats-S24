@@ -1,0 +1,257 @@
+---
+    title: "Lab 6 - Poisson - Answers"
+    author:
+      - name: Jason Geller
+    date: last-modified
+    format:
+      html:
+        self-contained: true
+        anchor-sections: true
+        code-tools: true
+        code-fold: true
+        fig-width: 8
+        fig-height: 4
+        mainfont: Source Sans Pro
+        theme: journal
+        toc: true
+        toc-depth: 3
+        toc-location: left
+        captions: true
+        cap-location: margin
+        table-captions: true
+        tbl-cap-location: margin
+        reference-location: margin
+      pdf:
+        pdf-engine: lualatex
+        toc: false
+        number-sections: true
+        number-depth: 2
+        top-level-division: section
+        reference-location: document
+        listings: false
+        header-includes:
+          \usepackage{marginnote, here, relsize, needspace, setspace}
+          \def\it{\emph}
+
+    comments:
+      hypothesis: false
+
+    execute:
+      warning: false
+      message: false
+---
+
+1.  To complete this lab:
+
+-   Load packages
+
+```{r}
+library(MASS)
+library(tidyverse)
+library(emmeans)
+library(ggeffects)
+library(easystats)
+library(performance)
+library(knitr)
+```
+
+- Download the dataset:
+
+```{r}
+
+library(tidyverse)
+
+data <- read_delim("https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/Poisson/data/2010.csv")
+
+```
+
+2. Conduct the analysis described in the preregistration document
+
+a.  The number of hours per week that a person spends on the Internet ("WWWHR") will\
+    be predicted by their vocabulary ("WORDSUM"), age ("AGE"), sex ("SEX"), religiosity\
+    ("RELITEN"), political orientation ("POLVIEWS"), and how often they work from home\
+    ("WRKHOME").
+
+```{r}
+
+data_pos <- data %>%
+  dplyr::select(wwwhr, wordsum, age, sex, reliten, polviews, wrkhome) %>%
+  mutate(wwwhr=case_when(
+    wwwhr==-1 ~ NA_real_, 
+    wwwhr==998 ~ NA_real_, 
+    wwwhr==999 ~ NA_real_,
+    TRUE ~ wwwhr), 
+    wordsum=case_when(
+    wordsum==-1 ~ NA_real_,
+    wordsum==99 ~ NA_real_, 
+    TRUE ~ wordsum), 
+    case_when(
+    reliten==0 ~ NA_real_, 
+    reliten==8 ~ NA_real_, 
+    reliten==9 ~ NA_real_, 
+    TRUE~reliten), 
+    polviews=case_when(
+    polviews==0 ~ NA_real_, 
+    polviews==8 ~ NA_real_, 
+    polviews==9 ~ NA_real_, 
+    TRUE ~ polviews), 
+    wrkhome=case_when(
+    wrkhome==0 ~ NA_real_, 
+    wrkhome==8 ~ NA_real_, 
+    wrkhome==9 ~ NA_real_, 
+    TRUE ~ wrkhome), 
+    age = case_when(
+    age == 0 ~ NA_real_,
+    age == 98 ~ NA_real_,
+    age == 99 ~ NA_real_,
+    TRUE ~ age))
+```
+
+## NANIAR
+
+-   could use the `naniar` function `replace_with_na`
+
+```{r}
+library(naniar)
+
+data_pos <- data %>%
+  dplyr::select(wwwhr, wordsum, age, sex, reliten, polviews, wrkhome) %>%
+replace_with_na(.,
+             replace = list(wwwhr = c(-1, 998, 999),
+                          wordsum = c(-1, 99),
+                          reliten = c(0, 8, 9), 
+             polviews = c(0, 8, 9), 
+             wrkhome = c(0,8,9), 
+             age=c(0, 98, 99)))
+```
+
+- Recode sex as factor
+
+```{r}
+
+data_pos <- data_pos %>%
+  mutate(sex=as.factor(sex))
+
+```
+
+- Recode reliten
+
+    ```{r}
+
+    data_pos <- data_pos %>%
+      mutate(reliten_recode = case_when(
+        reliten==3 ~2, 
+        reliten==2 ~ 3, 
+        TRUE ~ reliten
+      ))
+
+    data_pos %>%
+      dplyr::select(reliten, reliten_recode)
+
+    ```
+## Missingness
+```{r}
+library(skimr)
+skimr::skim(data_pos)
+
+```
+
+
+## Fit Poisson 
+
+```{r}
+pos_mod <- glm(wwwhr~wordsum+age+sex+reliten_recode+polviews+wrkhome, family=poisson(), data=data_pos)
+
+
+```
+## Checking Assumptions
+
+###  Performance  - `check_model`
+
+```{r}
+
+check_model(pos_mod)
+
+```
+```{r}
+
+outliers_list <- check_outliers(pos_mod) # Find outliers
+outliers_list # Show the row index of the outliers
+outliers_list <- as.numeric(outliers_list) # The object is a binary vector...
+
+filtered_data <- as.data.frame(data_pos)[!outliers_list, ] # And can be used to filter a dataframe
+
+```
+
+- Refit after outlier exclusion
+
+```{r}
+
+pos_mod <- glm(wwwhr~wordsum+age+sex+reliten_recode+polviews+wrkhome, family=poisson, data=filtered_data)
+
+model_parameters(pos_mod) %>%
+  print_html()
+```
+### Overdispersion
+
+```{r}
+library(performance)
+
+check_overdispersion(pos_mod)
+
+```
+
+- Our model appears to be over-dispersed. Let's fit a negative binomial!
+
+- Let's check if the negative binomial solved are problem:
+
+```{r}
+library(MASS)
+
+pos_mod_nb <- glm.nb(wwwhr~wordsum+age+sex+reliten_recode+polviews+wrkhome, data=filtered_data)
+
+model_parameters(pos_mod_nb) %>%
+  print_html()
+```
+
+## Which one is better?
+
+```{r}
+
+test_likelihoodratio(pos_mod, pos_mod_nb)
+
+```
+
+- Negative binom appears to be better! 
+
+
+```{r}
+check_zeroinflation(pos_mod_nb)
+```
+
+- No zero-inflation! 
+
+::: panel-tabset
+## Log Lambda
+
+```{r}
+
+model_parameters(pos_mod_nb) %>%
+  print_html()
+
+```
+
+## Mean Count
+
+```{r}
+
+model_parameters(pos_mod_nb, exponentiate = TRUE) %>%
+  print_html()
+```
+:::
+
+
+The analysis employed a negative binomial regression model in R to examine the relationship between sex, age, vocabulary, religious and political views, and time spent on the internet per hour. An over-dispersion test was conducted using the `performance` package in R to determine the appropriateness of the model.
+
+The analysis revealed that each additional point in the vocabulary test was associated with an increase of 11% in the expected count of hours spent on the internet per week, incidence rate ratio (IRR) = 1.11, SE = .01, *p* \< .001. Increases in religiosity and work-from-home frequency were also associated with increased time spent on the internet, IRR = 1.10, SE = .03, *p* \< .001, and IRR = 1.06, SE = .02, *p* \< .001, respectively. Relative to females, males in our dataset spent more hours online, IRR = 1.28, SE = .05, *p* \< .001, *d* = 1.28. Two variables, age and political orientation, were negatively associated with time spent on the internet. Older respondents and the more politically conservative spent less time online, IRR = .98, SE = .002, *p* \< .001, *d* = .98, and IRR = .96, SE = .02, *p* = .01, *d* = .96, respectively. 
+
