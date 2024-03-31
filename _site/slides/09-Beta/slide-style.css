@@ -1,0 +1,61 @@
+h1.title {
+  background-image: url("/Users/jasongeller/Desktop/mlm_title.png"); 
+  background-repeat: no-repeat;
+  background-position: center; 
+}
+
+h1.title {
+  font-size: 40px;
+}
+
+.csl-entry {
+  padding-bottom: 0.5em;
+}
+
+ol.aside-footnotes {
+  padding-top: 3em;
+  font-size: 14pt;
+}
+
+.reveal a {
+    color: #FF355E;
+    font-size: 14px;
+}
+
+div.cell-output cell-output-stdout {
+  height: 800px;
+}
+
+.reveal pre.sourceCode code {
+    max-height: 800px;
+}
+
+.reveal div.qwebr-output-code-area pre {
+   background-color: red;
+}
+
+.vocab {
+  color: #87037B;
+  font-weight: bold;
+}
+
+.vocab2 {
+  color: #4187aa;
+  font-weight: bold;
+}
+
+.vocab3 {
+  color: #022CFA;
+  font-weight: bold;
+}
+
+/*Box for equations*/
+.eq {
+  border-radius: 25px;
+  border: solid 5px #c6d47f;
+  background-color: #dce5b2;
+  padding: 7px 13px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  /*font-size: 90%;*/
+}

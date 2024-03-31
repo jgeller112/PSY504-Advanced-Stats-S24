@@ -40,7 +40,7 @@ Here's your roadmap for the semester!
 |  | 3/20/24 | Lab 6  |  |  | [{{< fa pen-ruler >}}](/Labs/Lab6-Poi.qmd) |  |
 | 9 | 3/25/24 | Bayesian analysis | [{{<    fa   book-open-reader >}}](/schedule/09-week-bayes.qmd) | [{{< fa laptop-code   >}}](/slides/08-Bayes/08-Bayes.html) |  | Alex and Ham  |
 |  | 3/27/24 | Lab 7 | | | [{{< fa pen-ruler >}}](/Labs/Lab7-bayes.qmd) |  |
-| 10 | 4/1/24 | Beta regression | [{{<    fa   book-open-reader >}}](/schedule/10-week-beta.qmd) | {{< fa video   >}}  |  | Xiaoyi  |
+| 10 | 4/1/24 | Beta regression | [{{<    fa   book-open-reader >}}](/schedule/10-week-beta.qmd) | {{< fa video   >}}(https://www.youtube.com/watch?v=fCtHNMiTuV4) [{{< fa laptop-code   >}}](/slides/09-Beta/09-Betaqmd.html)  |  | Xiaoyi  |
 |  | 4/3/24 | Lab 8  |  |  | {{< fa pen-ruler >}} |  |
 | 11 | 4/8/24 | Mediation | [{{<    fa   book-open-reader >}}](/schedule/10-week-med.qmd) |{{< fa laptop-code   >}}  |  |Kristopher  |
 |  | 4/10/24 | Lab 8  |  |  | {{< fa pen-ruler >}} |  |
