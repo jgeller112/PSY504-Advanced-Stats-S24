@@ -15,5 +15,7 @@ date: 2023-04-01
 
 - https://stats.andrewheiss.com/compassionate-clam/notebook/ordbeta.html
 
+## Class
 
+ {{< video https://www.youtube.com/watch?v=WZk1sEJ9QMc width="800" height="400" >}}
 
