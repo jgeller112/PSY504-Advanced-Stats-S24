@@ -214,66 +214,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.0     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-✖ dplyr::select() masks MASS::select()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code># Attaching packages: easystats 0.7.0 (red = needs update)
-✔ bayestestR  0.13.2   ✔ correlation 0.8.4 
-✖ datawizard  0.9.1    ✔ effectsize  0.8.6 
-✖ insight     0.19.8   ✔ modelbased  0.8.7 
-✖ performance 0.10.9   ✖ parameters  0.21.5
-✔ report      0.5.8    ✖ see         0.8.2 
-
-Restart the R-Session and update packages with `easystats::easystats_update()`.
-
-
-Attaching package: 'easystats'
-
-The following object is masked from 'package:ggeffects':
-
-    install_latest</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Download the dataset:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/Poisson/data/2010.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: One or more parsing issues, call `problems()` on your data frame for details,
-e.g.:
-  dat &lt;- vroom(...)
-  problems(dat)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 2044 Columns: 801
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr   (9): sexual.orientation, sex.partners, political.orientation, religiou...
-dbl (792): mar1, mar2, mar3, mar4, mar5, mar6, mar7, mar8, mar9, mar11, mar1...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/Poisson/data/2010.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="2" type="1">
 <li>Conduct the analysis described in the preregistration document</li>
@@ -285,37 +239,37 @@ be predicted by their vocabulary (“WORDSUM”), age (“AGE”), sex (“SEX�
 (“WRKHOME”).</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data_pos <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(wwwhr, wordsum, age, sex, reliten, polviews, wrkhome) <span class="sc">%&gt;%</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">wwwhr=</span><span class="fu">case_when</span>(</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    wwwhr<span class="sc">==-</span><span class="dv">1</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    wwwhr<span class="sc">==</span><span class="dv">998</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    wwwhr<span class="sc">==</span><span class="dv">999</span> <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> wwwhr), </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">wordsum=</span><span class="fu">case_when</span>(</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    wordsum<span class="sc">==-</span><span class="dv">1</span> <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    wordsum<span class="sc">==</span><span class="dv">99</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> wordsum), </span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">case_when</span>(</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    reliten<span class="sc">==</span><span class="dv">0</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    reliten<span class="sc">==</span><span class="dv">8</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    reliten<span class="sc">==</span><span class="dv">9</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span><span class="sc">~</span>reliten), </span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">polviews=</span><span class="fu">case_when</span>(</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    polviews<span class="sc">==</span><span class="dv">0</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    polviews<span class="sc">==</span><span class="dv">8</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    polviews<span class="sc">==</span><span class="dv">9</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> polviews), </span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">wrkhome=</span><span class="fu">case_when</span>(</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    wrkhome<span class="sc">==</span><span class="dv">0</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    wrkhome<span class="sc">==</span><span class="dv">8</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    wrkhome<span class="sc">==</span><span class="dv">9</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> wrkhome), </span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">case_when</span>(</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    age <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    age <span class="sc">==</span> <span class="dv">98</span> <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    age <span class="sc">==</span> <span class="dv">99</span> <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data_pos <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(wwwhr, wordsum, age, sex, reliten, polviews, wrkhome) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">wwwhr=</span><span class="fu">case_when</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    wwwhr<span class="sc">==-</span><span class="dv">1</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    wwwhr<span class="sc">==</span><span class="dv">998</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    wwwhr<span class="sc">==</span><span class="dv">999</span> <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> wwwhr), </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">wordsum=</span><span class="fu">case_when</span>(</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    wordsum<span class="sc">==-</span><span class="dv">1</span> <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    wordsum<span class="sc">==</span><span class="dv">99</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> wordsum), </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">case_when</span>(</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    reliten<span class="sc">==</span><span class="dv">0</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    reliten<span class="sc">==</span><span class="dv">8</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    reliten<span class="sc">==</span><span class="dv">9</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span><span class="sc">~</span>reliten), </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">polviews=</span><span class="fu">case_when</span>(</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    polviews<span class="sc">==</span><span class="dv">0</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    polviews<span class="sc">==</span><span class="dv">8</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    polviews<span class="sc">==</span><span class="dv">9</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> polviews), </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">wrkhome=</span><span class="fu">case_when</span>(</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    wrkhome<span class="sc">==</span><span class="dv">0</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    wrkhome<span class="sc">==</span><span class="dv">8</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    wrkhome<span class="sc">==</span><span class="dv">9</span> <span class="sc">~</span> <span class="cn">NA_real_</span>, </span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> wrkhome), </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">case_when</span>(</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    age <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    age <span class="sc">==</span> <span class="dv">98</span> <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    age <span class="sc">==</span> <span class="dv">99</span> <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="naniar" class="level2">
 <h2 class="anchored" data-anchor-id="naniar">NANIAR</h2>
@@ -323,37 +277,37 @@ be predicted by their vocabulary (“WORDSUM”), age (“AGE”), sex (“SEX�
 <li>could use the <code>naniar</code> function <code>replace_with_na</code></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>data_pos <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(wwwhr, wordsum, age, sex, reliten, polviews, wrkhome) <span class="sc">%&gt;%</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">replace_with_na</span>(.,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">replace =</span> <span class="fu">list</span>(<span class="at">wwwhr =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">998</span>, <span class="dv">999</span>),</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">wordsum =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">99</span>),</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">reliten =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dv">9</span>), </span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">polviews =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dv">9</span>), </span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">wrkhome =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">8</span>,<span class="dv">9</span>), </span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">age=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">98</span>, <span class="dv">99</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>data_pos <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(wwwhr, wordsum, age, sex, reliten, polviews, wrkhome) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">replace_with_na</span>(.,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">replace =</span> <span class="fu">list</span>(<span class="at">wwwhr =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">998</span>, <span class="dv">999</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">wordsum =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">99</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">reliten =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dv">9</span>), </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">polviews =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">8</span>, <span class="dv">9</span>), </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">wrkhome =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">8</span>,<span class="dv">9</span>), </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">age=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">98</span>, <span class="dv">99</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Recode sex as factor</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data_pos <span class="ot">&lt;-</span> data_pos <span class="sc">%&gt;%</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex=</span><span class="fu">as.factor</span>(sex))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data_pos <span class="ot">&lt;-</span> data_pos <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex=</span><span class="fu">as.factor</span>(sex))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><p>Recode reliten</p>
 <p>::: {.cell}</p>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_pos <span class="ot">&lt;-</span> data_pos <span class="sc">%&gt;%</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">reliten_recode =</span> <span class="fu">case_when</span>(</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    reliten<span class="sc">==</span><span class="dv">3</span> <span class="sc">~</span><span class="dv">2</span>, </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    reliten<span class="sc">==</span><span class="dv">2</span> <span class="sc">~</span> <span class="dv">3</span>, </span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> reliten</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>data_pos <span class="sc">%&gt;%</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(reliten, reliten_recode)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data_pos <span class="ot">&lt;-</span> data_pos <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">reliten_recode =</span> <span class="fu">case_when</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    reliten<span class="sc">==</span><span class="dv">3</span> <span class="sc">~</span><span class="dv">2</span>, </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    reliten<span class="sc">==</span><span class="dv">2</span> <span class="sc">~</span> <span class="dv">3</span>, </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> reliten</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>data_pos <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(reliten, reliten_recode)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>::: {.cell-output .cell-output-stdout}</p>
 <pre><code># A tibble: 2,044 × 2
    reliten reliten_recode
@@ -375,22 +329,8 @@ be predicted by their vocabulary (“WORDSUM”), age (“AGE”), sex (“SEX�
 <section id="missingness" class="level2">
 <h2 class="anchored" data-anchor-id="missingness">Missingness</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'skimr'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:naniar':
-
-    n_complete</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:insight':
-
-    n_unique</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(data_pos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(data_pos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <caption>Data summary</caption>
@@ -594,7 +534,7 @@ Attaching package: 'skimr'</code></pre>
 <section id="fit-poisson" class="level2">
 <h2 class="anchored" data-anchor-id="fit-poisson">Fit Poisson</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>pos_mod <span class="ot">&lt;-</span> <span class="fu">glm</span>(wwwhr<span class="sc">~</span>wordsum<span class="sc">+</span>age<span class="sc">+</span>sex<span class="sc">+</span>reliten_recode<span class="sc">+</span>polviews<span class="sc">+</span>wrkhome, <span class="at">family=</span><span class="fu">poisson</span>(), <span class="at">data=</span>data_pos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pos_mod <span class="ot">&lt;-</span> <span class="fu">glm</span>(wwwhr<span class="sc">~</span>wordsum<span class="sc">+</span>age<span class="sc">+</span>sex<span class="sc">+</span>reliten_recode<span class="sc">+</span>polviews<span class="sc">+</span>wrkhome, <span class="at">family=</span><span class="fu">poisson</span>(), <span class="at">data=</span>data_pos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="checking-assumptions" class="level2">
@@ -602,53 +542,53 @@ Attaching package: 'skimr'</code></pre>
 <section id="performance---check_model" class="level3">
 <h3 class="anchored" data-anchor-id="performance---check_model">Performance - <code>check_model</code></h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(pos_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(pos_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="poisson_lab_ans_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="poisson_lab_ans_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="1152"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>outliers_list <span class="ot">&lt;-</span> <span class="fu">check_outliers</span>(pos_mod) <span class="co"># Find outliers</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>outliers_list <span class="co"># Show the row index of the outliers</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>outliers_list <span class="ot">&lt;-</span> <span class="fu">check_outliers</span>(pos_mod) <span class="co"># Find outliers</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>outliers_list <span class="co"># Show the row index of the outliers</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>2 outliers detected: cases 72, 363.
 - Based on the following method and threshold: cook (0.9).
 - For variable: (Whole model).</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>outliers_list <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(outliers_list) <span class="co"># The object is a binary vector...</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>filtered_data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data_pos)[<span class="sc">!</span>outliers_list, ] <span class="co"># And can be used to filter a dataframe</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>outliers_list <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(outliers_list) <span class="co"># The object is a binary vector...</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>filtered_data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data_pos)[<span class="sc">!</span>outliers_list, ] <span class="co"># And can be used to filter a dataframe</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Refit after outlier exclusion</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>pos_mod <span class="ot">&lt;-</span> <span class="fu">glm</span>(wwwhr<span class="sc">~</span>wordsum<span class="sc">+</span>age<span class="sc">+</span>sex<span class="sc">+</span>reliten_recode<span class="sc">+</span>polviews<span class="sc">+</span>wrkhome, <span class="at">family=</span>poisson, <span class="at">data=</span>filtered_data)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(pos_mod) <span class="sc">%&gt;%</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pos_mod <span class="ot">&lt;-</span> <span class="fu">glm</span>(wwwhr<span class="sc">~</span>wordsum<span class="sc">+</span>age<span class="sc">+</span>sex<span class="sc">+</span>reliten_recode<span class="sc">+</span>polviews<span class="sc">+</span>wrkhome, <span class="at">family=</span>poisson, <span class="at">data=</span>filtered_data)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(pos_mod) <span class="sc">%&gt;%</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="dbylbqbnzs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dbylbqbnzs table {
+<div id="uontivwgpi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#uontivwgpi table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dbylbqbnzs thead, #dbylbqbnzs tbody, #dbylbqbnzs tfoot, #dbylbqbnzs tr, #dbylbqbnzs td, #dbylbqbnzs th {
+#uontivwgpi thead, #uontivwgpi tbody, #uontivwgpi tfoot, #uontivwgpi tr, #uontivwgpi td, #uontivwgpi th {
   border-style: none;
 }
 
-#dbylbqbnzs p {
+#uontivwgpi p {
   margin: 0;
   padding: 0;
 }
 
-#dbylbqbnzs .gt_table {
+#uontivwgpi .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -674,12 +614,12 @@ Attaching package: 'skimr'</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#dbylbqbnzs .gt_caption {
+#uontivwgpi .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dbylbqbnzs .gt_title {
+#uontivwgpi .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -691,7 +631,7 @@ Attaching package: 'skimr'</code></pre>
   border-bottom-width: 0;
 }
 
-#dbylbqbnzs .gt_subtitle {
+#uontivwgpi .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -703,7 +643,7 @@ Attaching package: 'skimr'</code></pre>
   border-top-width: 0;
 }
 
-#dbylbqbnzs .gt_heading {
+#uontivwgpi .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -715,13 +655,13 @@ Attaching package: 'skimr'</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#dbylbqbnzs .gt_bottom_border {
+#uontivwgpi .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dbylbqbnzs .gt_col_headings {
+#uontivwgpi .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -736,7 +676,7 @@ Attaching package: 'skimr'</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#dbylbqbnzs .gt_col_heading {
+#uontivwgpi .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -756,7 +696,7 @@ Attaching package: 'skimr'</code></pre>
   overflow-x: hidden;
 }
 
-#dbylbqbnzs .gt_column_spanner_outer {
+#uontivwgpi .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -768,15 +708,15 @@ Attaching package: 'skimr'</code></pre>
   padding-right: 4px;
 }
 
-#dbylbqbnzs .gt_column_spanner_outer:first-child {
+#uontivwgpi .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dbylbqbnzs .gt_column_spanner_outer:last-child {
+#uontivwgpi .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dbylbqbnzs .gt_column_spanner {
+#uontivwgpi .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -788,11 +728,11 @@ Attaching package: 'skimr'</code></pre>
   width: 100%;
 }
 
-#dbylbqbnzs .gt_spanner_row {
+#uontivwgpi .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dbylbqbnzs .gt_group_heading {
+#uontivwgpi .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -818,7 +758,7 @@ Attaching package: 'skimr'</code></pre>
   text-align: left;
 }
 
-#dbylbqbnzs .gt_empty_group_heading {
+#uontivwgpi .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -833,15 +773,15 @@ Attaching package: 'skimr'</code></pre>
   vertical-align: middle;
 }
 
-#dbylbqbnzs .gt_from_md > :first-child {
+#uontivwgpi .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dbylbqbnzs .gt_from_md > :last-child {
+#uontivwgpi .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dbylbqbnzs .gt_row {
+#uontivwgpi .gt_row {
   padding-top: 4px;
   padding-bottom: 4px;
   padding-left: 5px;
@@ -860,7 +800,7 @@ Attaching package: 'skimr'</code></pre>
   overflow-x: hidden;
 }
 
-#dbylbqbnzs .gt_stub {
+#uontivwgpi .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -873,7 +813,7 @@ Attaching package: 'skimr'</code></pre>
   padding-right: 5px;
 }
 
-#dbylbqbnzs .gt_stub_row_group {
+#uontivwgpi .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -887,15 +827,15 @@ Attaching package: 'skimr'</code></pre>
   vertical-align: top;
 }
 
-#dbylbqbnzs .gt_row_group_first td {
+#uontivwgpi .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dbylbqbnzs .gt_row_group_first th {
+#uontivwgpi .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dbylbqbnzs .gt_summary_row {
+#uontivwgpi .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -905,16 +845,16 @@ Attaching package: 'skimr'</code></pre>
   padding-right: 5px;
 }
 
-#dbylbqbnzs .gt_first_summary_row {
+#uontivwgpi .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dbylbqbnzs .gt_first_summary_row.thick {
+#uontivwgpi .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dbylbqbnzs .gt_last_summary_row {
+#uontivwgpi .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -924,7 +864,7 @@ Attaching package: 'skimr'</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#dbylbqbnzs .gt_grand_summary_row {
+#uontivwgpi .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -934,7 +874,7 @@ Attaching package: 'skimr'</code></pre>
   padding-right: 5px;
 }
 
-#dbylbqbnzs .gt_first_grand_summary_row {
+#uontivwgpi .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -944,7 +884,7 @@ Attaching package: 'skimr'</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#dbylbqbnzs .gt_last_grand_summary_row_top {
+#uontivwgpi .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -954,11 +894,11 @@ Attaching package: 'skimr'</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#dbylbqbnzs .gt_striped {
+#uontivwgpi .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dbylbqbnzs .gt_table_body {
+#uontivwgpi .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -967,7 +907,7 @@ Attaching package: 'skimr'</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#dbylbqbnzs .gt_footnotes {
+#uontivwgpi .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -981,7 +921,7 @@ Attaching package: 'skimr'</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#dbylbqbnzs .gt_footnote {
+#uontivwgpi .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -990,7 +930,7 @@ Attaching package: 'skimr'</code></pre>
   padding-right: 5px;
 }
 
-#dbylbqbnzs .gt_sourcenotes {
+#uontivwgpi .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1004,7 +944,7 @@ Attaching package: 'skimr'</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#dbylbqbnzs .gt_sourcenote {
+#uontivwgpi .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1012,63 +952,63 @@ Attaching package: 'skimr'</code></pre>
   padding-right: 5px;
 }
 
-#dbylbqbnzs .gt_left {
+#uontivwgpi .gt_left {
   text-align: left;
 }
 
-#dbylbqbnzs .gt_center {
+#uontivwgpi .gt_center {
   text-align: center;
 }
 
-#dbylbqbnzs .gt_right {
+#uontivwgpi .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dbylbqbnzs .gt_font_normal {
+#uontivwgpi .gt_font_normal {
   font-weight: normal;
 }
 
-#dbylbqbnzs .gt_font_bold {
+#uontivwgpi .gt_font_bold {
   font-weight: bold;
 }
 
-#dbylbqbnzs .gt_font_italic {
+#uontivwgpi .gt_font_italic {
   font-style: italic;
 }
 
-#dbylbqbnzs .gt_super {
+#uontivwgpi .gt_super {
   font-size: 65%;
 }
 
-#dbylbqbnzs .gt_footnote_marks {
+#uontivwgpi .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dbylbqbnzs .gt_asterisk {
+#uontivwgpi .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dbylbqbnzs .gt_indent_1 {
+#uontivwgpi .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dbylbqbnzs .gt_indent_2 {
+#uontivwgpi .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dbylbqbnzs .gt_indent_3 {
+#uontivwgpi .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dbylbqbnzs .gt_indent_4 {
+#uontivwgpi .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dbylbqbnzs .gt_indent_5 {
+#uontivwgpi .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1156,9 +1096,9 @@ Attaching package: 'skimr'</code></pre>
 <section id="overdispersion" class="level3">
 <h3 class="anchored" data-anchor-id="overdispersion">Overdispersion</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_overdispersion</span>(pos_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_overdispersion</span>(pos_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Overdispersion test
 
@@ -1166,39 +1106,36 @@ Attaching package: 'skimr'</code></pre>
   Pearson's Chi-Squared = 8750.592
                 p-value =  &lt; 0.001</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Overdispersion detected.</code></pre>
-</div>
 </div>
 <ul>
 <li><p>Our model appears to be over-dispersed. Let’s fit a negative binomial!</p></li>
 <li><p>Let’s check if the negative binomial solved are problem:</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>pos_mod_nb <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(wwwhr<span class="sc">~</span>wordsum<span class="sc">+</span>age<span class="sc">+</span>sex<span class="sc">+</span>reliten_recode<span class="sc">+</span>polviews<span class="sc">+</span>wrkhome, <span class="at">data=</span>filtered_data)</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(pos_mod_nb) <span class="sc">%&gt;%</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>pos_mod_nb <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(wwwhr<span class="sc">~</span>wordsum<span class="sc">+</span>age<span class="sc">+</span>sex<span class="sc">+</span>reliten_recode<span class="sc">+</span>polviews<span class="sc">+</span>wrkhome, <span class="at">data=</span>filtered_data)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(pos_mod_nb) <span class="sc">%&gt;%</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="qfcjohfzqg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qfcjohfzqg table {
+<div id="zgnskzlcok" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#zgnskzlcok table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#qfcjohfzqg thead, #qfcjohfzqg tbody, #qfcjohfzqg tfoot, #qfcjohfzqg tr, #qfcjohfzqg td, #qfcjohfzqg th {
+#zgnskzlcok thead, #zgnskzlcok tbody, #zgnskzlcok tfoot, #zgnskzlcok tr, #zgnskzlcok td, #zgnskzlcok th {
   border-style: none;
 }
 
-#qfcjohfzqg p {
+#zgnskzlcok p {
   margin: 0;
   padding: 0;
 }
 
-#qfcjohfzqg .gt_table {
+#zgnskzlcok .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1224,12 +1161,12 @@ Attaching package: 'skimr'</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#qfcjohfzqg .gt_caption {
+#zgnskzlcok .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qfcjohfzqg .gt_title {
+#zgnskzlcok .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1241,7 +1178,7 @@ Attaching package: 'skimr'</code></pre>
   border-bottom-width: 0;
 }
 
-#qfcjohfzqg .gt_subtitle {
+#zgnskzlcok .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1253,7 +1190,7 @@ Attaching package: 'skimr'</code></pre>
   border-top-width: 0;
 }
 
-#qfcjohfzqg .gt_heading {
+#zgnskzlcok .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1265,13 +1202,13 @@ Attaching package: 'skimr'</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#qfcjohfzqg .gt_bottom_border {
+#zgnskzlcok .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qfcjohfzqg .gt_col_headings {
+#zgnskzlcok .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1286,7 +1223,7 @@ Attaching package: 'skimr'</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#qfcjohfzqg .gt_col_heading {
+#zgnskzlcok .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1306,7 +1243,7 @@ Attaching package: 'skimr'</code></pre>
   overflow-x: hidden;
 }
 
-#qfcjohfzqg .gt_column_spanner_outer {
+#zgnskzlcok .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1318,15 +1255,15 @@ Attaching package: 'skimr'</code></pre>
   padding-right: 4px;
 }
 
-#qfcjohfzqg .gt_column_spanner_outer:first-child {
+#zgnskzlcok .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qfcjohfzqg .gt_column_spanner_outer:last-child {
+#zgnskzlcok .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qfcjohfzqg .gt_column_spanner {
+#zgnskzlcok .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1338,11 +1275,11 @@ Attaching package: 'skimr'</code></pre>
   width: 100%;
 }
 
-#qfcjohfzqg .gt_spanner_row {
+#zgnskzlcok .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#qfcjohfzqg .gt_group_heading {
+#zgnskzlcok .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1368,7 +1305,7 @@ Attaching package: 'skimr'</code></pre>
   text-align: left;
 }
 
-#qfcjohfzqg .gt_empty_group_heading {
+#zgnskzlcok .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1383,15 +1320,15 @@ Attaching package: 'skimr'</code></pre>
   vertical-align: middle;
 }
 
-#qfcjohfzqg .gt_from_md > :first-child {
+#zgnskzlcok .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qfcjohfzqg .gt_from_md > :last-child {
+#zgnskzlcok .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qfcjohfzqg .gt_row {
+#zgnskzlcok .gt_row {
   padding-top: 4px;
   padding-bottom: 4px;
   padding-left: 5px;
@@ -1410,7 +1347,7 @@ Attaching package: 'skimr'</code></pre>
   overflow-x: hidden;
 }
 
-#qfcjohfzqg .gt_stub {
+#zgnskzlcok .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1423,7 +1360,7 @@ Attaching package: 'skimr'</code></pre>
   padding-right: 5px;
 }
 
-#qfcjohfzqg .gt_stub_row_group {
+#zgnskzlcok .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1437,15 +1374,15 @@ Attaching package: 'skimr'</code></pre>
   vertical-align: top;
 }
 
-#qfcjohfzqg .gt_row_group_first td {
+#zgnskzlcok .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qfcjohfzqg .gt_row_group_first th {
+#zgnskzlcok .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#qfcjohfzqg .gt_summary_row {
+#zgnskzlcok .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1455,16 +1392,16 @@ Attaching package: 'skimr'</code></pre>
   padding-right: 5px;
 }
 
-#qfcjohfzqg .gt_first_summary_row {
+#zgnskzlcok .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qfcjohfzqg .gt_first_summary_row.thick {
+#zgnskzlcok .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qfcjohfzqg .gt_last_summary_row {
+#zgnskzlcok .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1474,7 +1411,7 @@ Attaching package: 'skimr'</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#qfcjohfzqg .gt_grand_summary_row {
+#zgnskzlcok .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1484,7 +1421,7 @@ Attaching package: 'skimr'</code></pre>
   padding-right: 5px;
 }
 
-#qfcjohfzqg .gt_first_grand_summary_row {
+#zgnskzlcok .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1494,7 +1431,7 @@ Attaching package: 'skimr'</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#qfcjohfzqg .gt_last_grand_summary_row_top {
+#zgnskzlcok .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1504,11 +1441,11 @@ Attaching package: 'skimr'</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#qfcjohfzqg .gt_striped {
+#zgnskzlcok .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qfcjohfzqg .gt_table_body {
+#zgnskzlcok .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1517,7 +1454,7 @@ Attaching package: 'skimr'</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#qfcjohfzqg .gt_footnotes {
+#zgnskzlcok .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1531,7 +1468,7 @@ Attaching package: 'skimr'</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#qfcjohfzqg .gt_footnote {
+#zgnskzlcok .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1540,7 +1477,7 @@ Attaching package: 'skimr'</code></pre>
   padding-right: 5px;
 }
 
-#qfcjohfzqg .gt_sourcenotes {
+#zgnskzlcok .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1554,7 +1491,7 @@ Attaching package: 'skimr'</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#qfcjohfzqg .gt_sourcenote {
+#zgnskzlcok .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1562,63 +1499,63 @@ Attaching package: 'skimr'</code></pre>
   padding-right: 5px;
 }
 
-#qfcjohfzqg .gt_left {
+#zgnskzlcok .gt_left {
   text-align: left;
 }
 
-#qfcjohfzqg .gt_center {
+#zgnskzlcok .gt_center {
   text-align: center;
 }
 
-#qfcjohfzqg .gt_right {
+#zgnskzlcok .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qfcjohfzqg .gt_font_normal {
+#zgnskzlcok .gt_font_normal {
   font-weight: normal;
 }
 
-#qfcjohfzqg .gt_font_bold {
+#zgnskzlcok .gt_font_bold {
   font-weight: bold;
 }
 
-#qfcjohfzqg .gt_font_italic {
+#zgnskzlcok .gt_font_italic {
   font-style: italic;
 }
 
-#qfcjohfzqg .gt_super {
+#zgnskzlcok .gt_super {
   font-size: 65%;
 }
 
-#qfcjohfzqg .gt_footnote_marks {
+#zgnskzlcok .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#qfcjohfzqg .gt_asterisk {
+#zgnskzlcok .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qfcjohfzqg .gt_indent_1 {
+#zgnskzlcok .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qfcjohfzqg .gt_indent_2 {
+#zgnskzlcok .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qfcjohfzqg .gt_indent_3 {
+#zgnskzlcok .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qfcjohfzqg .gt_indent_4 {
+#zgnskzlcok .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qfcjohfzqg .gt_indent_5 {
+#zgnskzlcok .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1707,7 +1644,7 @@ Attaching package: 'skimr'</code></pre>
 <section id="which-one-is-better" class="level2">
 <h2 class="anchored" data-anchor-id="which-one-is-better">Which one is better?</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">test_likelihoodratio</span>(pos_mod, pos_mod_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">test_likelihoodratio</span>(pos_mod, pos_mod_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Likelihood-Ratio-Test (LRT) for Model Comparison (ML-estimator)
 
@@ -1721,16 +1658,13 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
 <li>Negative binom appears to be better!</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_zeroinflation</span>(pos_mod_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_zeroinflation</span>(pos_mod_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Check for zero-inflation
 
    Observed zeros: 40
   Predicted zeros: 67
             Ratio: 1.68</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Model is overfitting zeros.</code></pre>
 </div>
 </div>
 <ul>
@@ -1741,26 +1675,26 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(pos_mod_nb) <span class="sc">%&gt;%</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(pos_mod_nb) <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="gghnzerhad" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#gghnzerhad table {
+<div id="qaunsrmcde" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qaunsrmcde table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#gghnzerhad thead, #gghnzerhad tbody, #gghnzerhad tfoot, #gghnzerhad tr, #gghnzerhad td, #gghnzerhad th {
+#qaunsrmcde thead, #qaunsrmcde tbody, #qaunsrmcde tfoot, #qaunsrmcde tr, #qaunsrmcde td, #qaunsrmcde th {
   border-style: none;
 }
 
-#gghnzerhad p {
+#qaunsrmcde p {
   margin: 0;
   padding: 0;
 }
 
-#gghnzerhad .gt_table {
+#qaunsrmcde .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1786,12 +1720,12 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#gghnzerhad .gt_caption {
+#qaunsrmcde .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#gghnzerhad .gt_title {
+#qaunsrmcde .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1803,7 +1737,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-bottom-width: 0;
 }
 
-#gghnzerhad .gt_subtitle {
+#qaunsrmcde .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1815,7 +1749,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-top-width: 0;
 }
 
-#gghnzerhad .gt_heading {
+#qaunsrmcde .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1827,13 +1761,13 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#gghnzerhad .gt_bottom_border {
+#qaunsrmcde .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#gghnzerhad .gt_col_headings {
+#qaunsrmcde .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1848,7 +1782,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#gghnzerhad .gt_col_heading {
+#qaunsrmcde .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1868,7 +1802,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   overflow-x: hidden;
 }
 
-#gghnzerhad .gt_column_spanner_outer {
+#qaunsrmcde .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1880,15 +1814,15 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   padding-right: 4px;
 }
 
-#gghnzerhad .gt_column_spanner_outer:first-child {
+#qaunsrmcde .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#gghnzerhad .gt_column_spanner_outer:last-child {
+#qaunsrmcde .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#gghnzerhad .gt_column_spanner {
+#qaunsrmcde .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1900,11 +1834,11 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   width: 100%;
 }
 
-#gghnzerhad .gt_spanner_row {
+#qaunsrmcde .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#gghnzerhad .gt_group_heading {
+#qaunsrmcde .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1930,7 +1864,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   text-align: left;
 }
 
-#gghnzerhad .gt_empty_group_heading {
+#qaunsrmcde .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1945,15 +1879,15 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   vertical-align: middle;
 }
 
-#gghnzerhad .gt_from_md > :first-child {
+#qaunsrmcde .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#gghnzerhad .gt_from_md > :last-child {
+#qaunsrmcde .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#gghnzerhad .gt_row {
+#qaunsrmcde .gt_row {
   padding-top: 4px;
   padding-bottom: 4px;
   padding-left: 5px;
@@ -1972,7 +1906,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   overflow-x: hidden;
 }
 
-#gghnzerhad .gt_stub {
+#qaunsrmcde .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1985,7 +1919,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   padding-right: 5px;
 }
 
-#gghnzerhad .gt_stub_row_group {
+#qaunsrmcde .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1999,15 +1933,15 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   vertical-align: top;
 }
 
-#gghnzerhad .gt_row_group_first td {
+#qaunsrmcde .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#gghnzerhad .gt_row_group_first th {
+#qaunsrmcde .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#gghnzerhad .gt_summary_row {
+#qaunsrmcde .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2017,16 +1951,16 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   padding-right: 5px;
 }
 
-#gghnzerhad .gt_first_summary_row {
+#qaunsrmcde .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#gghnzerhad .gt_first_summary_row.thick {
+#qaunsrmcde .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#gghnzerhad .gt_last_summary_row {
+#qaunsrmcde .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2036,7 +1970,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#gghnzerhad .gt_grand_summary_row {
+#qaunsrmcde .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2046,7 +1980,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   padding-right: 5px;
 }
 
-#gghnzerhad .gt_first_grand_summary_row {
+#qaunsrmcde .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2056,7 +1990,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#gghnzerhad .gt_last_grand_summary_row_top {
+#qaunsrmcde .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2066,11 +2000,11 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#gghnzerhad .gt_striped {
+#qaunsrmcde .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#gghnzerhad .gt_table_body {
+#qaunsrmcde .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2079,7 +2013,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#gghnzerhad .gt_footnotes {
+#qaunsrmcde .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2093,7 +2027,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#gghnzerhad .gt_footnote {
+#qaunsrmcde .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2102,7 +2036,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   padding-right: 5px;
 }
 
-#gghnzerhad .gt_sourcenotes {
+#qaunsrmcde .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2116,7 +2050,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#gghnzerhad .gt_sourcenote {
+#qaunsrmcde .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2124,63 +2058,63 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   padding-right: 5px;
 }
 
-#gghnzerhad .gt_left {
+#qaunsrmcde .gt_left {
   text-align: left;
 }
 
-#gghnzerhad .gt_center {
+#qaunsrmcde .gt_center {
   text-align: center;
 }
 
-#gghnzerhad .gt_right {
+#qaunsrmcde .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#gghnzerhad .gt_font_normal {
+#qaunsrmcde .gt_font_normal {
   font-weight: normal;
 }
 
-#gghnzerhad .gt_font_bold {
+#qaunsrmcde .gt_font_bold {
   font-weight: bold;
 }
 
-#gghnzerhad .gt_font_italic {
+#qaunsrmcde .gt_font_italic {
   font-style: italic;
 }
 
-#gghnzerhad .gt_super {
+#qaunsrmcde .gt_super {
   font-size: 65%;
 }
 
-#gghnzerhad .gt_footnote_marks {
+#qaunsrmcde .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#gghnzerhad .gt_asterisk {
+#qaunsrmcde .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#gghnzerhad .gt_indent_1 {
+#qaunsrmcde .gt_indent_1 {
   text-indent: 5px;
 }
 
-#gghnzerhad .gt_indent_2 {
+#qaunsrmcde .gt_indent_2 {
   text-indent: 10px;
 }
 
-#gghnzerhad .gt_indent_3 {
+#qaunsrmcde .gt_indent_3 {
   text-indent: 15px;
 }
 
-#gghnzerhad .gt_indent_4 {
+#qaunsrmcde .gt_indent_4 {
   text-indent: 20px;
 }
 
-#gghnzerhad .gt_indent_5 {
+#qaunsrmcde .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2267,26 +2201,26 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(pos_mod_nb, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(pos_mod_nb, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="bwetrisbhw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#bwetrisbhw table {
+<div id="rhlhniycdy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rhlhniycdy table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#bwetrisbhw thead, #bwetrisbhw tbody, #bwetrisbhw tfoot, #bwetrisbhw tr, #bwetrisbhw td, #bwetrisbhw th {
+#rhlhniycdy thead, #rhlhniycdy tbody, #rhlhniycdy tfoot, #rhlhniycdy tr, #rhlhniycdy td, #rhlhniycdy th {
   border-style: none;
 }
 
-#bwetrisbhw p {
+#rhlhniycdy p {
   margin: 0;
   padding: 0;
 }
 
-#bwetrisbhw .gt_table {
+#rhlhniycdy .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2312,12 +2246,12 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#bwetrisbhw .gt_caption {
+#rhlhniycdy .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#bwetrisbhw .gt_title {
+#rhlhniycdy .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2329,7 +2263,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-bottom-width: 0;
 }
 
-#bwetrisbhw .gt_subtitle {
+#rhlhniycdy .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2341,7 +2275,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-top-width: 0;
 }
 
-#bwetrisbhw .gt_heading {
+#rhlhniycdy .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2353,13 +2287,13 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#bwetrisbhw .gt_bottom_border {
+#rhlhniycdy .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#bwetrisbhw .gt_col_headings {
+#rhlhniycdy .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2374,7 +2308,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#bwetrisbhw .gt_col_heading {
+#rhlhniycdy .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2394,7 +2328,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   overflow-x: hidden;
 }
 
-#bwetrisbhw .gt_column_spanner_outer {
+#rhlhniycdy .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2406,15 +2340,15 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   padding-right: 4px;
 }
 
-#bwetrisbhw .gt_column_spanner_outer:first-child {
+#rhlhniycdy .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#bwetrisbhw .gt_column_spanner_outer:last-child {
+#rhlhniycdy .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#bwetrisbhw .gt_column_spanner {
+#rhlhniycdy .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2426,11 +2360,11 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   width: 100%;
 }
 
-#bwetrisbhw .gt_spanner_row {
+#rhlhniycdy .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#bwetrisbhw .gt_group_heading {
+#rhlhniycdy .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2456,7 +2390,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   text-align: left;
 }
 
-#bwetrisbhw .gt_empty_group_heading {
+#rhlhniycdy .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2471,15 +2405,15 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   vertical-align: middle;
 }
 
-#bwetrisbhw .gt_from_md > :first-child {
+#rhlhniycdy .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#bwetrisbhw .gt_from_md > :last-child {
+#rhlhniycdy .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#bwetrisbhw .gt_row {
+#rhlhniycdy .gt_row {
   padding-top: 4px;
   padding-bottom: 4px;
   padding-left: 5px;
@@ -2498,7 +2432,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   overflow-x: hidden;
 }
 
-#bwetrisbhw .gt_stub {
+#rhlhniycdy .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2511,7 +2445,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   padding-right: 5px;
 }
 
-#bwetrisbhw .gt_stub_row_group {
+#rhlhniycdy .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2525,15 +2459,15 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   vertical-align: top;
 }
 
-#bwetrisbhw .gt_row_group_first td {
+#rhlhniycdy .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#bwetrisbhw .gt_row_group_first th {
+#rhlhniycdy .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#bwetrisbhw .gt_summary_row {
+#rhlhniycdy .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2543,16 +2477,16 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   padding-right: 5px;
 }
 
-#bwetrisbhw .gt_first_summary_row {
+#rhlhniycdy .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#bwetrisbhw .gt_first_summary_row.thick {
+#rhlhniycdy .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#bwetrisbhw .gt_last_summary_row {
+#rhlhniycdy .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2562,7 +2496,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#bwetrisbhw .gt_grand_summary_row {
+#rhlhniycdy .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2572,7 +2506,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   padding-right: 5px;
 }
 
-#bwetrisbhw .gt_first_grand_summary_row {
+#rhlhniycdy .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2582,7 +2516,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#bwetrisbhw .gt_last_grand_summary_row_top {
+#rhlhniycdy .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2592,11 +2526,11 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#bwetrisbhw .gt_striped {
+#rhlhniycdy .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#bwetrisbhw .gt_table_body {
+#rhlhniycdy .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2605,7 +2539,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#bwetrisbhw .gt_footnotes {
+#rhlhniycdy .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2619,7 +2553,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#bwetrisbhw .gt_footnote {
+#rhlhniycdy .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2628,7 +2562,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   padding-right: 5px;
 }
 
-#bwetrisbhw .gt_sourcenotes {
+#rhlhniycdy .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2642,7 +2576,7 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#bwetrisbhw .gt_sourcenote {
+#rhlhniycdy .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2650,63 +2584,63 @@ pos_mod_nb | negbin |  8 |       1 | 4606.62 | &lt; .001</code></pre>
   padding-right: 5px;
 }
 
-#bwetrisbhw .gt_left {
+#rhlhniycdy .gt_left {
   text-align: left;
 }
 
-#bwetrisbhw .gt_center {
+#rhlhniycdy .gt_center {
   text-align: center;
 }
 
-#bwetrisbhw .gt_right {
+#rhlhniycdy .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#bwetrisbhw .gt_font_normal {
+#rhlhniycdy .gt_font_normal {
   font-weight: normal;
 }
 
-#bwetrisbhw .gt_font_bold {
+#rhlhniycdy .gt_font_bold {
   font-weight: bold;
 }
 
-#bwetrisbhw .gt_font_italic {
+#rhlhniycdy .gt_font_italic {
   font-style: italic;
 }
 
-#bwetrisbhw .gt_super {
+#rhlhniycdy .gt_super {
   font-size: 65%;
 }
 
-#bwetrisbhw .gt_footnote_marks {
+#rhlhniycdy .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#bwetrisbhw .gt_asterisk {
+#rhlhniycdy .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#bwetrisbhw .gt_indent_1 {
+#rhlhniycdy .gt_indent_1 {
   text-indent: 5px;
 }
 
-#bwetrisbhw .gt_indent_2 {
+#rhlhniycdy .gt_indent_2 {
   text-indent: 10px;
 }
 
-#bwetrisbhw .gt_indent_3 {
+#rhlhniycdy .gt_indent_3 {
   text-indent: 15px;
 }
 
-#bwetrisbhw .gt_indent_4 {
+#rhlhniycdy .gt_indent_4 {
   text-indent: 20px;
 }
 
-#bwetrisbhw .gt_indent_5 {
+#rhlhniycdy .gt_indent_5 {
   text-indent: 25px;
 }
 </style>

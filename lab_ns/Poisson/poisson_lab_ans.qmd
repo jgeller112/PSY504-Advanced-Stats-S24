@@ -34,13 +34,20 @@ author:
         header-includes:
           \usepackage{marginnote, here, relsize, needspace, setspace}
           \def\it{\emph}
-
-    comments:
-      hypothesis: false
-
-    execute:
-      warning: false
-      message: false
+execute:
+  freeze: auto
+  echo: true
+  message: false
+  warning: false
+  fig-align: center
+  fig-width: 12
+  fig-height: 8
+  editor_options: 
+  chunk_output_type: inline
+  code-overflow: wrap
+  html:
+    code-fold: true
+    code-tools: true
 ---
 
 1.  To complete this lab:
