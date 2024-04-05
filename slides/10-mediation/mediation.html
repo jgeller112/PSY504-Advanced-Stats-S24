@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.504">
 
   <meta name="author" content="Jason Geller, PH.D.(he/him)">
-  <meta name="dcterms.date" content="2024-03-30">
+  <meta name="dcterms.date" content="2024-04-05">
   <title>Mediation Analysis in R</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -97,7 +97,7 @@
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
   <link rel="stylesheet" href="mediation_files/libs/revealjs/dist/theme/quarto.css">
-  <link rel="stylesheet" href="slide-style.css">
+  <link rel="stylesheet" href="style_new.css">
   <link href="mediation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="mediation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="mediation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -391,8 +391,1065 @@
   </style>
   <script src="mediation_files/libs/kePrint-0.0.1/kePrint.js"></script>
   <link href="mediation_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/editor/editor.main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+  <style type="text/css">
+  .monaco-editor pre {
+    background-color: unset !important;
+  }
+
+  .qwebr-editor-toolbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
+  .qwebr-editor-toolbar-left-buttons, .qwebr-editor-toolbar-right-buttons {
+    display: flex;
+  }
+
+  .qwebr-non-interactive-loading-container.qwebr-cell-needs-evaluation, .qwebr-non-interactive-loading-container.qwebr-cell-evaluated {
+    justify-content: center;
+    display: flex;
+    background-color: rgba(250, 250, 250, 0.65);
+    border: 1px solid rgba(233, 236, 239, 0.65);
+    border-radius: 0.5rem;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  .qwebr-r-project-logo {
+    color: #2767B0; /* R Project's blue color */
+  }
+
+  .qwebr-icon-status-spinner {
+    color: #7894c4;
+  }
+
+  .qwebr-icon-run-code {
+    color: #0d9c29
+  }
+
+  .qwebr-output-code-stdout {
+    color: #111;
+  }
+
+  .qwebr-output-code-stderr {
+    color: #db4133;
+  }
+
+  .qwebr-editor {
+    border: 1px solid #EEEEEE;
+  }
+
+  .qwebr-editor-toolbar {
+    background-color: #EEEEEE;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .qwebr-button {
+    background-color: #EEEEEE;
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1;
+    text-decoration: none;
+    text-align: center;
+    color: #000;
+    border-color: #dee2e6;
+    border: 1px solid rgba(0,0,0,0);
+    padding: 0.375rem 0.75rem;
+    font-size: .9rem;
+    border-radius: 0.25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+
+  .qwebr-button:hover {
+    color: #000;
+    background-color: #d9dce0;
+    border-color: #c8ccd0;
+  }
+
+  .qwebr-button:disabled,.qwebr-button.disabled,fieldset:disabled .qwebr-button {
+    pointer-events: none;
+    opacity: .65
+  }
+
+  .qwebr-button-reset {
+    color: #696969; /*#4682b4;*/
+  }
+
+  .qwebr-button-copy {
+    color: #696969;
+  }
+
+
+  /* Custom styling for RevealJS Presentations*/
+
+  /* Reset the style of the interactive area */
+  .reveal div.qwebr-interactive-area {
+    display: block;
+    box-shadow: none;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+  } 
+
+  /* Provide space to entries */
+  .reveal div.qwebr-output-code-area pre div {
+    margin: 1px 2px 1px 10px;
+  }
+
+  /* Collapse the inside code tags to avoid extra space between line outputs */
+  .reveal pre div code.qwebr-output-code-stdout, .reveal pre div code.qwebr-output-code-stderr {
+    padding: 0;
+    display: contents;
+  }
+
+  .reveal pre div code.qwebr-output-code-stdout {
+    color: #111;
+  }
+
+  .reveal pre div code.qwebr-output-code-stderr {
+    color: #db4133;
+  }
+
+
+  /* Create a border around console and output (does not effect graphs) */
+  .reveal div.qwebr-console-area {
+    border: 1px solid #EEEEEE;
+    box-shadow: 2px 2px 10px #EEEEEE;
+  }
+
+  /* Cap output height and allow text to scroll */
+  /* TODO: Is there a better way to fit contents/max it parallel to the monaco editor size? */
+  .reveal div.qwebr-output-code-area pre {
+    max-height: 400px;
+    overflow: scroll;
+  }
+
+  </style>
+  <script type="module">
+  // Document level settings ----
+
+  // Determine if we need to install R packages
+  globalThis.qwebrInstallRPackagesList = ['tidyverse', 'easystats', 'broom', 'knitr', 'laavan'];
+
+  // Specify possible locations to search for the repository
+  globalThis.qwebrPackageRepoURLS = ['https://repo.r-wasm.org/'];
+
+  // Check to see if we have an empty array, if we do set to skip the installation.
+  globalThis.qwebrSetupRPackages = !(qwebrInstallRPackagesList.indexOf("") !== -1);
+  globalThis.qwebrAutoloadRPackages = true;
+
+  // Display a startup message?
+  globalThis.qwebrShowStartupMessage = true;
+  globalThis.qwebrShowHeaderMessage = false;
+
+  // Describe the webR settings that should be used
+  globalThis.qwebrCustomizedWebROptions = {
+    "baseURL": "https://webr.r-wasm.org/v0.3.1/",
+    "serviceWorkerUrl": "",
+    "homedir": "/home/web_user", 
+    "channelType": "ChannelType.Automatic"
+  };
+
+  // Store cell data
+  globalThis.qwebrCellDetails = [{"options":{"fig-cap":"","message":"true","context":"interactive","dpi":72,"read-only":"false","comment":"","out-width":"700px","warning":"true","fig-height":5,"results":"markup","autorun":"false","classes":"","out-height":"","label":"unnamed-chunk-1","output":"true","fig-width":7},"code":"\nmaster <- read.csv(\"https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/mediation_r/data/mediation.csv\")\nmaster <- na.omit(master) # delete missing\nhead(master[-1]) %>% kable()","id":1},{"options":{"fig-cap":"","message":"true","context":"interactive","dpi":72,"read-only":"false","comment":"","out-width":"700px","warning":"true","fig-height":5,"results":"markup","autorun":"false","classes":"","out-height":"","label":"unnamed-chunk-2","output":"true","fig-width":7},"code":"'\n#bpath and cp paths\n\n# a path\n\n# indirect\n\n# total\n\n'","id":2}];
+
+  </script>
+  <script type="module">
+  // Declare startupMessageQWebR globally
+  globalThis.qwebrStartupMessage = document.createElement("p");
+
+
+  // Function to set the button text
+  globalThis.qwebrSetInteractiveButtonState = function(buttonText, enableCodeButton = true) {
+    document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+      btn.innerHTML = buttonText;
+      btn.disabled = !enableCodeButton;
+    });
+  }
+
+  // Function to update the status message in non-interactive cells
+  globalThis.qwebrUpdateStatusMessage = function(message) {
+    document.querySelectorAll(".qwebr-status-text.qwebr-cell-needs-evaluation").forEach((elem) => {
+      elem.innerText = message;
+    });
+  }
+
+  // Function to update the status message
+  globalThis.qwebrUpdateStatusHeader = function(message) {
+    qwebrStartupMessage.innerHTML = `
+      <i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i>
+      <span>${message}</span>`;
+  }
+
+  // Function that attaches the document status message and diagnostics
+  function displayStartupMessage(showStartupMessage, showHeaderMessage) {
+    if (!showStartupMessage) {
+      return;
+    }
+
+    // Get references to header elements
+    const headerHTML = document.getElementById("title-block-header");
+    const headerRevealJS = document.getElementById("title-slide");
+
+    // Create the outermost div element for metadata
+    const quartoTitleMeta = document.createElement("div");
+    quartoTitleMeta.classList.add("quarto-title-meta");
+
+    // Create the first inner div element
+    const firstInnerDiv = document.createElement("div");
+    firstInnerDiv.setAttribute("id", "qwebr-status-message-area");
+
+    // Create the second inner div element for "WebR Status" heading and contents
+    const secondInnerDiv = document.createElement("div");
+    secondInnerDiv.setAttribute("id", "qwebr-status-message-title");
+    secondInnerDiv.classList.add("quarto-title-meta-heading");
+    secondInnerDiv.innerText = "WebR Status";
+
+    // Create another inner div for contents
+    const secondInnerDivContents = document.createElement("div");
+    secondInnerDivContents.setAttribute("id", "qwebr-status-message-body");
+    secondInnerDivContents.classList.add("quarto-title-meta-contents");
+
+    // Describe the WebR state
+    qwebrStartupMessage.innerText = "🟡 Loading...";
+    qwebrStartupMessage.setAttribute("id", "qwebr-status-message-text");
+    // Add `aria-live` to auto-announce the startup status to screen readers
+    qwebrStartupMessage.setAttribute("aria-live", "assertive");
+
+    // Append the startup message to the contents
+    secondInnerDivContents.appendChild(qwebrStartupMessage);
+
+    // Add a status indicator for COOP and COEP Headers if needed
+    if (showHeaderMessage) {
+      const crossOriginMessage = document.createElement("p");
+      crossOriginMessage.innerText = `${crossOriginIsolated ? '🟢' : '🟡'} COOP & COEP Headers`;
+      crossOriginMessage.setAttribute("id", "qwebr-coop-coep-header");
+      secondInnerDivContents.appendChild(crossOriginMessage);
+    }
+
+    // Combine the inner divs and contents
+    firstInnerDiv.appendChild(secondInnerDiv);
+    firstInnerDiv.appendChild(secondInnerDivContents);
+    quartoTitleMeta.appendChild(firstInnerDiv);
+
+    // Determine where to insert the quartoTitleMeta element
+    if (headerHTML || headerRevealJS) {
+      // Append to the existing "title-block-header" element or "title-slide" div
+      (headerHTML || headerRevealJS).appendChild(quartoTitleMeta);
+    } else {
+      // If neither headerHTML nor headerRevealJS is found, insert after "webr-monaco-editor-init" script
+      const monacoScript = document.getElementById("qwebr-monaco-editor-init");
+      const header = document.createElement("header");
+      header.setAttribute("id", "title-block-header");
+      header.appendChild(quartoTitleMeta);
+      monacoScript.after(header);
+    }
+  }
+
+  displayStartupMessage(qwebrShowStartupMessage, qwebrShowHeaderMessage);
+  </script>
+  <script type="module">
+  // Supported Evaluation Types for Context
+  globalThis.EvalTypes = Object.freeze({
+    Interactive: 'interactive',
+    Setup: 'setup',
+    Output: 'output',
+  });
+
+  // Function that dispatches the creation request
+  globalThis.qwebrCreateHTMLElement = function (
+    cellData
+  ) {
+
+    // Extract key components
+    const evalType = cellData.options.context;
+    const qwebrCounter = cellData.id;
+
+    // We make an assumption that insertion points are defined by the Lua filter as:
+    // qwebr-insertion-location-{qwebrCounter} 
+    const elementLocator = document.getElementById(`qwebr-insertion-location-${qwebrCounter}`);
+
+    // Figure out the routine to use to insert the element.
+    let qwebrElement;
+    switch ( evalType ) {
+      case EvalTypes.Interactive:
+        qwebrElement = qwebrCreateInteractiveElement(qwebrCounter, cellData.options);
+        break;
+      case EvalTypes.Output: 
+        qwebrElement = qwebrCreateNonInteractiveOutputElement(qwebrCounter, cellData.options);
+        break;
+      case EvalTypes.Setup: 
+        qwebrElement = qwebrCreateNonInteractiveSetupElement(qwebrCounter, cellData.options);
+        break;
+      default: 
+        qwebrElement = document.createElement('div');
+        qwebrElement.textContent = 'Error creating `quarto-webr` element';
+    }
+
+    // Insert the dynamically generated object at the document location.
+    elementLocator.appendChild(qwebrElement);
+  };
+
+  // Function that setups the interactive element creation
+  globalThis.qwebrCreateInteractiveElement = function (qwebrCounter, qwebrOptions) {
+
+    // Create main div element
+    var mainDiv = document.createElement('div');
+    mainDiv.id = 'qwebr-interactive-area-' + qwebrCounter;
+    mainDiv.className = `qwebr-interactive-area`;
+    if (qwebrOptions.classes) {
+      mainDiv.className += " " + qwebrOptions.classes
+    }
+
+    // Add a unique cell identifier that users can customize
+    if (qwebrOptions.label) {
+      mainDiv.setAttribute('data-id', qwebrOptions.label);
+    }
+
+    // Create toolbar div
+    var toolbarDiv = document.createElement('div');
+    toolbarDiv.className = 'qwebr-editor-toolbar';
+    toolbarDiv.id = 'qwebr-editor-toolbar-' + qwebrCounter;
+
+    // Create a div to hold the left buttons
+    var leftButtonsDiv = document.createElement('div');
+    leftButtonsDiv.className = 'qwebr-editor-toolbar-left-buttons';
+
+    // Create a div to hold the right buttons
+    var rightButtonsDiv = document.createElement('div');
+    rightButtonsDiv.className = 'qwebr-editor-toolbar-right-buttons';
+
+    // Create Run Code button
+    var runCodeButton = document.createElement('button');
+    runCodeButton.className = 'btn btn-default qwebr-button qwebr-button-run';
+    runCodeButton.disabled = true;
+    runCodeButton.type = 'button';
+    runCodeButton.id = 'qwebr-button-run-' + qwebrCounter;
+    runCodeButton.textContent = '🟡 Loading webR...';
+    runCodeButton.title = `Run code (Shift + Enter)`;
+
+    // Append buttons to the leftButtonsDiv
+    leftButtonsDiv.appendChild(runCodeButton);
+
+    // Create Reset button
+    var resetButton = document.createElement('button');
+    resetButton.className = 'btn btn-light btn-xs qwebr-button qwebr-button-reset';
+    resetButton.type = 'button';
+    resetButton.id = 'qwebr-button-reset-' + qwebrCounter;
+    resetButton.title = 'Start over';
+    resetButton.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i>';
+
+    // Create Copy button
+    var copyButton = document.createElement('button');
+    copyButton.className = 'btn btn-light btn-xs qwebr-button qwebr-button-copy';
+    copyButton.type = 'button';
+    copyButton.id = 'qwebr-button-copy-' + qwebrCounter;
+    copyButton.title = 'Copy code';
+    copyButton.innerHTML = '<i class="fa-regular fa-copy"></i>';
+
+    // Append buttons to the rightButtonsDiv
+    rightButtonsDiv.appendChild(resetButton);
+    rightButtonsDiv.appendChild(copyButton);
+
+    // Create console area div
+    var consoleAreaDiv = document.createElement('div');
+    consoleAreaDiv.id = 'qwebr-console-area-' + qwebrCounter;
+    consoleAreaDiv.className = 'qwebr-console-area';
+
+    // Create editor div
+    var editorDiv = document.createElement('div');
+    editorDiv.id = 'qwebr-editor-' + qwebrCounter;
+    editorDiv.className = 'qwebr-editor';
+
+    // Create output code area div
+    var outputCodeAreaDiv = document.createElement('div');
+    outputCodeAreaDiv.id = 'qwebr-output-code-area-' + qwebrCounter;
+    outputCodeAreaDiv.className = 'qwebr-output-code-area';
+    outputCodeAreaDiv.setAttribute('aria-live', 'assertive');
+
+    // Create pre element inside output code area
+    var preElement = document.createElement('pre');
+    preElement.style.visibility = 'hidden';
+    outputCodeAreaDiv.appendChild(preElement);
+
+    // Create output graph area div
+    var outputGraphAreaDiv = document.createElement('div');
+    outputGraphAreaDiv.id = 'qwebr-output-graph-area-' + qwebrCounter;
+    outputGraphAreaDiv.className = 'qwebr-output-graph-area';
+
+    // Append buttons to the toolbar
+    toolbarDiv.appendChild(leftButtonsDiv);
+    toolbarDiv.appendChild(rightButtonsDiv);
+
+    // Append all elements to the main div
+    mainDiv.appendChild(toolbarDiv);
+    consoleAreaDiv.appendChild(editorDiv);
+    consoleAreaDiv.appendChild(outputCodeAreaDiv);
+    mainDiv.appendChild(consoleAreaDiv);
+    mainDiv.appendChild(outputGraphAreaDiv);
+
+    return mainDiv;
+  }
+
+  // Function that adds output structure for non-interactive output
+  globalThis.qwebrCreateNonInteractiveOutputElement = function(qwebrCounter, qwebrOptions) {
+    // Create main div element
+    var mainDiv = document.createElement('div');
+    mainDiv.id = 'qwebr-noninteractive-area-' + qwebrCounter;
+    mainDiv.className = `qwebr-noninteractive-area`;
+    if (qwebrOptions.classes) {
+      mainDiv.className += " " + qwebrOptions.classes
+    }
+    
+    // Add a unique cell identifier that users can customize
+    if (qwebrOptions.label) {
+      mainDiv.setAttribute('data-id', qwebrOptions.label);
+    }
+    
+    // Create a status container div
+    var statusContainer = createLoadingContainer(qwebrCounter);
+
+    // Create output code area div
+    var outputCodeAreaDiv = document.createElement('div');
+    outputCodeAreaDiv.id = 'qwebr-output-code-area-' + qwebrCounter;
+    outputCodeAreaDiv.className = 'qwebr-output-code-area';
+    outputCodeAreaDiv.setAttribute('aria-live', 'assertive');
+
+    // Create pre element inside output code area
+    var preElement = document.createElement('pre');
+    preElement.style.visibility = 'hidden';
+    outputCodeAreaDiv.appendChild(preElement);
+
+    // Create output graph area div
+    var outputGraphAreaDiv = document.createElement('div');
+    outputGraphAreaDiv.id = 'qwebr-output-graph-area-' + qwebrCounter;
+    outputGraphAreaDiv.className = 'qwebr-output-graph-area';
+
+    // Append all elements to the main div
+    mainDiv.appendChild(statusContainer);
+    mainDiv.appendChild(outputCodeAreaDiv);
+    mainDiv.appendChild(outputGraphAreaDiv);
+
+    return mainDiv;
+  };
+
+  // Function that adds a stub in the page to indicate a setup cell was used.
+  globalThis.qwebrCreateNonInteractiveSetupElement = function(qwebrCounter, qwebrOptions) {
+    // Create main div element
+    var mainDiv = document.createElement('div');
+    mainDiv.id = `qwebr-noninteractive-setup-area-${qwebrCounter}`;
+    mainDiv.className = `qwebr-noninteractive-setup-area`;
+    if (qwebrOptions.classes) {
+      mainDiv.className += " " + qwebrOptions.classes
+    }
+
+
+    // Add a unique cell identifier that users can customize
+    if (qwebrOptions.label) {
+      mainDiv.setAttribute('data-id', qwebrOptions.label);
+    }
+
+    // Create a status container div
+    var statusContainer = createLoadingContainer(qwebrCounter);
+
+    // Append status onto the main div
+    mainDiv.appendChild(statusContainer);
+
+    return mainDiv;
+  }
+
+
+  // Function to create loading container with specified ID
+  globalThis.createLoadingContainer = function(qwebrCounter) {
+
+    // Create a status container
+    const container = document.createElement('div');
+    container.id = `qwebr-non-interactive-loading-container-${qwebrCounter}`;
+    container.className = 'qwebr-non-interactive-loading-container qwebr-cell-needs-evaluation';
+
+    // Create an R project logo to indicate its a code space
+    const rProjectIcon = document.createElement('i');
+    rProjectIcon.className = 'fa-brands fa-r-project fa-3x qwebr-r-project-logo';
+
+    // Setup a loading icon from font awesome
+    const spinnerIcon = document.createElement('i');
+    spinnerIcon.className = 'fa-solid fa-spinner fa-spin fa-1x qwebr-icon-status-spinner';
+
+    // Add a section for status text
+    const statusText = document.createElement('p');
+    statusText.id = `qwebr-status-text-${qwebrCounter}`;
+    statusText.className = `qwebr-status-text qwebr-cell-needs-evaluation`;
+    statusText.innerText = 'Loading webR...';
+
+    // Incorporate an inner container
+    const innerContainer = document.createElement('div');
+
+    // Append elements to the inner container
+    innerContainer.appendChild(spinnerIcon);
+    innerContainer.appendChild(statusText);
+
+    // Append elements to the main container
+    container.appendChild(rProjectIcon);
+    container.appendChild(innerContainer);
+
+    return container;
+  }
+  </script>
+  <script type="module">
+  // Function to install a single package
+  async function qwebrInstallRPackage(packageName) {
+    await mainWebR.evalRVoid(`webr::install('${packageName}');`);
+  }
+
+  // Function to load a single package
+  async function qwebrLoadRPackage(packageName) {
+    await mainWebR.evalRVoid(`require('${packageName}', quietly = TRUE)`);
+  }
+
+  // Generic function to process R packages
+  async function qwebrProcessRPackagesWithStatus(packages, processType, displayStatusMessageUpdate = true) {
+    // Switch between contexts
+    const messagePrefix = processType === 'install' ? 'Installing' : 'Loading';
+
+    // Modify button state
+    qwebrSetInteractiveButtonState(`🟡 ${messagePrefix} package ...`, false);
+
+    // Iterate over packages
+    for (let i = 0; i < packages.length; i++) {
+      const activePackage = packages[i];
+      const formattedMessage = `${messagePrefix} package ${i + 1} out of ${packages.length}: ${activePackage}`;
+
+      // Display the update in header
+      if (displayStatusMessageUpdate) {
+        qwebrUpdateStatusHeader(formattedMessage);
+      }
+
+      // Display the update in non-active areas
+      qwebrUpdateStatusMessage(formattedMessage);
+
+      // Run package installation
+      if (processType === 'install') {
+        await qwebrInstallRPackage(activePackage);
+      } else {
+        await qwebrLoadRPackage(activePackage);
+      }
+    }
+
+    // Clean slate
+    if (processType === 'load') {
+      await mainWebR.flush();
+    }
+  }
+
+  // Start a timer
+  const initializeWebRTimerStart = performance.now();
+
+  // Encase with a dynamic import statement
+  globalThis.qwebrInstance = import(qwebrCustomizedWebROptions.baseURL + "webr.mjs").then(
+    async ({ WebR, ChannelType }) => {
+      // Populate WebR options with defaults or new values based on `webr` meta
+      globalThis.mainWebR = new WebR(qwebrCustomizedWebROptions);
+
+      // Initialization WebR
+      await mainWebR.init();
+
+      // Setup a shelter
+      globalThis.mainWebRCodeShelter = await new mainWebR.Shelter();
+
+      // Setup a pager to allow processing help documentation 
+      await mainWebR.evalRVoid('webr::pager_install()'); 
+
+      // Override the existing install.packages() to use webr::install()
+      await mainWebR.evalRVoid('webr::shim_install()'); 
+
+      // Specify the repositories to pull from
+      // Note: webR does not use the `repos` option, but instead uses `webr_pkg_repos`
+      // inside of `install()`. However, other R functions still pull from `repos`.
+      await mainWebR.evalRVoid(`
+        options(
+          webr_pkg_repos = c(${qwebrPackageRepoURLS.map(repoURL => `'${repoURL}'`).join(',')}),
+          repos = c(${qwebrPackageRepoURLS.map(repoURL => `'${repoURL}'`).join(',')})
+        )
+      `);
+
+      // Check to see if any packages need to be installed
+      if (qwebrSetupRPackages) {
+        // Obtain only a unique list of packages
+        const uniqueRPackageList = Array.from(new Set(qwebrInstallRPackagesList));
+
+        // Install R packages one at a time (either silently or with a status update)
+        await qwebrProcessRPackagesWithStatus(uniqueRPackageList, 'install', qwebrShowStartupMessage);
+
+        if (qwebrAutoloadRPackages) {
+          // Load R packages one at a time (either silently or with a status update)
+          await qwebrProcessRPackagesWithStatus(uniqueRPackageList, 'load', qwebrShowStartupMessage);
+        }
+      }
+    }
+  );
+
+  // Stop timer
+  const initializeWebRTimerEnd = performance.now();
+
+  </script>
+  <script type="module">
+  // Function to verify a given JavaScript Object is empty
+  globalThis.qwebrIsObjectEmpty = function (arr) {
+      return Object.keys(arr).length === 0;
+  }
+
+  // Global version of the Escape HTML function that converts HTML 
+  // characters to their HTML entities.
+  globalThis.qwebrEscapeHTMLCharacters = function(unsafe) {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    };
+
+  // Passthrough results
+  globalThis.qwebrIdentity = function(x) {
+      return x;
+  };
+
+  // Append a comment
+  globalThis.qwebrPrefixComment = function(x, comment) {
+      return `${comment}${x}`;
+  };
+
+  // Function to parse the pager results
+  globalThis.qwebrParseTypePager = async function (msg) { 
+
+      // Split out the event data
+      const { path, title, deleteFile } = msg.data; 
+
+      // Process the pager data by reading the information from disk
+      const paged_data = await mainWebR.FS.readFile(path).then((data) => {
+          // Obtain the file content
+          let content = new TextDecoder().decode(data);
+
+          // Remove excessive backspace characters until none remain
+          while(content.match(/.[\b]/)){
+          content = content.replace(/.[\b]/g, '');
+          }
+
+          // Returned cleaned data
+          return content;
+      });
+
+      // Unlink file if needed
+      if (deleteFile) { 
+          await mainWebR.FS.unlink(path); 
+      } 
+
+      // Return extracted data with spaces
+      return paged_data;
+  } 
+
+  // Function to run the code using webR and parse the output
+  globalThis.qwebrComputeEngine = async function(
+      codeToRun, 
+      elements, 
+      options) {
+
+      // Call into the R compute engine that persists within the document scope.
+      // To be prepared for all scenarios, the following happens: 
+      // 1. We setup a canvas device to write to by making a namespace call into the {webr} package
+      // 2. We use values inside of the options array to set the figure size.
+      // 3. We capture the output stream information (STDOUT and STERR)
+      // 4. We disable the current device's image creation.
+      // 5. Piece-wise parse the results into the different output areas
+
+      // Create a pager variable for help/file contents
+      let pager = [];
+
+      // Handle how output is processed
+      let showMarkup = options.results === "markup" && options.output !== "asis";
+      let processOutput;
+
+      if (showMarkup) {
+          processOutput = qwebrEscapeHTMLCharacters;
+      } else {
+          processOutput = qwebrIdentity;
+      }
+
+      // ---- 
+      // Convert from Inches to Pixels by using DPI (dots per inch)
+      // for bitmap devices (dpi * inches = pixels)
+      let fig_width = options["fig-width"] * options["dpi"]
+      let fig_height = options["fig-height"] * options["dpi"]
+
+      // Initialize webR
+      await mainWebR.init();
+
+      // Setup a webR canvas by making a namespace call into the {webr} package
+      // Evaluate the R code
+      // Remove the active canvas silently
+      const result = await mainWebRCodeShelter.captureR(
+          `webr::canvas(width=${fig_width}, height=${fig_height}, capture = TRUE)
+          .webr_cvs_id <- dev.cur()
+          ${codeToRun}
+          invisible(dev.off(.webr_cvs_id))
+          `, {
+          withAutoprint: true,
+          captureStreams: true,
+          captureConditions: false//,
+          // env: webR.objs.emptyEnv, // maintain a global environment for webR v0.2.0
+      });
+
+      // -----
+
+      // Start attempting to parse the result data
+      processResultOutput:try {
+          
+          // Avoid running through output processing
+          if (options.results === "hide" || options.output === "false") { 
+              break processResultOutput; 
+          }
+
+          // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
+          // Require both `warning` and `message` to be true to display `STDErr`. 
+          const out = result.output
+          .filter(
+              evt => evt.type === "stdout" || 
+              ( evt.type === "stderr" && (options.warning === "true" && options.message === "true")) 
+          )
+          .map((evt, index) => {
+              const className = `qwebr-output-code-${evt.type}`;
+              const outputResult = qwebrPrefixComment(processOutput(evt.data), options.comment);
+              return `<code id="${className}-editor-${elements.id}-result-${index + 1}" class="${className}">${outputResult}</code>`;
+          })
+          .join("\n");
+
+
+          // Clean the state
+          // We're now able to process pager events.
+          // As a result, we cannot maintain a true 1-to-1 output order 
+          // without individually feeding each line
+          const msgs = await mainWebR.flush();
+
+          // Use `map` to process the filtered "pager" events asynchronously
+          const pager = await Promise.all(
+              msgs.filter(msg => msg.type === 'pager').map(
+                  async (msg) => {
+                      return await qwebrParseTypePager(msg);
+                  }
+              )
+          );
+
+          // Nullify the output area of content
+          elements.outputCodeDiv.innerHTML = "";
+          elements.outputGraphDiv.innerHTML = "";
+
+          // Design an output object for messages
+          const pre = document.createElement("pre");
+          if (/\S/.test(out)) {
+              // Display results as HTML elements to retain output styling
+              const div = document.createElement("div");
+              div.innerHTML = out;
+              pre.appendChild(div);
+          } else {
+              // If nothing is present, hide the element.
+              pre.style.visibility = "hidden";
+          }
+
+          elements.outputCodeDiv.appendChild(pre);
+
+          // Determine if we have graphs to display
+          if (result.images.length > 0) {
+              // Create figure element
+              const figureElement = document.createElement('figure');
+
+              // Place each rendered graphic onto a canvas element
+              result.images.forEach((img) => {
+                  // Construct canvas for object
+                  const canvas = document.createElement("canvas");
+
+                  // Set canvas size to image
+                  canvas.width = img.width;
+                  canvas.height = img.height;
+
+                  // Apply output truncations
+                  canvas.style.width = options["out-width"] ? options["out-width"] : `${fig_width}px`;
+                  if (options["out-height"]) {
+                      canvas.style.height = options["out-height"];
+                  }
+
+                  // Apply styling
+                  canvas.style.display = "block";
+                  canvas.style.margin = "auto";
+
+                  // Draw image onto Canvas
+                  const ctx = canvas.getContext("2d");
+                  ctx.drawImage(img, 0, 0, img.width, img.height);
+            
+                  // Append canvas to figure output area
+                  figureElement.appendChild(canvas);
+              });
+
+              if (options['fig-cap']) {
+                  // Create figcaption element
+                  const figcaptionElement = document.createElement('figcaption');
+                  figcaptionElement.innerText = options['fig-cap'];
+                  // Append figcaption to figure
+                  figureElement.appendChild(figcaptionElement);    
+              }
+
+              elements.outputGraphDiv.appendChild(figureElement);
+          }
+
+          // Display the pager data
+          if (pager) {
+          // Use the `pre` element to preserve whitespace.
+          pager.forEach((paged_data, index) => {
+              let pre_pager = document.createElement("pre");
+              pre_pager.innerText = paged_data;
+              pre_pager.classList.add("qwebr-output-code-pager");
+              pre_pager.setAttribute("id", `qwebr-output-code-pager-editor-${elements.id}-result-${index + 1}`);
+              elements.outputCodeDiv.appendChild(pre_pager);
+          });
+          }
+      } finally {
+          // Clean up the remaining code
+          mainWebRCodeShelter.purge();
+      }
+  }
+
+  // Function to execute the code (accepts code as an argument)
+  globalThis.qwebrExecuteCode = async function (
+      codeToRun,
+      id,
+      options = {}) {
+
+      // If options are not passed, we fall back on the bare minimum to handle the computation
+      if (qwebrIsObjectEmpty(options)) {
+          options = { 
+              "context": "interactive", 
+              "fig-width": 7, "fig-height": 5, 
+              "out-width": "700px", "out-height": "", 
+              "dpi": 72,
+              "results": "markup", 
+              "warning": "true", "message": "true",
+          };
+      }
+
+      // Next, we access the compute areas values
+      const elements = {
+          runButton: document.getElementById(`qwebr-button-run-${id}`),
+          outputCodeDiv: document.getElementById(`qwebr-output-code-area-${id}`),
+          outputGraphDiv: document.getElementById(`qwebr-output-graph-area-${id}`),
+          id: id,
+      }
+
+      // Disallowing execution of other code cells
+      document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+          btn.disabled = true;
+      });
+
+      if (options.context == EvalTypes.Interactive) {
+          // Emphasize the active code cell
+          elements.runButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin qwebr-icon-status-spinner"></i> <span>Run Code</span>';
+      }
+
+      // Evaluate the code and parse the output into the document
+      await qwebrComputeEngine(codeToRun, elements, options);
+
+      // Switch to allowing execution of code
+      document.querySelectorAll(".qwebr-button-run").forEach((btn) => {
+          btn.disabled = false;
+      });
+
+      if (options.context == EvalTypes.Interactive) {
+          // Revert to the initial code cell state
+          elements.runButton.innerHTML = '<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run Code</span>';
+      }
+  }
+
+  </script>
 </head>
 <body class="quarto-dark">
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/loader.js"></script>
+<script type="module" id="qwebr-monaco-editor-init">
+
+  // Configure the Monaco Editor's loader
+  require.config({
+    paths: {
+      'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs'
+    }
+  });
+</script>
+<script type="module">
+// Global dictionary to store Monaco Editor instances
+globalThis.qwebrEditorInstances = {};
+
+// Function that builds and registers a Monaco Editor instance    
+globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
+
+  const initialCode = cellData.code;
+  const qwebrCounter = cellData.id;
+  const qwebrOptions = cellData.options;
+
+  // Retrieve the previously created document elements
+  let runButton = document.getElementById(`qwebr-button-run-${qwebrCounter}`);
+  let resetButton = document.getElementById(`qwebr-button-reset-${qwebrCounter}`);
+  let copyButton = document.getElementById(`qwebr-button-copy-${qwebrCounter}`);
+  let editorDiv = document.getElementById(`qwebr-editor-${qwebrCounter}`);
+  
+  // Load the Monaco Editor and create an instance
+  let editor;
+  require(['vs/editor/editor.main'], function () {
+    editor = monaco.editor.create(editorDiv, {
+      value: initialCode,
+      language: 'r',
+      theme: 'vs-light',
+      automaticLayout: true,           // Works wonderfully with RevealJS
+      scrollBeyondLastLine: false,
+      minimap: {
+        enabled: false
+      },
+      fontSize: '17.5pt',              // Bootstrap is 1 rem
+      renderLineHighlight: "none",     // Disable current line highlighting
+      hideCursorInOverviewRuler: true,  // Remove cursor indictor in right hand side scroll bar
+      readOnly: qwebrOptions['read-only'] ?? false
+    });
+
+    // Store the official counter ID to be used in keyboard shortcuts
+    editor.__qwebrCounter = qwebrCounter;
+
+    // Store the official div container ID
+    editor.__qwebrEditorId = `qwebr-editor-${qwebrCounter}`;
+
+    // Store the initial code value and options
+    editor.__qwebrinitialCode = initialCode;
+    editor.__qwebrOptions = qwebrOptions;
+
+    // Set at the model level the preferred end of line (EOL) character to LF.
+    // This prevent `\r\n` from being given to the webR engine if the user is on Windows.
+    // See details in: https://github.com/coatless/quarto-webr/issues/94
+    // Associated error text: 
+    // Error: <text>:1:7 unexpected input
+
+    // Retrieve the underlying model
+    const model = editor.getModel();
+    // Set EOL for the model
+    model.setEOL(monaco.editor.EndOfLineSequence.LF);
+
+    // Dynamically modify the height of the editor window if new lines are added.
+    let ignoreEvent = false;
+    const updateHeight = () => {
+      const contentHeight = editor.getContentHeight();
+      // We're avoiding a width change
+      //editorDiv.style.width = `${width}px`;
+      editorDiv.style.height = `${contentHeight}px`;
+      try {
+        ignoreEvent = true;
+
+        // The key to resizing is this call
+        editor.layout();
+      } finally {
+        ignoreEvent = false;
+      }
+    };
+
+    // Helper function to check if selected text is empty
+    function isEmptyCodeText(selectedCodeText) {
+      return (selectedCodeText === null || selectedCodeText === undefined || selectedCodeText === "");
+    }
+
+    // Registry of keyboard shortcuts that should be re-added to each editor window
+    // when focus changes.
+    const addWebRKeyboardShortCutCommands = () => {
+      // Add a keydown event listener for Shift+Enter to run all code in cell
+      editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Enter, () => {
+
+        // Retrieve all text inside the editor
+        qwebrExecuteCode(editor.getValue(), editor.__qwebrCounter, editor.__qwebrOptions);
+      });
+
+      // Add a keydown event listener for CMD/Ctrl+Enter to run selected code
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+
+        // Get the selected text from the editor
+        const selectedText = editor.getModel().getValueInRange(editor.getSelection());
+        // Check if no code is selected
+        if (isEmptyCodeText(selectedText)) {
+          // Obtain the current cursor position
+          let currentPosition = editor.getPosition();
+          // Retrieve the current line content
+          let currentLine = editor.getModel().getLineContent(currentPosition.lineNumber);
+
+          // Propose a new position to move the cursor to
+          let newPosition = new monaco.Position(currentPosition.lineNumber + 1, 1);
+
+          // Check if the new position is beyond the last line of the editor
+          if (newPosition.lineNumber > editor.getModel().getLineCount()) {
+            // Add a new line at the end of the editor
+            editor.executeEdits("addNewLine", [{
+            range: new monaco.Range(newPosition.lineNumber, 1, newPosition.lineNumber, 1),
+            text: "\n", 
+            forceMoveMarkers: true,
+            }]);
+          }
+          
+          // Run the entire line of code.
+          qwebrExecuteCode(currentLine, editor.__qwebrCounter, editor.__qwebrOptions);
+
+          // Move cursor to new position
+          editor.setPosition(newPosition);
+        } else {
+          // Code to run when Ctrl+Enter is pressed with selected code
+          qwebrExecuteCode(selectedText, editor.__qwebrCounter, editor.__qwebrOptions);
+        }
+      });
+    }
+
+    // Register an on focus event handler for when a code cell is selected to update
+    // what keyboard shortcut commands should work.
+    // This is a workaround to fix a regression that happened with multiple
+    // editor windows since Monaco 0.32.0 
+    // https://github.com/microsoft/monaco-editor/issues/2947
+    editor.onDidFocusEditorText(addWebRKeyboardShortCutCommands);
+
+    // Register an on change event for when new code is added to the editor window
+    editor.onDidContentSizeChange(updateHeight);
+
+    // Manually re-update height to account for the content we inserted into the call
+    updateHeight();
+
+    // Store the editor instance in the global dictionary
+    qwebrEditorInstances[editor.__qwebrCounter] = editor;
+
+  });
+
+  // Add a click event listener to the run button
+  runButton.onclick = function () {
+    qwebrExecuteCode(editor.getValue(), editor.__qwebrCounter, editor.__qwebrOptions);
+  };
+
+  // Add a click event listener to the reset button
+  copyButton.onclick = function () {
+    // Retrieve current code data
+    const data = editor.getValue();
+    
+    // Write code data onto the clipboard.
+    navigator.clipboard.writeText(data || "");
+  };
+  
+  // Add a click event listener to the copy button
+  resetButton.onclick = function () {
+    editor.setValue(editor.__qwebrinitialCode);
+  };
+  
+}
+</script>
   <div class="reveal">
     <div class="slides">
 
@@ -408,15 +1465,15 @@ Jason Geller, PH.D.(he/him)
 </div>
 </div>
 
-  <p class="date">2024-03-30</p>
+  <p class="date">2024-04-05</p>
 </section>
 <section id="today" class="slide level2">
 <h2>Today</h2>
 <ul>
-<li><p>Testing mediation</p>
+<li><p>Testing mediation in R</p>
 <ul>
 <li><p>Classical approach to testing mediation (Baron and Kenny)</p></li>
-<li><p>Joint Significance</p></li>
+<li><p>Joint significance</p></li>
 <li><p>Sobel</p></li>
 <li><p>Bootstrapped approach to testing mediation (preferred approach)</p></li>
 </ul></li>
@@ -425,7 +1482,72 @@ Jason Geller, PH.D.(he/him)
 <li><p>Multiple mediators</p></li>
 <li><p>Within-subject mediation</p></li>
 </ul></li>
+<li><p>Reporting mediation results</p></li>
 </ul>
+</section>
+<section id="packages" class="slide level2">
+<h2>Packages</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">#devtools::install_github("dustinfife/flexplot")</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(lavaanPlot)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">library</span>(flextable)</span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="fu">library</span>(flexplot)</span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="fu">library</span>(mediation)</span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="fu">library</span>(JSmediation)</span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="fu">library</span>(processR)</span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="fu">library</span>(MeMoBootR)</span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-15"><a href="#cb1-15"></a></span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>) <span class="co"># get rid sci notation</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Follow along here: <a href="https://github.com/jgeller112/PSY504-Advanced-Stats-S24/blob/main/slides/10-mediation/mediation.qmd" class="uri">https://github.com/jgeller112/PSY504-Advanced-Stats-S24/blob/main/slides/10-mediation/mediation.qmd</a></li>
+</ul>
+</section>
+<section id="is-mediation-fed" class="slide level2">
+<h2>Is mediation f***ed?</h2>
+<ul>
+<li><p>Mediation is a hard causal inference task!</p>
+<ul>
+<li><p>Manipulation of and random assignment of X affords causal inference/causal claims</p>
+<ul>
+<li><p>However, we often do not do the for M</p>
+<ul>
+<li>Mediation analysis requires theory and subsequent experiments to test mediator</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<img data-src="images/clipboard-1024068425.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="is-mediation-fed-1" class="slide level2">
+<h2>Is mediation f***ed?</h2>
+<p>Julia Rohrer’s talk delves into some of these issues</p>
+<ul>
+<li><p>Introduction to DAG analysis</p>
+<ul>
+<li><p>Slides: <a href="https://osf.io/9d4ef" class="uri">https://osf.io/9d4ef</a></p></li>
+<li><p>Video:<a href="https://drive.google.com/file/d/1evOsN_LLl013yc015REAMRyQWfuSoeRb/view?usp=drivesdk" class="uri">https://drive.google.com/file/d/1evOsN_LLl013yc015REAMRyQWfuSoeRb/view?usp=drivesdk</a></p></li>
+</ul></li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Bullock, J. G., Green, D. P., &amp; Ha, S. E. (2010). Yes, but what’s the mechanism? (don’t expect an easy answer). <em>Journal of personality and social psychology</em>, <em>98</em>(4), 550–558. https://doi.org/10.1037/a0018933</p>
+</div>
+</div>
+</div>
 </section>
 <section id="mediation-example" class="slide level2">
 <h2>Mediation: Example</h2>
@@ -448,36 +1570,73 @@ Jason Geller, PH.D.(he/him)
 <section id="load-packages" class="slide level2">
 <h2>Load packages</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(broom) <span class="co"># tidy regression models</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(boot) <span class="co"># bootstrapping</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(MeMoBootR) <span class="co"># mediation analysis</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(JSmediation) <span class="co"># mediation analysis</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(lavaan) <span class="co"># SEM and mediation </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">library</span>(MeMoBootR) <span class="co"># mediation analysis #download from gihub</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="fu">library</span>(JSmediation) <span class="co"># mediation analysis</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="fu">library</span>(flexplot) <span class="co"># mediate_plot function</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="fu">library</span>(lavaan) <span class="co"># SEM and mediation </span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#library(tidySEM)# plot models from lavaan</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="fu">library</span>(processR) <span class="co"># path models `</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="load-data" class="slide level2">
 <h2>Load data</h2>
+<div id="qwebr-insertion-location-1"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>master <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/mediation_r/data/mediation.csv"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>master <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(master)</span>
-<span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="fu">head</span>(master[<span class="sc">-</span><span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 3
-  previous facebook  exam
-     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
-1        3     3.67     1
-2        2     5        1
-3        1     4        2
-4        1     4.5      7
-5        1     4.5      6
-6        1     4.5      1</code></pre>
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">previous</th>
+<th style="text-align: right;">facebook</th>
+<th style="text-align: right;">exam</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3.666667</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5.000000</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.000000</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.500000</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.500000</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4.500000</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </section>
-<section id="causal-steps---baron-kenny" class="slide level2">
-<h2>Causal Steps - Baron &amp; Kenny</h2>
+<section>
+<section id="testing-mediation" class="title-slide slide level1 center">
+<h1>Testing Mediation</h1>
+
+</section>
+<section id="causal-steps---baron-kenny-1986" class="slide level2">
+<h2>Causal Steps - Baron &amp; Kenny (1986)</h2>
 <ul>
 <li>Mediation is tested through three regression models:</li>
 </ul>
@@ -486,14 +1645,14 @@ Jason Geller, PH.D.(he/him)
 <div class="tab-content">
 <div id="tabset-1-1">
 <ul>
-<li>Predicting the mediator from the predictor variable</li>
+<li>Predicting the outcome from the predictor variable</li>
 <li>X -&gt; Y</li>
-<li>c: total path</li>
+<li>c path : total effect</li>
 </ul>
 </div>
 <div id="tabset-1-2">
 <ul>
-<li><p>Predicting the outcome from the predictor variable</p></li>
+<li><p>Predicting the mediator from the predictor variable</p></li>
 <li><p>X -&gt; M</p></li>
 <li><p>a path</p></li>
 </ul>
@@ -503,13 +1662,60 @@ Jason Geller, PH.D.(he/him)
 <li><p>Predicting the outcome from both the predictor variable and the mediator</p></li>
 <li><p>X+M→Y</p></li>
 <li><p>b path</p></li>
-<li><p>c’ (c-prime) path</p></li>
+<li><p>c’ (c-prime) path: direct effect</p></li>
 </ul>
 </div>
 </div>
 </div>
 </section>
-<section id="causal-steps---baron-kenny-1986" class="slide level2">
+<section id="mediation-paths" class="slide level2">
+<h2>Mediation Paths</h2>
+
+<img data-src="images/IMG_4157.JPG" class="quarto-figure quarto-figure-center r-stretch"><table>
+<colgroup>
+<col style="width: 55%">
+<col style="width: 44%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Paths</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>c: “total effect” of X on Y</td>
+<td>Total effect = direct effect + indirect effect</td>
+</tr>
+<tr class="even">
+<td>a x b = “indirect effect” of X on Y (our mediation effect)</td>
+<td>indirect effect = total effect - direct effect</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(c^\prime\)</span> = “direct effect” of X on Y</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="why-take-the-product-of-the-two-coefficients" class="slide level2">
+<h2>Why take the product of the two coefficients?</h2>
+
+<img data-src="images/IMG_0B66D4765F33-1.jpeg" class="quarto-figure quarto-figure-center r-stretch"><ul>
+<li><p>An intuitive explanation:</p>
+<ul>
+<li><p>A 1 unit increase in M corresponds to a b unit increase in Y holding X constant</p>
+<ul>
+<li><p>How much does X change M?</p>
+<ul>
+<li>a</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p>So if <strong>a = 1/2</strong>, X changes M by 1/2, which then changes Y by b, the indirect effect is <strong>(1/2) × b</strong></p></li>
+</ul>
+</section>
+<section id="causal-steps---baron-kenny-1986-1" class="slide level2">
 <h2>Causal Steps - Baron &amp; Kenny (1986)</h2>
 <ul>
 <li><p>Traditionally, to show mediation ALL these conditions must be met:</p>
@@ -531,37 +1737,46 @@ Jason Geller, PH.D.(he/him)
 <section id="mediation-c-path" class="slide level2">
 <h2>Mediation: c path</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(exam <span class="sc">~</span> facebook, <span class="at">data =</span> master)</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">tidy</span>(model1, <span class="at">digit=</span><span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">kable</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">kable_styling</span>(<span class="at">font_size =</span> <span class="dv">24</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a> <span class="fu">row_spec</span>(<span class="dv">1</span>, <span class="at">color =</span> <span class="st">"white"</span>,</span>
-<span id="cb4-6"><a href="#cb4-6"></a>              <span class="at">background =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(exam <span class="sc">~</span> facebook, <span class="at">data =</span> master)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
 <div class="cell-output-display">
 <table class="table" data-quarto-postprocess="true" style="font-size: 24px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Parameter</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Coefficient</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI_low</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI_high</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">t</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df_error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left; color: white !important; background-color: red !important;">(Intercept)</td>
-<td style="text-align: right; color: white !important; background-color: red !important;">4.5679439</td>
-<td style="text-align: right; color: white !important; background-color: red !important;">0.5389142</td>
-<td style="text-align: right; color: white !important; background-color: red !important;">8.476199</td>
-<td style="text-align: right; color: white !important; background-color: red !important;">0e+00</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">4.5679439</td>
+<td style="text-align: right;">0.5389142</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">3.5062701</td>
+<td style="text-align: right;">5.6296178</td>
+<td style="text-align: right;">8.476199</td>
+<td style="text-align: right;">237</td>
+<td style="text-align: right;">0.0000000</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">facebook</td>
-<td style="text-align: right;">-0.6611852</td>
-<td style="text-align: right;">0.1280633</td>
-<td style="text-align: right;">-5.162956</td>
-<td style="text-align: right;">5e-07</td>
+<td style="text-align: left; color: white !important; background-color: red !important;">facebook</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">-0.6611852</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">0.1280633</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">0.95</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">-0.9134729</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">-0.4088974</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">-5.162956</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">237</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">0.0000005</td>
 </tr>
 </tbody>
 </table>
@@ -571,27 +1786,28 @@ Jason Geller, PH.D.(he/him)
 </div>
 <ul>
 <li><p>The c path (total effect): X –&gt; Y:</p>
-<p><span class="math inline">\(b = -0.66, t(237) = -5.16, p &lt; .001\)</span></p></li>
+<p><span class="math inline">\(b = -0.66, t(237) = -5.16, 95\% CI[-0.91, -0.41], p &lt; .001\)</span></p></li>
 </ul>
 </section>
 <section id="mediation-a-path" class="slide level2">
 <h2>Mediation: a path</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(previous <span class="sc">~</span> facebook, <span class="at">data =</span> master)</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">tidy</span>(model2, <span class="at">digit=</span><span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>    <span class="fu">kable</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">kable_styling</span>(<span class="at">font_size =</span> <span class="dv">24</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a> <span class="fu">row_spec</span>(<span class="dv">2</span>, <span class="at">color =</span> <span class="st">"white"</span>,</span>
-<span id="cb5-6"><a href="#cb5-6"></a>              <span class="at">background =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(previous <span class="sc">~</span> facebook, <span class="at">data =</span> master)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
 <div class="cell-output-display">
 <table class="table" data-quarto-postprocess="true" style="font-size: 24px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Parameter</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Coefficient</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI_low</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI_high</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">t</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df_error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p</th>
 </tr>
 </thead>
 <tbody>
@@ -599,14 +1815,22 @@ Jason Geller, PH.D.(he/him)
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">2.4466495</td>
 <td style="text-align: right;">0.4095586</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">1.6398092</td>
+<td style="text-align: right;">3.2534899</td>
 <td style="text-align: right;">5.973869</td>
+<td style="text-align: right;">237</td>
 <td style="text-align: right;">0.0000000</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; color: white !important; background-color: red !important;">facebook</td>
 <td style="text-align: right; color: white !important; background-color: red !important;">-0.2108046</td>
 <td style="text-align: right; color: white !important; background-color: red !important;">0.0973243</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">0.95</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">-0.4025358</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">-0.0190734</td>
 <td style="text-align: right; color: white !important; background-color: red !important;">-2.166002</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">237</td>
 <td style="text-align: right; color: white !important; background-color: red !important;">0.0313087</td>
 </tr>
 </tbody>
@@ -617,32 +1841,31 @@ Jason Geller, PH.D.(he/him)
 </div>
 <ul>
 <li><p>The a path: X –&gt; M:</p>
-<p><span class="math inline">\(b = -0.21, t(237) = -2.16, p = .031\)</span></p></li>
+<p><span class="math inline">\(b = -0.21, t(237) = -2.16, 95\% CI[-0.40, -0.02], p = .031\)</span></p></li>
 </ul>
 </section>
 <section id="mediation-b-c-path" class="slide level2">
 <h2>Mediation: b, c’ path</h2>
 <ul>
-<li><p>Add in the b (M –&gt; Y) and c’ <strong>(direct)</strong> paths: X + M –&gt; Y</p></li>
-<li><p>c’ Path: <span class="math inline">\(b = -0.61, t(237) = -4.77, p &lt; .001\)</span></p></li>
-<li><p>b Path: <span class="math inline">\(b = 0.26, t(237) = 3.09, p = .002\)</span></p></li>
+<li>Add in the b (M –&gt; Y) and c’ <strong>(direct)</strong> paths: X + M –&gt; Y</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(exam <span class="sc">~</span> facebook <span class="sc">+</span> previous, <span class="at">data =</span> master)</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">tidy</span>(model3, <span class="at">digits=</span><span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="fu">kable</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">kable_styling</span>(<span class="at">font_size =</span> <span class="dv">24</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a> <span class="fu">row_spec</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">color =</span> <span class="st">"white"</span>,</span>
-<span id="cb6-6"><a href="#cb6-6"></a>              <span class="at">background =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(exam <span class="sc">~</span> facebook <span class="sc">+</span> previous, <span class="at">data =</span> master)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
 <div class="cell-output-display">
 <table class="table" data-quarto-postprocess="true" style="font-size: 24px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Parameter</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Coefficient</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI_low</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">CI_high</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">t</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df_error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p</th>
 </tr>
 </thead>
 <tbody>
@@ -650,21 +1873,33 @@ Jason Geller, PH.D.(he/him)
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: right;">3.9329387</td>
 <td style="text-align: right;">0.5679094</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">2.8141192</td>
+<td style="text-align: right;">5.0517583</td>
 <td style="text-align: right;">6.925292</td>
+<td style="text-align: right;">236</td>
 <td style="text-align: right;">0.0000000</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; color: white !important; background-color: red !important;">facebook</td>
 <td style="text-align: right; color: white !important; background-color: red !important;">-0.6064728</td>
 <td style="text-align: right; color: white !important; background-color: red !important;">0.1270523</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">0.95</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">-0.8567744</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">-0.3561712</td>
 <td style="text-align: right; color: white !important; background-color: red !important;">-4.773409</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">236</td>
 <td style="text-align: right; color: white !important; background-color: red !important;">0.0000032</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; color: white !important; background-color: red !important;">previous</td>
 <td style="text-align: right; color: white !important; background-color: red !important;">0.2595407</td>
 <td style="text-align: right; color: white !important; background-color: red !important;">0.0839713</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">0.95</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">0.0941117</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">0.4249697</td>
 <td style="text-align: right; color: white !important; background-color: red !important;">3.090828</td>
+<td style="text-align: right; color: white !important; background-color: red !important;">236</td>
 <td style="text-align: right; color: white !important; background-color: red !important;">0.0022357</td>
 </tr>
 </tbody>
@@ -673,21 +1908,32 @@ Jason Geller, PH.D.(he/him)
 
 </div>
 </div>
+<ul>
+<li><p>c’ Path: <span class="math inline">\(b = -0.61, t(237) = -4.77, 95\% CI[-0.86, -0.36], p &lt; .001\)</span></p></li>
+<li><p>b Path: <span class="math inline">\(b = 0.26, t(237) = 3.09, 95\% CI[0.09, 0.42], p = .002\)</span></p></li>
+</ul>
 </section>
 <section id="mediation-interpretation" class="slide level2">
 <h2>Mediation: interpretation</h2>
 <ul>
 <li><p>Facebook usage negatively impacts exam scores (c path = -.66)</p></li>
-<li><p>Facebook time negatively impacts previous study time (a path = -.21)</p></li>
-<li><p>Controlling for Facebook time, previous experience positively impacts exam scores (b path = .26)</p></li>
-<li><p>Controlling for previous studying, Facebook time negatively impacts exam scores (c’ path = -0.61)</p></li>
+<li><p>Facebook usage negatively impacts previous study time (a path = -.21)</p></li>
+<li><p>Controlling for Facebook time, previous study time positively impacts exam scores (b path = .26)</p></li>
+<li><p>Controlling for previous study time, Facebook usage negatively impacts exam scores (c’ path = -0.61)</p></li>
 </ul>
+<div class="fragment">
+<ul>
+<li>Do we have mediation here?</li>
+</ul>
+</div>
 </section>
 <section id="issues-with-causal-steps" class="slide level2">
 <h2>Issues with causal steps</h2>
+<div class="fragment">
 <ul>
 <li>Indirect effect is inferred rather than directly estimated</li>
 </ul>
+</div>
 <div class="fragment">
 <ul>
 <li>Failure to meet a criterion results in game over!</li>
@@ -716,50 +1962,45 @@ Jason Geller, PH.D.(he/him)
 </ul></li>
 </ul>
 </section>
-<section>
-<section id="statistical-inference" class="title-slide slide level1 center">
-<h1>Statistical Inference</h1>
-
-</section>
 <section id="testing-mediation-sobel-test" class="slide level2">
 <h2>Testing mediation: Sobel test</h2>
 <ul>
 <li><p>So, did mediation happen? Is a change from 0.66 to 0.61 important?</p></li>
-<li><p>The Aroian Test:</p>
+<li><p>The Sobel Test:</p>
 <p><span class="math display">\[Z = \frac{a \times b}{\sqrt{b^2 \times SE_a^2 + a^2 \times SE_b^2}}\]</span></p>
 <ul>
-<li>If the indirect effect is larger than the error, we would conclude that the addition of the M variable changed the c path.</li>
+<li>If the indirect effect is larger than the error, we would conclude that the addition of the M variable changed the c path</li>
 </ul></li>
 </ul>
 </section>
-<section id="aroian-test" class="slide level2">
-<h2>Aroian Test</h2>
+<section id="sobel-test" class="slide level2">
+<h2>Sobel Test</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">#aroian sobel</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>a <span class="ot">&lt;-</span> <span class="fu">coef</span>(model2)[<span class="dv">2</span>]</span>
-<span id="cb7-3"><a href="#cb7-3"></a>b <span class="ot">&lt;-</span> <span class="fu">coef</span>(model3)[<span class="dv">3</span>]</span>
-<span id="cb7-4"><a href="#cb7-4"></a>SEa <span class="ot">&lt;-</span> <span class="fu">summary</span>(model2)<span class="sc">$</span>coefficients[<span class="dv">2</span>,<span class="dv">2</span>]</span>
-<span id="cb7-5"><a href="#cb7-5"></a>SEb <span class="ot">&lt;-</span> <span class="fu">summary</span>(model3)<span class="sc">$</span>coefficients[<span class="dv">3</span>,<span class="dv">2</span>]</span>
-<span id="cb7-6"><a href="#cb7-6"></a>zscore <span class="ot">&lt;-</span> (a<span class="sc">*</span>b)<span class="sc">/</span>(<span class="fu">sqrt</span>((b<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>SEa<span class="sc">^</span><span class="dv">2</span>)<span class="sc">+</span>(a<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>SEb<span class="sc">^</span><span class="dv">2</span>)<span class="sc">+</span>(SEa<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>SEb<span class="sc">^</span><span class="dv">2</span>)))</span>
-<span id="cb7-7"><a href="#cb7-7"></a>zscore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">#sobel</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>a <span class="ot">&lt;-</span> <span class="fu">coef</span>(model2)[<span class="dv">2</span>]</span>
+<span id="cb6-3"><a href="#cb6-3"></a>b <span class="ot">&lt;-</span> <span class="fu">coef</span>(model3)[<span class="dv">3</span>]</span>
+<span id="cb6-4"><a href="#cb6-4"></a>SEa <span class="ot">&lt;-</span> <span class="fu">summary</span>(model2)<span class="sc">$</span>coefficients[<span class="dv">2</span>,<span class="dv">2</span>]</span>
+<span id="cb6-5"><a href="#cb6-5"></a>SEb <span class="ot">&lt;-</span> <span class="fu">summary</span>(model3)<span class="sc">$</span>coefficients[<span class="dv">3</span>,<span class="dv">2</span>]</span>
+<span id="cb6-6"><a href="#cb6-6"></a>zscore <span class="ot">&lt;-</span> (a<span class="sc">*</span>b)<span class="sc">/</span>(<span class="fu">sqrt</span>((b<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>SEa<span class="sc">^</span><span class="dv">2</span>)<span class="sc">+</span>(a<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>SEb<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb6-7"><a href="#cb6-7"></a>zscore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>facebook 
--1.71464 </code></pre>
+<pre><code> facebook 
+-1.773805 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">#two tailed test </span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">pnorm</span>(<span class="fu">abs</span>(zscore), <span class="at">lower.tail =</span> F)<span class="sc">*</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">#two tailed test </span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">pnorm</span>(<span class="fu">abs</span>(zscore), <span class="at">lower.tail =</span> F)<span class="sc">*</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  facebook 
-0.08641116 </code></pre>
+0.07609548 </code></pre>
 </div>
 </div>
 </section>
-<section id="aroian-test-1" class="slide level2">
-<h2>Aroian test</h2>
+<section id="sobel-test-1" class="slide level2">
+<h2>Sobel test</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">library</span>(bda)</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="co">#conducts sobel test</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">mediation.test</span>(master<span class="sc">$</span>previous,master<span class="sc">$</span>facebook,master<span class="sc">$</span>exam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(bda)</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="co">#conducts sobel test</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="fu">mediation.test</span>(master<span class="sc">$</span>previous,master<span class="sc">$</span>facebook,master<span class="sc">$</span>exam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              Sobel      Aroian     Goodman
 z.value -1.77380460 -1.71464047 -1.83954863
@@ -767,48 +2008,38 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 </div>
 </div>
 <ul>
-<li><p><em>Z</em> = -1.71, <em>p</em> = .09</p>
+<li><p><em>Z</em> = -1.77, <em>p</em> = .08</p>
 <ul>
-<li><em>We would conclude that no mediation had occurred.</em></li>
+<li><em>We would conclude that no mediation had occurred</em></li>
 </ul></li>
 </ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Other tests listed use slightly different denominator formula</p>
+</div>
+</div>
+</div>
 </section>
-<section id="sobel-test" class="slide level2">
+<section id="sobel-test-2" class="slide level2">
 <h2>Sobel test</h2>
 <ul>
 <li><p>Serious problems!</p>
 <ul>
 <li><p>Assumes indirect effect is normally distributed</p>
 <ul>
-<li><p>It is not!</p>
-<ul>
-<li>It is skewed and leptokurtic</li>
-</ul></li>
+<li>Not always the case</li>
 </ul></li>
 </ul></li>
 </ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">#Generate two columns of data </span></span>
-<span id="cb13-2"><a href="#cb13-2"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>, <span class="at">mean =</span> <span class="dv">10</span>, <span class="at">sd =</span> <span class="dv">2</span>) </span>
-<span id="cb13-3"><a href="#cb13-3"></a>y <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">1000</span>, <span class="at">shape =</span> <span class="dv">2</span>, <span class="at">rate =</span> <span class="dv">1</span>)</span>
-<span id="cb13-4"><a href="#cb13-4"></a></span>
-<span id="cb13-5"><a href="#cb13-5"></a>z <span class="ot">&lt;-</span> x <span class="sc">*</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-11-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
+
+<img data-src="images/IMG_C60929BD11B9-1.jpeg" class="quarto-figure quarto-figure-center r-stretch"></section>
 <section id="mediation-bootstrapping" class="slide level2">
 <h2>Mediation: Bootstrapping</h2>
 <ul>
@@ -822,15 +2053,15 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 <section id="mediation-bootstrapping-1" class="slide level2">
 <h2>Mediation: Bootstrapping</h2>
 <ul>
-<li><p>What it is</p>
+<li><p>What it is:</p>
 <ul>
 <li>A computer based method for deriving the probability distribution for any random variable</li>
 </ul></li>
-<li><p>When to use it</p>
+<li><p>When to use it:</p>
 <ul>
 <li>You do not know the distribution of your variable(s)</li>
 </ul></li>
-<li><p>How to do it</p>
+<li><p>How to do it:</p>
 <ul>
 <li>Run your analysis a bunch of times with a slightly different set of observations each time</li>
 </ul></li>
@@ -838,95 +2069,72 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 </section>
 <section id="bootstrap-overview" class="slide level2">
 <h2>Bootstrap: Overview</h2>
-
-<img data-src="images/bootstrap.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
-<section id="the-bootstrapped-confidence-interval" class="slide level2">
-<h2>The Bootstrapped Confidence Interval</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ol type="1">
+<li>Take a random sample of size n from the sample with replacement</li>
+<li>Estimate the indirect effect in this “resample”</li>
+<li>Repeat (1) and (2) a total of k times, where k is at least 1,000. The larger k, the better. I recommend at least 10,000</li>
+<li>Use distribution of the indirect effect over multiple resamples as an approximation of the sampling distribution of the indirect effect</li>
+</ol>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="images/bootstrap.jpg" width="708"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-bootstrapped-ci" class="slide level2">
+<h2>The Bootstrapped CI</h2>
+<ul>
+<li><p>Using the bootstrap sample we can calculate 95% CI</p>
 <ul>
 <li><p>Percentile bootstrap</p>
 <ul>
-<li>Using the bootstrap sample we can calculate 95% CI</li>
-</ul></li>
-</ul>
-<ol type="1">
-<li>Take a random sample of size n from the sample with replacement.</li>
-<li>Estimate the indirect effect in this “resample”</li>
-<li>Repeat (1) and (2) a total of k times, where k is at least 1,000. The larger k, the better. I recommend at least 5,000.</li>
-<li>Use distribution of the indirect effect over multiple resamples as an approximation of the sampling distribution of the indirect effect.</li>
 <li>Find the 2.5th and 97.5th percentiles of the distribution of the statistic</li>
-</ol>
-<p>Note: Variations exist (e.g., ‘bias corrected’ or ‘bias-corrected and accelerated’ confidence intervals but they do not perform as well as percentile.)</p>
+</ul></li>
+</ul></li>
+<li><p>If 0 is included, no mediation</p></li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Variations exist (e.g., ‘bias corrected’ or ‘bias-corrected and accelerated’ confidence intervals but they do not perform as well as percentile.)</p>
+</div>
+</div>
+</div>
 </section>
 <section id="mediation-all-together-bootstrapping" class="slide level2">
 <h2>Mediation: All together + bootstrapping</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"doomlab/MeMoBootR"</span>)</span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="co">#library(MeMoBootR)</span></span>
-<span id="cb14-3"><a href="#cb14-3"></a><span class="co">#no missing data allowed</span></span>
-<span id="cb14-4"><a href="#cb14-4"></a>med_results <span class="ot">&lt;-</span> <span class="fu">mediation1</span>(<span class="at">y =</span> <span class="st">"exam"</span>,</span>
-<span id="cb14-5"><a href="#cb14-5"></a>                          <span class="at">x =</span> <span class="st">"facebook"</span>, </span>
-<span id="cb14-6"><a href="#cb14-6"></a>                          <span class="at">m =</span> <span class="st">"previous"</span>, <span class="at">nboot =</span> <span class="dv">1000</span>, </span>
-<span id="cb14-7"><a href="#cb14-7"></a>                          <span class="at">df =</span> master)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-13-1.png" width="1152"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-13-2.png" width="1152"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-13-3.png" width="1152"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-13-4.png" width="1152"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="mediation-memoboot" class="slide level2">
-<h2>Mediation: MeMoBoot</h2>
+<ul>
+<li><p>Do it all with one function</p>
 <ul>
 <li><p>The MeMoBootR package (developed by Erin Buchanon) gives you data screening, each step of the mediation, and the bootstrapping results!</p>
 <ul>
-<li>The data screening does not include accuracy or missing data, so that should be completed first.</li>
+<li>The data screening does not include accuracy or missing data, so that should be completed first</li>
+</ul></li>
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># test missing data</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">head</span>(med_results<span class="sc">$</span>datascreening<span class="sc">$</span>fulldata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  ...1 previous facebook exam badmahal badleverage badcooks totalout
-1    1        3 3.666667    1        0           0        0        0
-2    2        2 5.000000    1        0           0        0        0
-3    3        1 4.000000    2        0           0        0        0
-4    4        1 4.500000    7        0           0        1        1
-5    5        1 4.500000    6        0           0        1        1
-6    6        1 4.500000    1        0           0        0        0</code></pre>
-</div>
-</div>
-</section>
-<section id="assumptions" class="slide level2">
-<h2>Assumptions</h2>
-<div class="panel-tabset">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Linearity</a></li><li><a href="#tabset-2-2">Normality</a></li><li><a href="#tabset-2-3">Homogenity</a></li></ul>
-<div class="tab-content">
-<div id="tabset-2-1">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>med_results<span class="sc">$</span>datascreening<span class="sc">$</span>linearity</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"doomlab/MeMoBootR"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="co">#library(MeMoBootR)</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="co">#no missing data allowed</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>med_results <span class="ot">&lt;-</span> <span class="fu">mediation1</span>(<span class="at">y =</span> <span class="st">"exam"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5"></a>                          <span class="at">x =</span> <span class="st">"facebook"</span>, </span>
+<span id="cb12-6"><a href="#cb12-6"></a>                          <span class="at">m =</span> <span class="st">"previous"</span>, <span class="at">nboot =</span> <span class="dv">1000</span>, </span>
+<span id="cb12-7"><a href="#cb12-7"></a>                          <span class="at">df =</span> master)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -934,27 +2142,65 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 </figure>
 </div>
 </div>
-</div>
-</div>
-<div id="tabset-2-2">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>med_results<span class="sc">$</span>datascreening<span class="sc">$</span>normality</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-16-1.png" width="1152"></p>
+<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-15-2.png" width="1152"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-15-3.png" width="1152"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-15-4.png" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="assumptions" class="slide level2">
+<h2>Assumptions</h2>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Linearity</a></li><li><a href="#tabset-2-2">Normality</a></li><li><a href="#tabset-2-3">Homogeneity</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>med_results<span class="sc">$</span>datascreening<span class="sc">$</span>linearity</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>med_results<span class="sc">$</span>datascreening<span class="sc">$</span>normality</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-17-1.png" class="quarto-figure quarto-figure-center" width="768"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <div id="tabset-2-3">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>med_results<span class="sc">$</span>datascreening<span class="sc">$</span>homogen</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>med_results<span class="sc">$</span>datascreening<span class="sc">$</span>homogen</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-17-1.png" width="1152"></p>
+<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-18-1.png" class="quarto-figure quarto-figure-center" width="768"></p>
 </figure>
 </div>
 </div>
@@ -971,38 +2217,183 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 <div class="tab-content">
 <div id="tabset-3-1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">tidy</span>(med_results<span class="sc">$</span>model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 5
-  term        estimate std.error statistic  p.value
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept)    4.57      0.539      8.48 2.50e-15
-2 facebook      -0.661     0.128     -5.16 5.15e- 7</code></pre>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">model_parameters</span>(med_results<span class="sc">$</span>model1) <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table>
+<colgroup>
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 11%">
+<col style="width: 5%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: right;">Coefficient</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">CI</th>
+<th style="text-align: right;">CI_low</th>
+<th style="text-align: right;">CI_high</th>
+<th style="text-align: right;">t</th>
+<th style="text-align: right;">df_error</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">4.5679439</td>
+<td style="text-align: right;">0.5389142</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">3.5062701</td>
+<td style="text-align: right;">5.6296178</td>
+<td style="text-align: right;">8.476199</td>
+<td style="text-align: right;">237</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">facebook</td>
+<td style="text-align: right;">-0.6611852</td>
+<td style="text-align: right;">0.1280633</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">-0.9134729</td>
+<td style="text-align: right;">-0.4088974</td>
+<td style="text-align: right;">-5.162956</td>
+<td style="text-align: right;">237</td>
+<td style="text-align: right;">0.0000005</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div id="tabset-3-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">tidy</span>(med_results<span class="sc">$</span>model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 5
-  term        estimate std.error statistic       p.value
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;
-1 (Intercept)    2.45     0.410       5.97 0.00000000843
-2 facebook      -0.211    0.0973     -2.17 0.0313       </code></pre>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">model_parameters</span>((med_results<span class="sc">$</span>model2)) <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table>
+<colgroup>
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 11%">
+<col style="width: 5%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: right;">Coefficient</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">CI</th>
+<th style="text-align: right;">CI_low</th>
+<th style="text-align: right;">CI_high</th>
+<th style="text-align: right;">t</th>
+<th style="text-align: right;">df_error</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">2.4466495</td>
+<td style="text-align: right;">0.4095586</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">1.6398092</td>
+<td style="text-align: right;">3.2534899</td>
+<td style="text-align: right;">5.973869</td>
+<td style="text-align: right;">237</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">facebook</td>
+<td style="text-align: right;">-0.2108046</td>
+<td style="text-align: right;">0.0973243</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">-0.4025358</td>
+<td style="text-align: right;">-0.0190734</td>
+<td style="text-align: right;">-2.166002</td>
+<td style="text-align: right;">237</td>
+<td style="text-align: right;">0.0313087</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div id="tabset-3-3">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">tidy</span>(med_results<span class="sc">$</span>model3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 5
-  term        estimate std.error statistic  p.value
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept)    3.93     0.568       6.93 4.09e-11
-2 facebook      -0.606    0.127      -4.77 3.18e- 6
-3 previous       0.260    0.0840      3.09 2.24e- 3</code></pre>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">model_parameters</span>(med_results<span class="sc">$</span>model3) <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table>
+<colgroup>
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 11%">
+<col style="width: 5%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: right;">Coefficient</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">CI</th>
+<th style="text-align: right;">CI_low</th>
+<th style="text-align: right;">CI_high</th>
+<th style="text-align: right;">t</th>
+<th style="text-align: right;">df_error</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">3.9329387</td>
+<td style="text-align: right;">0.5679094</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">2.8141192</td>
+<td style="text-align: right;">5.0517583</td>
+<td style="text-align: right;">6.925292</td>
+<td style="text-align: right;">236</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">facebook</td>
+<td style="text-align: right;">-0.6064728</td>
+<td style="text-align: right;">0.1270523</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">-0.8567744</td>
+<td style="text-align: right;">-0.3561712</td>
+<td style="text-align: right;">-4.773409</td>
+<td style="text-align: right;">236</td>
+<td style="text-align: right;">0.0000032</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">previous</td>
+<td style="text-align: right;">0.2595407</td>
+<td style="text-align: right;">0.0839713</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">0.0941117</td>
+<td style="text-align: right;">0.4249697</td>
+<td style="text-align: right;">3.090828</td>
+<td style="text-align: right;">236</td>
+<td style="text-align: right;">0.0022357</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -1011,19 +2402,21 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 </section>
 <section id="mediation-memobootr-1" class="slide level2">
 <h2>Mediation: MeMoBootR</h2>
-<p>- Next, you can get the Sobel test results:</p>
+<ul>
+<li>Next, you can get the Sobel test results:</li>
+</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>med_results<span class="sc">$</span>indirect.effect</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>med_results<span class="sc">$</span>indirect.effect</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   facebook 
 -0.05471237 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>med_results<span class="sc">$</span>z.score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>med_results<span class="sc">$</span>z.score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>facebook 
 -1.71464 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>med_results<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>med_results<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  facebook 
 0.08641116 </code></pre>
@@ -1033,14 +2426,10 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 <section id="bootstrapping" class="slide level2">
 <h2>Bootstrapping</h2>
 <ul>
-<li><p>Last, let’s get the bootstrapped results:</p>
-<ul>
-<li><p>The indirect effect would be reported as: $0.05, 95\% CI[-0.1782, -0.0067 ]$</p></li>
-<li><p>Returns normal cis (adding bca)</p></li>
-</ul></li>
+<li>Last, let’s get the bootstrapped results:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>med_results<span class="sc">$</span>boot.results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>med_results<span class="sc">$</span>boot.results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ORDINARY NONPARAMETRIC BOOTSTRAP
@@ -1052,64 +2441,94 @@ boot(data = finaldata, statistic = indirectmed, R = nboot, formula2 = allformula
 
 
 Bootstrap Statistics :
-       original        bias    std. error
-t1* -0.05471237 -0.0008560769  0.03792748</code></pre>
+       original       bias    std. error
+t1* -0.05471237 -0.002351216  0.03876614</code></pre>
 </div>
 </div>
+<ul>
+<li><p>The indirect effect would be reported as: <em>b</em> = 0.05, 95% CI[-0.147, -0.001]</p></li>
+<li><p>Returns several type of cis</p></li>
+</ul>
 </section>
 <section id="bootstrapping-1" class="slide level2">
 <h2>Bootstrapping</h2>
+<ul>
+<li>Percentile bootstrap</li>
+</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>med_results<span class="sc">$</span>boot.ci</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
-Based on 1000 bootstrap replicates
-
-CALL : 
-boot.ci(boot.out = bootresults, conf = conf_level, type = ci_type)
-
-Intervals : 
-Level      Normal              Basic              Percentile     
-95%   (-0.1282,  0.0205 )   (-0.1073,  0.0397 )   (-0.1491, -0.0021 )  
-Calculations and Intervals on Original Scale</code></pre>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>med_results<span class="sc">$</span>boot.ci<span class="sc">$</span>percent <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">conf</th>
+<th style="text-align: right;"></th>
+<th style="text-align: right;"></th>
+<th style="text-align: right;"></th>
+<th style="text-align: right;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">25.03</td>
+<td style="text-align: right;">975.98</td>
+<td style="text-align: right;">-0.1498224</td>
+<td style="text-align: right;">-0.0002597</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </section>
 <section id="mediation-visualization" class="slide level2">
 <h2>Mediation visualization</h2>
-<div class="cell" data-fig.aligh="center">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>med_results<span class="sc">$</span>diagram</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>med_results<span class="sc">$</span>diagram</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="mediation_files/figure-revealjs/unnamed-chunk-24-1.png" width="1152" class="r-stretch"></section>
+<img data-src="mediation_files/figure-revealjs/unnamed-chunk-25-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"><div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>No good programs to create nice looking path models</p>
+</div>
+</div>
+</div>
+</section>
 <section id="mediation-visualization-1" class="slide level2">
 <h2>Mediation visualization</h2>
-<div class="cell" data-fig.aign="center">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">library</span>(flexplot) <span class="co"># mediation plot</span></span>
-<span id="cb37-2"><a href="#cb37-2"></a></span>
-<span id="cb37-3"><a href="#cb37-3"></a><span class="fu">mediate_plot</span>(exam<span class="sc">~</span>previous <span class="sc">+</span>facebook,<span class="at">data=</span>master)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">library</span>(flexplot) <span class="co"># mediation plot</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a></span>
+<span id="cb29-3"><a href="#cb29-3"></a><span class="fu">mediate_plot</span>(exam<span class="sc">~</span>previous <span class="sc">+</span>facebook,<span class="at">data=</span>master)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="mediation_files/figure-revealjs/unnamed-chunk-25-1.png" width="1152" class="r-stretch"></section>
+<img data-src="mediation_files/figure-revealjs/unnamed-chunk-26-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
 <section id="jsmediation" class="slide level2">
 <h2>JSmediation</h2>
 <ul>
 <li><p>Incorporates <code>easystats</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">library</span>(JSmediation)</span>
-<span id="cb38-2"><a href="#cb38-2"></a></span>
-<span id="cb38-3"><a href="#cb38-3"></a>mediation_fit <span class="ot">&lt;-</span> <span class="fu">mdt_simple</span>(master,</span>
-<span id="cb38-4"><a href="#cb38-4"></a>             <span class="at">IV =</span>facebook,</span>
-<span id="cb38-5"><a href="#cb38-5"></a>             <span class="at">DV =</span> exam,</span>
-<span id="cb38-6"><a href="#cb38-6"></a>             <span class="at">M  =</span> previous)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">library</span>(JSmediation)</span>
+<span id="cb30-2"><a href="#cb30-2"></a></span>
+<span id="cb30-3"><a href="#cb30-3"></a>mediation_fit <span class="ot">&lt;-</span> <span class="fu">mdt_simple</span>(master,</span>
+<span id="cb30-4"><a href="#cb30-4"></a>             <span class="at">IV =</span>facebook,</span>
+<span id="cb30-5"><a href="#cb30-5"></a>             <span class="at">DV =</span> exam,</span>
+<span id="cb30-6"><a href="#cb30-6"></a>             <span class="at">M  =</span> previous)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></li>
 </ul>
 </section>
 <section id="jsmediation-results" class="slide level2">
 <h2>JSmediation results</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="co"># Mediation Results</span></span>
-<span id="cb39-2"><a href="#cb39-2"></a>mediation_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co"># Mediation Results</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a>mediation_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Test of mediation (simple mediation)
 ==============================================
@@ -1144,59 +2563,12 @@ Fitted models:
 </div>
 </div>
 </section>
-<section id="jsmediation-results-assumptions" class="slide level2">
-<h2>JSmediation results: Assumptions</h2>
-<div class="panel-tabset">
-<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Step 1</a></li><li><a href="#tabset-4-2">Step 2</a></li><li><a href="#tabset-4-3">Step 3</a></li></ul>
-<div class="tab-content">
-<div id="tabset-4-1">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a>first_model <span class="ot">&lt;-</span> <span class="fu">extract_model</span>(mediation_fit, <span class="at">step =</span> <span class="dv">1</span>)</span>
-<span id="cb41-2"><a href="#cb41-2"></a>performance<span class="sc">::</span><span class="fu">check_model</span>(first_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-28-1.png" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-4-2">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>second_model <span class="ot">&lt;-</span> <span class="fu">extract_model</span>(mediation_fit, <span class="at">step =</span> <span class="dv">2</span>)</span>
-<span id="cb42-2"><a href="#cb42-2"></a>performance<span class="sc">::</span><span class="fu">check_model</span>(second_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-29-1.png" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-4-3">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>third_model <span class="ot">&lt;-</span> <span class="fu">extract_model</span>(mediation_fit, <span class="at">step =</span> <span class="dv">3</span>)</span>
-<span id="cb43-2"><a href="#cb43-2"></a>performance<span class="sc">::</span><span class="fu">check_model</span>(third_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-30-1.png" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
 <section id="jsmediation-indirect-effect" class="slide level2">
 <h2>JSmediation: Indirect effect</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="co"># Testing Indirect Effect with `JSmediation`</span></span>
-<span id="cb44-2"><a href="#cb44-2"></a>model_fit_with_index <span class="ot">&lt;-</span> <span class="fu">add_index</span>(mediation_fit)</span>
-<span id="cb44-3"><a href="#cb44-3"></a>model_fit_with_index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co"># Testing Indirect Effect with `JSmediation`</span></span>
+<span id="cb33-2"><a href="#cb33-2"></a>model_fit_with_index <span class="ot">&lt;-</span> <span class="fu">add_index</span>(mediation_fit)</span>
+<span id="cb33-3"><a href="#cb33-3"></a>model_fit_with_index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Test of mediation (simple mediation)
 ==============================================
@@ -1225,7 +2597,7 @@ Indirect effect index:
 - confidence interval:
   - method: Monte Carlo (5000 iterations)
   - level: 0.05 
-  - CI: [-0.128; -0.00364]
+  - CI: [-0.131; -0.00328]
 
 Fitted models:
 
@@ -1235,8 +2607,60 @@ Fitted models:
 </div>
 </div>
 </section>
-<section id="multiple-mediators" class="slide level2">
-<h2>Multiple Mediators</h2>
+<section id="jsmediation-results-assumptions" class="slide level2">
+<h2>JSmediation results: Assumptions</h2>
+<div class="panel-tabset">
+<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Step 1</a></li><li><a href="#tabset-4-2">Step 2</a></li><li><a href="#tabset-4-3">Step 3</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>first_model <span class="ot">&lt;-</span> <span class="fu">extract_model</span>(mediation_fit, <span class="at">step =</span> <span class="dv">1</span>)</span>
+<span id="cb35-2"><a href="#cb35-2"></a>performance<span class="sc">::</span><span class="fu">check_model</span>(first_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-30-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-2">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>second_model <span class="ot">&lt;-</span> <span class="fu">extract_model</span>(mediation_fit, <span class="at">step =</span> <span class="dv">2</span>)</span>
+<span id="cb36-2"><a href="#cb36-2"></a>performance<span class="sc">::</span><span class="fu">check_model</span>(second_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-31-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-3">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>third_model <span class="ot">&lt;-</span> <span class="fu">extract_model</span>(mediation_fit, <span class="at">step =</span> <span class="dv">3</span>)</span>
+<span id="cb37-2"><a href="#cb37-2"></a>performance<span class="sc">::</span><span class="fu">check_model</span>(third_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-32-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="complex-mediation-models" class="title-slide slide level1 center">
+<h1>complex mediation models</h1>
+
+<img data-src="sem.webp" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="multiple-mediator-model" class="slide level2">
+<h2>Multiple mediator model</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
@@ -1250,126 +2674,1294 @@ Fitted models:
 <ul>
 <li>Overall influence of mediators</li>
 </ul></li>
+<li><p>Can example which one has a stronger influence</p></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<p><img data-src="sem.webp"></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-33-1.png" class="quarto-figure quarto-figure-center" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
 <section id="multiple-mediators-example" class="slide level2">
 <h2>Multiple mediators: Example</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb46-2"><a href="#cb46-2"></a><span class="co">#| fig.align: center</span></span>
-<span id="cb46-3"><a href="#cb46-3"></a><span class="co">#| fig.width=8</span></span>
-<span id="cb46-4"><a href="#cb46-4"></a><span class="co">#| fig.height=4</span></span>
-<span id="cb46-5"><a href="#cb46-5"></a></span>
-<span id="cb46-6"><a href="#cb46-6"></a>weight_behavior <span class="ot">&lt;-</span></span>
-<span id="cb46-7"><a href="#cb46-7"></a>  <span class="fu">read_csv</span>(<span class="st">"https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/mediation_r/data/weight.csv"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb46-8"><a href="#cb46-8"></a>  <span class="fu">drop_na</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-
-<img data-src="mediation_files/figure-revealjs/unnamed-chunk-33-1.png" class="quarto-figure quarto-figure-center r-stretch" width="768"></section>
+</section>
 <section id="lavaan" class="slide level2">
 <h2>Lavaan</h2>
 <ul>
-<li>More complicated models</li>
-</ul>
-<!-- -->
-<ul>
-<li>Similar to MPlus, but free!</li>
+<li><p>Similar to popular MPlus software, but free!</p></li>
+<li><p><code>~</code> regression; <code>*</code> labels; <code>:=</code> define variables</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="fu">library</span>(lavaan)</span>
-<span id="cb47-2"><a href="#cb47-2"></a></span>
-<span id="cb47-3"><a href="#cb47-3"></a>multipleMediation <span class="ot">&lt;-</span> <span class="st">'</span></span>
-<span id="cb47-4"><a href="#cb47-4"></a><span class="st">bmi ~ b1 * tvhours + b2 * cellhours + cp * age</span></span>
-<span id="cb47-5"><a href="#cb47-5"></a><span class="st">tvhours ~ a1 * age</span></span>
-<span id="cb47-6"><a href="#cb47-6"></a><span class="st">cellhours ~ a2 * age</span></span>
-<span id="cb47-7"><a href="#cb47-7"></a><span class="st"># indirect 1</span></span>
-<span id="cb47-8"><a href="#cb47-8"></a><span class="st">indirect1 := a1 * b1</span></span>
-<span id="cb47-9"><a href="#cb47-9"></a><span class="st"># indirect 2</span></span>
-<span id="cb47-10"><a href="#cb47-10"></a><span class="st">indirect2 := a2 * b2</span></span>
-<span id="cb47-11"><a href="#cb47-11"></a><span class="st"># total</span></span>
-<span id="cb47-12"><a href="#cb47-12"></a><span class="st">total := cp + (a1 * b1) + (a2 * b2)</span></span>
-<span id="cb47-13"><a href="#cb47-13"></a><span class="st">total_indirect := (a1 * b1) + (a2 * b2)</span></span>
-<span id="cb47-14"><a href="#cb47-14"></a><span class="st">#prob mediated</span></span>
-<span id="cb47-15"><a href="#cb47-15"></a><span class="st">#prop_indirect1</span></span>
-<span id="cb47-16"><a href="#cb47-16"></a><span class="st">prop_med_1 := indirect1 / (indirect1+cp)</span></span>
-<span id="cb47-17"><a href="#cb47-17"></a><span class="st">prop_med_2 := indirect2 / (indirect2+cp)</span></span>
-<span id="cb47-18"><a href="#cb47-18"></a><span class="st">prop_med := total_indirect /(total_indirect+cp)</span></span>
-<span id="cb47-19"><a href="#cb47-19"></a><span class="st">#covariance</span></span>
-<span id="cb47-20"><a href="#cb47-20"></a><span class="st">cellhours ~~ tvhours</span></span>
-<span id="cb47-21"><a href="#cb47-21"></a><span class="st">'</span></span>
-<span id="cb47-22"><a href="#cb47-22"></a>fit <span class="ot">&lt;-</span> <span class="fu">sem</span>(<span class="at">model =</span> multipleMediation, <span class="at">data =</span> weight_behavior, <span class="at">se =</span> <span class="st">"bootstrap"</span>,  <span class="at">bootstrap =</span> <span class="dv">500</span>)</span>
-<span id="cb47-23"><a href="#cb47-23"></a><span class="co"># you should run 5000-10000 bootstraps</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb38-2"><a href="#cb38-2"></a>multipleMediation <span class="ot">&lt;-</span> <span class="st">'</span></span>
+<span id="cb38-3"><a href="#cb38-3"></a><span class="st">bmi ~ b1 * tvhours + b2 * cellhours + cp * age</span></span>
+<span id="cb38-4"><a href="#cb38-4"></a><span class="st">tvhours ~ a1 * age</span></span>
+<span id="cb38-5"><a href="#cb38-5"></a><span class="st">cellhours ~ a2 * age</span></span>
+<span id="cb38-6"><a href="#cb38-6"></a><span class="st"># Fit indirect 1</span></span>
+<span id="cb38-7"><a href="#cb38-7"></a><span class="st">indirect1 := a1 * b1</span></span>
+<span id="cb38-8"><a href="#cb38-8"></a><span class="st"># Fit indirect 2</span></span>
+<span id="cb38-9"><a href="#cb38-9"></a><span class="st">indirect2 := a2 * b2</span></span>
+<span id="cb38-10"><a href="#cb38-10"></a><span class="st"># total</span></span>
+<span id="cb38-11"><a href="#cb38-11"></a><span class="st">total := cp + (a1 * b1) + (a2 * b2)</span></span>
+<span id="cb38-12"><a href="#cb38-12"></a><span class="st">total_indirect := (a1 * b1) + (a2 * b2)</span></span>
+<span id="cb38-13"><a href="#cb38-13"></a><span class="st">#test if size of med are different</span></span>
+<span id="cb38-14"><a href="#cb38-14"></a><span class="st">med_diff := indirect1 - indirect2</span></span>
+<span id="cb38-15"><a href="#cb38-15"></a><span class="st">#prob mediated</span></span>
+<span id="cb38-16"><a href="#cb38-16"></a><span class="st">##prop_indirect1</span></span>
+<span id="cb38-17"><a href="#cb38-17"></a><span class="st">prop_med_1 := indirect1 / (indirect1+cp)</span></span>
+<span id="cb38-18"><a href="#cb38-18"></a><span class="st">##prop_indirect2</span></span>
+<span id="cb38-19"><a href="#cb38-19"></a><span class="st">prop_med_2 := indirect2 / (indirect2+cp)</span></span>
+<span id="cb38-20"><a href="#cb38-20"></a><span class="st">prop_med := total_indirect /(total_indirect+cp)</span></span>
+<span id="cb38-21"><a href="#cb38-21"></a><span class="st">'</span></span>
+<span id="cb38-22"><a href="#cb38-22"></a>fit <span class="ot">&lt;-</span> <span class="fu">sem</span>(<span class="at">model =</span> multipleMediation, <span class="at">data =</span> weight_behavior, <span class="at">se =</span> <span class="st">"bootstrap"</span>,  <span class="at">bootstrap =</span> <span class="dv">500</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="lavaan-summary" class="slide level2">
 <h2>Lavaan summary</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="fu">summary</span>(fit, <span class="at">ci=</span><span class="cn">TRUE</span>) <span class="co"># output with 95% bootstrapped cis</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="fu">summary</span>(fit, <span class="at">ci=</span><span class="cn">TRUE</span>, <span class="at">rsquare=</span><span class="cn">TRUE</span>) <span class="co"># output with 95% bootstrapped cis and rsqaure</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>lavaan 0.6.17 ended normally after 12 iterations
+<pre><code>lavaan 0.6.17 ended normally after 8 iterations
 
   Estimator                                         ML
   Optimization method                           NLMINB
-  Number of model parameters                         9
+  Number of model parameters                         8
 
   Number of observations                           543
 
 Model Test User Model:
                                                       
-  Test statistic                                 0.000
-  Degrees of freedom                                 0
+  Test statistic                                44.446
+  Degrees of freedom                                 1
+  P-value (Chi-square)                           0.000
 
 Parameter Estimates:
 
   Standard errors                            Bootstrap
   Number of requested bootstrap draws              500
-  Number of successful bootstrap draws             499
+  Number of successful bootstrap draws             500
 
 Regressions:
                    Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
   bmi ~                                                                 
-    tvhours   (b1)    0.120    0.125    0.958    0.338   -0.126    0.358
-    cellhours (b2)    0.217    0.130    1.663    0.096   -0.049    0.471
-    age       (cp)    0.026    0.131    0.196    0.845   -0.312    0.196
+    tvhours   (b1)    0.120    0.133    0.898    0.369   -0.130    0.388
+    cellhours (b2)    0.217    0.133    1.631    0.103   -0.038    0.479
+    age       (cp)    0.026    0.124    0.207    0.836   -0.272    0.218
   tvhours ~                                                             
-    age       (a1)    0.017    0.045    0.381    0.703   -0.065    0.121
+    age       (a1)    0.017    0.047    0.367    0.714   -0.077    0.132
   cellhours ~                                                           
-    age       (a2)    0.041    0.069    0.595    0.552   -0.040    0.250
-
-Covariances:
-                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
- .tvhours ~~                                                            
-   .cellhours         0.473    0.081    5.806    0.000    0.322    0.650
+    age       (a2)    0.041    0.067    0.616    0.538   -0.035    0.225
 
 Variances:
                    Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
-   .bmi              15.273    1.486   10.281    0.000   12.305   18.165
-   .tvhours           1.883    0.075   25.024    0.000    1.736    2.036
-   .cellhours         1.512    0.090   16.853    0.000    1.344    1.689
+   .bmi              15.273    1.602    9.535    0.000   11.812   18.542
+   .tvhours           1.883    0.077   24.569    0.000    1.727    2.028
+   .cellhours         1.512    0.085   17.722    0.000    1.340    1.663
+
+R-Square:
+                   Estimate
+    bmi               0.007
+    tvhours           0.000
+    cellhours         0.002
 
 Defined Parameters:
                    Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
-    indirect1         0.002    0.008    0.250    0.803   -0.015    0.024
-    indirect2         0.009    0.018    0.493    0.622   -0.011    0.061
-    total             0.037    0.127    0.289    0.772   -0.276    0.208
-    total_indirect    0.011    0.020    0.553    0.580   -0.013    0.069
-    prop_med_1        0.074    1.629    0.046    0.964   -0.670    0.368
-    prop_med_2        0.257    6.418    0.040    0.968   -1.114    2.326
-    prop_med          0.299    1.618    0.185    0.854   -1.470    1.982</code></pre>
+    indirect1         0.002    0.009    0.223    0.824   -0.016    0.023
+    indirect2         0.009    0.019    0.458    0.647   -0.010    0.066
+    total             0.037    0.118    0.310    0.757   -0.241    0.223
+    total_indirect    0.011    0.021    0.512    0.609   -0.014    0.073
+    med_diff         -0.007    0.022   -0.316    0.752   -0.070    0.021
+    prop_med_1        0.074    0.579    0.128    0.898   -0.534    0.734
+    prop_med_2        0.257    1.723    0.149    0.881   -1.853    1.788
+    prop_med          0.299   26.997    0.011    0.991   -1.746    2.433</code></pre>
 </div>
 </div>
 </section>
-<section id="lavaan-plot" class="slide level2">
-<h2>Lavaan Plot</h2>
+<section id="lavaan-summary-1" class="slide level2">
+<h2>Lavaan summary</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><code>semoutput</code> <a href="https://dr-jt.github.io/semoutput/" class="uri">https://dr-jt.github.io/semoutput/</a></li>
+</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="fu">statisticalDiagram</span>(<span class="fl">4.2</span>,<span class="at">labels=</span>labels,<span class="at">fit=</span>fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a> semoutput<span class="sc">::</span><span class="fu">sem_paths</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div id="ubeybpihkn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ubeybpihkn table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ubeybpihkn thead, #ubeybpihkn tbody, #ubeybpihkn tfoot, #ubeybpihkn tr, #ubeybpihkn td, #ubeybpihkn th {
+  border-style: none;
+}
+
+#ubeybpihkn p {
+  margin: 0;
+  padding: 0;
+}
+
+#ubeybpihkn .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: 0;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 0px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 0px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ubeybpihkn .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ubeybpihkn .gt_title {
+  color: #333333;
+  font-size: 18px;
+  font-weight: bolder;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ubeybpihkn .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 9px;
+  padding-bottom: 11px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ubeybpihkn .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ubeybpihkn .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 0px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ubeybpihkn .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 0px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ubeybpihkn .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: bold;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 6px;
+  padding-bottom: 7px;
+  padding-left: 15px;
+  padding-right: 15px;
+  overflow-x: hidden;
+}
+
+#ubeybpihkn .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: bold;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ubeybpihkn .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ubeybpihkn .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ubeybpihkn .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ubeybpihkn .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#ubeybpihkn .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ubeybpihkn .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ubeybpihkn .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ubeybpihkn .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ubeybpihkn .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ubeybpihkn .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#ubeybpihkn .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 15px;
+  padding-right: 15px;
+  vertical-align: top;
+}
+
+#ubeybpihkn .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ubeybpihkn .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#ubeybpihkn .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#ubeybpihkn .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ubeybpihkn .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ubeybpihkn .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ubeybpihkn .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#ubeybpihkn .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ubeybpihkn .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ubeybpihkn .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ubeybpihkn .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ubeybpihkn .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ubeybpihkn .gt_footnote {
+  margin: 0px;
+  font-size: 14px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#ubeybpihkn .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ubeybpihkn .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#ubeybpihkn .gt_left {
+  text-align: left;
+}
+
+#ubeybpihkn .gt_center {
+  text-align: center;
+}
+
+#ubeybpihkn .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ubeybpihkn .gt_font_normal {
+  font-weight: normal;
+}
+
+#ubeybpihkn .gt_font_bold {
+  font-weight: bold;
+}
+
+#ubeybpihkn .gt_font_italic {
+  font-style: italic;
+}
+
+#ubeybpihkn .gt_super {
+  font-size: 65%;
+}
+
+#ubeybpihkn .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#ubeybpihkn .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ubeybpihkn .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ubeybpihkn .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ubeybpihkn .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ubeybpihkn .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ubeybpihkn .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="true" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="10" class="gt_heading gt_title gt_font_normal gt_bottom_border" style="">Regression Paths</td>
+    </tr>
+    
+    <tr class="gt_col_headings gt_spanner_row">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" style="text-align: center;" scope="col" id="Predictor">Predictor</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" style="text-align: center;" scope="col" id="DV">DV</th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="Unstandardized">
+        <span class="gt_column_spanner">Unstandardized</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="6" scope="colgroup" id="Standardized">
+        <span class="gt_column_spanner">Standardized</span>
+      </th>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="b">b</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="95% CI">95% CI</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="β">β</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="95% CI">95% CI</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="sig">sig</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="SE">SE</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="z">z</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="p">p</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="rhs" class="gt_row gt_left">age</td>
+<td headers="lhs" class="gt_row gt_left">bmi</td>
+<td headers="est" class="gt_row gt_right"> 0.026</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.272&nbsp;—&nbsp;0.218</td>
+<td headers="est.std" class="gt_row gt_right"> 0.008</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.069&nbsp;—&nbsp;0.085</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.039</td>
+<td headers="z" class="gt_row gt_right"> 0.207</td>
+<td headers="pvalue" class="gt_row gt_right">0.836</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">cellhours</td>
+<td headers="lhs" class="gt_row gt_left">bmi</td>
+<td headers="est" class="gt_row gt_right"> 0.217</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.038&nbsp;—&nbsp;0.479</td>
+<td headers="est.std" class="gt_row gt_right"> 0.068</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.014&nbsp;—&nbsp;0.151</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.042</td>
+<td headers="z" class="gt_row gt_right"> 1.616</td>
+<td headers="pvalue" class="gt_row gt_right">0.106</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">tvhours</td>
+<td headers="lhs" class="gt_row gt_left">bmi</td>
+<td headers="est" class="gt_row gt_right"> 0.120</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.130&nbsp;—&nbsp;0.388</td>
+<td headers="est.std" class="gt_row gt_right"> 0.042</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.049&nbsp;—&nbsp;0.132</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.046</td>
+<td headers="z" class="gt_row gt_right"> 0.907</td>
+<td headers="pvalue" class="gt_row gt_right">0.365</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">age</td>
+<td headers="lhs" class="gt_row gt_left">cellhours</td>
+<td headers="est" class="gt_row gt_right"> 0.041</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.035&nbsp;—&nbsp;0.225</td>
+<td headers="est.std" class="gt_row gt_right"> 0.041</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.090&nbsp;—&nbsp;0.173</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.067</td>
+<td headers="z" class="gt_row gt_right"> 0.618</td>
+<td headers="pvalue" class="gt_row gt_right">0.537</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">a1*b1</td>
+<td headers="lhs" class="gt_row gt_left">indirect1</td>
+<td headers="est" class="gt_row gt_right"> 0.002</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.016&nbsp;—&nbsp;0.023</td>
+<td headers="est.std" class="gt_row gt_right"> 0.001</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.003&nbsp;—&nbsp;0.004</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.002</td>
+<td headers="z" class="gt_row gt_right"> 0.343</td>
+<td headers="pvalue" class="gt_row gt_right">0.732</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">a2*b2</td>
+<td headers="lhs" class="gt_row gt_left">indirect2</td>
+<td headers="est" class="gt_row gt_right"> 0.009</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.010&nbsp;—&nbsp;0.066</td>
+<td headers="est.std" class="gt_row gt_right"> 0.003</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.007&nbsp;—&nbsp;0.013</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.005</td>
+<td headers="z" class="gt_row gt_right"> 0.569</td>
+<td headers="pvalue" class="gt_row gt_right">0.569</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">indirect1-indirect2</td>
+<td headers="lhs" class="gt_row gt_left">med_diff</td>
+<td headers="est" class="gt_row gt_right">−0.007</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.070&nbsp;—&nbsp;0.021</td>
+<td headers="est.std" class="gt_row gt_right">−0.002</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.013&nbsp;—&nbsp;0.008</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.005</td>
+<td headers="z" class="gt_row gt_right">−0.403</td>
+<td headers="pvalue" class="gt_row gt_right">0.687</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">total_indirect/(total_indirect+cp)</td>
+<td headers="lhs" class="gt_row gt_left">prop_med</td>
+<td headers="est" class="gt_row gt_right"> 0.299</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−1.746&nbsp;—&nbsp;2.433</td>
+<td headers="est.std" class="gt_row gt_right"> 0.299</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−1.964&nbsp;—&nbsp;2.562</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">1.155</td>
+<td headers="z" class="gt_row gt_right"> 0.259</td>
+<td headers="pvalue" class="gt_row gt_right">0.796</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">indirect1/(indirect1+cp)</td>
+<td headers="lhs" class="gt_row gt_left">prop_med_1</td>
+<td headers="est" class="gt_row gt_right"> 0.074</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.534&nbsp;—&nbsp;0.734</td>
+<td headers="est.std" class="gt_row gt_right"> 0.074</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.667&nbsp;—&nbsp;0.815</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.378</td>
+<td headers="z" class="gt_row gt_right"> 0.196</td>
+<td headers="pvalue" class="gt_row gt_right">0.844</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">indirect2/(indirect2+cp)</td>
+<td headers="lhs" class="gt_row gt_left">prop_med_2</td>
+<td headers="est" class="gt_row gt_right"> 0.257</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−1.853&nbsp;—&nbsp;1.788</td>
+<td headers="est.std" class="gt_row gt_right"> 0.257</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−1.882&nbsp;—&nbsp;2.396</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">1.091</td>
+<td headers="z" class="gt_row gt_right"> 0.236</td>
+<td headers="pvalue" class="gt_row gt_right">0.814</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">cp+(a1*b1)+(a2*b2)</td>
+<td headers="lhs" class="gt_row gt_left">total</td>
+<td headers="est" class="gt_row gt_right"> 0.037</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.241&nbsp;—&nbsp;0.223</td>
+<td headers="est.std" class="gt_row gt_right"> 0.012</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.063&nbsp;—&nbsp;0.086</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.038</td>
+<td headers="z" class="gt_row gt_right"> 0.307</td>
+<td headers="pvalue" class="gt_row gt_right">0.759</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">(a1*b1)+(a2*b2)</td>
+<td headers="lhs" class="gt_row gt_left">total_indirect</td>
+<td headers="est" class="gt_row gt_right"> 0.011</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.014&nbsp;—&nbsp;0.073</td>
+<td headers="est.std" class="gt_row gt_right"> 0.003</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.007&nbsp;—&nbsp;0.014</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.005</td>
+<td headers="z" class="gt_row gt_right"> 0.662</td>
+<td headers="pvalue" class="gt_row gt_right">0.508</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">age</td>
+<td headers="lhs" class="gt_row gt_left">tvhours</td>
+<td headers="est" class="gt_row gt_right"> 0.017</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.077&nbsp;—&nbsp;0.132</td>
+<td headers="est.std" class="gt_row gt_right"> 0.016</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.068&nbsp;—&nbsp;0.099</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.043</td>
+<td headers="z" class="gt_row gt_right"> 0.366</td>
+<td headers="pvalue" class="gt_row gt_right">0.714</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="10"> * p &lt; .05; ** p &lt; .01; *** p &lt; .001</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="lavaan-visualization" class="slide level2">
+<h2>Lavaan Visualization</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="fu">library</span>(tidySEM)<span class="co"># plot models from lavaan</span></span>
+<span id="cb42-2"><a href="#cb42-2"></a>tidySEM<span class="sc">::</span><span class="fu">graph_sem</span>(<span class="at">model=</span>fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="mediation_files/figure-revealjs/unnamed-chunk-36-1.png" width="1152" class="r-stretch"></section>
+<img data-src="mediation_files/figure-revealjs/unnamed-chunk-39-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
+<section id="lavaan-practice" class="slide level2">
+<h2>Lavaan Practice</h2>
+<ul>
+<li>Fit our simple facebook mediation model using Lavaan</li>
+</ul>
+<div id="qwebr-insertion-location-2"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="lavaan-practice-1" class="slide level2">
+<h2>Lavaan Practice</h2>
+<ul>
+<li>Same results as before</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div id="vzgyduqytr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#vzgyduqytr table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#vzgyduqytr thead, #vzgyduqytr tbody, #vzgyduqytr tfoot, #vzgyduqytr tr, #vzgyduqytr td, #vzgyduqytr th {
+  border-style: none;
+}
+
+#vzgyduqytr p {
+  margin: 0;
+  padding: 0;
+}
+
+#vzgyduqytr .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: 0;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 0px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 0px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#vzgyduqytr .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#vzgyduqytr .gt_title {
+  color: #333333;
+  font-size: 18px;
+  font-weight: bolder;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#vzgyduqytr .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 9px;
+  padding-bottom: 11px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#vzgyduqytr .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vzgyduqytr .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 0px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vzgyduqytr .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 0px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vzgyduqytr .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: bold;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 6px;
+  padding-bottom: 7px;
+  padding-left: 15px;
+  padding-right: 15px;
+  overflow-x: hidden;
+}
+
+#vzgyduqytr .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: bold;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#vzgyduqytr .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#vzgyduqytr .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#vzgyduqytr .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#vzgyduqytr .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#vzgyduqytr .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#vzgyduqytr .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#vzgyduqytr .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#vzgyduqytr .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#vzgyduqytr .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#vzgyduqytr .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#vzgyduqytr .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 15px;
+  padding-right: 15px;
+  vertical-align: top;
+}
+
+#vzgyduqytr .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#vzgyduqytr .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#vzgyduqytr .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#vzgyduqytr .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#vzgyduqytr .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#vzgyduqytr .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vzgyduqytr .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#vzgyduqytr .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#vzgyduqytr .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vzgyduqytr .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#vzgyduqytr .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vzgyduqytr .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vzgyduqytr .gt_footnote {
+  margin: 0px;
+  font-size: 14px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#vzgyduqytr .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vzgyduqytr .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#vzgyduqytr .gt_left {
+  text-align: left;
+}
+
+#vzgyduqytr .gt_center {
+  text-align: center;
+}
+
+#vzgyduqytr .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#vzgyduqytr .gt_font_normal {
+  font-weight: normal;
+}
+
+#vzgyduqytr .gt_font_bold {
+  font-weight: bold;
+}
+
+#vzgyduqytr .gt_font_italic {
+  font-style: italic;
+}
+
+#vzgyduqytr .gt_super {
+  font-size: 65%;
+}
+
+#vzgyduqytr .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#vzgyduqytr .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#vzgyduqytr .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#vzgyduqytr .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#vzgyduqytr .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#vzgyduqytr .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#vzgyduqytr .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="true" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="10" class="gt_heading gt_title gt_font_normal gt_bottom_border" style="">Regression Paths</td>
+    </tr>
+    
+    <tr class="gt_col_headings gt_spanner_row">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" style="text-align: center;" scope="col" id="Predictor">Predictor</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" style="text-align: center;" scope="col" id="DV">DV</th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2" scope="colgroup" id="Unstandardized">
+        <span class="gt_column_spanner">Unstandardized</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="6" scope="colgroup" id="Standardized">
+        <span class="gt_column_spanner">Standardized</span>
+      </th>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="b">b</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="95% CI">95% CI</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="β">β</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="95% CI">95% CI</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="sig">sig</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="SE">SE</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="z">z</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center;" scope="col" id="p">p</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="rhs" class="gt_row gt_left">facebook</td>
+<td headers="lhs" class="gt_row gt_left">exam</td>
+<td headers="est" class="gt_row gt_right">−0.606</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.906&nbsp;—&nbsp;−0.339</td>
+<td headers="est.std" class="gt_row gt_right">−0.292</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.398&nbsp;—&nbsp;−0.186</td>
+<td headers="stars" class="gt_row gt_right">***</td>
+<td headers="se" class="gt_row gt_right">0.054</td>
+<td headers="z" class="gt_row gt_right">−5.385</td>
+<td headers="pvalue" class="gt_row gt_right">&lt;0.001</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">previous</td>
+<td headers="lhs" class="gt_row gt_left">exam</td>
+<td headers="est" class="gt_row gt_right"> 0.260</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right"> 0.057&nbsp;—&nbsp;0.506 </td>
+<td headers="est.std" class="gt_row gt_right"> 0.189</td>
+<td headers="ci.lower_std" class="gt_row gt_right"> 0.038&nbsp;—&nbsp;0.340 </td>
+<td headers="stars" class="gt_row gt_right">*</td>
+<td headers="se" class="gt_row gt_right">0.077</td>
+<td headers="z" class="gt_row gt_right"> 2.449</td>
+<td headers="pvalue" class="gt_row gt_right">    0.014</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">a*b</td>
+<td headers="lhs" class="gt_row gt_left">indirect</td>
+<td headers="est" class="gt_row gt_right">−0.055</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.152&nbsp;—&nbsp;0.003 </td>
+<td headers="est.std" class="gt_row gt_right">−0.026</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.058&nbsp;—&nbsp;0.006 </td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.016</td>
+<td headers="z" class="gt_row gt_right">−1.614</td>
+<td headers="pvalue" class="gt_row gt_right">    0.106</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">facebook</td>
+<td headers="lhs" class="gt_row gt_left">previous</td>
+<td headers="est" class="gt_row gt_right">−0.211</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.421&nbsp;—&nbsp;0.006 </td>
+<td headers="est.std" class="gt_row gt_right">−0.139</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.279&nbsp;—&nbsp;0.000 </td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.071</td>
+<td headers="z" class="gt_row gt_right">−1.954</td>
+<td headers="pvalue" class="gt_row gt_right">    0.051</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">cp+(a*b)</td>
+<td headers="lhs" class="gt_row gt_left">total</td>
+<td headers="est" class="gt_row gt_right">−0.661</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.975&nbsp;—&nbsp;−0.380</td>
+<td headers="est.std" class="gt_row gt_right">−0.318</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.424&nbsp;—&nbsp;−0.212</td>
+<td headers="stars" class="gt_row gt_right">***</td>
+<td headers="se" class="gt_row gt_right">0.054</td>
+<td headers="z" class="gt_row gt_right">−5.856</td>
+<td headers="pvalue" class="gt_row gt_right">&lt;0.001</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="10"> * p &lt; .05; ** p &lt; .01; *** p &lt; .001</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+</div>
+</section>
 <section id="within-participant-mediation" class="slide level2">
 <h2>Within-participant mediation</h2>
 <ul>
@@ -1382,38 +3974,56 @@ Defined Parameters:
 </ul></li>
 </ul></li>
 </ul>
-
-<img data-src="mediation_files/figure-revealjs/unnamed-chunk-37-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
+</section>
 <section id="within-participant-mediation-1" class="slide level2">
 <h2>Within-participant mediation</h2>
 <p><span class="math display">\[
 Y_{2i} - Y_{1i} = c_{11}
 \]</span></p>
-<p>with Y2i​−Y1i​ the difference score between DV conditions for the outcome variable for the <em>i</em>th observation</p>
+<p>with <span class="math inline">\(Y2_i\)</span>​−<span class="math inline">\(Y1_i\)</span> the difference score between DV conditions for the outcome variable for the <em>i</em>th observation</p>
 <p><span class="math display">\[
 M_{2i}-M_{1i} = a_{21}
 \]</span></p>
-<p>with <span class="math inline">\(M_{2i}\)</span>​−$M1_{1i}​$ the difference score between DV conditions for the mediator variable for the <em>i</em>th observation,</p>
-<p><span class="math display">\[
-Y_{2i} - Y_{1i} = c'_{31} + b_{32}(M_{2i}-M_{1i}) + d_{33}[0.5(M_{2i}+M_{1i}) - 0.5(\bar{M_1}+ M_2})]
-\]</span> Where we have the mediator diff and mean_diff</p>
+<p>with <span class="math inline">\(M_{2i}\)</span>​−<span class="math inline">\(M1_{1i}​\)</span> the difference score between DV conditions for the mediator variable for the <em>i</em>th observation,</p>
+<p><span class="math display">\[Y_{2i} - Y_{1i} = c'_{31} + b_{32}(M_{2i} - M_{1i}) +
+  d_{33}[0.5(M_{1i} + M_{2i}) - 0.5(\overline{M_{1} + M_{2}})]\]</span></p>
+<table>
+<tbody>
+<tr class="odd">
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Where we have the mediator diff and mean_diff</p>
 </section>
 <section id="within-participant-mediation-2" class="slide level2">
 <h2>Within-participant mediation</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>data <span class="ot">&lt;-</span> JSmediation<span class="sc">::</span>dohle_siegrist</span>
-<span id="cb51-2"><a href="#cb51-2"></a></span>
-<span id="cb51-3"><a href="#cb51-3"></a>within_mdt <span class="ot">&lt;-</span> <span class="fu">mdt_within</span>(<span class="at">data=</span>data, <span class="at">IV=</span>name, <span class="at">DV=</span> willingness, <span class="at">M=</span>hazardousness,<span class="at">grouping=</span>participant)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>data <span class="ot">&lt;-</span> JSmediation<span class="sc">::</span>dohle_siegrist</span>
+<span id="cb43-2"><a href="#cb43-2"></a></span>
+<span id="cb43-3"><a href="#cb43-3"></a>within_mdt <span class="ot">&lt;-</span> <span class="fu">mdt_within</span>(<span class="at">data=</span>data, <span class="at">IV=</span>name, <span class="at">DV=</span> willingness, <span class="at">M=</span>hazardousness,<span class="at">grouping=</span>participant)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
 <ul>
 <li>Montoya, A. K., &amp; Hayes, A. F. (2017). Two-condition within-participant statistical mediation analysis: A path-analytic framework. Psychological Methods, 22(1), 6-27. doi: 10.1037/met0000086</li>
 </ul>
+</div>
+</div>
+</div>
 </section>
 <section id="within-participant-indirect-effect" class="slide level2">
 <h2>Within-participant indirect effect</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a>model_fit_with_index <span class="ot">&lt;-</span> <span class="fu">add_index</span>(within_mdt)</span>
-<span id="cb52-2"><a href="#cb52-2"></a>model_fit_with_index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a>model_fit_with_index <span class="ot">&lt;-</span> <span class="fu">add_index</span>(within_mdt)</span>
+<span id="cb44-2"><a href="#cb44-2"></a>model_fit_with_index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Test of mediation (within-participant_mediation)
 ==============================================
@@ -1442,7 +4052,7 @@ Indirect effect index:
 - confidence interval:
   - method: Monte Carlo (5000 iterations)
   - level: 0.05 
-  - CI: [0.161; 0.864]
+  - CI: [0.157; 0.872]
 
 Fitted models:
 
@@ -1455,10 +4065,10 @@ Fitted models:
 <section id="summary-mediation" class="slide level2">
 <h2>Summary: Mediation</h2>
 <ul>
-<li><p>What it is: A method for testing hypotheses about why x predicts y</p></li>
+<li><p>What it is: A method for testing hypotheses about why and how x predicts y</p></li>
 <li><p>When you use it:</p>
 <ul>
-<li><p>Whenever you would start using words like “because” in your introduction section; it tests “how” and “why” questions</p></li>
+<li><p>Whenever you would start using words like “because” in your introduction section</p></li>
 <li><p>Whether there is a basic relationship between x and y or not</p></li>
 <li><p>Best approach*:</p>
 <ul>
@@ -1476,8 +4086,12 @@ Fitted models:
 <li><p>Indirect effect</p></li>
 <li><p>How did you test indirect effect</p>
 <ul>
-<li>Sobel/Arioan, Bootstrapping (# bootstrapped samples)</li>
+<li>Sobel test or Bootstrapping (# bootstrapped samples)</li>
 </ul></li>
+<li><p>Proprotion mediated</p></li>
+</ul>
+<!-- -->
+<ul>
 <li><p>Figure of path diagram</p>
 <ul>
 <li>Create in PPT 😱</li>
@@ -1491,6 +4105,27 @@ Fitted models:
 <li><p>Include all indirect effects</p></li>
 <li><p>Total indirect effect</p></li>
 <li><p>Proportion mediated</p></li>
+</ul>
+</section>
+<section id="resources" class="slide level2">
+<h2>Resources</h2>
+<ul>
+<li><p>Other R packages</p>
+<ul>
+<li><p><a href="%5Bhttps://cran.r-project.org/web/packages/mediation/vignettes/mediation.pdf%5D">mediation</a></p></li>
+<li><p><a href="https://link.springer.com/article/10.3758/s13428-023-02224-z">manymome</a></p></li>
+<li><p><a href="https://github.com/cardiomoon/processR">processR</a></p></li>
+</ul></li>
+</ul>
+</section>
+<section id="wednesday-and-next-week" class="slide level2">
+<h2>Wednesday and next week</h2>
+<ul>
+<li>Mediation lab</li>
+</ul>
+<!-- -->
+<ul>
+<li>path modeling/SEM (Renata and Brooke)</li>
 </ul>
 <div class="footer footer-default">
 <p>PSY 504: Advanced Statistics</p>
@@ -1902,6 +4537,118 @@ Fitted models:
         }
       }
     });
+    </script>
+    <script type="module">
+    // Handle cell initialization initialization
+    qwebrCellDetails.map(
+      (entry) => {
+        // Handle the creation of the element
+        qwebrCreateHTMLElement(entry);
+        // In the event of interactive, initialize the monaco editor
+        if (entry.options.context == EvalTypes.Interactive) {
+          qwebrCreateMonacoEditorInstance(entry);
+        }
+      }
+    );
+
+    // Identify non-interactive cells (in order)
+    const filteredEntries = qwebrCellDetails.filter(entry => {
+      const contextOption = entry.options && entry.options.context;
+      return ['output', 'setup'].includes(contextOption) || (contextOption == "interactive" && entry.options && entry.options.autorun === 'true');
+    });
+
+    // Condition non-interactive cells to only be run after webR finishes its initialization.
+    qwebrInstance.then(
+      async () => {
+        const nHiddenCells = filteredEntries.length;
+        var currentHiddenCell = 0;
+
+
+        // Modify button state
+        qwebrSetInteractiveButtonState(`🟡 Running hidden code cells ...`, false);
+
+        // Begin processing non-interactive sections
+        // Due to the iteration policy, we must use a for() loop.
+        // Otherwise, we would need to switch to using reduce with an empty
+        // starting promise
+        for (const entry of filteredEntries) {
+
+          // Determine cell being examined
+          currentHiddenCell = currentHiddenCell + 1;
+          const formattedMessage = `Evaluating hidden cell ${currentHiddenCell} out of ${nHiddenCells}`;
+
+          // Update the document status header
+          if (qwebrShowStartupMessage) {
+            qwebrUpdateStatusHeader(formattedMessage);
+          }
+
+          // Display the update in non-active areas
+          qwebrUpdateStatusMessage(formattedMessage);
+
+          // Extract details on the active cell
+          const evalType = entry.options.context;
+          const cellCode = entry.code;
+          const qwebrCounter = entry.id;
+
+          if (['output', 'setup'].includes(evalType)) {
+            // Disable further global status updates
+            const activeContainer = document.getElementById(`qwebr-non-interactive-loading-container-${qwebrCounter}`);
+            activeContainer.classList.remove('qwebr-cell-needs-evaluation');
+            activeContainer.classList.add('qwebr-cell-evaluated');
+
+            // Update status on the code cell
+            const activeStatus = document.getElementById(`qwebr-status-text-${qwebrCounter}`);
+            activeStatus.innerText = " Evaluating hidden code cell...";
+            activeStatus.classList.remove('qwebr-cell-needs-evaluation');
+            activeStatus.classList.add('qwebr-cell-evaluated');
+          }
+
+          switch (evalType) {
+            case 'interactive':
+              // TODO: Make this more standardized.
+              // At the moment, we're overriding the interactive status update by pretending its
+              // output-like. 
+              const tempOptions = entry.options;
+              tempOptions["context"] = "output"
+              // Run the code in a non-interactive state that is geared to displaying output
+              await qwebrExecuteCode(`${cellCode}`, qwebrCounter, tempOptions);
+              break;
+            case 'output':
+              // Run the code in a non-interactive state that is geared to displaying output
+              await qwebrExecuteCode(`${cellCode}`, qwebrCounter, entry.options);
+              break;
+            case 'setup':
+              const activeDiv = document.getElementById(`qwebr-noninteractive-setup-area-${qwebrCounter}`);
+              // Run the code in a non-interactive state with all output thrown away
+              await mainWebR.evalRVoid(`${cellCode}`);
+              break;
+            default: 
+              break; 
+          }
+
+          if (['output', 'setup'].includes(evalType)) {
+            // Disable further global status updates
+            const activeContainer = document.getElementById(`qwebr-non-interactive-loading-container-${qwebrCounter}`);
+            // Disable visibility
+            activeContainer.style.visibility = 'hidden';
+            activeContainer.style.display = 'none';
+          }
+        }
+      }
+    ).then(
+      () => {
+        // Release document status as ready
+
+        if (qwebrShowStartupMessage) {
+          qwebrStartupMessage.innerText = "🟢 Ready!"
+        }
+      
+        qwebrSetInteractiveButtonState(
+          `<i class="fa-solid fa-play qwebr-icon-run-code"></i> <span>Run Code</span>`, 
+          true
+        );  
+      }
+    );
     </script>
     
 
