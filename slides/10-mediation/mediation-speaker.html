@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.504">
 
   <meta name="author" content="Jason Geller, PH.D.(he/him)">
-  <meta name="dcterms.date" content="2024-04-05">
+  <meta name="dcterms.date" content="2024-04-06">
   <title>Mediation Analysis in R</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -557,7 +557,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"options":{"fig-cap":"","message":"true","context":"interactive","dpi":72,"read-only":"false","comment":"","out-width":"700px","warning":"true","fig-height":5,"results":"markup","autorun":"false","classes":"","out-height":"","label":"unnamed-chunk-1","output":"true","fig-width":7},"code":"\nmaster <- read.csv(\"https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/mediation_r/data/mediation.csv\")\nmaster <- na.omit(master) # delete missing\nhead(master[-1]) %>% kable()","id":1},{"options":{"fig-cap":"","message":"true","context":"interactive","dpi":72,"read-only":"false","comment":"","out-width":"700px","warning":"true","fig-height":5,"results":"markup","autorun":"false","classes":"","out-height":"","label":"unnamed-chunk-2","output":"true","fig-width":7},"code":"'\n#bpath and cp paths\n\n# a path\n\n# indirect\n\n# total\n\n'","id":2}];
+  globalThis.qwebrCellDetails = [{"options":{"message":"true","dpi":72,"fig-cap":"","output":"true","autorun":"false","fig-width":7,"comment":"","results":"markup","read-only":"false","out-width":"700px","context":"interactive","fig-height":5,"warning":"true","classes":"","out-height":"","label":"unnamed-chunk-1"},"id":1,"code":"\nmaster <- read.csv(\"https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/mediation_r/data/mediation.csv\")\nmaster <- na.omit(master) # delete missing\nhead(master[-1]) %>% kable()"},{"options":{"message":"true","dpi":72,"fig-cap":"","output":"true","autorun":"false","fig-width":7,"comment":"","results":"markup","read-only":"false","out-width":"700px","context":"interactive","fig-height":5,"warning":"true","classes":"","out-height":"","label":"unnamed-chunk-2"},"id":2,"code":"\nmodel1 <- lm(exam ~ facebook, data = master)"},{"options":{"message":"true","dpi":72,"fig-cap":"","output":"true","autorun":"false","fig-width":7,"comment":"","results":"markup","read-only":"false","out-width":"700px","context":"interactive","fig-height":5,"warning":"true","classes":"","out-height":"","label":"unnamed-chunk-3"},"id":3,"code":"\nmodel2 <- lm(previous ~ facebook, data = master)"},{"options":{"message":"true","dpi":72,"fig-cap":"","output":"true","autorun":"false","fig-width":7,"comment":"","results":"markup","read-only":"false","out-width":"700px","context":"interactive","fig-height":5,"warning":"true","classes":"","out-height":"","label":"unnamed-chunk-4"},"id":4,"code":"\nmodel3 <- lm(exam ~ facebook + previous, data = master)"},{"options":{"message":"true","dpi":72,"fig-cap":"","output":"true","autorun":"false","fig-width":7,"comment":"","results":"markup","read-only":"false","out-width":"700px","context":"interactive","fig-height":5,"warning":"true","classes":"","out-height":"","label":"unnamed-chunk-5"},"id":5,"code":"#sobel\na <- coef(model2)[2]\nb <- coef(model3)[3]\nSEa <- summary(model2)$coefficients[2,2]\nSEb <- summary(model3)$coefficients[3,2]\nzscore <- (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)))\nzscore\n#two tailed test \npnorm(abs(zscore), lower.tail = F)*2"},{"options":{"message":"true","dpi":72,"fig-cap":"","output":"true","autorun":"false","fig-width":7,"comment":"","results":"markup","read-only":"false","out-width":"700px","context":"interactive","fig-height":5,"warning":"true","classes":"","out-height":"","label":"unnamed-chunk-6"},"id":6,"code":"'\n#bpath and cp paths\n\n# a path\n\n# indirect\n\n# total\n\n'"}];
 
   </script>
   <script type="module">
@@ -1465,7 +1465,7 @@ Jason Geller, PH.D.(he/him)
 </div>
 </div>
 
-  <p class="date">2024-04-05</p>
+  <p class="date">2024-04-06</p>
 </section>
 <section id="today" class="slide level2">
 <h2>Today</h2>
@@ -1516,7 +1516,7 @@ Jason Geller, PH.D.(he/him)
 <ul>
 <li><p>Manipulation of and random assignment of X affords causal inference/causal claims</p>
 <ul>
-<li><p>However, we often do not do the for M</p>
+<li><p>However, we rarely do the same for M</p>
 <ul>
 <li>Mediation analysis requires theory and subsequent experiments to test mediator</li>
 </ul></li>
@@ -1570,14 +1570,12 @@ Jason Geller, PH.D.(he/him)
 <section id="load-packages" class="slide level2">
 <h2>Load packages</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">library</span>(easystats)</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">library</span>(MeMoBootR) <span class="co"># mediation analysis #download from gihub</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="fu">library</span>(JSmediation) <span class="co"># mediation analysis</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="fu">library</span>(flexplot) <span class="co"># mediate_plot function</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="fu">library</span>(lavaan) <span class="co"># SEM and mediation </span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#library(tidySEM)# plot models from lavaan</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="fu">library</span>(processR) <span class="co"># path models `</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(MeMoBootR) <span class="co"># mediation analysis #download from gihub</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">library</span>(JSmediation) <span class="co"># mediation analysis</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">library</span>(flexplot) <span class="co"># mediate_plot function</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="fu">library</span>(lavaan) <span class="co"># SEM and mediation </span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#library(tidySEM)# plot models from lavaan</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="fu">library</span>(processR) <span class="co"># path model figs`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="load-data" class="slide level2">
@@ -1667,7 +1665,8 @@ Jason Geller, PH.D.(he/him)
 </div>
 </div>
 </div>
-</section>
+
+<img data-src="mediation_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
 <section id="mediation-paths" class="slide level2">
 <h2>Mediation Paths</h2>
 
@@ -1736,9 +1735,8 @@ Jason Geller, PH.D.(he/him)
 </section>
 <section id="mediation-c-path" class="slide level2">
 <h2>Mediation: c path</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(exam <span class="sc">~</span> facebook, <span class="at">data =</span> master)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<div id="qwebr-insertion-location-2"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table" data-quarto-postprocess="true" style="font-size: 24px; margin-left: auto; margin-right: auto;">
@@ -1791,9 +1789,8 @@ Jason Geller, PH.D.(he/him)
 </section>
 <section id="mediation-a-path" class="slide level2">
 <h2>Mediation: a path</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(previous <span class="sc">~</span> facebook, <span class="at">data =</span> master)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<div id="qwebr-insertion-location-3"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table" data-quarto-postprocess="true" style="font-size: 24px; margin-left: auto; margin-right: auto;">
@@ -1849,9 +1846,8 @@ Jason Geller, PH.D.(he/him)
 <ul>
 <li>Add in the b (M –&gt; Y) and c’ <strong>(direct)</strong> paths: X + M –&gt; Y</li>
 </ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(exam <span class="sc">~</span> facebook <span class="sc">+</span> previous, <span class="at">data =</span> master)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<div id="qwebr-insertion-location-4"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table" data-quarto-postprocess="true" style="font-size: 24px; margin-left: auto; margin-right: auto;">
@@ -1927,6 +1923,25 @@ Jason Geller, PH.D.(he/him)
 </ul>
 </div>
 </section>
+<section id="causal-steps---baron-kenny-1986-2" class="slide level2">
+<h2>Causal Steps - Baron &amp; Kenny (1986)</h2>
+<ul>
+<li><p>Traditionally, to show mediation ALL these conditions must be met:</p>
+<ul>
+<li><p>X must significantly predict Y in Step 1 ✅</p></li>
+<li><p>X must significantly predict M in Step 2 ✅</p></li>
+<li><p>M must significantly predict Y controlling for X in Step 3 ✅</p></li>
+<li><p>The effect of X on Y must be reduced in Step 4</p>
+<ul>
+<li><p>If X is no longer significant, you have “full mediation”</p></li>
+<li><p>If X is still significant, then you have “partial mediation” ✅</p>
+<ul>
+<li>Not really used in anymore</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
 <section id="issues-with-causal-steps" class="slide level2">
 <h2>Issues with causal steps</h2>
 <div class="fragment">
@@ -1961,6 +1976,19 @@ Jason Geller, PH.D.(he/him)
 <li><p>Failure to meet a criterion results in game over!</p></li>
 </ul></li>
 </ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Yzerbyt, V., Muller, D., Batailler, C., &amp; Judd, C. M. (2018). New recommendations for testing indirect effects in mediational models: The need to report and test component paths. <em>Journal of Personality and Social Psychology</em>, <em>115</em>(6), 929–943. doi: 10.1037/pspa0000132</p>
+</div>
+</div>
+</div>
 </section>
 <section id="testing-mediation-sobel-test" class="slide level2">
 <h2>Testing mediation: Sobel test</h2>
@@ -1975,32 +2003,15 @@ Jason Geller, PH.D.(he/him)
 </section>
 <section id="sobel-test" class="slide level2">
 <h2>Sobel Test</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">#sobel</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>a <span class="ot">&lt;-</span> <span class="fu">coef</span>(model2)[<span class="dv">2</span>]</span>
-<span id="cb6-3"><a href="#cb6-3"></a>b <span class="ot">&lt;-</span> <span class="fu">coef</span>(model3)[<span class="dv">3</span>]</span>
-<span id="cb6-4"><a href="#cb6-4"></a>SEa <span class="ot">&lt;-</span> <span class="fu">summary</span>(model2)<span class="sc">$</span>coefficients[<span class="dv">2</span>,<span class="dv">2</span>]</span>
-<span id="cb6-5"><a href="#cb6-5"></a>SEb <span class="ot">&lt;-</span> <span class="fu">summary</span>(model3)<span class="sc">$</span>coefficients[<span class="dv">3</span>,<span class="dv">2</span>]</span>
-<span id="cb6-6"><a href="#cb6-6"></a>zscore <span class="ot">&lt;-</span> (a<span class="sc">*</span>b)<span class="sc">/</span>(<span class="fu">sqrt</span>((b<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>SEa<span class="sc">^</span><span class="dv">2</span>)<span class="sc">+</span>(a<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>SEb<span class="sc">^</span><span class="dv">2</span>)))</span>
-<span id="cb6-7"><a href="#cb6-7"></a>zscore</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> facebook 
--1.773805 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">#two tailed test </span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">pnorm</span>(<span class="fu">abs</span>(zscore), <span class="at">lower.tail =</span> F)<span class="sc">*</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  facebook 
-0.07609548 </code></pre>
-</div>
-</div>
+<div id="qwebr-insertion-location-5"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 <section id="sobel-test-1" class="slide level2">
 <h2>Sobel test</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(bda)</span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="co">#conducts sobel test</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="fu">mediation.test</span>(master<span class="sc">$</span>previous,master<span class="sc">$</span>facebook,master<span class="sc">$</span>exam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(bda)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#conducts sobel test</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">mediation.test</span>(master<span class="sc">$</span>previous,master<span class="sc">$</span>facebook,master<span class="sc">$</span>exam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              Sobel      Aroian     Goodman
 z.value -1.77380460 -1.71464047 -1.83954863
@@ -2030,7 +2041,7 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 <section id="sobel-test-2" class="slide level2">
 <h2>Sobel test</h2>
 <ul>
-<li><p>Serious problems!</p>
+<li><p>Serious problem!</p>
 <ul>
 <li><p>Assumes indirect effect is normally distributed</p>
 <ul>
@@ -2128,13 +2139,13 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"doomlab/MeMoBootR"</span>)</span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="co">#library(MeMoBootR)</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="co">#no missing data allowed</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a>med_results <span class="ot">&lt;-</span> <span class="fu">mediation1</span>(<span class="at">y =</span> <span class="st">"exam"</span>,</span>
-<span id="cb12-5"><a href="#cb12-5"></a>                          <span class="at">x =</span> <span class="st">"facebook"</span>, </span>
-<span id="cb12-6"><a href="#cb12-6"></a>                          <span class="at">m =</span> <span class="st">"previous"</span>, <span class="at">nboot =</span> <span class="dv">1000</span>, </span>
-<span id="cb12-7"><a href="#cb12-7"></a>                          <span class="at">df =</span> master)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"doomlab/MeMoBootR"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="co">#library(MeMoBootR)</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co">#no missing data allowed</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>med_results <span class="ot">&lt;-</span> <span class="fu">mediation1</span>(<span class="at">y =</span> <span class="st">"exam"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5"></a>                          <span class="at">x =</span> <span class="st">"facebook"</span>, </span>
+<span id="cb5-6"><a href="#cb5-6"></a>                          <span class="at">m =</span> <span class="st">"previous"</span>, <span class="at">nboot =</span> <span class="dv">1000</span>, </span>
+<span id="cb5-7"><a href="#cb5-7"></a>                          <span class="at">df =</span> master)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -2172,7 +2183,7 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 <div class="tab-content">
 <div id="tabset-2-1">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>med_results<span class="sc">$</span>datascreening<span class="sc">$</span>linearity</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>med_results<span class="sc">$</span>datascreening<span class="sc">$</span>linearity</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -2184,7 +2195,7 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 </div>
 <div id="tabset-2-2">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>med_results<span class="sc">$</span>datascreening<span class="sc">$</span>normality</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>med_results<span class="sc">$</span>datascreening<span class="sc">$</span>normality</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -2196,7 +2207,7 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 </div>
 <div id="tabset-2-3">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>med_results<span class="sc">$</span>datascreening<span class="sc">$</span>homogen</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>med_results<span class="sc">$</span>datascreening<span class="sc">$</span>homogen</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -2217,7 +2228,7 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 <div class="tab-content">
 <div id="tabset-3-1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">model_parameters</span>(med_results<span class="sc">$</span>model1) <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">model_parameters</span>(med_results<span class="sc">$</span>model1) <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <colgroup>
@@ -2274,7 +2285,7 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 </div>
 <div id="tabset-3-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">model_parameters</span>((med_results<span class="sc">$</span>model2)) <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">model_parameters</span>((med_results<span class="sc">$</span>model2)) <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <colgroup>
@@ -2331,7 +2342,7 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 </div>
 <div id="tabset-3-3">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">model_parameters</span>(med_results<span class="sc">$</span>model3) <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">model_parameters</span>(med_results<span class="sc">$</span>model3) <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <colgroup>
@@ -2406,17 +2417,17 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 <li>Next, you can get the Sobel test results:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>med_results<span class="sc">$</span>indirect.effect</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>med_results<span class="sc">$</span>indirect.effect</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   facebook 
 -0.05471237 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>med_results<span class="sc">$</span>z.score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>med_results<span class="sc">$</span>z.score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>facebook 
 -1.71464 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>med_results<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>med_results<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  facebook 
 0.08641116 </code></pre>
@@ -2429,7 +2440,7 @@ p.value  0.07609548  0.08641116  0.06583453</code></pre>
 <li>Last, let’s get the bootstrapped results:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>med_results<span class="sc">$</span>boot.results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>med_results<span class="sc">$</span>boot.results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ORDINARY NONPARAMETRIC BOOTSTRAP
@@ -2442,21 +2453,20 @@ boot(data = finaldata, statistic = indirectmed, R = nboot, formula2 = allformula
 
 Bootstrap Statistics :
        original       bias    std. error
-t1* -0.05471237 -0.002351216  0.03876614</code></pre>
+t1* -0.05471237 -0.000353005  0.03749031</code></pre>
 </div>
 </div>
-<ul>
-<li><p>The indirect effect would be reported as: <em>b</em> = 0.05, 95% CI[-0.147, -0.001]</p></li>
-<li><p>Returns several type of cis</p></li>
-</ul>
 </section>
 <section id="bootstrapping-1" class="slide level2">
 <h2>Bootstrapping</h2>
 <ul>
+<li><p>Returns several type of cis</p>
+<ul>
 <li>Percentile bootstrap</li>
+</ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>med_results<span class="sc">$</span>boot.ci<span class="sc">$</span>percent <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>med_results<span class="sc">$</span>boot.ci<span class="sc">$</span>percent <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <thead>
@@ -2473,18 +2483,21 @@ t1* -0.05471237 -0.002351216  0.03876614</code></pre>
 <td style="text-align: right;">0.95</td>
 <td style="text-align: right;">25.03</td>
 <td style="text-align: right;">975.98</td>
-<td style="text-align: right;">-0.1498224</td>
-<td style="text-align: right;">-0.0002597</td>
+<td style="text-align: right;">-0.1374724</td>
+<td style="text-align: right;">-0.0012505</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+<ul>
+<li>The indirect effect would be reported as: <em>b</em> = -0.05, 95% CI[-0.147, -0.001]</li>
+</ul>
 </section>
 <section id="mediation-visualization" class="slide level2">
 <h2>Mediation visualization</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>med_results<span class="sc">$</span>diagram</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>med_results<span class="sc">$</span>diagram</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="mediation_files/figure-revealjs/unnamed-chunk-25-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"><div class="callout callout-note callout-titled callout-style-default">
@@ -2504,9 +2517,9 @@ t1* -0.05471237 -0.002351216  0.03876614</code></pre>
 <section id="mediation-visualization-1" class="slide level2">
 <h2>Mediation visualization</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">library</span>(flexplot) <span class="co"># mediation plot</span></span>
-<span id="cb29-2"><a href="#cb29-2"></a></span>
-<span id="cb29-3"><a href="#cb29-3"></a><span class="fu">mediate_plot</span>(exam<span class="sc">~</span>previous <span class="sc">+</span>facebook,<span class="at">data=</span>master)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">library</span>(flexplot) <span class="co"># mediation plot</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a></span>
+<span id="cb22-3"><a href="#cb22-3"></a><span class="fu">mediate_plot</span>(exam<span class="sc">~</span>previous <span class="sc">+</span>facebook,<span class="at">data=</span>master)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="mediation_files/figure-revealjs/unnamed-chunk-26-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
@@ -2515,20 +2528,20 @@ t1* -0.05471237 -0.002351216  0.03876614</code></pre>
 <ul>
 <li><p>Incorporates <code>easystats</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">library</span>(JSmediation)</span>
-<span id="cb30-2"><a href="#cb30-2"></a></span>
-<span id="cb30-3"><a href="#cb30-3"></a>mediation_fit <span class="ot">&lt;-</span> <span class="fu">mdt_simple</span>(master,</span>
-<span id="cb30-4"><a href="#cb30-4"></a>             <span class="at">IV =</span>facebook,</span>
-<span id="cb30-5"><a href="#cb30-5"></a>             <span class="at">DV =</span> exam,</span>
-<span id="cb30-6"><a href="#cb30-6"></a>             <span class="at">M  =</span> previous)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">library</span>(JSmediation)</span>
+<span id="cb23-2"><a href="#cb23-2"></a></span>
+<span id="cb23-3"><a href="#cb23-3"></a>mediation_fit <span class="ot">&lt;-</span> <span class="fu">mdt_simple</span>(master,</span>
+<span id="cb23-4"><a href="#cb23-4"></a>             <span class="at">IV =</span>facebook,</span>
+<span id="cb23-5"><a href="#cb23-5"></a>             <span class="at">DV =</span> exam,</span>
+<span id="cb23-6"><a href="#cb23-6"></a>             <span class="at">M  =</span> previous)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></li>
 </ul>
 </section>
 <section id="jsmediation-results" class="slide level2">
 <h2>JSmediation results</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co"># Mediation Results</span></span>
-<span id="cb31-2"><a href="#cb31-2"></a>mediation_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># Mediation Results</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>mediation_fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Test of mediation (simple mediation)
 ==============================================
@@ -2566,9 +2579,9 @@ Fitted models:
 <section id="jsmediation-indirect-effect" class="slide level2">
 <h2>JSmediation: Indirect effect</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co"># Testing Indirect Effect with `JSmediation`</span></span>
-<span id="cb33-2"><a href="#cb33-2"></a>model_fit_with_index <span class="ot">&lt;-</span> <span class="fu">add_index</span>(mediation_fit)</span>
-<span id="cb33-3"><a href="#cb33-3"></a>model_fit_with_index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># Testing Indirect Effect with `JSmediation`</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>model_fit_with_index <span class="ot">&lt;-</span> <span class="fu">add_index</span>(mediation_fit)</span>
+<span id="cb26-3"><a href="#cb26-3"></a>model_fit_with_index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Test of mediation (simple mediation)
 ==============================================
@@ -2597,13 +2610,26 @@ Indirect effect index:
 - confidence interval:
   - method: Monte Carlo (5000 iterations)
   - level: 0.05 
-  - CI: [-0.131; -0.00328]
+  - CI: [-0.124; -0.00327]
 
 Fitted models:
 
 - X -&gt; Y 
 - X -&gt; M 
 - X + M -&gt; Y </code></pre>
+</div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Take note of defaults and how how CIs are estimated. Here they use Monte Carlo CIs</p>
+</div>
 </div>
 </div>
 </section>
@@ -2614,8 +2640,8 @@ Fitted models:
 <div class="tab-content">
 <div id="tabset-4-1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>first_model <span class="ot">&lt;-</span> <span class="fu">extract_model</span>(mediation_fit, <span class="at">step =</span> <span class="dv">1</span>)</span>
-<span id="cb35-2"><a href="#cb35-2"></a>performance<span class="sc">::</span><span class="fu">check_model</span>(first_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>first_model <span class="ot">&lt;-</span> <span class="fu">extract_model</span>(mediation_fit, <span class="at">step =</span> <span class="dv">1</span>)</span>
+<span id="cb28-2"><a href="#cb28-2"></a>performance<span class="sc">::</span><span class="fu">check_model</span>(first_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -2627,8 +2653,8 @@ Fitted models:
 </div>
 <div id="tabset-4-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>second_model <span class="ot">&lt;-</span> <span class="fu">extract_model</span>(mediation_fit, <span class="at">step =</span> <span class="dv">2</span>)</span>
-<span id="cb36-2"><a href="#cb36-2"></a>performance<span class="sc">::</span><span class="fu">check_model</span>(second_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>second_model <span class="ot">&lt;-</span> <span class="fu">extract_model</span>(mediation_fit, <span class="at">step =</span> <span class="dv">2</span>)</span>
+<span id="cb29-2"><a href="#cb29-2"></a>performance<span class="sc">::</span><span class="fu">check_model</span>(second_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -2640,8 +2666,8 @@ Fitted models:
 </div>
 <div id="tabset-4-3">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>third_model <span class="ot">&lt;-</span> <span class="fu">extract_model</span>(mediation_fit, <span class="at">step =</span> <span class="dv">3</span>)</span>
-<span id="cb37-2"><a href="#cb37-2"></a>performance<span class="sc">::</span><span class="fu">check_model</span>(third_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>third_model <span class="ot">&lt;-</span> <span class="fu">extract_model</span>(mediation_fit, <span class="at">step =</span> <span class="dv">3</span>)</span>
+<span id="cb30-2"><a href="#cb30-2"></a>performance<span class="sc">::</span><span class="fu">check_model</span>(third_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -2653,10 +2679,27 @@ Fitted models:
 </div>
 </div>
 </div>
+</section>
+<section id="jsmediation-results-assumptions-1" class="slide level2">
+<h2>JSmediation results: Assumptions</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>JSmediation<span class="sc">::</span><span class="fu">check_assumptions</span>(model_fit_with_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>X -&gt; Y
+Warning: Non-normality of residuals detected (p &lt; .001).
+Warning: Heteroscedasticity (non-constant error variance) detected (p &lt; .001).
+X -&gt; M
+Warning: Non-normality of residuals detected (p &lt; .001).
+Warning: Heteroscedasticity (non-constant error variance) detected (p = 0.037).
+X + M -&gt; Y
+Warning: Non-normality of residuals detected (p &lt; .001).
+Warning: Heteroscedasticity (non-constant error variance) detected (p &lt; .001).</code></pre>
+</div>
+</div>
 </section></section>
 <section>
 <section id="complex-mediation-models" class="title-slide slide level1 center">
-<h1>complex mediation models</h1>
+<h1>Complex Mediation Models</h1>
 
 <img data-src="sem.webp" class="quarto-figure quarto-figure-center r-stretch"></section>
 <section id="multiple-mediator-model" class="slide level2">
@@ -2674,23 +2717,22 @@ Fitted models:
 <ul>
 <li>Overall influence of mediators</li>
 </ul></li>
-<li><p>Can example which one has a stronger influence</p></li>
+<li><p>Can determine which one has a stronger influence</p></li>
 </ul>
 </div><div class="column" style="width:50%;">
+<p><br></p>
+<p><br></p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-33-1.png" class="quarto-figure quarto-figure-center" width="768"></p>
+<p><img data-src="mediation_files/figure-revealjs/unnamed-chunk-34-1.png" class="quarto-figure quarto-figure-center" width="768"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
-</section>
-<section id="multiple-mediators-example" class="slide level2">
-<h2>Multiple mediators: Example</h2>
 </section>
 <section id="lavaan" class="slide level2">
 <h2>Lavaan</h2>
@@ -2699,34 +2741,34 @@ Fitted models:
 <li><p><code>~</code> regression; <code>*</code> labels; <code>:=</code> define variables</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">library</span>(lavaan)</span>
-<span id="cb38-2"><a href="#cb38-2"></a>multipleMediation <span class="ot">&lt;-</span> <span class="st">'</span></span>
-<span id="cb38-3"><a href="#cb38-3"></a><span class="st">bmi ~ b1 * tvhours + b2 * cellhours + cp * age</span></span>
-<span id="cb38-4"><a href="#cb38-4"></a><span class="st">tvhours ~ a1 * age</span></span>
-<span id="cb38-5"><a href="#cb38-5"></a><span class="st">cellhours ~ a2 * age</span></span>
-<span id="cb38-6"><a href="#cb38-6"></a><span class="st"># Fit indirect 1</span></span>
-<span id="cb38-7"><a href="#cb38-7"></a><span class="st">indirect1 := a1 * b1</span></span>
-<span id="cb38-8"><a href="#cb38-8"></a><span class="st"># Fit indirect 2</span></span>
-<span id="cb38-9"><a href="#cb38-9"></a><span class="st">indirect2 := a2 * b2</span></span>
-<span id="cb38-10"><a href="#cb38-10"></a><span class="st"># total</span></span>
-<span id="cb38-11"><a href="#cb38-11"></a><span class="st">total := cp + (a1 * b1) + (a2 * b2)</span></span>
-<span id="cb38-12"><a href="#cb38-12"></a><span class="st">total_indirect := (a1 * b1) + (a2 * b2)</span></span>
-<span id="cb38-13"><a href="#cb38-13"></a><span class="st">#test if size of med are different</span></span>
-<span id="cb38-14"><a href="#cb38-14"></a><span class="st">med_diff := indirect1 - indirect2</span></span>
-<span id="cb38-15"><a href="#cb38-15"></a><span class="st">#prob mediated</span></span>
-<span id="cb38-16"><a href="#cb38-16"></a><span class="st">##prop_indirect1</span></span>
-<span id="cb38-17"><a href="#cb38-17"></a><span class="st">prop_med_1 := indirect1 / (indirect1+cp)</span></span>
-<span id="cb38-18"><a href="#cb38-18"></a><span class="st">##prop_indirect2</span></span>
-<span id="cb38-19"><a href="#cb38-19"></a><span class="st">prop_med_2 := indirect2 / (indirect2+cp)</span></span>
-<span id="cb38-20"><a href="#cb38-20"></a><span class="st">prop_med := total_indirect /(total_indirect+cp)</span></span>
-<span id="cb38-21"><a href="#cb38-21"></a><span class="st">'</span></span>
-<span id="cb38-22"><a href="#cb38-22"></a>fit <span class="ot">&lt;-</span> <span class="fu">sem</span>(<span class="at">model =</span> multipleMediation, <span class="at">data =</span> weight_behavior, <span class="at">se =</span> <span class="st">"bootstrap"</span>,  <span class="at">bootstrap =</span> <span class="dv">500</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb33-2"><a href="#cb33-2"></a>multipleMediation <span class="ot">&lt;-</span> <span class="st">'</span></span>
+<span id="cb33-3"><a href="#cb33-3"></a><span class="st">bmi ~ b1 * tvhours + b2 * cellhours + cp * age</span></span>
+<span id="cb33-4"><a href="#cb33-4"></a><span class="st">tvhours ~ a1 * age</span></span>
+<span id="cb33-5"><a href="#cb33-5"></a><span class="st">cellhours ~ a2 * age</span></span>
+<span id="cb33-6"><a href="#cb33-6"></a><span class="st"># Fit indirect 1</span></span>
+<span id="cb33-7"><a href="#cb33-7"></a><span class="st">indirect1 := a1 * b1</span></span>
+<span id="cb33-8"><a href="#cb33-8"></a><span class="st"># Fit indirect 2</span></span>
+<span id="cb33-9"><a href="#cb33-9"></a><span class="st">indirect2 := a2 * b2</span></span>
+<span id="cb33-10"><a href="#cb33-10"></a><span class="st"># total</span></span>
+<span id="cb33-11"><a href="#cb33-11"></a><span class="st">total := cp + (a1 * b1) + (a2 * b2)</span></span>
+<span id="cb33-12"><a href="#cb33-12"></a><span class="st">total_indirect := (a1 * b1) + (a2 * b2)</span></span>
+<span id="cb33-13"><a href="#cb33-13"></a><span class="st">#test if size of med are different</span></span>
+<span id="cb33-14"><a href="#cb33-14"></a><span class="st">med_diff := indirect1 - indirect2</span></span>
+<span id="cb33-15"><a href="#cb33-15"></a><span class="st">#prob mediated</span></span>
+<span id="cb33-16"><a href="#cb33-16"></a><span class="st">##prop_indirect1</span></span>
+<span id="cb33-17"><a href="#cb33-17"></a><span class="st">prop_med_1 := indirect1 / (indirect1+cp)</span></span>
+<span id="cb33-18"><a href="#cb33-18"></a><span class="st">##prop_indirect2</span></span>
+<span id="cb33-19"><a href="#cb33-19"></a><span class="st">prop_med_2 := indirect2 / (indirect2+cp)</span></span>
+<span id="cb33-20"><a href="#cb33-20"></a><span class="st">prop_med := total_indirect /(total_indirect+cp)</span></span>
+<span id="cb33-21"><a href="#cb33-21"></a><span class="st">'</span></span>
+<span id="cb33-22"><a href="#cb33-22"></a>fit <span class="ot">&lt;-</span> <span class="fu">sem</span>(<span class="at">model =</span> multipleMediation, <span class="at">data =</span> weight_behavior, <span class="at">se =</span> <span class="st">"bootstrap"</span>,  <span class="at">bootstrap =</span> <span class="dv">500</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="lavaan-summary" class="slide level2">
 <h2>Lavaan summary</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="fu">summary</span>(fit, <span class="at">ci=</span><span class="cn">TRUE</span>, <span class="at">rsquare=</span><span class="cn">TRUE</span>) <span class="co"># output with 95% bootstrapped cis and rsqaure</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">summary</span>(fit, <span class="at">ci=</span><span class="cn">TRUE</span>, <span class="at">rsquare=</span><span class="cn">TRUE</span>) <span class="co"># output with 95% bootstrapped cis and rsqaure</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>lavaan 0.6.17 ended normally after 8 iterations
 
@@ -2751,19 +2793,19 @@ Parameter Estimates:
 Regressions:
                    Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
   bmi ~                                                                 
-    tvhours   (b1)    0.120    0.133    0.898    0.369   -0.130    0.388
-    cellhours (b2)    0.217    0.133    1.631    0.103   -0.038    0.479
-    age       (cp)    0.026    0.124    0.207    0.836   -0.272    0.218
+    tvhours   (b1)    0.120    0.122    0.977    0.329   -0.113    0.364
+    cellhours (b2)    0.217    0.132    1.638    0.102   -0.017    0.481
+    age       (cp)    0.026    0.132    0.195    0.845   -0.298    0.220
   tvhours ~                                                             
-    age       (a1)    0.017    0.047    0.367    0.714   -0.077    0.132
+    age       (a1)    0.017    0.041    0.422    0.673   -0.067    0.105
   cellhours ~                                                           
-    age       (a2)    0.041    0.067    0.616    0.538   -0.035    0.225
+    age       (a2)    0.041    0.063    0.646    0.518   -0.031    0.207
 
 Variances:
                    Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
-   .bmi              15.273    1.602    9.535    0.000   11.812   18.542
-   .tvhours           1.883    0.077   24.569    0.000    1.727    2.028
-   .cellhours         1.512    0.085   17.722    0.000    1.340    1.663
+   .bmi              15.273    1.582    9.652    0.000   12.390   18.681
+   .tvhours           1.883    0.070   26.905    0.000    1.741    2.013
+   .cellhours         1.512    0.087   17.327    0.000    1.342    1.683
 
 R-Square:
                    Estimate
@@ -2773,14 +2815,14 @@ R-Square:
 
 Defined Parameters:
                    Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
-    indirect1         0.002    0.009    0.223    0.824   -0.016    0.023
-    indirect2         0.009    0.019    0.458    0.647   -0.010    0.066
-    total             0.037    0.118    0.310    0.757   -0.241    0.223
-    total_indirect    0.011    0.021    0.512    0.609   -0.014    0.073
-    med_diff         -0.007    0.022   -0.316    0.752   -0.070    0.021
-    prop_med_1        0.074    0.579    0.128    0.898   -0.534    0.734
-    prop_med_2        0.257    1.723    0.149    0.881   -1.853    1.788
-    prop_med          0.299   26.997    0.011    0.991   -1.746    2.433</code></pre>
+    indirect1         0.002    0.008    0.271    0.786   -0.010    0.020
+    indirect2         0.009    0.018    0.482    0.630   -0.008    0.065
+    total             0.037    0.128    0.287    0.774   -0.273    0.242
+    total_indirect    0.011    0.020    0.550    0.583   -0.009    0.073
+    med_diff         -0.007    0.020   -0.342    0.733   -0.066    0.019
+    prop_med_1        0.074    0.599    0.124    0.901   -0.434    0.446
+    prop_med_2        0.257    4.942    0.052    0.959   -1.190    1.197
+    prop_med          0.299    1.052    0.284    0.776   -1.572    1.364</code></pre>
 </div>
 </div>
 </section>
@@ -2792,28 +2834,28 @@ Defined Parameters:
 <li><code>semoutput</code> <a href="https://dr-jt.github.io/semoutput/" class="uri">https://dr-jt.github.io/semoutput/</a></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a> semoutput<span class="sc">::</span><span class="fu">sem_paths</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a> semoutput<span class="sc">::</span><span class="fu">sem_paths</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
-<div id="ubeybpihkn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ubeybpihkn table {
+<div id="xyurigiaht" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#xyurigiaht table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ubeybpihkn thead, #ubeybpihkn tbody, #ubeybpihkn tfoot, #ubeybpihkn tr, #ubeybpihkn td, #ubeybpihkn th {
+#xyurigiaht thead, #xyurigiaht tbody, #xyurigiaht tfoot, #xyurigiaht tr, #xyurigiaht td, #xyurigiaht th {
   border-style: none;
 }
 
-#ubeybpihkn p {
+#xyurigiaht p {
   margin: 0;
   padding: 0;
 }
 
-#ubeybpihkn .gt_table {
+#xyurigiaht .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2839,12 +2881,12 @@ Defined Parameters:
   border-left-color: #D3D3D3;
 }
 
-#ubeybpihkn .gt_caption {
+#xyurigiaht .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ubeybpihkn .gt_title {
+#xyurigiaht .gt_title {
   color: #333333;
   font-size: 18px;
   font-weight: bolder;
@@ -2856,7 +2898,7 @@ Defined Parameters:
   border-bottom-width: 0;
 }
 
-#ubeybpihkn .gt_subtitle {
+#xyurigiaht .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2868,7 +2910,7 @@ Defined Parameters:
   border-top-width: 0;
 }
 
-#ubeybpihkn .gt_heading {
+#xyurigiaht .gt_heading {
   background-color: #FFFFFF;
   text-align: left;
   border-bottom-color: #FFFFFF;
@@ -2880,13 +2922,13 @@ Defined Parameters:
   border-right-color: #D3D3D3;
 }
 
-#ubeybpihkn .gt_bottom_border {
+#xyurigiaht .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 0px;
   border-bottom-color: #D3D3D3;
 }
 
-#ubeybpihkn .gt_col_headings {
+#xyurigiaht .gt_col_headings {
   border-top-style: solid;
   border-top-width: 0px;
   border-top-color: #D3D3D3;
@@ -2901,7 +2943,7 @@ Defined Parameters:
   border-right-color: #D3D3D3;
 }
 
-#ubeybpihkn .gt_col_heading {
+#xyurigiaht .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2921,7 +2963,7 @@ Defined Parameters:
   overflow-x: hidden;
 }
 
-#ubeybpihkn .gt_column_spanner_outer {
+#xyurigiaht .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2933,15 +2975,15 @@ Defined Parameters:
   padding-right: 4px;
 }
 
-#ubeybpihkn .gt_column_spanner_outer:first-child {
+#xyurigiaht .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ubeybpihkn .gt_column_spanner_outer:last-child {
+#xyurigiaht .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ubeybpihkn .gt_column_spanner {
+#xyurigiaht .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2953,11 +2995,11 @@ Defined Parameters:
   width: 100%;
 }
 
-#ubeybpihkn .gt_spanner_row {
+#xyurigiaht .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ubeybpihkn .gt_group_heading {
+#xyurigiaht .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -2983,7 +3025,7 @@ Defined Parameters:
   text-align: left;
 }
 
-#ubeybpihkn .gt_empty_group_heading {
+#xyurigiaht .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2998,15 +3040,15 @@ Defined Parameters:
   vertical-align: middle;
 }
 
-#ubeybpihkn .gt_from_md > :first-child {
+#xyurigiaht .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ubeybpihkn .gt_from_md > :last-child {
+#xyurigiaht .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ubeybpihkn .gt_row {
+#xyurigiaht .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -3025,7 +3067,7 @@ Defined Parameters:
   overflow-x: hidden;
 }
 
-#ubeybpihkn .gt_stub {
+#xyurigiaht .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3038,7 +3080,7 @@ Defined Parameters:
   padding-right: 15px;
 }
 
-#ubeybpihkn .gt_stub_row_group {
+#xyurigiaht .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3052,15 +3094,15 @@ Defined Parameters:
   vertical-align: top;
 }
 
-#ubeybpihkn .gt_row_group_first td {
+#xyurigiaht .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ubeybpihkn .gt_row_group_first th {
+#xyurigiaht .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ubeybpihkn .gt_summary_row {
+#xyurigiaht .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3070,16 +3112,16 @@ Defined Parameters:
   padding-right: 15px;
 }
 
-#ubeybpihkn .gt_first_summary_row {
+#xyurigiaht .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ubeybpihkn .gt_first_summary_row.thick {
+#xyurigiaht .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ubeybpihkn .gt_last_summary_row {
+#xyurigiaht .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -3089,7 +3131,7 @@ Defined Parameters:
   border-bottom-color: #D3D3D3;
 }
 
-#ubeybpihkn .gt_grand_summary_row {
+#xyurigiaht .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3099,7 +3141,7 @@ Defined Parameters:
   padding-right: 15px;
 }
 
-#ubeybpihkn .gt_first_grand_summary_row {
+#xyurigiaht .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -3109,7 +3151,7 @@ Defined Parameters:
   border-top-color: #D3D3D3;
 }
 
-#ubeybpihkn .gt_last_grand_summary_row_top {
+#xyurigiaht .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -3119,11 +3161,11 @@ Defined Parameters:
   border-bottom-color: #D3D3D3;
 }
 
-#ubeybpihkn .gt_striped {
+#xyurigiaht .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ubeybpihkn .gt_table_body {
+#xyurigiaht .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3132,7 +3174,7 @@ Defined Parameters:
   border-bottom-color: #D3D3D3;
 }
 
-#ubeybpihkn .gt_footnotes {
+#xyurigiaht .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3146,7 +3188,7 @@ Defined Parameters:
   border-right-color: #D3D3D3;
 }
 
-#ubeybpihkn .gt_footnote {
+#xyurigiaht .gt_footnote {
   margin: 0px;
   font-size: 14px;
   padding-top: 4px;
@@ -3155,7 +3197,7 @@ Defined Parameters:
   padding-right: 15px;
 }
 
-#ubeybpihkn .gt_sourcenotes {
+#xyurigiaht .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3169,7 +3211,7 @@ Defined Parameters:
   border-right-color: #D3D3D3;
 }
 
-#ubeybpihkn .gt_sourcenote {
+#xyurigiaht .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -3177,63 +3219,63 @@ Defined Parameters:
   padding-right: 15px;
 }
 
-#ubeybpihkn .gt_left {
+#xyurigiaht .gt_left {
   text-align: left;
 }
 
-#ubeybpihkn .gt_center {
+#xyurigiaht .gt_center {
   text-align: center;
 }
 
-#ubeybpihkn .gt_right {
+#xyurigiaht .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ubeybpihkn .gt_font_normal {
+#xyurigiaht .gt_font_normal {
   font-weight: normal;
 }
 
-#ubeybpihkn .gt_font_bold {
+#xyurigiaht .gt_font_bold {
   font-weight: bold;
 }
 
-#ubeybpihkn .gt_font_italic {
+#xyurigiaht .gt_font_italic {
   font-style: italic;
 }
 
-#ubeybpihkn .gt_super {
+#xyurigiaht .gt_super {
   font-size: 65%;
 }
 
-#ubeybpihkn .gt_footnote_marks {
+#xyurigiaht .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ubeybpihkn .gt_asterisk {
+#xyurigiaht .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ubeybpihkn .gt_indent_1 {
+#xyurigiaht .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ubeybpihkn .gt_indent_2 {
+#xyurigiaht .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ubeybpihkn .gt_indent_3 {
+#xyurigiaht .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ubeybpihkn .gt_indent_4 {
+#xyurigiaht .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ubeybpihkn .gt_indent_5 {
+#xyurigiaht .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -3268,133 +3310,133 @@ Defined Parameters:
     <tr><td headers="rhs" class="gt_row gt_left">age</td>
 <td headers="lhs" class="gt_row gt_left">bmi</td>
 <td headers="est" class="gt_row gt_right"> 0.026</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.272&nbsp;—&nbsp;0.218</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.298&nbsp;—&nbsp;0.220</td>
 <td headers="est.std" class="gt_row gt_right"> 0.008</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−0.069&nbsp;—&nbsp;0.085</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.074&nbsp;—&nbsp;0.090</td>
 <td headers="stars" class="gt_row gt_right"></td>
-<td headers="se" class="gt_row gt_right">0.039</td>
-<td headers="z" class="gt_row gt_right"> 0.207</td>
-<td headers="pvalue" class="gt_row gt_right">0.836</td></tr>
+<td headers="se" class="gt_row gt_right">0.042</td>
+<td headers="z" class="gt_row gt_right"> 0.195</td>
+<td headers="pvalue" class="gt_row gt_right">0.845</td></tr>
     <tr><td headers="rhs" class="gt_row gt_left">cellhours</td>
 <td headers="lhs" class="gt_row gt_left">bmi</td>
 <td headers="est" class="gt_row gt_right"> 0.217</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.038&nbsp;—&nbsp;0.479</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.017&nbsp;—&nbsp;0.481</td>
 <td headers="est.std" class="gt_row gt_right"> 0.068</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−0.014&nbsp;—&nbsp;0.151</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.014&nbsp;—&nbsp;0.150</td>
 <td headers="stars" class="gt_row gt_right"></td>
 <td headers="se" class="gt_row gt_right">0.042</td>
-<td headers="z" class="gt_row gt_right"> 1.616</td>
-<td headers="pvalue" class="gt_row gt_right">0.106</td></tr>
+<td headers="z" class="gt_row gt_right"> 1.632</td>
+<td headers="pvalue" class="gt_row gt_right">0.103</td></tr>
     <tr><td headers="rhs" class="gt_row gt_left">tvhours</td>
 <td headers="lhs" class="gt_row gt_left">bmi</td>
 <td headers="est" class="gt_row gt_right"> 0.120</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.130&nbsp;—&nbsp;0.388</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.113&nbsp;—&nbsp;0.364</td>
 <td headers="est.std" class="gt_row gt_right"> 0.042</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−0.049&nbsp;—&nbsp;0.132</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.041&nbsp;—&nbsp;0.125</td>
 <td headers="stars" class="gt_row gt_right"></td>
-<td headers="se" class="gt_row gt_right">0.046</td>
-<td headers="z" class="gt_row gt_right"> 0.907</td>
-<td headers="pvalue" class="gt_row gt_right">0.365</td></tr>
+<td headers="se" class="gt_row gt_right">0.042</td>
+<td headers="z" class="gt_row gt_right"> 0.989</td>
+<td headers="pvalue" class="gt_row gt_right">0.323</td></tr>
     <tr><td headers="rhs" class="gt_row gt_left">age</td>
 <td headers="lhs" class="gt_row gt_left">cellhours</td>
 <td headers="est" class="gt_row gt_right"> 0.041</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.035&nbsp;—&nbsp;0.225</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.031&nbsp;—&nbsp;0.207</td>
 <td headers="est.std" class="gt_row gt_right"> 0.041</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−0.090&nbsp;—&nbsp;0.173</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.084&nbsp;—&nbsp;0.167</td>
 <td headers="stars" class="gt_row gt_right"></td>
-<td headers="se" class="gt_row gt_right">0.067</td>
-<td headers="z" class="gt_row gt_right"> 0.618</td>
-<td headers="pvalue" class="gt_row gt_right">0.537</td></tr>
+<td headers="se" class="gt_row gt_right">0.064</td>
+<td headers="z" class="gt_row gt_right"> 0.647</td>
+<td headers="pvalue" class="gt_row gt_right">0.518</td></tr>
     <tr><td headers="rhs" class="gt_row gt_left">a1*b1</td>
 <td headers="lhs" class="gt_row gt_left">indirect1</td>
 <td headers="est" class="gt_row gt_right"> 0.002</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.016&nbsp;—&nbsp;0.023</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.010&nbsp;—&nbsp;0.020</td>
 <td headers="est.std" class="gt_row gt_right"> 0.001</td>
 <td headers="ci.lower_std" class="gt_row gt_right">−0.003&nbsp;—&nbsp;0.004</td>
 <td headers="stars" class="gt_row gt_right"></td>
 <td headers="se" class="gt_row gt_right">0.002</td>
-<td headers="z" class="gt_row gt_right"> 0.343</td>
-<td headers="pvalue" class="gt_row gt_right">0.732</td></tr>
+<td headers="z" class="gt_row gt_right"> 0.389</td>
+<td headers="pvalue" class="gt_row gt_right">0.697</td></tr>
     <tr><td headers="rhs" class="gt_row gt_left">a2*b2</td>
 <td headers="lhs" class="gt_row gt_left">indirect2</td>
 <td headers="est" class="gt_row gt_right"> 0.009</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.010&nbsp;—&nbsp;0.066</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.008&nbsp;—&nbsp;0.065</td>
+<td headers="est.std" class="gt_row gt_right"> 0.003</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.007&nbsp;—&nbsp;0.012</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.005</td>
+<td headers="z" class="gt_row gt_right"> 0.588</td>
+<td headers="pvalue" class="gt_row gt_right">0.556</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">indirect1-indirect2</td>
+<td headers="lhs" class="gt_row gt_left">med_diff</td>
+<td headers="est" class="gt_row gt_right">−0.007</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.066&nbsp;—&nbsp;0.019</td>
+<td headers="est.std" class="gt_row gt_right">−0.002</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.012&nbsp;—&nbsp;0.008</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.005</td>
+<td headers="z" class="gt_row gt_right">−0.428</td>
+<td headers="pvalue" class="gt_row gt_right">0.669</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">total_indirect/(total_indirect+cp)</td>
+<td headers="lhs" class="gt_row gt_left">prop_med</td>
+<td headers="est" class="gt_row gt_right"> 0.299</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−1.572&nbsp;—&nbsp;1.364</td>
+<td headers="est.std" class="gt_row gt_right"> 0.299</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−2.052&nbsp;—&nbsp;2.650</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">1.199</td>
+<td headers="z" class="gt_row gt_right"> 0.249</td>
+<td headers="pvalue" class="gt_row gt_right">0.803</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">indirect1/(indirect1+cp)</td>
+<td headers="lhs" class="gt_row gt_left">prop_med_1</td>
+<td headers="est" class="gt_row gt_right"> 0.074</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.434&nbsp;—&nbsp;0.446</td>
+<td headers="est.std" class="gt_row gt_right"> 0.074</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.699&nbsp;—&nbsp;0.848</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.395</td>
+<td headers="z" class="gt_row gt_right"> 0.188</td>
+<td headers="pvalue" class="gt_row gt_right">0.851</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">indirect2/(indirect2+cp)</td>
+<td headers="lhs" class="gt_row gt_left">prop_med_2</td>
+<td headers="est" class="gt_row gt_right"> 0.257</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−1.190&nbsp;—&nbsp;1.197</td>
+<td headers="est.std" class="gt_row gt_right"> 0.257</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−1.941&nbsp;—&nbsp;2.455</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">1.121</td>
+<td headers="z" class="gt_row gt_right"> 0.229</td>
+<td headers="pvalue" class="gt_row gt_right">0.819</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">cp+(a1*b1)+(a2*b2)</td>
+<td headers="lhs" class="gt_row gt_left">total</td>
+<td headers="est" class="gt_row gt_right"> 0.037</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.273&nbsp;—&nbsp;0.242</td>
+<td headers="est.std" class="gt_row gt_right"> 0.012</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.068&nbsp;—&nbsp;0.091</td>
+<td headers="stars" class="gt_row gt_right"></td>
+<td headers="se" class="gt_row gt_right">0.041</td>
+<td headers="z" class="gt_row gt_right"> 0.287</td>
+<td headers="pvalue" class="gt_row gt_right">0.774</td></tr>
+    <tr><td headers="rhs" class="gt_row gt_left">(a1*b1)+(a2*b2)</td>
+<td headers="lhs" class="gt_row gt_left">total_indirect</td>
+<td headers="est" class="gt_row gt_right"> 0.011</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.009&nbsp;—&nbsp;0.073</td>
 <td headers="est.std" class="gt_row gt_right"> 0.003</td>
 <td headers="ci.lower_std" class="gt_row gt_right">−0.007&nbsp;—&nbsp;0.013</td>
 <td headers="stars" class="gt_row gt_right"></td>
 <td headers="se" class="gt_row gt_right">0.005</td>
-<td headers="z" class="gt_row gt_right"> 0.569</td>
-<td headers="pvalue" class="gt_row gt_right">0.569</td></tr>
-    <tr><td headers="rhs" class="gt_row gt_left">indirect1-indirect2</td>
-<td headers="lhs" class="gt_row gt_left">med_diff</td>
-<td headers="est" class="gt_row gt_right">−0.007</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.070&nbsp;—&nbsp;0.021</td>
-<td headers="est.std" class="gt_row gt_right">−0.002</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−0.013&nbsp;—&nbsp;0.008</td>
-<td headers="stars" class="gt_row gt_right"></td>
-<td headers="se" class="gt_row gt_right">0.005</td>
-<td headers="z" class="gt_row gt_right">−0.403</td>
-<td headers="pvalue" class="gt_row gt_right">0.687</td></tr>
-    <tr><td headers="rhs" class="gt_row gt_left">total_indirect/(total_indirect+cp)</td>
-<td headers="lhs" class="gt_row gt_left">prop_med</td>
-<td headers="est" class="gt_row gt_right"> 0.299</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−1.746&nbsp;—&nbsp;2.433</td>
-<td headers="est.std" class="gt_row gt_right"> 0.299</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−1.964&nbsp;—&nbsp;2.562</td>
-<td headers="stars" class="gt_row gt_right"></td>
-<td headers="se" class="gt_row gt_right">1.155</td>
-<td headers="z" class="gt_row gt_right"> 0.259</td>
-<td headers="pvalue" class="gt_row gt_right">0.796</td></tr>
-    <tr><td headers="rhs" class="gt_row gt_left">indirect1/(indirect1+cp)</td>
-<td headers="lhs" class="gt_row gt_left">prop_med_1</td>
-<td headers="est" class="gt_row gt_right"> 0.074</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.534&nbsp;—&nbsp;0.734</td>
-<td headers="est.std" class="gt_row gt_right"> 0.074</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−0.667&nbsp;—&nbsp;0.815</td>
-<td headers="stars" class="gt_row gt_right"></td>
-<td headers="se" class="gt_row gt_right">0.378</td>
-<td headers="z" class="gt_row gt_right"> 0.196</td>
-<td headers="pvalue" class="gt_row gt_right">0.844</td></tr>
-    <tr><td headers="rhs" class="gt_row gt_left">indirect2/(indirect2+cp)</td>
-<td headers="lhs" class="gt_row gt_left">prop_med_2</td>
-<td headers="est" class="gt_row gt_right"> 0.257</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−1.853&nbsp;—&nbsp;1.788</td>
-<td headers="est.std" class="gt_row gt_right"> 0.257</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−1.882&nbsp;—&nbsp;2.396</td>
-<td headers="stars" class="gt_row gt_right"></td>
-<td headers="se" class="gt_row gt_right">1.091</td>
-<td headers="z" class="gt_row gt_right"> 0.236</td>
-<td headers="pvalue" class="gt_row gt_right">0.814</td></tr>
-    <tr><td headers="rhs" class="gt_row gt_left">cp+(a1*b1)+(a2*b2)</td>
-<td headers="lhs" class="gt_row gt_left">total</td>
-<td headers="est" class="gt_row gt_right"> 0.037</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.241&nbsp;—&nbsp;0.223</td>
-<td headers="est.std" class="gt_row gt_right"> 0.012</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−0.063&nbsp;—&nbsp;0.086</td>
-<td headers="stars" class="gt_row gt_right"></td>
-<td headers="se" class="gt_row gt_right">0.038</td>
-<td headers="z" class="gt_row gt_right"> 0.307</td>
-<td headers="pvalue" class="gt_row gt_right">0.759</td></tr>
-    <tr><td headers="rhs" class="gt_row gt_left">(a1*b1)+(a2*b2)</td>
-<td headers="lhs" class="gt_row gt_left">total_indirect</td>
-<td headers="est" class="gt_row gt_right"> 0.011</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.014&nbsp;—&nbsp;0.073</td>
-<td headers="est.std" class="gt_row gt_right"> 0.003</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−0.007&nbsp;—&nbsp;0.014</td>
-<td headers="stars" class="gt_row gt_right"></td>
-<td headers="se" class="gt_row gt_right">0.005</td>
-<td headers="z" class="gt_row gt_right"> 0.662</td>
-<td headers="pvalue" class="gt_row gt_right">0.508</td></tr>
+<td headers="z" class="gt_row gt_right"> 0.682</td>
+<td headers="pvalue" class="gt_row gt_right">0.495</td></tr>
     <tr><td headers="rhs" class="gt_row gt_left">age</td>
 <td headers="lhs" class="gt_row gt_left">tvhours</td>
 <td headers="est" class="gt_row gt_right"> 0.017</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.077&nbsp;—&nbsp;0.132</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.067&nbsp;—&nbsp;0.105</td>
 <td headers="est.std" class="gt_row gt_right"> 0.016</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−0.068&nbsp;—&nbsp;0.099</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.057&nbsp;—&nbsp;0.088</td>
 <td headers="stars" class="gt_row gt_right"></td>
-<td headers="se" class="gt_row gt_right">0.043</td>
-<td headers="z" class="gt_row gt_right"> 0.366</td>
-<td headers="pvalue" class="gt_row gt_right">0.714</td></tr>
+<td headers="se" class="gt_row gt_right">0.037</td>
+<td headers="z" class="gt_row gt_right"> 0.422</td>
+<td headers="pvalue" class="gt_row gt_right">0.673</td></tr>
   </tbody>
   
   <tfoot class="gt_footnotes">
@@ -3412,43 +3454,46 @@ Defined Parameters:
 <section id="lavaan-visualization" class="slide level2">
 <h2>Lavaan Visualization</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="fu">library</span>(tidySEM)<span class="co"># plot models from lavaan</span></span>
-<span id="cb42-2"><a href="#cb42-2"></a>tidySEM<span class="sc">::</span><span class="fu">graph_sem</span>(<span class="at">model=</span>fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">library</span>(tidySEM)<span class="co"># plot models from lavaan</span></span>
+<span id="cb37-2"><a href="#cb37-2"></a></span>
+<span id="cb37-3"><a href="#cb37-3"></a>parallel_map <span class="ot">&lt;-</span> tidySEM<span class="sc">::</span><span class="fu">get_layout</span>(<span class="st">""</span>, <span class="st">"tvhours"</span>, <span class="st">""</span>, <span class="st">"age"</span>, <span class="st">""</span>, <span class="st">"bmi"</span>, <span class="st">""</span>, <span class="st">"cellhours"</span>,</span>
+<span id="cb37-4"><a href="#cb37-4"></a>                                    <span class="st">""</span>, <span class="at">rows =</span> <span class="dv">3</span>)</span>
+<span id="cb37-5"><a href="#cb37-5"></a>tidySEM<span class="sc">::</span><span class="fu">graph_sem</span>(<span class="at">model=</span>fit, <span class="at">layout=</span>parallel_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="mediation_files/figure-revealjs/unnamed-chunk-39-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
+<img data-src="mediation_files/figure-revealjs/unnamed-chunk-40-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
 <section id="lavaan-practice" class="slide level2">
 <h2>Lavaan Practice</h2>
 <ul>
 <li>Fit our simple facebook mediation model using Lavaan</li>
 </ul>
-<div id="qwebr-insertion-location-2"></div>
+<div id="qwebr-insertion-location-6"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 <section id="lavaan-practice-1" class="slide level2">
 <h2>Lavaan Practice</h2>
 <ul>
-<li>Same results as before</li>
+<li>Look at that! Same results as before</li>
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<div id="vzgyduqytr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#vzgyduqytr table {
+<div id="kmlxutkzdp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kmlxutkzdp table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#vzgyduqytr thead, #vzgyduqytr tbody, #vzgyduqytr tfoot, #vzgyduqytr tr, #vzgyduqytr td, #vzgyduqytr th {
+#kmlxutkzdp thead, #kmlxutkzdp tbody, #kmlxutkzdp tfoot, #kmlxutkzdp tr, #kmlxutkzdp td, #kmlxutkzdp th {
   border-style: none;
 }
 
-#vzgyduqytr p {
+#kmlxutkzdp p {
   margin: 0;
   padding: 0;
 }
 
-#vzgyduqytr .gt_table {
+#kmlxutkzdp .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -3474,12 +3519,12 @@ Defined Parameters:
   border-left-color: #D3D3D3;
 }
 
-#vzgyduqytr .gt_caption {
+#kmlxutkzdp .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#vzgyduqytr .gt_title {
+#kmlxutkzdp .gt_title {
   color: #333333;
   font-size: 18px;
   font-weight: bolder;
@@ -3491,7 +3536,7 @@ Defined Parameters:
   border-bottom-width: 0;
 }
 
-#vzgyduqytr .gt_subtitle {
+#kmlxutkzdp .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3503,7 +3548,7 @@ Defined Parameters:
   border-top-width: 0;
 }
 
-#vzgyduqytr .gt_heading {
+#kmlxutkzdp .gt_heading {
   background-color: #FFFFFF;
   text-align: left;
   border-bottom-color: #FFFFFF;
@@ -3515,13 +3560,13 @@ Defined Parameters:
   border-right-color: #D3D3D3;
 }
 
-#vzgyduqytr .gt_bottom_border {
+#kmlxutkzdp .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 0px;
   border-bottom-color: #D3D3D3;
 }
 
-#vzgyduqytr .gt_col_headings {
+#kmlxutkzdp .gt_col_headings {
   border-top-style: solid;
   border-top-width: 0px;
   border-top-color: #D3D3D3;
@@ -3536,7 +3581,7 @@ Defined Parameters:
   border-right-color: #D3D3D3;
 }
 
-#vzgyduqytr .gt_col_heading {
+#kmlxutkzdp .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3556,7 +3601,7 @@ Defined Parameters:
   overflow-x: hidden;
 }
 
-#vzgyduqytr .gt_column_spanner_outer {
+#kmlxutkzdp .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3568,15 +3613,15 @@ Defined Parameters:
   padding-right: 4px;
 }
 
-#vzgyduqytr .gt_column_spanner_outer:first-child {
+#kmlxutkzdp .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#vzgyduqytr .gt_column_spanner_outer:last-child {
+#kmlxutkzdp .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#vzgyduqytr .gt_column_spanner {
+#kmlxutkzdp .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3588,11 +3633,11 @@ Defined Parameters:
   width: 100%;
 }
 
-#vzgyduqytr .gt_spanner_row {
+#kmlxutkzdp .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#vzgyduqytr .gt_group_heading {
+#kmlxutkzdp .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -3618,7 +3663,7 @@ Defined Parameters:
   text-align: left;
 }
 
-#vzgyduqytr .gt_empty_group_heading {
+#kmlxutkzdp .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3633,15 +3678,15 @@ Defined Parameters:
   vertical-align: middle;
 }
 
-#vzgyduqytr .gt_from_md > :first-child {
+#kmlxutkzdp .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vzgyduqytr .gt_from_md > :last-child {
+#kmlxutkzdp .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vzgyduqytr .gt_row {
+#kmlxutkzdp .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -3660,7 +3705,7 @@ Defined Parameters:
   overflow-x: hidden;
 }
 
-#vzgyduqytr .gt_stub {
+#kmlxutkzdp .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3673,7 +3718,7 @@ Defined Parameters:
   padding-right: 15px;
 }
 
-#vzgyduqytr .gt_stub_row_group {
+#kmlxutkzdp .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3687,15 +3732,15 @@ Defined Parameters:
   vertical-align: top;
 }
 
-#vzgyduqytr .gt_row_group_first td {
+#kmlxutkzdp .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#vzgyduqytr .gt_row_group_first th {
+#kmlxutkzdp .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#vzgyduqytr .gt_summary_row {
+#kmlxutkzdp .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3705,16 +3750,16 @@ Defined Parameters:
   padding-right: 15px;
 }
 
-#vzgyduqytr .gt_first_summary_row {
+#kmlxutkzdp .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#vzgyduqytr .gt_first_summary_row.thick {
+#kmlxutkzdp .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#vzgyduqytr .gt_last_summary_row {
+#kmlxutkzdp .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -3724,7 +3769,7 @@ Defined Parameters:
   border-bottom-color: #D3D3D3;
 }
 
-#vzgyduqytr .gt_grand_summary_row {
+#kmlxutkzdp .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3734,7 +3779,7 @@ Defined Parameters:
   padding-right: 15px;
 }
 
-#vzgyduqytr .gt_first_grand_summary_row {
+#kmlxutkzdp .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -3744,7 +3789,7 @@ Defined Parameters:
   border-top-color: #D3D3D3;
 }
 
-#vzgyduqytr .gt_last_grand_summary_row_top {
+#kmlxutkzdp .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 15px;
@@ -3754,11 +3799,11 @@ Defined Parameters:
   border-bottom-color: #D3D3D3;
 }
 
-#vzgyduqytr .gt_striped {
+#kmlxutkzdp .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#vzgyduqytr .gt_table_body {
+#kmlxutkzdp .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3767,7 +3812,7 @@ Defined Parameters:
   border-bottom-color: #D3D3D3;
 }
 
-#vzgyduqytr .gt_footnotes {
+#kmlxutkzdp .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3781,7 +3826,7 @@ Defined Parameters:
   border-right-color: #D3D3D3;
 }
 
-#vzgyduqytr .gt_footnote {
+#kmlxutkzdp .gt_footnote {
   margin: 0px;
   font-size: 14px;
   padding-top: 4px;
@@ -3790,7 +3835,7 @@ Defined Parameters:
   padding-right: 15px;
 }
 
-#vzgyduqytr .gt_sourcenotes {
+#kmlxutkzdp .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3804,7 +3849,7 @@ Defined Parameters:
   border-right-color: #D3D3D3;
 }
 
-#vzgyduqytr .gt_sourcenote {
+#kmlxutkzdp .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -3812,63 +3857,63 @@ Defined Parameters:
   padding-right: 15px;
 }
 
-#vzgyduqytr .gt_left {
+#kmlxutkzdp .gt_left {
   text-align: left;
 }
 
-#vzgyduqytr .gt_center {
+#kmlxutkzdp .gt_center {
   text-align: center;
 }
 
-#vzgyduqytr .gt_right {
+#kmlxutkzdp .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vzgyduqytr .gt_font_normal {
+#kmlxutkzdp .gt_font_normal {
   font-weight: normal;
 }
 
-#vzgyduqytr .gt_font_bold {
+#kmlxutkzdp .gt_font_bold {
   font-weight: bold;
 }
 
-#vzgyduqytr .gt_font_italic {
+#kmlxutkzdp .gt_font_italic {
   font-style: italic;
 }
 
-#vzgyduqytr .gt_super {
+#kmlxutkzdp .gt_super {
   font-size: 65%;
 }
 
-#vzgyduqytr .gt_footnote_marks {
+#kmlxutkzdp .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#vzgyduqytr .gt_asterisk {
+#kmlxutkzdp .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#vzgyduqytr .gt_indent_1 {
+#kmlxutkzdp .gt_indent_1 {
   text-indent: 5px;
 }
 
-#vzgyduqytr .gt_indent_2 {
+#kmlxutkzdp .gt_indent_2 {
   text-indent: 10px;
 }
 
-#vzgyduqytr .gt_indent_3 {
+#kmlxutkzdp .gt_indent_3 {
   text-indent: 15px;
 }
 
-#vzgyduqytr .gt_indent_4 {
+#kmlxutkzdp .gt_indent_4 {
   text-indent: 20px;
 }
 
-#vzgyduqytr .gt_indent_5 {
+#kmlxutkzdp .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -3903,52 +3948,52 @@ Defined Parameters:
     <tr><td headers="rhs" class="gt_row gt_left">facebook</td>
 <td headers="lhs" class="gt_row gt_left">exam</td>
 <td headers="est" class="gt_row gt_right">−0.606</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.906&nbsp;—&nbsp;−0.339</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.883&nbsp;—&nbsp;−0.377</td>
 <td headers="est.std" class="gt_row gt_right">−0.292</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−0.398&nbsp;—&nbsp;−0.186</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.392&nbsp;—&nbsp;−0.192</td>
 <td headers="stars" class="gt_row gt_right">***</td>
-<td headers="se" class="gt_row gt_right">0.054</td>
-<td headers="z" class="gt_row gt_right">−5.385</td>
+<td headers="se" class="gt_row gt_right">0.051</td>
+<td headers="z" class="gt_row gt_right">−5.719</td>
 <td headers="pvalue" class="gt_row gt_right">&lt;0.001</td></tr>
     <tr><td headers="rhs" class="gt_row gt_left">previous</td>
 <td headers="lhs" class="gt_row gt_left">exam</td>
 <td headers="est" class="gt_row gt_right"> 0.260</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right"> 0.057&nbsp;—&nbsp;0.506 </td>
+<td headers="ci.lower_unstd" class="gt_row gt_right"> 0.060&nbsp;—&nbsp;0.483 </td>
 <td headers="est.std" class="gt_row gt_right"> 0.189</td>
-<td headers="ci.lower_std" class="gt_row gt_right"> 0.038&nbsp;—&nbsp;0.340 </td>
-<td headers="stars" class="gt_row gt_right">*</td>
-<td headers="se" class="gt_row gt_right">0.077</td>
-<td headers="z" class="gt_row gt_right"> 2.449</td>
-<td headers="pvalue" class="gt_row gt_right">    0.014</td></tr>
+<td headers="ci.lower_std" class="gt_row gt_right"> 0.051&nbsp;—&nbsp;0.327 </td>
+<td headers="stars" class="gt_row gt_right">**</td>
+<td headers="se" class="gt_row gt_right">0.070</td>
+<td headers="z" class="gt_row gt_right"> 2.682</td>
+<td headers="pvalue" class="gt_row gt_right">    0.007</td></tr>
     <tr><td headers="rhs" class="gt_row gt_left">a*b</td>
 <td headers="lhs" class="gt_row gt_left">indirect</td>
 <td headers="est" class="gt_row gt_right">−0.055</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.152&nbsp;—&nbsp;0.003 </td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.143&nbsp;—&nbsp;−0.003</td>
 <td headers="est.std" class="gt_row gt_right">−0.026</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−0.058&nbsp;—&nbsp;0.006 </td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.058&nbsp;—&nbsp;0.005 </td>
 <td headers="stars" class="gt_row gt_right"></td>
 <td headers="se" class="gt_row gt_right">0.016</td>
-<td headers="z" class="gt_row gt_right">−1.614</td>
-<td headers="pvalue" class="gt_row gt_right">    0.106</td></tr>
+<td headers="z" class="gt_row gt_right">−1.646</td>
+<td headers="pvalue" class="gt_row gt_right">    0.100</td></tr>
     <tr><td headers="rhs" class="gt_row gt_left">facebook</td>
 <td headers="lhs" class="gt_row gt_left">previous</td>
 <td headers="est" class="gt_row gt_right">−0.211</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.421&nbsp;—&nbsp;0.006 </td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.435&nbsp;—&nbsp;−0.024</td>
 <td headers="est.std" class="gt_row gt_right">−0.139</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−0.279&nbsp;—&nbsp;0.000 </td>
-<td headers="stars" class="gt_row gt_right"></td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.278&nbsp;—&nbsp;0.000 </td>
+<td headers="stars" class="gt_row gt_right">*</td>
 <td headers="se" class="gt_row gt_right">0.071</td>
-<td headers="z" class="gt_row gt_right">−1.954</td>
-<td headers="pvalue" class="gt_row gt_right">    0.051</td></tr>
+<td headers="z" class="gt_row gt_right">−1.965</td>
+<td headers="pvalue" class="gt_row gt_right">    0.049</td></tr>
     <tr><td headers="rhs" class="gt_row gt_left">cp+(a*b)</td>
 <td headers="lhs" class="gt_row gt_left">total</td>
 <td headers="est" class="gt_row gt_right">−0.661</td>
-<td headers="ci.lower_unstd" class="gt_row gt_right">−0.975&nbsp;—&nbsp;−0.380</td>
+<td headers="ci.lower_unstd" class="gt_row gt_right">−0.949&nbsp;—&nbsp;−0.428</td>
 <td headers="est.std" class="gt_row gt_right">−0.318</td>
-<td headers="ci.lower_std" class="gt_row gt_right">−0.424&nbsp;—&nbsp;−0.212</td>
+<td headers="ci.lower_std" class="gt_row gt_right">−0.417&nbsp;—&nbsp;−0.219</td>
 <td headers="stars" class="gt_row gt_right">***</td>
-<td headers="se" class="gt_row gt_right">0.054</td>
-<td headers="z" class="gt_row gt_right">−5.856</td>
+<td headers="se" class="gt_row gt_right">0.051</td>
+<td headers="z" class="gt_row gt_right">−6.280</td>
 <td headers="pvalue" class="gt_row gt_right">&lt;0.001</td></tr>
   </tbody>
   
@@ -3994,14 +4039,14 @@ M_{2i}-M_{1i} = a_{21}
 </tr>
 </tbody>
 </table>
-<p>Where we have the mediator diff and mean_diff</p>
+<p>Where we have the direct path, mediator diff and mean_diff</p>
 </section>
 <section id="within-participant-mediation-2" class="slide level2">
 <h2>Within-participant mediation</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>data <span class="ot">&lt;-</span> JSmediation<span class="sc">::</span>dohle_siegrist</span>
-<span id="cb43-2"><a href="#cb43-2"></a></span>
-<span id="cb43-3"><a href="#cb43-3"></a>within_mdt <span class="ot">&lt;-</span> <span class="fu">mdt_within</span>(<span class="at">data=</span>data, <span class="at">IV=</span>name, <span class="at">DV=</span> willingness, <span class="at">M=</span>hazardousness,<span class="at">grouping=</span>participant)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>data <span class="ot">&lt;-</span> JSmediation<span class="sc">::</span>dohle_siegrist</span>
+<span id="cb38-2"><a href="#cb38-2"></a></span>
+<span id="cb38-3"><a href="#cb38-3"></a>within_mdt <span class="ot">&lt;-</span> <span class="fu">mdt_within</span>(<span class="at">data=</span>data, <span class="at">IV=</span>name, <span class="at">DV=</span> willingness, <span class="at">M=</span>hazardousness,<span class="at">grouping=</span>participant)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -4022,8 +4067,8 @@ M_{2i}-M_{1i} = a_{21}
 <section id="within-participant-indirect-effect" class="slide level2">
 <h2>Within-participant indirect effect</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a>model_fit_with_index <span class="ot">&lt;-</span> <span class="fu">add_index</span>(within_mdt)</span>
-<span id="cb44-2"><a href="#cb44-2"></a>model_fit_with_index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>model_fit_with_index <span class="ot">&lt;-</span> <span class="fu">add_index</span>(within_mdt)</span>
+<span id="cb39-2"><a href="#cb39-2"></a>model_fit_with_index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Test of mediation (within-participant_mediation)
 ==============================================
@@ -4052,7 +4097,7 @@ Indirect effect index:
 - confidence interval:
   - method: Monte Carlo (5000 iterations)
   - level: 0.05 
-  - CI: [0.157; 0.872]
+  - CI: [0.156; 0.865]
 
 Fitted models:
 
@@ -4088,7 +4133,7 @@ Fitted models:
 <ul>
 <li>Sobel test or Bootstrapping (# bootstrapped samples)</li>
 </ul></li>
-<li><p>Proprotion mediated</p></li>
+<li><p>Proportion mediated</p></li>
 </ul>
 <!-- -->
 <ul>
@@ -4112,9 +4157,13 @@ Fitted models:
 <ul>
 <li><p>Other R packages</p>
 <ul>
-<li><p><a href="%5Bhttps://cran.r-project.org/web/packages/mediation/vignettes/mediation.pdf%5D">mediation</a></p></li>
+<li><p><a href="%5Bhttps://cran.r-project.org/web/packages/mediation/vignettes/mediation.pdf%5D">mediation</a> (ordinal or binary outcomes)</p></li>
 <li><p><a href="https://link.springer.com/article/10.3758/s13428-023-02224-z">manymome</a></p></li>
 <li><p><a href="https://github.com/cardiomoon/processR">processR</a></p></li>
+<li><p><a href="https://mvuorre.github.io/bmlm/">bmlm</a> (Bayesian)</p>
+<ul>
+<li><code>bayestestR</code> (<code>mediation</code> function)</li>
+</ul></li>
 </ul></li>
 </ul>
 </section>
@@ -4125,7 +4174,7 @@ Fitted models:
 </ul>
 <!-- -->
 <ul>
-<li>path modeling/SEM (Renata and Brooke)</li>
+<li>Path modeling/SEM (Renata and Brooke)</li>
 </ul>
 <div class="footer footer-default">
 <p>PSY 504: Advanced Statistics</p>

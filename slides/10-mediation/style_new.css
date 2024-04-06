@@ -277,3 +277,7 @@ hr {
 .panel-tabset {
   font-size: 25px;
 }
+
+.reveal div.qwebr-output-code-area pre {
+   background-color: red;
+}

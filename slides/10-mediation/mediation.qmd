@@ -83,7 +83,7 @@ options(scipen = 999) # get rid sci notation
 
     -   Manipulation of and random assignment of X affords causal inference/causal claims
 
-        -   However, we often do not do the for M
+        -   However, we rarely do the same for M
 
             -   Mediation analysis requires theory and subsequent experiments to test mediator
 
@@ -123,14 +123,12 @@ Bullock, J. G., Green, D. P., & Ha, S. E. (2010). Yes, but what's the mechanism?
 ## Load packages
 
 ```{r}
-library(tidyverse)
-library(easystats)
 library(MeMoBootR) # mediation analysis #download from gihub
 library(JSmediation) # mediation analysis
 library(flexplot) # mediate_plot function
 library(lavaan) # SEM and mediation 
 #library(tidySEM)# plot models from lavaan
-library(processR) # path models `
+library(processR) # path model figs`
 ```
 
 ## Load data
@@ -188,6 +186,14 @@ head(master[-1]) %>% kable()
 -   c' (c-prime) path: direct effect
 :::
 
+```{r}
+#| echo: false
+#| fig-align: "center"
+#| 
+labels=list(X="Facebook",M="Studying",Y="Exam Score")
+statisticalDiagram(4,labels = labels )
+```
+
 ## Mediation Paths
 
 ![](images/IMG_4157.JPG){fig-align="center"}
@@ -232,8 +238,15 @@ head(master[-1]) %>% kable()
 
 ## Mediation: c path
 
-```{r}
+```{webr-r}
 
+model1 <- lm(exam ~ facebook, data = master)
+
+```
+
+```{r}
+#| echo: false
+#| 
 model1 <- lm(exam ~ facebook, data = master)
 
 ```
@@ -254,8 +267,14 @@ model_parameters(model1, digit=3) %>%
 
 ## Mediation: a path
 
-```{r}
+```{webr-r}
 
+model2 <- lm(previous ~ facebook, data = master)
+
+```
+
+```{r}
+#| echo: false
 model2 <- lm(previous ~ facebook, data = master)
 
 ```
@@ -279,7 +298,14 @@ model_parameters(model2, digit=3) %>%
 
 -   Add in the b (M --\> Y) and c' **(direct)** paths: X + M --\> Y
 
+```{webr-r}
+
+model3 <- lm(exam ~ facebook + previous, data = master)
+```
+
 ```{r}
+#| echo: false
+#| 
 model3 <- lm(exam ~ facebook + previous, data = master)
 ```
 
@@ -312,6 +338,24 @@ kable() %>%
 
 -   Do we have mediation here?
 
+## Causal Steps - Baron & Kenny (1986)
+
+-   Traditionally, to show mediation ALL these conditions must be met:
+
+    -   X must significantly predict Y in Step 1 ✅
+
+    -   X must significantly predict M in Step 2 ✅
+
+    -   M must significantly predict Y controlling for X in Step 3 ✅
+
+    -   The effect of X on Y must be reduced in Step 4
+
+        -   If X is no longer significant, you have "full mediation"
+
+        -   If X is still significant, then you have "partial mediation" ✅
+
+            -   Not really used in anymore
+
 ## Issues with causal steps
 
 . . .
@@ -340,6 +384,10 @@ kable() %>%
 
     -   Failure to meet a criterion results in game over!
 
+::: callout-note
+Yzerbyt, V., Muller, D., Batailler, C., & Judd, C. M. (2018). New recommendations for testing indirect effects in mediational models: The need to report and test component paths. *Journal of Personality and Social Psychology*, *115*(6), 929–943. doi: 10.1037/pspa0000132
+:::
+
 ## Testing mediation: Sobel test
 
 -   So, did mediation happen? Is a change from 0.66 to 0.61 important?
@@ -352,7 +400,7 @@ kable() %>%
 
 ## Sobel Test
 
-```{r}
+```{webr-r}
 #sobel
 a <- coef(model2)[2]
 b <- coef(model3)[3]
@@ -383,7 +431,7 @@ Other tests listed use slightly different denominator formula
 
 ## Sobel test
 
--   Serious problems!
+-   Serious problem!
 
     -   Assumes indirect effect is normally distributed
 
@@ -545,17 +593,17 @@ med_results$p.value
 med_results$boot.results
 ```
 
--   The indirect effect would be reported as: *b* = 0.05, 95% CI\[-0.147, -0.001\]
+## Bootstrapping
 
 -   Returns several type of cis
 
-## Bootstrapping
-
--   Percentile bootstrap
+    -   Percentile bootstrap
 
 ```{r}
 med_results$boot.ci$percent %>% kable()
 ```
+
+-   The indirect effect would be reported as: *b* = -0.05, 95% CI\[-0.147, -0.001\]
 
 ## Mediation visualization
 
@@ -610,6 +658,10 @@ model_fit_with_index <- add_index(mediation_fit)
 model_fit_with_index
 ```
 
+::: callout-note
+Take note of defaults and how how CIs are estimated. Here they use Monte Carlo CIs
+:::
+
 ## JSmediation results: Assumptions
 
 ::: panel-tabset
@@ -645,7 +697,15 @@ performance::check_model(third_model)
 ```
 :::
 
-# complex mediation models
+## JSmediation results: Assumptions
+
+```{r}
+
+JSmediation::check_assumptions(model_fit_with_index)
+
+```
+
+# Complex Mediation Models
 
 ![](sem.webp){fig-align="center"}
 
@@ -665,10 +725,14 @@ performance::check_model(third_model)
 
     -   Overall influence of mediators
 
--   Can example which one has a stronger influence
+-   Can determine which one has a stronger influence
 :::
 
 ::: {.column width="50%"}
+<br>
+
+<br>
+
 ```{r}
 #| echo: false
 #| fig.align: center
@@ -681,8 +745,6 @@ statisticalDiagram(4.2,labels = labels )
 ```
 :::
 :::
-
-## Multiple mediators: Example
 
 ```{r}
 #| echo: false
@@ -760,7 +822,11 @@ semoutput::sem_paths(fit, unstandardized = TRUE)
 #| fig-align: "center"
 #| 
 library(tidySEM)# plot models from lavaan
-tidySEM::graph_sem(model=fit)
+
+parallel_map <- tidySEM::get_layout("", "tvhours", "", "age", "", "bmi", "", "cellhours",
+                                    "", rows = 3)
+tidySEM::graph_sem(model=fit, layout=parallel_map)
+
 ```
 
 ## Lavaan Practice
@@ -782,7 +848,7 @@ tidySEM::graph_sem(model=fit)
 
 ## Lavaan Practice
 
--   Same results as before
+-   Look at that! Same results as before
 
 ```{r}
 #| echo: false
@@ -833,7 +899,7 @@ $$Y_{2i} - Y_{1i} = c'_{31} + b_{32}(M_{2i} - M_{1i}) +
 |-----|
 |     |
 
-Where we have the mediator diff and mean_diff
+Where we have the direct path, mediator diff and mean_diff
 
 ## Within-participant mediation
 
@@ -884,7 +950,7 @@ model_fit_with_index
 
     -   Sobel test or Bootstrapping (# bootstrapped samples)
 
--   Proprotion mediated
+-   Proportion mediated
 
 <!-- -->
 
@@ -905,11 +971,15 @@ model_fit_with_index
 
 -   Other R packages
 
-    -   [mediation](%5Bhttps://cran.r-project.org/web/packages/mediation/vignettes/mediation.pdf%5D)
+    -   [mediation](%5Bhttps://cran.r-project.org/web/packages/mediation/vignettes/mediation.pdf%5D) (ordinal or binary outcomes)
 
     -   [manymome](https://link.springer.com/article/10.3758/s13428-023-02224-z)
 
     -   [processR](https://github.com/cardiomoon/processR)
+
+    -   [bmlm](https://mvuorre.github.io/bmlm/) (Bayesian)
+
+        -   `bayestestR` (`mediation` function)
 
 ## Wednesday and next week
 
@@ -918,4 +988,4 @@ model_fit_with_index
 ```{=html}
 <!-- -->
 ```
--   path modeling/SEM (Renata and Brooke)
+-   Path modeling/SEM (Renata and Brooke)
