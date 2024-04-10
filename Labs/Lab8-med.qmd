@@ -1,0 +1,19 @@
+---
+title: "Lab 8"
+format: html
+editor: visual
+author: "Jason Geller, Ph.D."
+date: 2024 04 10
+toc: true
+toc_float: true
+---
+
+## Lab 8: Mediation
+
+You will be reproducing the results presented in the following research paper:
+
+Cho, C., Yoo, H. J., Min, J., Nashiro, K., Thayer, J. F., Lehrer, P. M., & Mather, M. (2023). Changes in Medial Prefrontal Cortex Mediate Effects of Heart Rate Variability Biofeedback on Positive Emotional Memory Biases. Applied Psychophysiology and Biofeedback. [**https://doi.org/10.1007/s10484-023-09579-1**](https://doi.org/10.1007/s10484-023-09579-1)
+
+During this lab, you will gain experience performing mediation in R and assessing open science practices by attempting to replicate the findings of a recent paper.
+
+To access Lab 8, please [click here](https://classroom.github.com/a/VCMt_gl9).
