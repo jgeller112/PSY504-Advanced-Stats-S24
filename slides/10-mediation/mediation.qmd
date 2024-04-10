@@ -834,6 +834,16 @@ semoutput::sem_paths(fit, unstandardized = TRUE)
 :::
 :::
 
+## Lavaan summary
+
+-   `easystats` provides nice summary function
+
+```{r}
+
+parameters::model_parameters(fit)
+
+```
+
 ## Lavaan Visualization
 
 ```{r}
@@ -1001,7 +1011,6 @@ model_fit_with_index
 
 -   Mediation lab
 
-```{=html}
 <!-- -->
-```
+
 -   Path modeling/SEM (Renata and Brooke)
