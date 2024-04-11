@@ -1,0 +1,768 @@
+---
+title: "Introduction to Structural Equation Modeling in R"
+subtitle: "Princeton University"
+author: "Jason Geller, PH.D."
+date: 'Updated:`r Sys.Date()`'
+footer: "PSY 504: Advanced Statistics"
+format: 
+  revealjs:
+    theme: style_new.scss
+    multiplex: true
+    transition: fade
+    slide-number: true
+    incremental: false 
+    chalkboard: true
+    fontsize: "30pt"
+
+execute:
+  freeze: auto
+  echo: true
+  message: false
+  warning: false
+  fig-align: center
+  fig-width: 12
+  fig-height: 8
+  editor_options: 
+  chunk_output_type: inline
+  code-overflow: wrap
+  html:
+    code-fold: true
+    code-tools: true
+---
+
+## Packages
+
+```{r}
+library(easystats)
+library(tidyverse)
+library(lavaan)
+library(tidygraph)
+library(processR)
+```
+
+-   Follow along:
+
+## Structural equation modeling
+
+-   A broad range of of techniques and frameworks
+
+    -   Not a single technique
+
+        -   Integration of:
+
+            -   **Path analysis**
+
+            -   Confirmatory factor analysis
+
+        -   Used to test and quantify theories
+
+## Structural equation modeling
+
+::: columns
+::: {.column width="50%"}
+![](images/surprise.jpg){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+-   You already know how to do it!
+
+    -   It is regression on steroids
+
+    -   Model many relationships at once, rather than run single regressions
+
+    -   Model variables that exist (manifest) and those that don't technically exist (latent factors)
+:::
+:::
+
+## Path analysis
+
+-   A method for testing any possible relationship between measured variables
+
+```{r}
+#| echo: false
+#| fig-align: "center"
+
+
+labels=list(X="Facebook",M="Studying",Y="Exam Score")
+statisticalDiagram(4,labels = labels )
+
+```
+
+# Terminology
+
+## Exogenous vs. endogenous variables
+
+::: columns
+::: {.column width="50%"}
+<br>
+
+<br>
+
+![](images/exoendo.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+-   Exogenous
+    -   These are synonymous with independent variables
+    -   You can find these in a model where the arrow is leaving the variable
+    -   They are thought to be the cause of something
+    -   Have variance
+    -   Covary with other exogenous variables
+:::
+:::
+
+## Exogenous vs. endogenous variables
+
+::: columns
+::: {.column width="50%"}
+::: columns
+<br>
+
+<br>
+:::
+
+![](images/exoendo.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+-   Endogenous
+    -   These are synonymous with dependent variables
+    -   They are caused by the exogenous variables
+    -   In a model diagram, the arrow will be coming into the variable
+    -   Have error terms (disturbances)
+:::
+:::
+
+## Endogenous vs. Exogenous
+
+-   TL;DR
+
+    -   Exogenous: no arrows pointed at it
+
+    -   Endogenous: arrows pointed at it
+
+## Manifest variables
+
+![](images/exoendo.png){fig-align="center"}
+
+-   Manifest or observed variables
+
+    -   Represented by squares ❏
+
+    -   Measured from participants, business data, or other sources
+
+    -   While most measured variables are continuous, you can use categorical and ordered measures as well
+
+## Latent variables
+
+::: columns
+::: {.column width="50%"}
+<br>
+
+<br>
+
+![](images/latent_sem.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+-   Latent variables
+
+    -   Represented by circles ◯
+
+    -   Abstract phenomena you are trying to model
+
+    -   Are not represented by a number in the dataset
+
+    -   Linked to the measured variables
+
+    -   Represented indirectly by those variables
+:::
+:::
+
+## Remember
+
+![](images/exoendo.png){fig-align="center"}
+
+-   `Y~X + Residual`
+
+-   Here that is `Endogenous ~ Exogenous + disturbance`
+
+## Variances, covariances, and disturbances
+
+Variance
+
+![](images/varcovvar.png){fig-align="center"}
+
+-   Double headed arrows
+    -   To itself
+
+## Variances, covariances, and disturbances
+
+-   Covariance paths
+
+![](images/varcovvar.png){fig-align="center"}
+
+-   Double headed arrows (Covariance paths)
+-   Exogenous variables may be correlated with each other, but not always...
+
+## Covariance meaning
+
+![](images/covarmeaning.png){fig-align="center"}
+
+## Variances, covariances, and disturbances
+
+-   Disturbances
+
+![](images/disturb.png){fig-align="center"}
+
+-   Represent the influence of factors not included in model
+
+-   error in your prediction of each endogenous variable
+
+-   Every endogenous variable has a disturbance
+
+## SEM models
+
+::: columns
+::: {.column width="50%"}
+![](images/IMG_4225.jpg)
+:::
+
+::: {.column width="50%"}
+-   Straight arrows are "causal" or directional
+
+    -   Non-standardized solution -\> these are your b or slope values
+    -   Standardized solution -\> these are your beta values
+
+-   Curved arrows are non-directional
+
+    -   Non-standardized -\> covariance
+    -   Standardized -\> correlation
+:::
+:::
+
+## Cheat sheet
+
+![](images/terms.png){fig-align="center"}
+
+-   Also here: https://davidakenny.net/cm/basics.htm
+
+## Why is it just regression?
+
+Each endogenous variable is regressed on all exogenous variables that are connected in the chain that leads directly to it
+
+![](images/semasreg.png){style="<center>" fig-align="center" width="603"}
+
+# Identification
+
+## Model identification
+
+-   You cannot test all models
+
+    -   Unique solution
+
+-   If not identified, cannot analyze model
+
+-   How is this determined?
+
+## Minimum condition of identification
+
+-   There must be at least as many known values in the model as there are free parameters
+
+-   Free parameters:
+
+    -   All regression paths, all covariances, all variances, and all disturbances in the model
+
+-   Knowns:
+
+    $$\frac{(K (K+1))}{2}$$- where k is number of measured variables
+
+## Model identification
+
+-   We can tell model is identified by calculating model DFs
+
+    -   Additional pathways you can estimate
+
+-   Model DF = (known values) - (free parameters)
+
+## Model identification
+
+-   If model DF \>=1 you can analyze model
+
+    -   **Over-identified**
+
+-   DF = 0
+
+    -   You can still analyze the model
+
+        -   But:
+
+            -   Fits data perfectly
+
+            -   No fit indices
+
+        -   Multiple regressions are just-identified model
+
+-   DF \< 0
+
+    -   Under-identified
+
+    -   Cant analyze our model
+
+## Identification
+
+::: columns
+::: {.column width="50%"}
+-   Just-identified - mathematical analogy
+
+    -   
+
+        -   10=2x+y
+
+        -   2 = x-y
+
+            -   2 knows and 2 unknowns
+
+            -   One set of values that can solve the equation
+
+-   Can't test other models
+:::
+
+::: {.column width="50%"}
+-   Under-identified - mathematical analogy
+
+    -   10 = 2x+ y
+
+        -   One known value and 2 unknowns (x,y)
+
+        -   There are infinite number of solutions
+
+        -   No way to derive a solution
+:::
+:::
+
+## Identification
+
+::: columns
+::: {.column width="50%"}
+-   Over-identified - mathematical analogy
+
+    -   10=2x+y
+
+    -   2 = x-y
+
+    -   5 = x + 2y
+:::
+
+::: {.column width="50%"}
+-   Several possible approximate solutions to solve all 3 equations
+-   Several unique but imperfect solutions means multiple models can be tested or compared. You can't evaluate fit without alternatives
+:::
+:::
+
+![](images/ident.png){width="1165"}
+
+## Estimate DFs
+
+::: columns
+::: {.column width="50%"}
+-   Let's play a game
+
+![](images/game.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+![](images/evals.png){fig-align="center"}
+:::
+:::
+
+## SEM steps
+
+![](images/IMG_4219.jpg){fig-align="center"}
+
+## Example data (Ingram et al., 2000)
+
+-   What makes someone apply to graduate school?
+
+-   Endogenous
+
+    -   Intent to apply (**intent.to.apply)**
+    -   Apply **(application.behaviour)**
+
+-   Exogenous:
+
+    -   Perceived value (**perceived.value)**
+    -   External pressure (**external.pressure)**
+    -   Perceived control over admission (**perceived.control)**
+
+```{r}
+grad <- read.csv("https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/SEM/data/graduate.school.csv") %>% 
+  dplyr::select(-job.opportunities)
+
+grad1<-read.csv("https://raw.githubusercontent.com/jgeller112/psy504-advanced-stats/main/slides/SEM/data/graduate.school.csv")
+
+```
+
+## Model specification
+
+-   Think up all the constructs that are relevant to model
+-   Consider how they are connected
+-   Justify each path that is present and absent
+-   What are the hypothesized relationships? (ivs, dvs, mediators, moderators)
+-   Write up model code
+
+## Model specification
+
+![](images/model.png){fig-align="center"}
+
+-   Theory of planned behavior
+
+## Data screening
+
+```{r}
+
+correlation::correlation(grad, redundant = FALSE) %>% plot()
+
+
+```
+
+## Identification
+
+![](images/check_id.png){fig-align="center"}
+
+## Run SEM in R
+
+```{r}
+library(lavaan)
+library(semPlot)
+
+```
+
+-   Declare equations for every endogenous variable in your model
+
+    -   \`\~\` indicates a regression
+
+-   Declare indirect and covariances
+
+-   `:=` declare a variable
+
+-   `*=`name of variable
+
+-   `~~` indicates a covariance/correlation
+
+-   `=~` latent factor
+
+## Run SEM in R
+
+```{r}
+grad_model = '
+intent.to.apply~a*perceived.value+b*external.pressure+c*perceived.control 
+
+    application.behaviour~d*intent.to.apply+perceived.control
+    #indirect
+
+    value.through.intent:=a*d
+    #indirect
+    pressure.through.intent:=b*d  
+    control.through.intent:=c*d 
+
+ perceived.control ~~ perceived.value # These are covariance paths
+  perceived.control ~~ external.pressure # These are covariance paths
+  external.pressure ~~ perceived.value # These are covariance paths
+'
+fit <- sem(grad_model, se="bootstrap", bootstrap=1000,  data=grad)
+```
+
+## Model fit
+
+-   We want to know if our theoretical model *fits* the data
+
+-   Good fit means we've captured the bulk of relations between variables in our model and there is not much covariance left over
+
+    -   We didn't miss anything
+
+-   This means we compare the relationships we've modeled to all possible relationships
+
+## Model fit
+
+![](images/fitindices.png){fig-align="center"}
+
+-   Common to use $\chi^2$, RMSEA, SRMR, CFI
+
+::: callout-note
+Hu, L.-t., & Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. *Structural Equation Modeling, 6*(1), 1–55. [https://doi.org/10.1080/10705519909540118](https://psycnet.apa.org/doi/10.1080/10705519909540118)
+:::
+
+## Model fit
+
+-   ::: columns
+    ::: {.column width="50%"}
+    -   Absolute fit (measures how well data fits specified model)
+
+        -   $\chi^2$
+
+        -   SRMR
+
+            -   Standardized difference between the sample covar matrix and hypothesized covar matrix
+    :::
+
+    ::: {.column width="50%"}
+    -   Badness of fit
+
+        -   RMSEA
+
+            -   Measures how much worse the data fits the model from the just identified model
+
+    -   Relative goodness of fit
+
+        -   CFI or Tucker Lewis Index
+
+            -   Measures how much better the model fits than the null model (all paths=0)
+    :::
+    :::
+
+## Run SEM
+
+```{r}
+
+fit <- sem(grad_model, se="bootstrap", bootstrap=1000, data=grad)
+
+summary(fit, ci=TRUE, 
+        standardize=TRUE, # get standardized 
+        fit.measures=TRUE) # get fit indices
+```
+
+## What to report?
+
+```{r}
+interpret(fit)
+```
+
+## Reporting Results
+
+```{r}
+suppressWarnings(report_performance(fit))
+```
+
+## Run SEM
+
+```{r}
+parameters::model_parameters(fit,  standardize = TRUE,
+  component = c("regression", "defined")) %>%
+  print_html()
+```
+
+## Reporting results
+
+-   Make reference to a figure with your hypothesized model and parameter estimates and report model fit
+
+::: callout-note
+-   The hypothesized model was tested with path analysis and the estimated model is depicted in Figure 1. The model appeared to have good fit χ2 (2) = 0.862, p \> .650, SRMR = .02, RMSEA= 0, 90% CI \[0, 0.20\], CFI = 1.
+:::
+
+## Reporting results
+
+-   Describe significance of the paths
+
+::: callout-note
+-   The perceived value of graduate education predicted intentions to apply to grad school, *β* = 0.81, *Z* = 7.21, *p* \< 0.01, but intentions to apply to grad school were not significantly predicted by external pressure to go to grad school, *β* = 0.10, *Z* =  0.97, *p* = 0.33, or perceived control over the outcome of graduate admissions, *β* =-0.13, *Z* = -1.11, *p* =.27. However, intention to go to grad school significantly predicted actually applying, *β* = 0.35, *Z* = 2.94, *p* \< 0.01, and so did perceived control over the outcome of graduate admissions, *β* = 0.34, *Z* = 2.83, *p* = 0.01. Intent to apply to graduate school mediated the relationship between previewed value of graduate education and actually applying to graduate school, *β*= 0.68, *Z* = 2.66, *p* = 0.01.
+:::
+
+## Visualize model
+
+![](images/path_model.png)
+
+## Visualize model
+
+```{r}
+#| fig.align: "center"
+#| 
+library(semPlot)
+# Example of plotting the variables in specific locations
+locations = matrix(c(0, 0, .5, 0, -.5, .5, -.5, 0, -.5, -.5), ncol=2, byrow=2)
+labels = c("Intent\nTo Apply","Application\nBehaviour","Perceived\nValue","External\nPressure","Perceived\nControl")
+diagram = semPaths(fit, whatLabels="std", nodeLabels = labels, layout=locations, sizeMan = 12, rotation=2)
+```
+
+## Bad fit
+
+-   What if fit incidences are not that good?
+
+```{=html}
+<!-- -->
+```
+-   Modification (mod) indices
+
+    -   Tell you what the chi-square change would be if you added the path suggested
+
+    -   Can make your model better
+
+        -   Potential for HARKING!
+        -   Be transparent
+
+## Modifications
+
+-   Modification indices
+
+    -   Tell you what the chi-square change would be if you added the path suggested
+
+    -   Based on $\chi^2(1)$
+
+        -    Anything with $\chi^2(1)$ \> 3.84 is \*p\* \< .05
+
+```{r}
+modificationindices(fit)%>%
+  print_html()
+```
+
+## Best practices
+
+-   Comparing multiple models
+
+-   Sample size
+
+-   Assumptions
+
+## Best practices
+
+-   Comparing multiple models
+
+    -   Constraining paths
+
+        -   In SEM you can explicitly test hypotheses about the size of specific paths
+
+            -   Constrain a path to certain value
+
+            -   Constrain two paths to be equal
+
+                -   Compare model fit of models with constrained and unconstrained paths
+
+    -   Assess alternative hypotheses/models
+
+## Constraining paths
+
+::: columns
+::: {.column width="50%"}
+<br>
+
+<br>
+
+![](images/contrained.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+```{r}
+grad_model_constrained =  '
+  intent.to.apply ~ a*perceived.value + 0*external.pressure + c*perceived.control
+  application.behaviour ~ d*intent.to.apply + perceived.control
+
+  perceived.control ~~ perceived.value # These are covariance paths
+  perceived.control ~~ external.pressure # These are covariance paths
+  external.pressure ~~ perceived.value # These are covariance paths
+
+  value.through.intent:=a*d
+  control.through.intent:=c*d
+'
+
+grad_analysis_constrained = 
+ sem(grad_model_constrained, data=grad, se="bootstrap")
+
+```
+:::
+:::
+
+## Nested model comparisons
+
+-   If you can create one model from another by the addition or subtraction of parameters, then it is nested
+
+    -   Model A is said to be nested within Model B, if Model B is a more complicated version of Model A
+
+-   Evaluating models
+
+    -   Ensure both fit data well
+
+        -   Report comparative fit indices
+        -   If one sucks, go with least crappy one
+        -   If both suck, don't compare them
+
+-   Use LRT test
+
+## LRT test
+
+-   Test both model fits
+
+```{r}
+compare_performance(fit, grad_analysis_constraine)
+```
+
+-   $\Delta$ $\chi^2$
+
+```{r}
+
+test_likelihoodratio(fit, grad_analysis_constrained) %>% knitr::kable(., digits = 3)
+```
+
+::: callout-note
+Constraining a path adds 1 df (the model with more DFs is more parsimonious)
+:::
+
+## Non-nested model comparisons
+
+::: columns
+::: {.column width="50%"}
+![](images/nonnested.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+-   Ensure both models fit well
+
+    -   If so compare models with AIC or BIC
+
+        -   $\Delta{BIC}$ (log odds of model with lower BIC)
+
+            -   \>6 strong evidence for model
+
+    -   If not, choose model that fits
+
+    -   Use `compare_performance()` from `easystats`
+:::
+:::
+
+## Write-up: Nested models
+
+We wanted to see if the data fit Ajzen's (1985) Theory of planned behavior ("Unconstrained Model," Figure 1) better than a constrained model that posits no relationship between external pressure and intention to apply to graduate school ("Constrained Model," Figure 2). The constrained model fit the data well, SRMR = .03, RMSEA = 0, 90% CI \[0, 0.18\], CFI = 1, AIC = 2000.42, BIC = 2012.98. A Likelihood Ratio test of the two models suggested that the models fit the data equally well, $\chi^2$ (1) = 0.95, p = 0.33. Thus, we trimmed this path in the interest of parsimony. 
+
+## Write-up: Non-nested
+
+We also compared a non-nested model that considered the strongest pathway of our originally hypothesized model in the context of job opportunities ("Opportunities Model," Figure 3). The opportunities model had good absolute and relative goodness of fit but the relative badness of fit was poor, SRMR = .05, RMSEA =0.28, 90% CI \[0.13, 0.44\], CFI = 0.96, AIC = 1502.77, BIC = 1519.52. Comparing the Opportunities Model to the Hypothesized Model (Figure 1) using BIC (Kass & Raftery, 1995) reveals that the evidence strongly favors the Opportunities Model, $BIC_{Hypothesized}$ = 2040.69, ΔBIC= 521.
+
+## Practical issues
+
+-   Sample size: for parameter estimates to be accurate, you should have large samples
+
+-   How many? Hard to say, but often hundreds are necessary
+
+    -   http://web.pdx.edu/\~newsomj/semclass/ho_sample%20size.pdf
+    -   https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4334479/
+
+-   Check out Greg Hickcock: <https://drive.google.com/file/d/1U6UyYZCJ0sW1muKQZ-VNn9EIBtGWH_uS/view?usp=sharing>
+
+    -   Provides a simple way to calculate power/sample size
+
+## Practical issues
+
+-   Sample Size: The N:q rule
+    -   Number of people, *N*
+    -   *q* number of estimated parameters
+    -   You want the N:q ratio to be 20:1 or greater in a perfect world, 10:1 if you can manage it
+
+## Assumptions
+
+-   All assumptions for linear models apply to SEM
+-   There are robust estimators one can use
+    -   Sattorra-Bentler
+        -   `sem(model, test="satorra.bentler")`
+
+## Acknowledgments
+
+-   Thanks to Elizabeth Page-Gould, Chris Groves, and Erin Buchanan for graciously providing some of the content I used here
