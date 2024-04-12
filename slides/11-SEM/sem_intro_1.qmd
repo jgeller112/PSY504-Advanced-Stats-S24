@@ -30,6 +30,28 @@ execute:
     code-tools: true
 ---
 
+## Today
+
+-   What is structural equation modeling (SEM)?
+
+    -   Path models
+
+    -   Important terminology
+
+-   How to do it in R
+
+    -   Specification
+
+    -   Identification
+
+    -   Estimation
+
+    -   Model fit & indices
+
+    -   Modification indices
+
+    -   Reporting
+
 ## Packages
 
 ```{r}
@@ -38,6 +60,7 @@ library(tidyverse)
 library(lavaan)
 library(tidygraph)
 library(processR)
+library(knitr)
 ```
 
 -   Follow along:
@@ -315,15 +338,13 @@ Each endogenous variable is regressed on all exogenous variables that are connec
 ::: {.column width="50%"}
 -   Just-identified - mathematical analogy
 
-    -   
+    -   10=2x+y
 
-        -   10=2x+y
+    -   2 = x-y
 
-        -   2 = x-y
+        -   2 knows and 2 unknowns
 
-            -   2 knows and 2 unknowns
-
-            -   One set of values that can solve the equation
+        -   One set of values that can solve the equation
 
 -   Can't test other models
 :::
@@ -338,6 +359,8 @@ Each endogenous variable is regressed on all exogenous variables that are connec
         -   There are infinite number of solutions
 
         -   No way to derive a solution
+
+        -   
 :::
 :::
 
@@ -405,14 +428,6 @@ grad1<-read.csv("https://raw.githubusercontent.com/jgeller112/psy504-advanced-st
 
 ## Model specification
 
--   Think up all the constructs that are relevant to model
--   Consider how they are connected
--   Justify each path that is present and absent
--   What are the hypothesized relationships? (ivs, dvs, mediators, moderators)
--   Write up model code
-
-## Model specification
-
 ![](images/model.png){fig-align="center"}
 
 -   Theory of planned behavior
@@ -422,7 +437,6 @@ grad1<-read.csv("https://raw.githubusercontent.com/jgeller112/psy504-advanced-st
 ```{r}
 
 correlation::correlation(grad, redundant = FALSE) %>% plot()
-
 
 ```
 
@@ -458,28 +472,30 @@ library(semPlot)
 grad_model = '
 intent.to.apply~a*perceived.value+b*external.pressure+c*perceived.control 
 
-    application.behaviour~d*intent.to.apply+perceived.control
+    application.behaviour~d*intent.to.apply+e*perceived.control 
     #indirect
-
     value.through.intent:=a*d
     #indirect
-    pressure.through.intent:=b*d  
-    control.through.intent:=c*d 
+    pressure.through.intent:=b*d 
+    #indirect
+    control.through.intent:=e*d 
 
  perceived.control ~~ perceived.value # These are covariance paths
   perceived.control ~~ external.pressure # These are covariance paths
   external.pressure ~~ perceived.value # These are covariance paths
 '
-fit <- sem(grad_model, se="bootstrap", bootstrap=1000,  data=grad)
+fit <- sem(grad_model, se="bootstrap", bootstrap=5000,  data=grad)
 ```
 
 ## Model fit
 
--   We want to know if our theoretical model *fits* the data
+-   SEM compares the observed covariance matrix to predicted covariance matrix
 
--   Good fit means we've captured the bulk of relations between variables in our model and there is not much covariance left over
+    -   We want to know if our theoretical model *fits* the data
 
-    -   We didn't miss anything
+    -   Good fit means we've captured the bulk of relations between variables in our model and there is not much covariance left over
+
+        -   We didn't miss anything
 
 -   This means we compare the relationships we've modeled to all possible relationships
 
@@ -499,11 +515,11 @@ Hu, L.-t., & Bentler, P. M. (1999). Cutoff criteria for fit indexes in covarianc
     ::: {.column width="50%"}
     -   Absolute fit (measures how well data fits specified model)
 
-        -   $\chi^2$
+        -   $\chi^2$ (sensitive to sample size)
 
         -   SRMR
 
-            -   Standardized difference between the sample covar matrix and hypothesized covar matrix
+            -   Standardized difference between the sample covariance matrix and hypothesized covariance matrix
     :::
 
     ::: {.column width="50%"}
@@ -515,7 +531,7 @@ Hu, L.-t., & Bentler, P. M. (1999). Cutoff criteria for fit indexes in covarianc
 
     -   Relative goodness of fit
 
-        -   CFI or Tucker Lewis Index
+        -   CFI or TLI
 
             -   Measures how much better the model fits than the null model (all paths=0)
     :::
@@ -533,6 +549,8 @@ summary(fit, ci=TRUE,
 ```
 
 ## What to report?
+
+-   `easystats` has you covered!
 
 ```{r}
 interpret(fit)
@@ -619,14 +637,6 @@ modificationindices(fit)%>%
 
 -   Comparing multiple models
 
--   Sample size
-
--   Assumptions
-
-## Best practices
-
--   Comparing multiple models
-
     -   Constraining paths
 
         -   In SEM you can explicitly test hypotheses about the size of specific paths
@@ -692,7 +702,7 @@ grad_analysis_constrained =
 -   Test both model fits
 
 ```{r}
-compare_performance(fit, grad_analysis_constraine)
+compare_performance(fit, grad_analysis_constrained) %>% kable()
 ```
 
 -   $\Delta$ $\chi^2$
@@ -762,6 +772,22 @@ We also compared a non-nested model that considered the strongest pathway of our
 -   There are robust estimators one can use
     -   Sattorra-Bentler
         -   `sem(model, test="satorra.bentler")`
+
+## SEM: Summary
+
+-   SEM is a statistical technique that combines path analysis and factor analysis to allow for statistical modeling of the relationships between observed variables and latent constructs
+
+-   It focuses heavily on model fit to evaluate how well the proposed model fits the data
+
+-   It’s a very flexible analysis that has several variations, extensions, and applications
+
+## Lab and next week
+
+-   No lab on Wednesday
+
+    -   We will incorporate SEM into factor analysis lab
+
+-   Factor analysis (Aditi and Brooke)
 
 ## Acknowledgments
 

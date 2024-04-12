@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.504">
 
   <meta name="author" content="Jason Geller, PH.D.">
-  <meta name="dcterms.date" content="2024-04-11">
+  <meta name="dcterms.date" content="2024-04-12">
   <title>Introduction to Structural Equation Modeling in R</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -405,7 +405,26 @@ Jason Geller, PH.D.
 </div>
 </div>
 
-  <p class="date">2024-04-11</p>
+  <p class="date">2024-04-12</p>
+</section>
+<section id="today" class="slide level2">
+<h2>Today</h2>
+<ul>
+<li><p>What is structural equation modeling (SEM)?</p>
+<ul>
+<li><p>Path models</p></li>
+<li><p>Important terminology</p></li>
+</ul></li>
+<li><p>How to do it in R</p>
+<ul>
+<li><p>Specification</p></li>
+<li><p>Identification</p></li>
+<li><p>Estimation</p></li>
+<li><p>Model fit &amp; indices</p></li>
+<li><p>Modification indices</p></li>
+<li><p>Reporting</p></li>
+</ul></li>
+</ul>
 </section>
 <section id="packages" class="slide level2">
 <h2>Packages</h2>
@@ -414,7 +433,8 @@ Jason Geller, PH.D.
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(lavaan)</span>
 <span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(tidygraph)</span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(processR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(processR)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(knitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Follow along:</li>
@@ -814,18 +834,10 @@ Jason Geller, PH.D.
 </section>
 <section id="model-specification" class="slide level2">
 <h2>Model specification</h2>
-<ul>
-<li>Think up all the constructs that are relevant to model</li>
-<li>Consider how they are connected</li>
-<li>Justify each path that is present and absent</li>
-<li>What are the hypothesized relationships? (ivs, dvs, mediators, moderators)</li>
-<li>Write up model code</li>
-</ul>
-</section>
-<section id="model-specification-1" class="slide level2">
-<h2>Model specification</h2>
 
-<img data-src="images/model.png" class="quarto-figure quarto-figure-center r-stretch"><p>Theory of planned behavor</p>
+<img data-src="images/model.png" class="quarto-figure quarto-figure-center r-stretch"><ul>
+<li>Theory of planned behavior</li>
+</ul>
 </section>
 <section id="data-screening" class="slide level2">
 <h2>Data screening</h2>
@@ -845,16 +857,15 @@ Jason Geller, PH.D.
 <span id="cb4-2"><a href="#cb4-2"></a><span class="fu">library</span>(semPlot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
-<li><p>Declare equations for every endogenous variable in your model</p></li>
-<li><p>Declare indirect and covariances</p></li>
-</ul>
-<!-- -->
+<li><p>Declare equations for every endogenous variable in your model</p>
 <ul>
-<li><p>`~` indicates a regression</p></li>
-<li><p>`~~` indicates a covariance/correlation</p></li>
-<li><p>`=~` indicates a latent variable</p></li>
-<li><p>*=name of variable</p></li>
-<li><p>:= declare a variable</p></li>
+<li>`~` indicates a regression</li>
+</ul></li>
+<li><p>Declare indirect and covariances</p></li>
+<li><p><code>:=</code> declare a variable</p></li>
+<li><p><code>*=</code>name of variable</p></li>
+<li><p><code>~~</code> indicates a covariance/correlation</p></li>
+<li><p><code>=~</code> latent factor</p></li>
 </ul>
 </section>
 <section id="run-sem-in-r-1" class="slide level2">
@@ -863,30 +874,33 @@ Jason Geller, PH.D.
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>grad_model <span class="ot">=</span> <span class="st">'</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="st">intent.to.apply~a*perceived.value+b*external.pressure+c*perceived.control </span></span>
 <span id="cb5-3"><a href="#cb5-3"></a></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="st">    application.behaviour~d*intent.to.apply+perceived.control</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="st">    application.behaviour~d*intent.to.apply+e*perceived.control </span></span>
 <span id="cb5-5"><a href="#cb5-5"></a><span class="st">    #indirect</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="st">    value.through.intent:=a*d</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="st">    #indirect</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="st">    pressure.through.intent:=b*d  </span></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="st">    control.through.intent:=c*d </span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="st">    value.through.intent:=a*d</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="st">    #indirect</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="st">    pressure.through.intent:=b*d </span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="st">    #indirect</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="st">    control.through.intent:=e*d </span></span>
 <span id="cb5-11"><a href="#cb5-11"></a></span>
 <span id="cb5-12"><a href="#cb5-12"></a><span class="st"> perceived.control ~~ perceived.value # These are covariance paths</span></span>
 <span id="cb5-13"><a href="#cb5-13"></a><span class="st">  perceived.control ~~ external.pressure # These are covariance paths</span></span>
 <span id="cb5-14"><a href="#cb5-14"></a><span class="st">  external.pressure ~~ perceived.value # These are covariance paths</span></span>
 <span id="cb5-15"><a href="#cb5-15"></a><span class="st">'</span></span>
-<span id="cb5-16"><a href="#cb5-16"></a>fit <span class="ot">&lt;-</span> <span class="fu">sem</span>(grad_model, <span class="at">se=</span><span class="st">"bootstrap"</span>, <span class="at">bootstrap=</span><span class="dv">1000</span>,  <span class="at">data=</span>grad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-16"><a href="#cb5-16"></a>fit <span class="ot">&lt;-</span> <span class="fu">sem</span>(grad_model, <span class="at">se=</span><span class="st">"bootstrap"</span>, <span class="at">bootstrap=</span><span class="dv">5000</span>,  <span class="at">data=</span>grad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="model-fit" class="slide level2">
 <h2>Model fit</h2>
 <ul>
+<li><p>SEM compares the observed covariance matrix to predicted covariance matrix</p>
+<ul>
 <li><p>We want to know if our theoretical model <em>fits</em> the data</p></li>
-<li><p>This means we compare the relationships we’ve modeled to all possible relationships</p></li>
 <li><p>Good fit means we’ve captured the bulk of relations between variables in our model and there is not much covariance left over</p>
 <ul>
 <li>We didn’t miss anything</li>
 </ul></li>
+</ul></li>
+<li><p>This means we compare the relationships we’ve modeled to all possible relationships</p></li>
 </ul>
 </section>
 <section id="model-fit-1" class="slide level2">
@@ -917,10 +931,10 @@ Jason Geller, PH.D.
 <ul>
 <li><p>Absolute fit (measures how well data fits specified model)</p>
 <ul>
-<li><p><span class="math inline">\(\chi^2\)</span></p></li>
+<li><p><span class="math inline">\(\chi^2\)</span> (sensitive to sample size)</p></li>
 <li><p>SRMR</p>
 <ul>
-<li>Standardized difference between the sample covar matrix and hypothesized covar matrix</li>
+<li>Standardized difference between the sample covariance matrix and hypothesized covariance matrix</li>
 </ul></li>
 </ul></li>
 </ul>
@@ -935,7 +949,7 @@ Jason Geller, PH.D.
 </ul></li>
 <li><p>Relative goodness of fit</p>
 <ul>
-<li><p>CFI or Tucker Lewis Index</p>
+<li><p>CFI or TLI</p>
 <ul>
 <li>Measures how much better the model fits than the null model (all paths=0)</li>
 </ul></li>
@@ -1009,12 +1023,12 @@ Parameter Estimates:
 Regressions:
                           Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
   intent.to.apply ~                                                            
-    percevd.vl (a)           0.444    0.060    7.371    0.000    0.314    0.554
-    extrnl.prs (b)           0.029    0.034    0.877    0.380   -0.034    0.098
-    prcvd.cntr (c)          -0.064    0.060   -1.061    0.288   -0.194    0.047
+    percevd.vl (a)           0.444    0.059    7.482    0.000    0.315    0.550
+    extrnl.prs (b)           0.029    0.035    0.843    0.399   -0.034    0.103
+    prcvd.cntr (c)          -0.064    0.059   -1.078    0.281   -0.189    0.042
   application.behaviour ~                                                      
-    intnt.t.pp (d)           1.520    0.550    2.762    0.006    0.437    2.574
-    prcvd.cntr               0.734    0.310    2.368    0.018    0.219    1.446
+    intnt.t.pp (d)           1.520    0.541    2.807    0.005    0.541    2.652
+    prcvd.cntr (e)           0.734    0.310    2.367    0.018    0.249    1.455
    Std.lv  Std.all
                   
     0.444    0.807
@@ -1027,11 +1041,11 @@ Regressions:
 Covariances:
                        Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
   perceived.value ~~                                                        
-    perceivd.cntrl       34.696   10.708    3.240    0.001   17.092   58.227
+    perceivd.cntrl       34.696   11.125    3.119    0.002   15.380   59.819
   external.pressure ~~                                                      
-    perceivd.cntrl       46.660   12.831    3.637    0.000   23.939   71.485
+    perceivd.cntrl       46.660   13.417    3.478    0.001   21.437   73.563
   perceived.value ~~                                                        
-    external.prssr       39.758   11.882    3.346    0.001   17.654   63.397
+    external.prssr       39.758   12.612    3.152    0.002   16.087   65.489
    Std.lv  Std.all
                   
    34.696    0.665
@@ -1042,11 +1056,11 @@ Covariances:
 
 Variances:
                    Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
-   .intent.to.pply    5.780    0.985    5.868    0.000    3.422    7.310
-   .applicatn.bhvr  179.514   26.718    6.719    0.000  120.962  222.765
-    perceived.valu   47.616    9.367    5.083    0.000   30.932   66.916
-    external.prssr  149.236   21.608    6.906    0.000  108.347  191.739
-    perceivd.cntrl   57.154   13.895    4.113    0.000   32.410   86.692
+   .intent.to.pply    5.780    1.014    5.700    0.000    3.504    7.349
+   .applicatn.bhvr  179.514   28.352    6.332    0.000  120.403  231.363
+    perceived.valu   47.616    9.770    4.874    0.000   29.898   67.910
+    external.prssr  149.236   22.212    6.719    0.000  108.384  192.842
+    perceivd.cntrl   57.154   14.088    4.057    0.000   32.284   88.001
    Std.lv  Std.all
     5.780    0.400
   179.514    0.657
@@ -1056,40 +1070,89 @@ Variances:
 
 Defined Parameters:
                    Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
-    val.thrgh.ntnt    0.675    0.263    2.567    0.010    0.184    1.244
-    prssr.thrgh.nt    0.045    0.055    0.813    0.416   -0.053    0.169
-    cntrl.thrgh.nt   -0.097    0.113   -0.856    0.392   -0.388    0.065
+    val.thrgh.ntnt    0.675    0.254    2.661    0.008    0.242    1.230
+    prssr.thrgh.nt    0.045    0.060    0.744    0.457   -0.049    0.189
+    cntrl.thrgh.nt    1.116    0.602    1.854    0.064    0.365    2.788
    Std.lv  Std.all
     0.675    0.282
     0.045    0.033
-   -0.097   -0.044</code></pre>
+    1.116    0.117</code></pre>
+</div>
+</div>
+</section>
+<section id="what-to-report" class="slide level2">
+<h2>What to report?</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">interpret</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Name      Value Threshold Interpretation
+1    GFI 0.99432949      0.95   satisfactory
+2   AGFI 0.95747118      0.90   satisfactory
+3    NFI 0.99368415      0.90   satisfactory
+4   NNFI 1.04502659      0.90   satisfactory
+5    CFI 1.00000000      0.90   satisfactory
+6  RMSEA 0.00000000      0.05   satisfactory
+7   SRMR 0.01902056      0.08   satisfactory
+8    RFI 0.96842073      0.90   satisfactory
+9   PNFI 0.19873683      0.50           poor
+10   IFI 1.00846935      0.90   satisfactory</code></pre>
+</div>
+</div>
+</section>
+<section id="reporting-results" class="slide level2">
+<h2>Reporting Results</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">suppressWarnings</span>(<span class="fu">report_performance</span>(fit))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The model is not significantly different from a baseline model (Chi2(2) = 0.86,
+p = 0.650). The GFI (.99 &gt; .95) suggest a satisfactory fit. The PNFI (.20 &lt;
+.50) suggests a poor fit., The model is not significantly different from a
+baseline model (Chi2(2) = 0.86, p = 0.650). The AGFI (.96 &gt; .90) suggest a
+satisfactory fit. The PNFI (.20 &lt; .50) suggests a poor fit., The model is not
+significantly different from a baseline model (Chi2(2) = 0.86, p = 0.650). The
+NFI (.99 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt; .50) suggests a
+poor fit., The model is not significantly different from a baseline model
+(Chi2(2) = 0.86, p = 0.650). The NNFI (.05 &gt; .90) suggest a satisfactory fit.
+The PNFI (.20 &lt; .50) suggests a poor fit., The model is not significantly
+different from a baseline model (Chi2(2) = 0.86, p = 0.650). The CFI (.00 &gt;
+.90) suggest a satisfactory fit. The PNFI (.20 &lt; .50) suggests a poor fit., The
+model is not significantly different from a baseline model (Chi2(2) = 0.86, p =
+0.650). The RMSEA (.00 &lt; .05) suggest a satisfactory fit. The PNFI (.20 &lt; .50)
+suggests a poor fit., The model is not significantly different from a baseline
+model (Chi2(2) = 0.86, p = 0.650). The SRMR (.02 &lt; .08) suggest a satisfactory
+fit. The PNFI (.20 &lt; .50) suggests a poor fit., The model is not significantly
+different from a baseline model (Chi2(2) = 0.86, p = 0.650). The RFI (.97 &gt;
+.90) suggest a satisfactory fit. The PNFI (.20 &lt; .50) suggests a poor fit. and
+The model is not significantly different from a baseline model (Chi2(2) = 0.86,
+p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt;
+.50) suggests a poor fit.</code></pre>
 </div>
 </div>
 </section>
 <section id="run-sem-1" class="slide level2">
 <h2>Run SEM</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>parameters<span class="sc">::</span><span class="fu">model_parameters</span>(fit,  <span class="at">standardize =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb8-2"><a href="#cb8-2"></a>  <span class="at">component =</span> <span class="fu">c</span>(<span class="st">"regression"</span>, <span class="st">"defined"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">print_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>parameters<span class="sc">::</span><span class="fu">model_parameters</span>(fit,  <span class="at">standardize =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="at">component =</span> <span class="fu">c</span>(<span class="st">"regression"</span>, <span class="st">"defined"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">print_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="lsbxqfsbjn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#lsbxqfsbjn table {
+<div id="nijjawkzka" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#nijjawkzka table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#lsbxqfsbjn thead, #lsbxqfsbjn tbody, #lsbxqfsbjn tfoot, #lsbxqfsbjn tr, #lsbxqfsbjn td, #lsbxqfsbjn th {
+#nijjawkzka thead, #nijjawkzka tbody, #nijjawkzka tfoot, #nijjawkzka tr, #nijjawkzka td, #nijjawkzka th {
   border-style: none;
 }
 
-#lsbxqfsbjn p {
+#nijjawkzka p {
   margin: 0;
   padding: 0;
 }
 
-#lsbxqfsbjn .gt_table {
+#nijjawkzka .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1115,12 +1178,12 @@ Defined Parameters:
   border-left-color: #D3D3D3;
 }
 
-#lsbxqfsbjn .gt_caption {
+#nijjawkzka .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#lsbxqfsbjn .gt_title {
+#nijjawkzka .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1132,7 +1195,7 @@ Defined Parameters:
   border-bottom-width: 0;
 }
 
-#lsbxqfsbjn .gt_subtitle {
+#nijjawkzka .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1144,7 +1207,7 @@ Defined Parameters:
   border-top-width: 0;
 }
 
-#lsbxqfsbjn .gt_heading {
+#nijjawkzka .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1156,13 +1219,13 @@ Defined Parameters:
   border-right-color: #D3D3D3;
 }
 
-#lsbxqfsbjn .gt_bottom_border {
+#nijjawkzka .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lsbxqfsbjn .gt_col_headings {
+#nijjawkzka .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1177,7 +1240,7 @@ Defined Parameters:
   border-right-color: #D3D3D3;
 }
 
-#lsbxqfsbjn .gt_col_heading {
+#nijjawkzka .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1197,7 +1260,7 @@ Defined Parameters:
   overflow-x: hidden;
 }
 
-#lsbxqfsbjn .gt_column_spanner_outer {
+#nijjawkzka .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1209,15 +1272,15 @@ Defined Parameters:
   padding-right: 4px;
 }
 
-#lsbxqfsbjn .gt_column_spanner_outer:first-child {
+#nijjawkzka .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lsbxqfsbjn .gt_column_spanner_outer:last-child {
+#nijjawkzka .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lsbxqfsbjn .gt_column_spanner {
+#nijjawkzka .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1229,11 +1292,11 @@ Defined Parameters:
   width: 100%;
 }
 
-#lsbxqfsbjn .gt_spanner_row {
+#nijjawkzka .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#lsbxqfsbjn .gt_group_heading {
+#nijjawkzka .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1259,7 +1322,7 @@ Defined Parameters:
   text-align: left;
 }
 
-#lsbxqfsbjn .gt_empty_group_heading {
+#nijjawkzka .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1274,15 +1337,15 @@ Defined Parameters:
   vertical-align: middle;
 }
 
-#lsbxqfsbjn .gt_from_md > :first-child {
+#nijjawkzka .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lsbxqfsbjn .gt_from_md > :last-child {
+#nijjawkzka .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lsbxqfsbjn .gt_row {
+#nijjawkzka .gt_row {
   padding-top: 4px;
   padding-bottom: 4px;
   padding-left: 5px;
@@ -1301,7 +1364,7 @@ Defined Parameters:
   overflow-x: hidden;
 }
 
-#lsbxqfsbjn .gt_stub {
+#nijjawkzka .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1314,7 +1377,7 @@ Defined Parameters:
   padding-right: 5px;
 }
 
-#lsbxqfsbjn .gt_stub_row_group {
+#nijjawkzka .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1328,15 +1391,15 @@ Defined Parameters:
   vertical-align: top;
 }
 
-#lsbxqfsbjn .gt_row_group_first td {
+#nijjawkzka .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lsbxqfsbjn .gt_row_group_first th {
+#nijjawkzka .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#lsbxqfsbjn .gt_summary_row {
+#nijjawkzka .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1346,16 +1409,16 @@ Defined Parameters:
   padding-right: 5px;
 }
 
-#lsbxqfsbjn .gt_first_summary_row {
+#nijjawkzka .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lsbxqfsbjn .gt_first_summary_row.thick {
+#nijjawkzka .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lsbxqfsbjn .gt_last_summary_row {
+#nijjawkzka .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1365,7 +1428,7 @@ Defined Parameters:
   border-bottom-color: #D3D3D3;
 }
 
-#lsbxqfsbjn .gt_grand_summary_row {
+#nijjawkzka .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1375,7 +1438,7 @@ Defined Parameters:
   padding-right: 5px;
 }
 
-#lsbxqfsbjn .gt_first_grand_summary_row {
+#nijjawkzka .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1385,7 +1448,7 @@ Defined Parameters:
   border-top-color: #D3D3D3;
 }
 
-#lsbxqfsbjn .gt_last_grand_summary_row_top {
+#nijjawkzka .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1395,11 +1458,11 @@ Defined Parameters:
   border-bottom-color: #D3D3D3;
 }
 
-#lsbxqfsbjn .gt_striped {
+#nijjawkzka .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lsbxqfsbjn .gt_table_body {
+#nijjawkzka .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1408,7 +1471,7 @@ Defined Parameters:
   border-bottom-color: #D3D3D3;
 }
 
-#lsbxqfsbjn .gt_footnotes {
+#nijjawkzka .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1422,7 +1485,7 @@ Defined Parameters:
   border-right-color: #D3D3D3;
 }
 
-#lsbxqfsbjn .gt_footnote {
+#nijjawkzka .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1431,7 +1494,7 @@ Defined Parameters:
   padding-right: 5px;
 }
 
-#lsbxqfsbjn .gt_sourcenotes {
+#nijjawkzka .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1445,7 +1508,7 @@ Defined Parameters:
   border-right-color: #D3D3D3;
 }
 
-#lsbxqfsbjn .gt_sourcenote {
+#nijjawkzka .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1453,63 +1516,63 @@ Defined Parameters:
   padding-right: 5px;
 }
 
-#lsbxqfsbjn .gt_left {
+#nijjawkzka .gt_left {
   text-align: left;
 }
 
-#lsbxqfsbjn .gt_center {
+#nijjawkzka .gt_center {
   text-align: center;
 }
 
-#lsbxqfsbjn .gt_right {
+#nijjawkzka .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lsbxqfsbjn .gt_font_normal {
+#nijjawkzka .gt_font_normal {
   font-weight: normal;
 }
 
-#lsbxqfsbjn .gt_font_bold {
+#nijjawkzka .gt_font_bold {
   font-weight: bold;
 }
 
-#lsbxqfsbjn .gt_font_italic {
+#nijjawkzka .gt_font_italic {
   font-style: italic;
 }
 
-#lsbxqfsbjn .gt_super {
+#nijjawkzka .gt_super {
   font-size: 65%;
 }
 
-#lsbxqfsbjn .gt_footnote_marks {
+#nijjawkzka .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#lsbxqfsbjn .gt_asterisk {
+#nijjawkzka .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lsbxqfsbjn .gt_indent_1 {
+#nijjawkzka .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lsbxqfsbjn .gt_indent_2 {
+#nijjawkzka .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lsbxqfsbjn .gt_indent_3 {
+#nijjawkzka .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lsbxqfsbjn .gt_indent_4 {
+#nijjawkzka .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lsbxqfsbjn .gt_indent_5 {
+#nijjawkzka .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1536,40 +1599,40 @@ Defined Parameters:
 <td class="gt_row gt_left" headers="Regression   Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">intent.to.apply ~ perceived.value (a)</td>
 <td class="gt_row gt_center" headers="Regression   Coefficient">0.81</td>
 <td class="gt_row gt_center" headers="Regression   SE">0.10</td>
-<td class="gt_row gt_center" headers="Regression   95% CI">(0.61, 1.01)</td>
-<td class="gt_row gt_center" headers="Regression   z">7.93</td>
+<td class="gt_row gt_center" headers="Regression   95% CI">(0.61, 1.00)</td>
+<td class="gt_row gt_center" headers="Regression   z">8.01</td>
 <td class="gt_row gt_center" headers="Regression   p">&lt; .001</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Regression   Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">intent.to.apply ~ external.pressure (b)</td>
 <td class="gt_row gt_center" headers="Regression   Coefficient">0.09</td>
 <td class="gt_row gt_center" headers="Regression   SE">0.11</td>
-<td class="gt_row gt_center" headers="Regression   95% CI">(-0.11, 0.30)</td>
-<td class="gt_row gt_center" headers="Regression   z">0.89</td>
-<td class="gt_row gt_center" headers="Regression   p">0.376</td>
+<td class="gt_row gt_center" headers="Regression   95% CI">(-0.12, 0.31)</td>
+<td class="gt_row gt_center" headers="Regression   z">0.85</td>
+<td class="gt_row gt_center" headers="Regression   p">0.395</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Regression   Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">intent.to.apply ~ perceived.control (c)</td>
 <td class="gt_row gt_center" headers="Regression   Coefficient">-0.13</td>
 <td class="gt_row gt_center" headers="Regression   SE">0.12</td>
-<td class="gt_row gt_center" headers="Regression   95% CI">(-0.36, 0.11)</td>
-<td class="gt_row gt_center" headers="Regression   z">-1.06</td>
-<td class="gt_row gt_center" headers="Regression   p">0.287</td>
+<td class="gt_row gt_center" headers="Regression   95% CI">(-0.36, 0.10)</td>
+<td class="gt_row gt_center" headers="Regression   z">-1.08</td>
+<td class="gt_row gt_center" headers="Regression   p">0.280</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Regression   Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">application.behaviour ~ intent.to.apply (d)</td>
 <td class="gt_row gt_center" headers="Regression   Coefficient">0.35</td>
 <td class="gt_row gt_center" headers="Regression   SE">0.12</td>
-<td class="gt_row gt_center" headers="Regression   95% CI">(0.11, 0.59)</td>
-<td class="gt_row gt_center" headers="Regression   z">2.88</td>
-<td class="gt_row gt_center" headers="Regression   p">0.004</td>
+<td class="gt_row gt_center" headers="Regression   95% CI">(0.12, 0.58)</td>
+<td class="gt_row gt_center" headers="Regression   z">2.95</td>
+<td class="gt_row gt_center" headers="Regression   p">0.003</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Regression   Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">application.behaviour ~ perceived.control</td>
+<td class="gt_row gt_left" headers="Regression   Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">application.behaviour ~ perceived.control (e)</td>
 <td class="gt_row gt_center" headers="Regression   Coefficient">0.34</td>
 <td class="gt_row gt_center" headers="Regression   SE">0.12</td>
 <td class="gt_row gt_center" headers="Regression   95% CI">(0.10, 0.57)</td>
-<td class="gt_row gt_center" headers="Regression   z">2.75</td>
+<td class="gt_row gt_center" headers="Regression   z">2.77</td>
 <td class="gt_row gt_center" headers="Regression   p">0.006</td>
 </tr>
 <tr class="odd gt_group_heading_row">
@@ -1578,26 +1641,26 @@ Defined Parameters:
 <tr class="even gt_row_group_first">
 <td class="gt_row gt_left" headers="Defined   Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">(value.through.intent)</td>
 <td class="gt_row gt_center" headers="Defined   Coefficient">0.28</td>
-<td class="gt_row gt_center" headers="Defined   SE">0.11</td>
-<td class="gt_row gt_center" headers="Defined   95% CI">(0.07, 0.49)</td>
-<td class="gt_row gt_center" headers="Defined   z">2.60</td>
-<td class="gt_row gt_center" headers="Defined   p">0.009</td>
+<td class="gt_row gt_center" headers="Defined   SE">0.10</td>
+<td class="gt_row gt_center" headers="Defined   95% CI">(0.08, 0.49)</td>
+<td class="gt_row gt_center" headers="Defined   z">2.71</td>
+<td class="gt_row gt_center" headers="Defined   p">0.007</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Defined   Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">(pressure.through.intent)</td>
 <td class="gt_row gt_center" headers="Defined   Coefficient">0.03</td>
 <td class="gt_row gt_center" headers="Defined   SE">0.04</td>
-<td class="gt_row gt_center" headers="Defined   95% CI">(-0.04, 0.11)</td>
-<td class="gt_row gt_center" headers="Defined   z">0.85</td>
-<td class="gt_row gt_center" headers="Defined   p">0.396</td>
+<td class="gt_row gt_center" headers="Defined   95% CI">(-0.05, 0.11)</td>
+<td class="gt_row gt_center" headers="Defined   z">0.80</td>
+<td class="gt_row gt_center" headers="Defined   p">0.422</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Defined   Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">(control.through.intent)</td>
-<td class="gt_row gt_center" headers="Defined   Coefficient">-0.04</td>
-<td class="gt_row gt_center" headers="Defined   SE">0.05</td>
-<td class="gt_row gt_center" headers="Defined   95% CI">(-0.14, 0.05)</td>
-<td class="gt_row gt_center" headers="Defined   z">-0.95</td>
-<td class="gt_row gt_center" headers="Defined   p">0.341</td>
+<td class="gt_row gt_center" headers="Defined   Coefficient">0.12</td>
+<td class="gt_row gt_center" headers="Defined   SE">0.03</td>
+<td class="gt_row gt_center" headers="Defined   95% CI">(0.05, 0.18)</td>
+<td class="gt_row gt_center" headers="Defined   z">3.61</td>
+<td class="gt_row gt_center" headers="Defined   p">&lt; .001</td>
 </tr>
 </tbody><tfoot class="gt_sourcenotes">
 <tr class="even">
@@ -1608,55 +1671,6 @@ Defined Parameters:
 </table>
 
 </div>
-</div>
-</div>
-</section>
-<section id="what-to-report" class="slide level2">
-<h2>What to report?</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">interpret</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    Name      Value Threshold Interpretation
-1    GFI 0.99432949      0.95   satisfactory
-2   AGFI 0.95747118      0.90   satisfactory
-3    NFI 0.99368415      0.90   satisfactory
-4   NNFI 1.04502659      0.90   satisfactory
-5    CFI 1.00000000      0.90   satisfactory
-6  RMSEA 0.00000000      0.05   satisfactory
-7   SRMR 0.01902056      0.08   satisfactory
-8    RFI 0.96842073      0.90   satisfactory
-9   PNFI 0.19873683      0.50           poor
-10   IFI 1.00846935      0.90   satisfactory</code></pre>
-</div>
-</div>
-</section>
-<section id="reporting-results" class="slide level2">
-<h2>Reporting Results</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">suppressWarnings</span>(<span class="fu">report_performance</span>(fit))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>The model is not significantly different from a baseline model (Chi2(2) = 0.86,
-p = 0.650). The GFI (.99 &gt; .95) suggest a satisfactory fit. The PNFI (.20 &lt;
-.50) suggests a poor fit., The model is not significantly different from a
-baseline model (Chi2(2) = 0.86, p = 0.650). The AGFI (.96 &gt; .90) suggest a
-satisfactory fit. The PNFI (.20 &lt; .50) suggests a poor fit., The model is not
-significantly different from a baseline model (Chi2(2) = 0.86, p = 0.650). The
-NFI (.99 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt; .50) suggests a
-poor fit., The model is not significantly different from a baseline model
-(Chi2(2) = 0.86, p = 0.650). The NNFI (.05 &gt; .90) suggest a satisfactory fit.
-The PNFI (.20 &lt; .50) suggests a poor fit., The model is not significantly
-different from a baseline model (Chi2(2) = 0.86, p = 0.650). The CFI (.00 &gt;
-.90) suggest a satisfactory fit. The PNFI (.20 &lt; .50) suggests a poor fit., The
-model is not significantly different from a baseline model (Chi2(2) = 0.86, p =
-0.650). The RMSEA (.00 &lt; .05) suggest a satisfactory fit. The PNFI (.20 &lt; .50)
-suggests a poor fit., The model is not significantly different from a baseline
-model (Chi2(2) = 0.86, p = 0.650). The SRMR (.02 &lt; .08) suggest a satisfactory
-fit. The PNFI (.20 &lt; .50) suggests a poor fit., The model is not significantly
-different from a baseline model (Chi2(2) = 0.86, p = 0.650). The RFI (.97 &gt;
-.90) suggest a satisfactory fit. The PNFI (.20 &lt; .50) suggests a poor fit. and
-The model is not significantly different from a baseline model (Chi2(2) = 0.86,
-p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt;
-.50) suggests a poor fit.</code></pre>
 </div>
 </div>
 </section>
@@ -1751,23 +1765,23 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">modificationindices</span>(fit)<span class="sc">%&gt;%</span></span>
 <span id="cb14-2"><a href="#cb14-2"></a>  <span class="fu">print_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="lutmjhholk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#lutmjhholk table {
+<div id="lntlefjghm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#lntlefjghm table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#lutmjhholk thead, #lutmjhholk tbody, #lutmjhholk tfoot, #lutmjhholk tr, #lutmjhholk td, #lutmjhholk th {
+#lntlefjghm thead, #lntlefjghm tbody, #lntlefjghm tfoot, #lntlefjghm tr, #lntlefjghm td, #lntlefjghm th {
   border-style: none;
 }
 
-#lutmjhholk p {
+#lntlefjghm p {
   margin: 0;
   padding: 0;
 }
 
-#lutmjhholk .gt_table {
+#lntlefjghm .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1793,12 +1807,12 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   border-left-color: #D3D3D3;
 }
 
-#lutmjhholk .gt_caption {
+#lntlefjghm .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#lutmjhholk .gt_title {
+#lntlefjghm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1810,7 +1824,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   border-bottom-width: 0;
 }
 
-#lutmjhholk .gt_subtitle {
+#lntlefjghm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1822,7 +1836,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   border-top-width: 0;
 }
 
-#lutmjhholk .gt_heading {
+#lntlefjghm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1834,13 +1848,13 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   border-right-color: #D3D3D3;
 }
 
-#lutmjhholk .gt_bottom_border {
+#lntlefjghm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lutmjhholk .gt_col_headings {
+#lntlefjghm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1855,7 +1869,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   border-right-color: #D3D3D3;
 }
 
-#lutmjhholk .gt_col_heading {
+#lntlefjghm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1875,7 +1889,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   overflow-x: hidden;
 }
 
-#lutmjhholk .gt_column_spanner_outer {
+#lntlefjghm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1887,15 +1901,15 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   padding-right: 4px;
 }
 
-#lutmjhholk .gt_column_spanner_outer:first-child {
+#lntlefjghm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lutmjhholk .gt_column_spanner_outer:last-child {
+#lntlefjghm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lutmjhholk .gt_column_spanner {
+#lntlefjghm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1907,11 +1921,11 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   width: 100%;
 }
 
-#lutmjhholk .gt_spanner_row {
+#lntlefjghm .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#lutmjhholk .gt_group_heading {
+#lntlefjghm .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1937,7 +1951,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   text-align: left;
 }
 
-#lutmjhholk .gt_empty_group_heading {
+#lntlefjghm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1952,15 +1966,15 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   vertical-align: middle;
 }
 
-#lutmjhholk .gt_from_md > :first-child {
+#lntlefjghm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lutmjhholk .gt_from_md > :last-child {
+#lntlefjghm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lutmjhholk .gt_row {
+#lntlefjghm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1979,7 +1993,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   overflow-x: hidden;
 }
 
-#lutmjhholk .gt_stub {
+#lntlefjghm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1992,7 +2006,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   padding-right: 5px;
 }
 
-#lutmjhholk .gt_stub_row_group {
+#lntlefjghm .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2006,15 +2020,15 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   vertical-align: top;
 }
 
-#lutmjhholk .gt_row_group_first td {
+#lntlefjghm .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lutmjhholk .gt_row_group_first th {
+#lntlefjghm .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#lutmjhholk .gt_summary_row {
+#lntlefjghm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2024,16 +2038,16 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   padding-right: 5px;
 }
 
-#lutmjhholk .gt_first_summary_row {
+#lntlefjghm .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lutmjhholk .gt_first_summary_row.thick {
+#lntlefjghm .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lutmjhholk .gt_last_summary_row {
+#lntlefjghm .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2043,7 +2057,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   border-bottom-color: #D3D3D3;
 }
 
-#lutmjhholk .gt_grand_summary_row {
+#lntlefjghm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2053,7 +2067,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   padding-right: 5px;
 }
 
-#lutmjhholk .gt_first_grand_summary_row {
+#lntlefjghm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2063,7 +2077,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   border-top-color: #D3D3D3;
 }
 
-#lutmjhholk .gt_last_grand_summary_row_top {
+#lntlefjghm .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2073,11 +2087,11 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   border-bottom-color: #D3D3D3;
 }
 
-#lutmjhholk .gt_striped {
+#lntlefjghm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lutmjhholk .gt_table_body {
+#lntlefjghm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2086,7 +2100,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   border-bottom-color: #D3D3D3;
 }
 
-#lutmjhholk .gt_footnotes {
+#lntlefjghm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2100,7 +2114,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   border-right-color: #D3D3D3;
 }
 
-#lutmjhholk .gt_footnote {
+#lntlefjghm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2109,7 +2123,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   padding-right: 5px;
 }
 
-#lutmjhholk .gt_sourcenotes {
+#lntlefjghm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2123,7 +2137,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   border-right-color: #D3D3D3;
 }
 
-#lutmjhholk .gt_sourcenote {
+#lntlefjghm .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2131,63 +2145,63 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
   padding-right: 5px;
 }
 
-#lutmjhholk .gt_left {
+#lntlefjghm .gt_left {
   text-align: left;
 }
 
-#lutmjhholk .gt_center {
+#lntlefjghm .gt_center {
   text-align: center;
 }
 
-#lutmjhholk .gt_right {
+#lntlefjghm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lutmjhholk .gt_font_normal {
+#lntlefjghm .gt_font_normal {
   font-weight: normal;
 }
 
-#lutmjhholk .gt_font_bold {
+#lntlefjghm .gt_font_bold {
   font-weight: bold;
 }
 
-#lutmjhholk .gt_font_italic {
+#lntlefjghm .gt_font_italic {
   font-style: italic;
 }
 
-#lutmjhholk .gt_super {
+#lntlefjghm .gt_super {
   font-size: 65%;
 }
 
-#lutmjhholk .gt_footnote_marks {
+#lntlefjghm .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#lutmjhholk .gt_asterisk {
+#lntlefjghm .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lutmjhholk .gt_indent_1 {
+#lntlefjghm .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lutmjhholk .gt_indent_2 {
+#lntlefjghm .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lutmjhholk .gt_indent_3 {
+#lntlefjghm .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lutmjhholk .gt_indent_4 {
+#lntlefjghm .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lutmjhholk .gt_indent_5 {
+#lntlefjghm .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2323,16 +2337,6 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
 <ul>
 <li><p>Comparing multiple models</p>
 <ul>
-<li><p>Constraining paths</p></li>
-<li><p>Assess alternative hypotheses/models</p></li>
-</ul></li>
-<li><p>Sample size</p></li>
-<li><p>Assumptions</p></li>
-</ul>
-</section>
-<section id="best-practices-1" class="slide level2">
-<h2>Best practices</h2>
-<ul>
 <li><p>Constraining paths</p>
 <ul>
 <li><p>In SEM you can explicitly test hypotheses about the size of specific paths</p>
@@ -2343,6 +2347,8 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
 <li>Compare model fit of models with constrained and unconstrained paths</li>
 </ul></li>
 </ul></li>
+</ul></li>
+<li><p>Assess alternative hypotheses/models</p></li>
 </ul></li>
 </ul>
 </section>
@@ -2389,7 +2395,8 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
 <li><p>Ensure both fit data well</p>
 <ul>
 <li>Report comparative fit indices</li>
-<li>If none sucks, don’t compare them</li>
+<li>If one sucks, go with least crappy one</li>
+<li>If both suck, don’t compare them</li>
 </ul></li>
 </ul></li>
 <li><p>Use LRT test</p></li>
@@ -2398,10 +2405,148 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
 <section id="lrt-test" class="slide level2">
 <h2>LRT test</h2>
 <ul>
+<li>Test both model fits</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">compare_performance</span>(fit, grad_analysis_constrained) <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table style="width:100%;">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 4%">
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Name</th>
+<th style="text-align: left;">Model</th>
+<th style="text-align: right;">Chi2</th>
+<th style="text-align: right;">Chi2_df</th>
+<th style="text-align: right;">p_Chi2</th>
+<th style="text-align: right;">Baseline</th>
+<th style="text-align: right;">Baseline_df</th>
+<th style="text-align: right;">p_Baseline</th>
+<th style="text-align: right;">GFI</th>
+<th style="text-align: right;">AGFI</th>
+<th style="text-align: right;">NFI</th>
+<th style="text-align: right;">NNFI</th>
+<th style="text-align: right;">CFI</th>
+<th style="text-align: right;">RMSEA</th>
+<th style="text-align: right;">RMSEA_CI_low</th>
+<th style="text-align: right;">RMSEA_CI_high</th>
+<th style="text-align: right;">p_RMSEA</th>
+<th style="text-align: right;">RMR</th>
+<th style="text-align: right;">SRMR</th>
+<th style="text-align: right;">RFI</th>
+<th style="text-align: right;">PNFI</th>
+<th style="text-align: right;">IFI</th>
+<th style="text-align: right;">RNI</th>
+<th style="text-align: right;">Loglikelihood</th>
+<th style="text-align: right;">AIC</th>
+<th style="text-align: right;">AIC_wt</th>
+<th style="text-align: right;">BIC</th>
+<th style="text-align: right;">BIC_wt</th>
+<th style="text-align: right;">BIC_adjusted</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">fit</td>
+<td style="text-align: left;">lavaan</td>
+<td style="text-align: right;">0.8615836</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.6499942</td>
+<td style="text-align: right;">136.416</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.9943295</td>
+<td style="text-align: right;">0.9574712</td>
+<td style="text-align: right;">0.9936841</td>
+<td style="text-align: right;">1.045027</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.1997409</td>
+<td style="text-align: right;">0.6896164</td>
+<td style="text-align: right;">3.564326</td>
+<td style="text-align: right;">0.0190206</td>
+<td style="text-align: right;">0.9684207</td>
+<td style="text-align: right;">0.1987368</td>
+<td style="text-align: right;">1.008469</td>
+<td style="text-align: right;">1.009005</td>
+<td style="text-align: right;">-993.7334</td>
+<td style="text-align: right;">2013.467</td>
+<td style="text-align: right;">0.3717899</td>
+<td style="text-align: right;">2040.693</td>
+<td style="text-align: right;">0.1719716</td>
+<td style="text-align: right;">1999.805</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">grad_analysis_constrained</td>
+<td style="text-align: left;">lavaan</td>
+<td style="text-align: right;">1.8124921</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.6122203</td>
+<td style="text-align: right;">136.416</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.9886592</td>
+<td style="text-align: right;">0.9432959</td>
+<td style="text-align: right;">0.9867135</td>
+<td style="text-align: right;">1.031312</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.1794375</td>
+<td style="text-align: right;">0.6671659</td>
+<td style="text-align: right;">4.826403</td>
+<td style="text-align: right;">0.0301489</td>
+<td style="text-align: right;">0.9557116</td>
+<td style="text-align: right;">0.2960140</td>
+<td style="text-align: right;">1.008901</td>
+<td style="text-align: right;">1.009394</td>
+<td style="text-align: right;">-994.2089</td>
+<td style="text-align: right;">2012.418</td>
+<td style="text-align: right;">0.6282101</td>
+<td style="text-align: right;">2037.550</td>
+<td style="text-align: right;">0.8280284</td>
+<td style="text-align: right;">1999.807</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
 <li><span class="math inline">\(\Delta\)</span> <span class="math inline">\(\chi^2\)</span></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">test_likelihoodratio</span>(fit, grad_analysis_constrained) <span class="sc">%&gt;%</span> knitr<span class="sc">::</span><span class="fu">kable</span>(., <span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">test_likelihoodratio</span>(fit, grad_analysis_constrained) <span class="sc">%&gt;%</span> knitr<span class="sc">::</span><span class="fu">kable</span>(., <span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <thead>
@@ -2433,6 +2578,19 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Constraining a path adds 1 df (the model with more DFs is more parsimonious)</p>
+</div>
 </div>
 </div>
 </section>
@@ -2480,7 +2638,7 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
 <li>http://web.pdx.edu/~newsomj/semclass/ho_sample%20size.pdf</li>
 <li>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4334479/</li>
 </ul></li>
-<li><p>Check out Greg Hickok: <a href="https://drive.google.com/file/d/1U6UyYZCJ0sW1muKQZ-VNn9EIBtGWH_uS/view?usp=sharing" class="uri">https://drive.google.com/file/d/1U6UyYZCJ0sW1muKQZ-VNn9EIBtGWH_uS/view?usp=sharing</a></p>
+<li><p>Check out Greg Hickcock: <a href="https://drive.google.com/file/d/1U6UyYZCJ0sW1muKQZ-VNn9EIBtGWH_uS/view?usp=sharing" class="uri">https://drive.google.com/file/d/1U6UyYZCJ0sW1muKQZ-VNn9EIBtGWH_uS/view?usp=sharing</a></p>
 <ul>
 <li>Provides a simple way to calculate power/sample size</li>
 </ul></li>
@@ -2508,6 +2666,24 @@ p = 0.650). The IFI (.01 &gt; .90) suggest a satisfactory fit. The PNFI (.20 &lt
 <li><code>sem(model, test="satorra.bentler")</code></li>
 </ul></li>
 </ul></li>
+</ul>
+</section>
+<section id="wrap-up" class="slide level2">
+<h2>Wrap-up</h2>
+<ul>
+<li><p>SEM is a statistical technique that combines path analysis and factor analysis to allow for statistical modeling of the relationships between observed variables and latent constructs</p></li>
+<li><p>It focuses heavily on model fit to evaluate how well the proposed model fits the data</p></li>
+<li><p>It’s a very flexible analysis that has several variations, extensions, and applications</p></li>
+</ul>
+</section>
+<section id="lab-and-next-week" class="slide level2">
+<h2>Lab and next week</h2>
+<ul>
+<li><p>No lab on Wednesday</p>
+<ul>
+<li>We will incorporate SEM into factor analysis lab</li>
+</ul></li>
+<li><p>Factor analysis (Aditi and Brooke)</p></li>
 </ul>
 </section>
 <section id="acknowledgments" class="slide level2">
