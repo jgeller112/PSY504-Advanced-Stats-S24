@@ -44,7 +44,7 @@ Here's your roadmap for the semester!
 |  | 4/3/24 | Lab 8  |  |  | {{< fa pen-ruler >}} |  |
 | 11 | 4/8/24 | Mediation | [{{<    fa   book-open-reader >}}](/schedule/10-week-med.qmd) |[{{< fa video   >}}](https://youtu.be/IWxmk06eyA8) [{{< fa laptop-code   >}}](/slides/10-mediation/mediation.html)  |  |Kristopher  |
 |  | 4/10/24 | Lab 8  |  |  | [{{< fa pen-ruler >}}](/Labs/Lab8-med.qmd) |  |
-| 12 | 4/15/24 | Path modeling/SEM | [{{<    fa   book-open-reader >}}](/schedule/12-week-sem.qmd) | [{{< fa video   >}}] [{{< fa laptop-code   >}}](/slides/11-SEM/sem_intro_1.html) |  | Renata |
+| 12 | 4/15/24 | Path modeling/SEM | [{{<    fa   book-open-reader >}}](/schedule/12-week-sem.qmd) | [{{< fa video   >}}](https://youtu.be/DxolIiiB3RM) [{{< fa laptop-code   >}}](/slides/11-SEM/sem_intro_1.html) |  | Renata |
 |  | 4/17/24 |  |  |  | {{< fa pen-ruler >}} |  |
 | 13 | 4/22/24 | Factor analysis | [{{<    fa   book-open-reader >}}](/schedule/13-week-fa.qmd) | {{< fa laptop-code   >}} |  | Aditi and Brooke |
 |  | 4/24/24 | Lab 9 |  |  | {{< fa pen-ruler >}} |  |
