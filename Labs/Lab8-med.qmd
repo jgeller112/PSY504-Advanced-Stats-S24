@@ -17,3 +17,7 @@ Cho, C., Yoo, H. J., Min, J., Nashiro, K., Thayer, J. F., Lehrer, P. M., & Mathe
 During this lab, you will gain experience performing mediation in R and assessing open science practices by attempting to replicate the findings of a recent paper.
 
 To access Lab 8, please [click here](https://classroom.github.com/a/VCMt_gl9).
+
+## Answers
+
+-   [Lab answers](/lab_ns/mediation/Lab8_med_ans.qmd)
