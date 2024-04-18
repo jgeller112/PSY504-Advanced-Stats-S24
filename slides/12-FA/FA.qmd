@@ -1,0 +1,826 @@
+---
+title: "Introduction to Exploratory and Confirmatory Factor Analysis (Using R)"
+subtitle: "Princeton University"
+author: "Jason Geller, PH.D."
+date: 'Updated:`r Sys.Date()`'
+footer: "PSY 504: Advanced Statistics"
+format: 
+  revealjs:
+    theme: style_new.scss
+    multiplex: true
+    transition: fade
+    slide-number: true
+    incremental: false 
+    chalkboard: true
+    fontsize: "25pt"
+webr:
+  packages: ["tidyverse", "easystats"]
+filters:
+  - webr
+execute:
+  freeze: auto
+  echo: true
+  message: false
+  warning: false
+  fig-align: center
+  fig-width: 12
+  fig-height: 8
+  editor_options: 
+  chunk_output_type: inline
+  code-overflow: wrap
+  html:
+    code-fold: true
+    code-tools: true
+---
+## Today
+
+- Common factor analysis and PCA
+- Carrying out exploatory factor analysis in R
+  - Steps 
+- CFA
+- Reporting factor analysis
+
+## Packages
+
+```{r}
+
+library(tidyverse)
+library(easystats)
+library(psych)
+library(semPlot)
+library(factoextra)
+library(corrplot)
+library(pacman)
+
+options(scipen = 999)
+```
+
+
+- Follow along here: 
+
+## What is factor analysis?
+
+-   **Let's say we have 6 items in a scale:**
+
+    -   Sleep disturbances (insomnia/hypersomnia)
+
+    -   Suicidal ideation
+
+    -   Lack of interest in normally engaging activities
+
+    -   Racing thoughts
+
+    -   Constant worrying
+
+    -   Nausea
+    
+. . .
+
+-   FA "looks" at the relationships between these items and finds that some of them seem to hang together
+
+## What is factor analysis?
+
+::: columns
+::: {.column width="50%"}
+-   Let's say we have 6 items in a scale:
+
+    -   **Sleep disturbances (insomnia/hypersomnia)**
+
+    -   **Suicidal ideation**
+
+    -   **Lack of interest in normally engaging activities**
+
+    -   [Racing thoughts]{.underline}
+
+    -   [Constant worrying]{.underline}
+
+    -   [Nausea]{.underline}
+
+        -   Some of these could cross-load
+
+        -   FA considers this and items load on all factors
+:::
+
+::: {.column width="50%"}
+<br>
+
+<br>
+
+![](images/cfa.png){fig-align="center"}
+:::
+:::
+
+## Uses
+
+::: columns
+<br>
+
+<br>
+
+::: {.column width="50%"}
+-   Simplify data
+
+    -   6 variables to 2 variables
+:::
+
+::: {.column width="50%"}
+![](images/IMG_2412.jpeg)
+:::
+:::
+
+## Uses
+
+::: columns
+<br>
+
+<br>
+
+::: {.column width="50%"}
+-   Identify underlying constructs
+
+    -   Depression and anxiety
+:::
+
+::: {.column width="50%"}
+![](images/IMG_2411.jpeg)
+:::
+:::
+
+## Partitioning Variance
+
+::: columns
+::: {.column width="50%"}
+1.  Variance common to other variables
+    -   Communality $h^2$: **proportion of each variable's/item's variance that can be explained by the factors**
+        -   How much an item is related to other items in the analysis
+2.  Variance specific to that variable (unique variance)
+3.  Random measurement error
+:::
+
+::: {.column width="50%"}
+![](images/fapcavar.png){fig-align="center"}
+:::
+:::
+
+## Common factor analysis
+
+::: columns
+::: {.column width="50%"}
+-   Common factor analysis
+
+    -   Attempts to achieve parsimony (data reduction) by:
+        -   Explaining the *maximum amount of common variance* in a correlation matrix
+            -   Using the *smallest* number of explanatory constructs (factors)
+:::
+
+::: {.column width="50%"}
+![](images/IMG_2409.jpeg)
+:::
+:::
+
+## Common factor analysis
+
+> Partitions variance that is in common with other variables. How?
+
+-   Use multiple regression to calculate multiple $R^2$
+
+    -   Each item as an outcome
+
+    -   Use all other items as predictors
+
+    -   Finds the communality among all of the variables, relative to one another
+
+## Common factor analysis
+
+![](images/IMG_2413.jpeg)
+
+## Common factor analysis
+
+![](images/IMG_2414.jpeg)
+
+## Common factor analysis
+
+![](images/IMG_2415.jpeg)
+
+## PCA
+
+![](images/IMG_2410-01.jpeg){fig-align="center"}
+
+-   Assumption: Components that explain the most total variance
+
+-   Goal: Find fewest components that account for the relationships among variables
+
+## PCA vs. FA
+
+<br>
+
+<br>
+
+-   Run *factor analysis* if you assume or wish to test a theoretical model of *latent factors* causing observed variables
+
+-   Run PCA If you want to simply *reduce* your correlated observed variables to a smaller set of important independent composite variables
+
+## Eigenvalues and Eigenvectors
+
+-   **Eigenvectors** represent a weight for each eigenvalue
+
+    -   Eigenvector times the square root of the eigenvalue gives the **factor loadings**
+
+        -   Correlation between item and factor
+
+-   **Eigenvalues** represent the total amount of variance that can be explained by a given factor
+
+    -   Sum of squared component loadings down all items for each factor
+
+## Exploratory factor analysis steps
+
+1.  Checking the suitability of data (should  we run a factor analysis?)
+
+2.  Decide # of factors
+
+3.  Extraction
+
+4.  Rotation 
+
+5.  Interpret/name
+
+## Big 5
+
+Big Five Personality Traits
+
+![](https://measuringsel.casel.org/wp-content/uploads/2018/08/big5.png){fig-align="center"}
+
+## Data
+
+::: columns
+::: {.column width="50%"}
+
+```{webr-r}
+
+data <- read.csv
+data <- na.omit(data)
+
+```
+
+```{r}
+#| echo: false
+#| 
+library(psych)
+# Load the data
+data <- psych::bfi[, 1:25] # Select only the 25 first columns corresponding to the items
+data <- na.omit(data)
+```
+:::
+
+::: {.column width="50%"}
+-   2800 participants
+
+-   25 self-report items
+
+    -   The personality items are split into 5 categories
+:::
+:::
+
+
+## Data visualization
+
+```{r}
+#| echo: false
+#| fig.align: "center"
+d=cor(data)
+
+corrplot(d, method = 'square', type = 'lower', diag = FALSE, outline = T, addgrid.col = "darkgray")
+```
+
+## Is factor analysis warranted?
+
+-   Bartlett's test
+
+    -   Is the Correlation matrix significantly different from an identity matrix (0s)?
+
+        |     |     |     |
+        |-----|-----|-----|
+        | 1   | 0   | 0   |
+        | 0   | 1   | 0   |
+        | 0   | 0   | 1   |
+
+## Is factor analysis warranted?
+
+-   Kaiser-Meyer-Olkin (KMO)
+
+$$
+KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
+$$
+
+-   If variables share a common factor they will have small partial correlation (i.e., most of the variance is explained by common factor so not much left)
+
+    | **KMO Criterion** | **Adequacy Interpretation** |
+    |-------------------|-----------------------------|
+    | 0.00-0.49         | Unacceptable                |
+    | 0.50-0.59         | Poor                        |
+    | 0.60-0.69         | Fair                        |
+    | 0.70-0.79         | Good                        |
+    | 0.80-0.89         | Very Good                   |
+    | 0.90-1.00         | Excellent                   |
+
+## Is factor analysis warranted?
+
+- Check's Bartlett's
+- Checks KMO
+- Check MSA (should delete MSA < .5)
+
+```{r}
+#easystats
+performance::check_factorstructure(data)
+```
+
+## Assumptions
+
+-   No outliers
+
+-   Large sample
+
+    - >100
+
+-   Normality 
+
+-   No missingness
+
+-   No multicolinerarity
+
+## Assumptions: Outliers
+
+```{r}
+performance::check_outliers(data)
+outliers_list<- performance::check_outliers(data) 
+data <- data[!outliers_list, ] # remove outliers
+```
+
+## Assumptions: Multicollinearity
+
+-  We do not want variables that are too highly correlated
+
+-   Determinant of correlation matrix
+
+    - Smaller \< .00001 (close to 0) suggests a problem with multicollinearity
+
+```{r}
+cormatrix <- cor(data)
+det(cormatrix)
+```
+
+## Fitting factor model: # of factors
+
+Several different ways:
+
+-   A priori
+
+-   Eigenvalues \> 1 (Kaiser criterion)
+
+    -   New guideline: \> .77
+
+-   Cumulative percent variance extracted (75%)
+
+    ```{r}
+    #| eval: False
+    #| 
+
+    number_items <- fa.parallel(data, fa="fa")
+
+    #eigenvalues > 1 and > .7
+    sum(number_items$fa.values >= 1)
+    sum(number_items$fa.values >= .7)
+
+
+    ```
+
+## Fitting factor model: \# of factors
+
+<br>
+
+<br>
+
+::: columns
+::: {.column width="50%"}
+Scree plot
+
+-   A plot of the Eigenvalues in order from largest to smallest
+
+-   Look for the elbow (shared variability starting to level off)
+
+    -   Above the elbow is how many components you want
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: FALSE
+#| fig.width: 8
+#| fig.height: 4
+res.pca <- prcomp(data)
+fviz_screeplot(res.pca, addlabels=TRUE)
+```
+:::
+:::
+
+## Fitting factor model: # of factors
+
+::: columns
+::: {.column width="50%"}
+-   Parallel analysis
+
+    -   More objective and reliable
+
+    -   Run simulations pulling eigenvalues from randomly generated datasets
+
+    -   If eigenvalues \> eigenvalues from random datasets more likely to represent meaningful patterns in the data
+:::
+
+::: {.column width="50%"}
+```{r}
+
+fa.parallel(data, fa="fa")
+
+```
+:::
+:::
+
+## Method agreement procedure
+
+-   Uses many methods to determine how many factor you should get
+
+    -   This is the approach I would use
+
+```{r}
+#| fig-align: "center"
+#| 
+parameters::n_factors(data) %>% plot()
+
+```
+
+## Extracting factor loadings
+
+::: columns
+::: {.column width="50%"}
+-   Once the number of factors are decided the researcher runs another factor analysis to get the loading for each of the factors
+
+    -   Principal axis factoring (PAF)
+
+        -   Get initial estimates of communalities
+
+            -   Squared multiple correlations (highest absolute correlation)
+
+        -   Take correlation matrix and replace diagonal elements with communalities
+:::
+
+::: {.column width="50%"}
+```{r}
+# nfactor number of factors from par analysis
+# rotate rotation method 
+# fm is principle axis
+efa <- psych::fa(data, nfactors = 5, rotate="none", fm="pa")
+#use pca instead
+pca <- psych::pca(data, nfactors = 5, rotate="none")
+```
+
+![](images/IMG_2416.jpeg)
+:::
+:::
+
+## Factor loadings
+
+::: columns
+::: {.column width="50%"}
+-   Correlation between item and factor
+
+-   Naming: PA1-PA2...
+
+    -   Reflects fitting method
+:::
+
+::: {.column width="50%"}
+-   Factors ordered by variance explained
+
+- Complexity
+  - # of factors an item loads on (ideally 1!)
+- Uniqueness
+  - 1-communality
+:::
+:::
+
+```{r}
+#| echo: false
+#| 
+
+parameters::model_parameters(efa) %>%
+  print_html()
+
+```
+
+
+## Variance accounted for
+
+```{r}
+
+efa$Vaccounted %>%
+  knitr::kable()
+```
+
+## Path diagram
+
+```{r}
+#| fig-align: "center"
+
+
+efa <- psych::fa(data, nfactors = 5, rotate="none", fm="pa")
+
+fa.diagram(efa)
+
+```
+
+## Rotation
+
+![](images/IMG_2403.png)
+
+## Rotation
+
+
+-   Simple structure
+
+    -   Make more interpretable (understandable) without actually changing the relationships among the variables
+
+        -   High factor loadings for each item on one factor
+        -   Low factor loadings for all other factors
+
+## Rotation
+
+-   Different types of rotation:
+
+    -   Orthogonal Rotation (e.g., Varimax)
+
+        -   This method of rotation prevents the factors from being correlated with each other
+
+        -   Useful if you have factors that should theoretically be unrelated
+
+    -   Oblique rotation (e.g., Direct Oblimin)
+
+        -   Allows factors to correlate (more common)
+        -   Good idea to always use this
+
+## Rotation
+
+::: columns
+::: {.column width="50%"}
+-   Orthogonal
+
+![](images/IMG_2404.png)
+:::
+
+::: {.column width="50%"}
+-   Oblique
+
+![](images/IMG_2405.png)
+:::
+:::
+
+## Rotation
+
+![](images/moving_rot.GIF){fig-align="center"}
+
+## Rotation
+
+```{r}
+#change rotate arg to desired rotation
+#orthogonal rotation
+efa_or <- psych::fa(data, nfactors = 5, rotate="varimax", fm="pca") %>% 
+   model_parameters(sort = TRUE, threshold = "max")
+
+# correlated factor rotation
+efa_obs <- psych::fa(data, nfactors = 5, rotate="oblimin", fm="pa") %>% 
+   model_parameters(sort = TRUE, threshold = "max")
+
+  
+```
+
+## Rotation
+
+```{r}
+#| echo: false
+#| 
+efa_obs %>%
+   print_md()
+
+```
+
+## Rotation
+
+-   After rotation
+
+```{r}
+#| fig-align: "center"
+efa_obs <- psych::fa(data, nfactors = 5, rotate="oblimin", fm="pa") 
+
+fa.diagram(efa_obs)
+```
+
+## What makes a good factor?
+
+-   Makes sense
+
+    -   Loadings on the same factor do not appear to measure completely different things
+
+-   Easy to interpret
+
+    -   Simple structure
+
+        -   Contains either high or low loadings with few moderately sized loadings
+        -   Lacks cross-loadings
+            -   You don't have items that load equally onto more than 1 factor
+                -   Keep items \> .3 and delete items \< .3
+
+-   3 or more indicators per latent factor
+
+## Factor scores
+
+-   Estimated scores for each participant on each underlying factor (standing on factor)
+
+    -   Standardize the factor loadings by dividing each loading by the square root of the sum of squares of the factor loading for that factor.
+
+    -   Multiply scores on each item by the corresponding standardized factor loading and then summing across all items.
+
+-   Can use them in multiple regression!
+
+```{r}
+
+efa_obs <- psych::fa(data, nfactors = 5, rotate="oblimin", fm="pa", scores="regression")
+
+
+```
+
+## Factor scores
+
+Geller, J., Thye, M., & Mirman, D. (2019). Estimating effects of graded white matter damage and binary tract disconnection on post-stroke language impairment. *NeuroImage*, *189*. <https://doi.org/10.1016/j.neuroimage.2019.01.020>
+
+![](images/CorrelationMatrix+FactorLoadings_Figure.png){fig-align="center"}
+
+## Plotting FA
+
+::: columns
+::: {.column width="50%"}
+```{r}
+
+# correlated rotation
+efa_obs <- psych::fa(data, nfactors = 5, rotate="oblimin", fm="pa") %>% 
+   model_parameters(sort = TRUE, threshold = "max")
+
+efa_plot <- as.data.frame(efa_obs) %>%
+  pivot_longer(PA2:PA4) %>%
+  dplyr::select(-Complexity, -Uniqueness) %>% rename("Loadings" = value, "Personality" = name)
+
+
+#For each test, plot the loading as length and fill color of a bar
+# note that the length will be the absolute value of the loading but the 
+# fill color will be the signed value, more on this below
+efa_fact_plot <- ggplot(efa_plot, aes(Variable, abs(Loadings), fill=Loadings)) + 
+  facet_wrap(~ Personality, nrow=1) + #place the factors in separate facets
+  geom_bar(stat="identity") + #make the bars
+  coord_flip() + #flip the axes so the test names can be horizontal  
+  #define the fill color gradient: blue=positive, red=negative
+  scale_fill_gradient2(name = "Loading", 
+                       high = "blue", mid = "white", low = "red", 
+                       midpoint=0, guide=F) +
+  ylab("Loading Strength") + #improve y-axis label
+  theme_bw(base_size=12) #use a black-and0white theme with set font size
+
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| fig.align: "center"
+#| fig.width: 10
+#| fig.height: 8
+#| 
+efa_fact_plot
+```
+:::
+:::
+
+## Table FA
+
+```{r}
+source("https://raw.githubusercontent.com/franciscowilhelm/r-collection/master/fa_table.R")
+
+efa_obs <- psych::fa(data, nfactors = 5, rotate="oblimin", fm="pa")
+
+table<- fa_table(efa_obs)
+```
+
+## FA table
+
+```{r}
+#| echo: true
+table$ind_table
+```
+
+## Confirmatory factor analysis
+
+- Do not do a confirmatory analysis with the same data you performed your exploratory analysis!
+
+    -   Machine learning approach
+
+-   Partition data training and test data
+
+```{r}
+# to have reproducible result, we will also set seed here so that similar
+# portions of the data are used each time we run the following code
+partitions <- datawizard::data_partition(data, training_proportion = 0.7, seed = 111)
+training <- partitions$p_0.7
+test <- partitions$test
+
+
+```
+
+## CFA in Lavaan
+
+Let's compare the big6 to the big5
+
+```{r}
+
+structure_big5 <- psych::fa(training, nfactors = 5, rotate = "oblimin") %>%
+  efa_to_cfa()
+
+# Investigate how the models look
+structure_big5
+
+
+```
+
+## CFA in Lavaan
+
+```{r}
+structure_big6 <- psych::fa(training, nfactors = 6, rotate = "oblimin") %>%
+  efa_to_cfa()
+
+structure_big6
+
+
+```
+
+## Fit and compare models
+
+```{r}
+
+big5 <- suppressWarnings(lavaan::cfa(structure_big5, data = test))
+big6 <- suppressWarnings(lavaan::cfa(structure_big6, data = test))
+
+performance::compare_performance(big5, big6, verbose = FALSE) %>%
+  print_md()
+
+```
+
+## Information to include in paper
+
+![](images/FA_guidelines.png){fig-align="center"}
+
+## Write-up
+
+::: columns
+::: {.column width="50%"}
+-   Factorablity
+
+    -   KMO
+
+    -   Bartlett's test
+
+    -   Determinant of correlation matrix
+
+-   Number of components
+
+    -   Scree plot
+
+    -   Eigenvalues \> .77
+
+    -   Parallel analysis
+
+    -   Agreement method
+:::
+
+::: {.column width="50%"}
+-   Type of rotation
+
+    -   PAF or PCA
+
+-   Factor loadings
+
+    -   Place in table or figure
+:::
+:::
+
+## Sample write-up
+
+First, data were screened to determine the suitability of the data for this analyses. The Kaiser-Meyer- Olkin measure of sampling adequacy (KMO; Kaiser, 1970) represents the ratio of the squared correlation between variables to the squared partial correlation between variables. KMO ranges from 0.00 to 1.00 -- values closer to 1.00 indicate that the patterns of correlations are relatively compact and that component analysis should yield distinct and reliable components (Field, 2012). In our dataset, the KMO value was .86, indicating acceptable sampling adequacy. The Barlett's Test of Sphericity examines whether the population correlation matrix resembles an identity matrix (Field, 2012). When the p value for the Bartlett's test is \< .05, we are fairly certain we have clusters of correlated variables. In our dataset, χ1(300)=1683.76,p\<.001, indicating the correlations between items are sufficiently large enough for principal components analysis. The determinant of the correlation matrix alerts us to any issues of multicollinearity or singularity and should be larger than 0.00001. Our determinant was 0.00115 and, again, indicated that our data was suitable for the analysis.
+
+## Sample write-up
+
+Several criteria were used to determine the number of components to extract: a priori theory, the scree test, the eigenvalue-greater-than-one criteria, and the interpretability of the solution. Kaiser's eigenvalue-greater-than-one criteria suggested four components, and, in combination explained 49% of the variance. The inflexion (elbow) in the scree plot justified retaining four components. Based on the convergence of these decisions, four components were extracted. We investigated each with orthogonal (varimax) and oblique (oblimin) procedures. Given the non-significant correlations (ranging from -0.03 to 0.03) and the clear component loadings in the orthogonal rotation, we determined that an orthogonal solution was most appropriate.
+
