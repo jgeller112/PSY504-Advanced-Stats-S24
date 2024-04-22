@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.504">
 
   <meta name="author" content="Jason Geller, PH.D.">
-  <meta name="dcterms.date" content="2024-04-19">
+  <meta name="dcterms.date" content="2024-04-21">
   <title>Introduction to Exploratory and Confirmatory Factor Analysis (Using R)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -556,7 +556,7 @@
   };
 
   // Store cell data
-  globalThis.qwebrCellDetails = [{"id":1,"options":{"warning":"true","dpi":72,"autorun":"false","output":"true","out-height":"","echo":"true","label":"unnamed-chunk-1","results":"markup","fig-width":7,"fig-height":5,"fig-cap":"","out-width":"700px","classes":"","context":"interactive","message":"true","read-only":"false","comment":""},"code":"#| # Load the data\ndata <- read.csv(\"https://raw.githubusercontent.com/jgeller112/PSY504-Advanced-Stats-S24/main/slides/12-FA/data/bfi.csv\")\ndata <- data[, 2:25] # Select only the 25 first columns corresponding to the items\ndata <- na.omit(data)"}];
+  globalThis.qwebrCellDetails = [{"code":"#| # Load the data\ndata <- read.csv(\"https://raw.githubusercontent.com/jgeller112/PSY504-Advanced-Stats-S24/main/slides/12-FA/data/bfi.csv\")\ndata <- data[, 2:25] # Select only the 25 first columns corresponding to the items\ndata <- na.omit(data)","options":{"read-only":"false","context":"interactive","results":"markup","echo":"true","comment":"","classes":"","out-height":"","label":"unnamed-chunk-1","autorun":"false","fig-cap":"","fig-height":5,"warning":"true","message":"true","fig-width":7,"output":"true","dpi":72,"out-width":"700px"},"id":1}];
 
   </script>
   <script type="module">
@@ -1464,18 +1464,21 @@ Jason Geller, PH.D.
 </div>
 </div>
 
-  <p class="date">2024-04-19</p>
+  <p class="date">2024-04-21</p>
 </section>
 <section id="today" class="slide level2">
 <h2>Today</h2>
 <ul>
-<li>Common factor analysis and PCA</li>
-<li>Carrying out exploratory factor analysis in R
+<li><p>Exploratory (common) factor analysis</p>
 <ul>
-<li>Steps</li>
+<li><p>What is it?</p></li>
+<li><p>Why?</p></li>
+<li><p>Variance</p></li>
+<li><p>FA vs.&nbsp;PCA</p></li>
 </ul></li>
-<li>CFA</li>
-<li>Reporting factor analysis</li>
+<li><p>Carrying out exploratory factor analysis in R</p></li>
+<li><p>CFA</p></li>
+<li><p>Visualization and reporting factor analysis</p></li>
 </ul>
 </section>
 <section id="packages" class="slide level2">
@@ -1575,26 +1578,22 @@ Jason Geller, PH.D.
 </div>
 </section>
 <section id="partitioning-variance" class="slide level2">
-<h2>Partitioning Variance</h2>
+<h2>Partitioning variance</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ol type="1">
-<li>Variance common to other variables
+<li><p>Variance common to other variables</p>
 <ul>
 <li>Communality <span class="math inline">\(h^2\)</span>: <strong>proportion of each variable’s/item’s variance that can be explained by the factors</strong>
 <ul>
 <li>How much an item is related to other items in the analysis</li>
 </ul></li>
 </ul></li>
-<li>Variance specific to that variable (unique variance)</li>
-<li>Random measurement error</li>
+<li><p>Variance specific to that variable (unique variance)</p></li>
+<li><p>Random measurement error</p></li>
 </ol>
 </div><div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="images/fapcavar.png" class="quarto-figure quarto-figure-center"></p>
-</figure>
-</div>
+<p><img data-src="images/common.png"></p>
 </div>
 </div>
 </section>
@@ -1647,10 +1646,12 @@ Jason Geller, PH.D.
 <img data-src="images/IMG_2415.jpeg" class="r-stretch"></section>
 <section id="pca" class="slide level2">
 <h2>PCA</h2>
+<ul>
+<li>Based on total variance!</li>
+</ul>
 
-<img data-src="images/IMG_2410-01.jpeg" class="quarto-figure quarto-figure-center r-stretch"><ul>
-<li><p>Assumption: Components that explain the most total variance</p></li>
-<li><p>Goal: Find fewest components that account for the relationships among variables</p></li>
+<img data-src="images/pca.png" class="quarto-figure quarto-figure-center r-stretch"><ul>
+<li>Goal: Find fewest components that accounts for the most varaiance among variables</li>
 </ul>
 </section>
 <section id="pca-vs.-fa" class="slide level2">
@@ -1683,8 +1684,8 @@ Jason Geller, PH.D.
 <ol type="1">
 <li><p>Checking the suitability of data (should we run a factor analysis?)</p></li>
 <li><p>Decide # of factors</p></li>
-<li><p>Extraction</p></li>
-<li><p>Rotation (make factors more interpretable)</p></li>
+<li><p>Factor Extraction</p></li>
+<li><p>Factor Rotation (make factors more interpretable)</p></li>
 <li><p>Interpret/name</p></li>
 </ol>
 </section>
@@ -1715,8 +1716,26 @@ Jason Geller, PH.D.
 </section>
 <section id="data-visualization" class="slide level2">
 <h2>Data visualization</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>d<span class="ot">=</span><span class="fu">cor</span>(data) <span class="co"># get corr</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">corrplot</span>(d, <span class="at">method =</span> <span class="st">'square'</span>, <span class="at">type =</span> <span class="st">'lower'</span>, <span class="at">diag =</span> <span class="cn">FALSE</span>, <span class="at">outline =</span> T, <span class="at">addgrid.col =</span> <span class="st">"darkgray"</span>) <span class="co"># plot corr</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
-<img data-src="FA_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
+</div>
+<img data-src="FA_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"><div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Always include correlation table in factor analysis!</p>
+</div>
+</div>
+</div>
+</section>
 <section id="is-factor-analysis-warranted" class="slide level2">
 <h2>Is factor analysis warranted?</h2>
 <ul>
@@ -1793,8 +1812,8 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <li>Check MSA (should delete MSA &lt; .5)</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">#easystats</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>performance<span class="sc">::</span><span class="fu">check_factorstructure</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">#easystats</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>performance<span class="sc">::</span><span class="fu">check_factorstructure</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Is the data suitable for Factor Analysis?
 
@@ -1820,7 +1839,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <section id="assumptions-outliers" class="slide level2">
 <h2>Assumptions: Outliers</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>performance<span class="sc">::</span><span class="fu">check_outliers</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>performance<span class="sc">::</span><span class="fu">check_outliers</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>82 outliers detected: cases 31, 42, 48, 149, 170, 236, 287, 325, 359,
   373, 376, 399, 400, 418, 488, 490, 581, 661, 702, 707, 727, 729, 756,
@@ -1833,8 +1852,8 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 - For variables: A1, A2, A3, A4, A5, C1, C2, C3, C4, C5, E1, E2, E3, E4,
   E5, N1, N2, N3, N4, N5, O1, O2, O3, O4.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>outliers_list<span class="ot">&lt;-</span> performance<span class="sc">::</span><span class="fu">check_outliers</span>(data) </span>
-<span id="cb6-2"><a href="#cb6-2"></a>data <span class="ot">&lt;-</span> data[<span class="sc">!</span>outliers_list, ] <span class="co"># remove outliers</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>outliers_list<span class="ot">&lt;-</span> performance<span class="sc">::</span><span class="fu">check_outliers</span>(data) </span>
+<span id="cb7-2"><a href="#cb7-2"></a>data <span class="ot">&lt;-</span> data[<span class="sc">!</span>outliers_list, ] <span class="co"># remove outliers</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="assumptions-multicollinearity" class="slide level2">
@@ -1847,8 +1866,8 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 </ul></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>cormatrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(data)</span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">det</span>(cormatrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>cormatrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(data)</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">det</span>(cormatrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.0005201558</code></pre>
 </div>
@@ -1862,21 +1881,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <li><p>Eigenvalues &gt; 1 (Kaiser criterion)</p></li>
 <li><p>Cumulative percent variance extracted (75%)</p></li>
 </ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>    <span class="co">#| eval: False</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>    <span class="co">#| </span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>    number_items <span class="ot">&lt;-</span> <span class="fu">fa.parallel</span>(data, <span class="at">fm=</span><span class="st">"pa"</span>, <span class="at">fa=</span><span class="st">"fa"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-<div class="cell-output cell-output-stdout">
-<pre><code>Parallel analysis suggests that the number of factors =  6  and the number of components =  NA </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>    <span class="co">#eigenvalues &gt; 1 and &gt; .7</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>    <span class="fu">sum</span>(number_items<span class="sc">$</span>fa.values <span class="sc">&gt;=</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 3</code></pre>
-</div>
-</div>
-<img data-src="FA_files/figure-revealjs/unnamed-chunk-7-1.png" width="1152" class="r-stretch"></section>
+</section>
 <section id="fitting-factor-model-of-factors-1" class="slide level2">
 <h2>Fitting factor model: # of factors</h2>
 <p><br></p>
@@ -1896,7 +1901,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="FA_files/figure-revealjs/unnamed-chunk-8-1.png" width="768"></p>
+<p><img data-src="FA_files/figure-revealjs/unnamed-chunk-7-1.png" width="768"></p>
 </figure>
 </div>
 </div>
@@ -1911,18 +1916,19 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <ul>
 <li><p>Parallel analysis</p>
 <ul>
-<li><p>More objective and reliable</p></li>
-<li><p>Run simulations pulling eigenvalues from randomly generated datasets</p></li>
+<li><p>Run simulations pulling eigenvalues from randomly generated datasets (with same sample size and number of variables)</p></li>
 <li><p>If eigenvalues &gt; eigenvalues from random datasets more likely to represent meaningful patterns in the data</p></li>
 </ul></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">fa.parallel</span>(data, <span class="at">fm=</span><span class="st">"pa"</span>, <span class="at">fa=</span><span class="st">"fa"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># use to perfrorm parallel analysis</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="co">#psych package</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>psych<span class="sc">::</span><span class="fu">fa.parallel</span>(data, <span class="at">fm=</span><span class="st">"pa"</span>, <span class="at">fa=</span><span class="st">"fa"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="FA_files/figure-revealjs/unnamed-chunk-9-1.png" width="1152"></p>
+<p><img data-src="FA_files/figure-revealjs/unnamed-chunk-8-1.png" width="1152"></p>
 </figure>
 </div>
 </div>
@@ -1942,10 +1948,10 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 </ul></li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>parameters<span class="sc">::</span><span class="fu">n_factors</span>(data) <span class="sc">%&gt;%</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>parameters<span class="sc">::</span><span class="fu">n_factors</span>(data) <span class="sc">%&gt;%</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="FA_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
+<img data-src="FA_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
 <section id="extracting-factor-loadings" class="slide level2">
 <h2>Extracting factor loadings</h2>
 <div class="columns">
@@ -1959,7 +1965,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 
         -   Squared multiple correlations (highest absolute correlation)
 
-    -   Take correlation matrix and replace diagonal elements with communalities</code></pre>
+    -   Take correlation matrix and replace diagonal elements with communalities (reduced matrix)</code></pre>
 </div><div class="column" style="width:50%;">
 <p><img data-src="images/IMG_2416.jpeg"></p>
 </div>
@@ -1968,16 +1974,77 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <section id="running-factor-analysis" class="slide level2">
 <h2>Running factor analysis</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># nfactor number of factors from par analysis</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a><span class="co"># rotate rotation method </span></span>
-<span id="cb17-3"><a href="#cb17-3"></a><span class="co"># fm is principle axis</span></span>
-<span id="cb17-4"><a href="#cb17-4"></a>efa <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate=</span><span class="st">"none"</span>, <span class="at">fm=</span><span class="st">"pa"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># nfactor number of factors from par analysis</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="co"># rotate rotation method </span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="co"># fm is principle axis</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>efa <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate=</span><span class="st">"none"</span>, <span class="at">fm=</span><span class="st">"pa"</span>)</span>
+<span id="cb14-5"><a href="#cb14-5"></a></span>
+<span id="cb14-6"><a href="#cb14-6"></a>efa</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Factor Analysis using method =  pa
+Call: psych::fa(r = data, nfactors = 5, rotate = "none", fm = "pa")
+Standardized loadings (pattern matrix) based upon correlation matrix
+     PA1   PA2   PA3   PA4   PA5   h2   u2 com
+A1 -0.23  0.00  0.15 -0.18 -0.33 0.22 0.78 2.9
+A2  0.48  0.28 -0.17  0.28  0.25 0.47 0.53 3.2
+A3  0.54  0.30 -0.24  0.24  0.22 0.54 0.46 2.9
+A4  0.43  0.13 -0.05  0.32  0.06 0.30 0.70 2.1
+A5  0.59  0.17 -0.26  0.14  0.13 0.49 0.51 1.8
+C1  0.34  0.15  0.47  0.01  0.03 0.36 0.64 2.1
+C2  0.33  0.22  0.53  0.14  0.02 0.45 0.55 2.3
+C3  0.33  0.10  0.42  0.19 -0.03 0.33 0.67 2.5
+C4 -0.47  0.07 -0.50 -0.13  0.07 0.49 0.51 2.2
+C5 -0.51  0.12 -0.36 -0.15  0.16 0.45 0.55 2.4
+E1 -0.42 -0.18  0.27  0.12  0.24 0.35 0.65 3.1
+E2 -0.64 -0.05  0.21  0.12  0.30 0.56 0.44 1.8
+E3  0.54  0.32 -0.16 -0.21 -0.01 0.46 0.54 2.2
+E4  0.61  0.17 -0.29  0.05 -0.23 0.55 0.45 2.0
+E5  0.52  0.30  0.10 -0.16 -0.19 0.43 0.57 2.2
+N1 -0.45  0.64  0.05  0.00 -0.28 0.70 0.30 2.2
+N2 -0.44  0.63  0.08 -0.02 -0.22 0.65 0.35 2.1
+N3 -0.42  0.61  0.02  0.06 -0.02 0.56 0.44 1.8
+N4 -0.54  0.40  0.04  0.02  0.23 0.51 0.49 2.2
+N5 -0.35  0.42  0.00  0.25  0.05 0.36 0.64 2.7
+O1  0.32  0.21  0.12 -0.43  0.18 0.37 0.63 3.0
+O2 -0.17  0.07 -0.21  0.33 -0.19 0.23 0.77 3.1
+O3  0.38  0.29  0.04 -0.47  0.21 0.50 0.50 3.1
+O4 -0.09  0.24  0.09 -0.15  0.39 0.25 0.75 2.3
+
+                       PA1  PA2  PA3  PA4  PA5
+SS loadings           4.73 2.28 1.54 1.09 0.95
+Proportion Var        0.20 0.10 0.06 0.05 0.04
+Cumulative Var        0.20 0.29 0.36 0.40 0.44
+Proportion Explained  0.45 0.22 0.15 0.10 0.09
+Cumulative Proportion 0.45 0.66 0.81 0.91 1.00
+
+Mean item complexity =  2.4
+Test of the hypothesis that 5 factors are sufficient.
+
+df null model =  276  with the objective function =  7.56 with Chi Square =  17793.19
+df of  the model are 166  and the objective function was  0.55 
+
+The root mean square of the residuals (RMSR) is  0.03 
+The df corrected root mean square of the residuals is  0.03 
+
+The harmonic n.obs is  2363 with the empirical chi square  874.77  with prob &lt;  0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001 
+The total n.obs was  2363  with Likelihood Chi Square =  1294.25  with prob &lt;  0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000069 
+
+Tucker Lewis Index of factoring reliability =  0.893
+RMSEA index =  0.054  and the 90 % confidence intervals are  0.051 0.056
+BIC =  4.81
+Fit based upon off diagonal values = 0.99
+Measures of factor score adequacy             
+                                                   PA1  PA2  PA3  PA4  PA5
+Correlation of (regression) scores with factors   0.95 0.92 0.86 0.81 0.80
+Multiple R square of scores with factors          0.90 0.84 0.73 0.65 0.64
+Minimum correlation of possible factor scores     0.81 0.68 0.47 0.30 0.28</code></pre>
+</div>
 </div>
 </section>
 <section id="factor-loadings" class="slide level2">
 <h2>Factor loadings</h2>
 <div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Factor Loadings</a></li><li><a href="#tabset-1-2">Naming</a></li><li><a href="#tabset-1-3">Complexity</a></li><li><a href="#tabset-1-4">Uniqueness</a></li></ul>
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Factor loadings table/matrix</a></li><li><a href="#tabset-1-2">Naming</a></li><li><a href="#tabset-1-3">Complexity</a></li><li><a href="#tabset-1-4">Uniqueness</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
 <ul>
@@ -2791,8 +2858,11 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 </div>
 <div id="tabset-1-4">
 <ul>
-<li>1-commonality</li>
+<li>1-communality</li>
 </ul>
+<p><span class="math display">\[
+u^2_i = \varepsilon_i = 1 - \sum_{j=1}^{m}\lambda_{ij}^2
+\]</span></p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table" data-quarto-postprocess="true" style="font-size: 24px; margin-left: auto; margin-right: auto;">
@@ -3062,8 +3132,8 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <section id="variance-accounted-for" class="slide level2">
 <h2>Variance accounted for</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>efa<span class="sc">$</span>Vaccounted <span class="sc">%&gt;%</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>efa<span class="sc">$</span>Vaccounted <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table>
 <colgroup>
@@ -3133,40 +3203,42 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <section id="path-diagram" class="slide level2">
 <h2>Path diagram</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>structure_big5 <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate =</span> <span class="st">"none"</span>, <span class="at">fm=</span><span class="st">"pa"</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>  parameters<span class="sc">::</span><span class="fu">efa_to_cfa</span>() <span class="co"># get lavaan code for fa</span></span>
-<span id="cb19-3"><a href="#cb19-3"></a></span>
-<span id="cb19-4"><a href="#cb19-4"></a>big5 <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(lavaan<span class="sc">::</span><span class="fu">cfa</span>(structure_big5, <span class="at">data =</span> data)) <span class="co"># fit sem </span></span>
-<span id="cb19-5"><a href="#cb19-5"></a></span>
-<span id="cb19-6"><a href="#cb19-6"></a><span class="fu">semPaths</span>(big5, <span class="st">"std"</span>, <span class="at">layout=</span><span class="st">"tree"</span>, <span class="at">nDigits =</span> <span class="dv">3</span>, <span class="at">label.cex=</span>.<span class="dv">5</span>, <span class="at">edge.label.cex =</span> .<span class="dv">7</span>, <span class="at">fade=</span><span class="cn">FALSE</span>) <span class="co"># plot the path model </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>structure_big5 <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate =</span> <span class="st">"none"</span>, <span class="at">fm=</span><span class="st">"pa"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2"></a></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="fu">fa.diagram</span>(structure_big5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="FA_files/figure-revealjs/unnamed-chunk-17-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1344"></section>
+<img data-src="FA_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1344"></section>
 <section id="rotation" class="slide level2">
 <h2>Rotation</h2>
-
-<img data-src="images/IMG_2403.png" class="r-stretch"></section>
-<section id="rotation-1" class="slide level2">
-<h2>Rotation</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
 <li><p>Make more interpretable (understandable) without actually changing the relationships among the variables</p>
 <ul>
-<li>Makes high loadings higher and low/medium loadings lower
+<li><p>Makes high loadings higher and low/medium loadings lower</p>
 <ul>
-<li><em>Simple structure</em>
-<ul>
-<li>High correlations and low correlations on each factor, but no medium correlations</li>
-</ul></li>
+<li><em>Simple structure</em></li>
 </ul></li>
 </ul></li>
 </ul>
+</div><div class="column" style="width:50%;">
+<ol type="1">
+<li>Each row contains at least one zero loading</li>
+<li>for each column, there are at least as many zeros as there are columns (i.e., number of factors kept)</li>
+<li>for any pair of factors, there are some variables with zero loadings on one factor and large loadings on the other factor</li>
+<li>for any pair of factors, there is a sizable proportion of zero loadings</li>
+<li>for any pair of factors, there is only a small number of large loadings</li>
+</ol>
+</div>
+</div>
 </section>
-<section id="rotation-2" class="slide level2">
+<section id="rotation-1" class="slide level2">
 <h2>Rotation</h2>
 <ul>
 <li><p>Different types of rotation:</p>
 <ul>
-<li><p>Orthogonal Rotation (e.g., Varimax)</p>
+<li><p>Orthogonal rotation (e.g., Varimax)</p>
 <ul>
 <li><p>This method of rotation prevents the factors from being correlated with each other</p>
 <ul>
@@ -3182,6 +3254,10 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 </ul></li>
 </ul>
 </section>
+<section id="rotation-2" class="slide level2">
+<h2>Rotation</h2>
+
+<img data-src="images/IMG_2403.png" class="r-stretch"></section>
 <section id="rotation-3" class="slide level2">
 <h2>Rotation</h2>
 <div class="columns">
@@ -3204,12 +3280,12 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <li>Set <code>rotation</code> argument in <code>psych::fa</code></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co">#change rotate arg to desired rotation</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a><span class="co">#orthogonal rotation</span></span>
-<span id="cb20-3"><a href="#cb20-3"></a>efa_or <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate=</span><span class="st">"varimax"</span>, <span class="at">fm=</span><span class="st">"pa"</span>) </span>
-<span id="cb20-4"><a href="#cb20-4"></a></span>
-<span id="cb20-5"><a href="#cb20-5"></a><span class="co"># correlated factor rotation</span></span>
-<span id="cb20-6"><a href="#cb20-6"></a>efa_obs <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate=</span><span class="st">"oblimin"</span>, <span class="at">fm=</span><span class="st">"pa"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co">#change rotate arg to desired rotation</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="co">#orthogonal rotation</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a>efa_obs <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate=</span><span class="st">"varimax"</span>, <span class="at">fm=</span><span class="st">"pa"</span>) </span>
+<span id="cb18-4"><a href="#cb18-4"></a></span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="co"># correlated factor rotation</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a>efa_obs <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate=</span><span class="st">"oblimin"</span>, <span class="at">fm=</span><span class="st">"pa"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="rotation-5" class="slide level2">
@@ -3218,15 +3294,12 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <li>After rotation</li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>structure_big5 <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate =</span> <span class="st">"oblimin"</span>, <span class="at">fm=</span><span class="st">"pa"</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a>  parameters<span class="sc">::</span><span class="fu">efa_to_cfa</span>() <span class="co"># get lavaan code for fa</span></span>
-<span id="cb21-3"><a href="#cb21-3"></a></span>
-<span id="cb21-4"><a href="#cb21-4"></a>big5 <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(lavaan<span class="sc">::</span><span class="fu">cfa</span>(structure_big5, <span class="at">data =</span> data)) <span class="co"># fit sem </span></span>
-<span id="cb21-5"><a href="#cb21-5"></a></span>
-<span id="cb21-6"><a href="#cb21-6"></a><span class="fu">semPaths</span>(big5, <span class="st">"std"</span>, <span class="at">layout=</span><span class="st">"tree"</span>, <span class="at">nDigits =</span> <span class="dv">3</span>, <span class="at">label.cex=</span>.<span class="dv">5</span>, <span class="at">edge.label.cex =</span> .<span class="dv">7</span>, <span class="at">fade=</span><span class="cn">FALSE</span>) <span class="co"># plot the path model </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>structure_big5 <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate =</span> <span class="st">"oblimin"</span>, <span class="at">fm=</span><span class="st">"pa"</span>)</span>
+<span id="cb19-2"><a href="#cb19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="fu">fa.diagram</span>(structure_big5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="FA_files/figure-revealjs/unnamed-chunk-19-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
+<img data-src="FA_files/figure-revealjs/unnamed-chunk-18-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152"></section>
 <section id="rotation-6" class="slide level2">
 <h2>Rotation</h2>
 <ul>
@@ -3237,12 +3310,12 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <li><p>Can set <code>threshold</code> argument to “max” if &lt; .32 does not produce interpretable factors</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># correlated factor rotation</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a>efa_obs <span class="sc">%&gt;%</span> </span>
-<span id="cb22-3"><a href="#cb22-3"></a>   <span class="fu">model_parameters</span>(<span class="at">sort =</span> <span class="cn">TRUE</span>, <span class="at">threshold =</span> .<span class="dv">32</span>)<span class="co"># can set to max if .3 does not lead to interpretable factors</span></span>
-<span id="cb22-4"><a href="#cb22-4"></a><span class="co">#msx</span></span>
-<span id="cb22-5"><a href="#cb22-5"></a>efa_obs <span class="sc">%&gt;%</span> </span>
-<span id="cb22-6"><a href="#cb22-6"></a>   <span class="fu">model_parameters</span>(<span class="at">sort =</span> <span class="cn">TRUE</span>, <span class="at">threshold =</span> <span class="st">"max"</span>)<span class="co"># can set to max if .3 does not lead to interpretable factors</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># correlated factor rotation</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>structure_big5 <span class="sc">%&gt;%</span> </span>
+<span id="cb20-3"><a href="#cb20-3"></a>   <span class="fu">model_parameters</span>(<span class="at">sort =</span> <span class="cn">TRUE</span>, <span class="at">threshold =</span> .<span class="dv">32</span>)<span class="co"># can set to max if .3 does not lead to interpretable factors</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="co">#msx</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a>structure_big5  <span class="sc">%&gt;%</span> </span>
+<span id="cb20-6"><a href="#cb20-6"></a>   <span class="fu">model_parameters</span>(<span class="at">sort =</span> <span class="cn">TRUE</span>, <span class="at">threshold =</span> <span class="st">"max"</span>)<span class="co"># can set to max if .3 does not lead to interpretable factors</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="naming-factors" class="slide level2">
@@ -3262,713 +3335,277 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <li>Setting threshold to max works pretty well</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>efa_obs <span class="sc">%&gt;%</span> </span>
-<span id="cb23-2"><a href="#cb23-2"></a>   <span class="fu">model_parameters</span>(<span class="at">sort =</span> <span class="cn">TRUE</span>, <span class="at">threshold =</span> <span class="st">"max"</span>) <span class="sc">%&gt;%</span> <span class="fu">print_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>structure_big5 <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="#cb21-2"></a>   <span class="fu">model_parameters</span>(<span class="at">sort=</span><span class="cn">TRUE</span>, <span class="at">threshold =</span> <span class="st">"max"</span>) <span class="sc">%&gt;%</span> <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="lhiepknkpk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#lhiepknkpk table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#lhiepknkpk thead, #lhiepknkpk tbody, #lhiepknkpk tfoot, #lhiepknkpk tr, #lhiepknkpk td, #lhiepknkpk th {
-  border-style: none;
-}
-
-#lhiepknkpk p {
-  margin: 0;
-  padding: 0;
-}
-
-#lhiepknkpk .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#lhiepknkpk .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#lhiepknkpk .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#lhiepknkpk .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#lhiepknkpk .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#lhiepknkpk .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#lhiepknkpk .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#lhiepknkpk .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#lhiepknkpk .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#lhiepknkpk .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#lhiepknkpk .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#lhiepknkpk .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#lhiepknkpk .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#lhiepknkpk .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#lhiepknkpk .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#lhiepknkpk .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#lhiepknkpk .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#lhiepknkpk .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#lhiepknkpk .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#lhiepknkpk .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#lhiepknkpk .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#lhiepknkpk .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#lhiepknkpk .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#lhiepknkpk .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#lhiepknkpk .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#lhiepknkpk .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#lhiepknkpk .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#lhiepknkpk .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#lhiepknkpk .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#lhiepknkpk .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#lhiepknkpk .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#lhiepknkpk .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#lhiepknkpk .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#lhiepknkpk .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#lhiepknkpk .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#lhiepknkpk .gt_left {
-  text-align: left;
-}
-
-#lhiepknkpk .gt_center {
-  text-align: center;
-}
-
-#lhiepknkpk .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#lhiepknkpk .gt_font_normal {
-  font-weight: normal;
-}
-
-#lhiepknkpk .gt_font_bold {
-  font-weight: bold;
-}
-
-#lhiepknkpk .gt_font_italic {
-  font-style: italic;
-}
-
-#lhiepknkpk .gt_super {
-  font-size: 65%;
-}
-
-#lhiepknkpk .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#lhiepknkpk .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#lhiepknkpk .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#lhiepknkpk .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#lhiepknkpk .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#lhiepknkpk .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#lhiepknkpk .gt_indent_5 {
-  text-indent: 25px;
-}
-</style>
-
-<table class="gt_table" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table style="width:100%;">
+<caption>Rotated loadings from Factor Analysis (oblimin-rotation)</caption>
+<colgroup>
+<col style="width: 13%">
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
 <thead>
-<tr class="header gt_col_headings">
-<th id="Variable" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Variable</th>
-<th id="PA2" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">PA2</th>
-<th id="PA1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">PA1</th>
-<th id="PA3" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">PA3</th>
-<th id="PA5" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">PA5</th>
-<th id="PA4" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">PA4</th>
-<th id="Complexity" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Complexity</th>
-<th id="Uniqueness" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Uniqueness</th>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: center;">PA2</th>
+<th style="text-align: center;">PA1</th>
+<th style="text-align: center;">PA3</th>
+<th style="text-align: center;">PA5</th>
+<th style="text-align: center;">PA4</th>
+<th style="text-align: center;">Complexity</th>
+<th style="text-align: center;">Uniqueness</th>
 </tr>
 </thead>
-<tbody class="gt_table_body">
+<tbody>
 <tr class="odd">
-<td class="gt_row gt_left" headers="Variable">N1</td>
-<td class="gt_row gt_center" headers="PA2">0.84</td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.06</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.30</td>
+<td style="text-align: left;">N1</td>
+<td style="text-align: center;">0.84</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.06</td>
+<td style="text-align: center;">0.30</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Variable">N2</td>
-<td class="gt_row gt_center" headers="PA2">0.81</td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.04</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.35</td>
+<td style="text-align: left;">N2</td>
+<td style="text-align: center;">0.81</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.04</td>
+<td style="text-align: center;">0.35</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="Variable">N3</td>
-<td class="gt_row gt_center" headers="PA2">0.71</td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.11</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.44</td>
+<td style="text-align: left;">N3</td>
+<td style="text-align: center;">0.71</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.11</td>
+<td style="text-align: center;">0.44</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Variable">N5</td>
-<td class="gt_row gt_center" headers="PA2">0.50</td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">2.01</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.64</td>
+<td style="text-align: left;">N5</td>
+<td style="text-align: center;">0.50</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">2.01</td>
+<td style="text-align: center;">0.64</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="Variable">N4</td>
-<td class="gt_row gt_center" headers="PA2">0.46</td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">2.33</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.49</td>
+<td style="text-align: left;">N4</td>
+<td style="text-align: center;">0.46</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">2.33</td>
+<td style="text-align: center;">0.49</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Variable">E2</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1">0.65</td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.12</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.44</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.65</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.12</td>
+<td style="text-align: center;">0.44</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="Variable">E4</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1">-0.58</td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.53</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.45</td>
+<td style="text-align: left;">E4</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.58</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.53</td>
+<td style="text-align: center;">0.45</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Variable">E1</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1">0.54</td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.26</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.65</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.54</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.26</td>
+<td style="text-align: center;">0.65</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="Variable">E5</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1">-0.41</td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">2.89</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.57</td>
+<td style="text-align: left;">E5</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.41</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">2.89</td>
+<td style="text-align: center;">0.57</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Variable">O4</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1">0.38</td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">2.40</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.75</td>
+<td style="text-align: left;">O4</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.38</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">2.40</td>
+<td style="text-align: center;">0.75</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="Variable">E3</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1">-0.37</td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">2.71</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.54</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.37</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">2.71</td>
+<td style="text-align: center;">0.54</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Variable">C4</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3">-0.67</td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.09</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.51</td>
+<td style="text-align: left;">C4</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.67</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.09</td>
+<td style="text-align: center;">0.51</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="Variable">C2</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3">0.67</td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.19</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.55</td>
+<td style="text-align: left;">C2</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.67</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.19</td>
+<td style="text-align: center;">0.55</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Variable">C3</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3">0.58</td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.08</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.67</td>
+<td style="text-align: left;">C3</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.58</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.08</td>
+<td style="text-align: center;">0.67</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="Variable">C5</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3">-0.57</td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.41</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.55</td>
+<td style="text-align: left;">C5</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.57</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.41</td>
+<td style="text-align: center;">0.55</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Variable">C1</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3">0.57</td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.22</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.64</td>
+<td style="text-align: left;">C1</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.57</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.22</td>
+<td style="text-align: center;">0.64</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="Variable">A3</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5">0.68</td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.05</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.46</td>
+<td style="text-align: left;">A3</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.68</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.05</td>
+<td style="text-align: center;">0.46</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Variable">A2</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5">0.66</td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.03</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.53</td>
+<td style="text-align: left;">A2</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.66</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.03</td>
+<td style="text-align: center;">0.53</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="Variable">A5</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5">0.55</td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.45</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.51</td>
+<td style="text-align: left;">A5</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.55</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.45</td>
+<td style="text-align: center;">0.51</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Variable">A4</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5">0.46</td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.66</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.70</td>
+<td style="text-align: left;">A4</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.46</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.66</td>
+<td style="text-align: center;">0.70</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="Variable">A1</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5">-0.44</td>
-<td class="gt_row gt_center" headers="PA4"></td>
-<td class="gt_row gt_center" headers="Complexity">1.85</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.78</td>
+<td style="text-align: left;">A1</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.44</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.85</td>
+<td style="text-align: center;">0.78</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Variable">O3</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4">0.67</td>
-<td class="gt_row gt_center" headers="Complexity">1.03</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.50</td>
+<td style="text-align: left;">O3</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.67</td>
+<td style="text-align: center;">1.03</td>
+<td style="text-align: center;">0.50</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="Variable">O1</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4">0.59</td>
-<td class="gt_row gt_center" headers="Complexity">1.04</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.63</td>
+<td style="text-align: left;">O1</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.59</td>
+<td style="text-align: center;">1.04</td>
+<td style="text-align: center;">0.63</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="Variable">O2</td>
-<td class="gt_row gt_center" headers="PA2"></td>
-<td class="gt_row gt_center" headers="PA1"></td>
-<td class="gt_row gt_center" headers="PA3"></td>
-<td class="gt_row gt_center" headers="PA5"></td>
-<td class="gt_row gt_center" headers="PA4">-0.42</td>
-<td class="gt_row gt_center" headers="Complexity">2.26</td>
-<td class="gt_row gt_center" headers="Uniqueness">0.77</td>
+<td style="text-align: left;">O2</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.42</td>
+<td style="text-align: center;">2.26</td>
+<td style="text-align: center;">0.77</td>
 </tr>
-</tbody><tfoot class="gt_sourcenotes">
-<tr class="odd">
-<td colspan="8" class="gt_sourcenote"></td>
-</tr>
-</tfoot>
-
+</tbody>
 </table>
-
-</div>
+<p>The 5 latent factors (oblimin rotation) accounted for 44.13% of the total variance of the original data (PA2 = 10.90%, PA1 = 9.06%, PA3 = 9.00%, PA5 = 8.82%, PA4 = 6.36%).</p>
 </div>
 </div>
 </section>
@@ -3988,7 +3625,8 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <ul>
 <li>You don’t have items that load equally onto more than 1 factor
 <ul>
-<li>Keep items &gt; .32 and delete items &lt; .32 (use max loadings)</li>
+<li>Keep items &gt; .32 (or max loading)</li>
+<li>Throw out items with <span class="math inline">\(h^2\)</span> &lt; .5</li>
 </ul></li>
 </ul></li>
 </ul></li>
@@ -4007,7 +3645,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <li><p>Can use them in multiple regression!</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>efa_obs <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate=</span><span class="st">"oblimin"</span>, <span class="at">fm=</span><span class="st">"pa"</span>, <span class="at">scores=</span><span class="st">"regression"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>efa_obs <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate=</span><span class="st">"oblimin"</span>, <span class="at">fm=</span><span class="st">"pa"</span>, <span class="at">scores=</span><span class="st">"regression"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="factor-scores-1" class="slide level2">
@@ -4020,36 +3658,35 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co"># correlated rotation</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a>efa_obs <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate=</span><span class="st">"oblimin"</span>, <span class="at">fm=</span><span class="st">"pa"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb25-3"><a href="#cb25-3"></a>   <span class="fu">model_parameters</span>(<span class="at">sort =</span> <span class="cn">TRUE</span>, <span class="at">threshold =</span> <span class="st">"max"</span>)</span>
-<span id="cb25-4"><a href="#cb25-4"></a></span>
-<span id="cb25-5"><a href="#cb25-5"></a>efa_plot <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(efa_obs) <span class="sc">%&gt;%</span></span>
-<span id="cb25-6"><a href="#cb25-6"></a>  <span class="fu">pivot_longer</span>(PA2<span class="sc">:</span>PA4) <span class="sc">%&gt;%</span></span>
-<span id="cb25-7"><a href="#cb25-7"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>Complexity, <span class="sc">-</span>Uniqueness) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="st">"Loadings"</span> <span class="ot">=</span> value, <span class="st">"Personality"</span> <span class="ot">=</span> name)</span>
-<span id="cb25-8"><a href="#cb25-8"></a></span>
-<span id="cb25-9"><a href="#cb25-9"></a></span>
-<span id="cb25-10"><a href="#cb25-10"></a><span class="co">#For each test, plot the loading as length and fill color of a bar</span></span>
-<span id="cb25-11"><a href="#cb25-11"></a><span class="co"># note that the length will be the absolute value of the loading but the </span></span>
-<span id="cb25-12"><a href="#cb25-12"></a><span class="co"># fill color will be the signed value, more on this below</span></span>
-<span id="cb25-13"><a href="#cb25-13"></a>efa_fact_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(efa_plot, <span class="fu">aes</span>(Variable, <span class="fu">abs</span>(Loadings), <span class="at">fill=</span>Loadings)) <span class="sc">+</span> </span>
-<span id="cb25-14"><a href="#cb25-14"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Personality, <span class="at">nrow=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="co">#place the factors in separate facets</span></span>
-<span id="cb25-15"><a href="#cb25-15"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>) <span class="sc">+</span> <span class="co">#make the bars</span></span>
-<span id="cb25-16"><a href="#cb25-16"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="co">#flip the axes so the test names can be horizontal  </span></span>
-<span id="cb25-17"><a href="#cb25-17"></a>  <span class="co">#define the fill color gradient: blue=positive, red=negative</span></span>
-<span id="cb25-18"><a href="#cb25-18"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">name =</span> <span class="st">"Loading"</span>, </span>
-<span id="cb25-19"><a href="#cb25-19"></a>                       <span class="at">high =</span> <span class="st">"blue"</span>, <span class="at">mid =</span> <span class="st">"white"</span>, <span class="at">low =</span> <span class="st">"red"</span>, </span>
-<span id="cb25-20"><a href="#cb25-20"></a>                       <span class="at">midpoint=</span><span class="dv">0</span>, <span class="at">guide=</span>F) <span class="sc">+</span></span>
-<span id="cb25-21"><a href="#cb25-21"></a>  <span class="fu">ylab</span>(<span class="st">"Loading Strength"</span>) <span class="sc">+</span> <span class="co">#improve y-axis label</span></span>
-<span id="cb25-22"><a href="#cb25-22"></a>  <span class="fu">theme_lucid</span>(<span class="at">base_size=</span><span class="dv">18</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># correlated rotation</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>efa_obs <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate=</span><span class="st">"oblimin"</span>, <span class="at">fm=</span><span class="st">"pa"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-3"><a href="#cb23-3"></a>   <span class="fu">model_parameters</span>()</span>
+<span id="cb23-4"><a href="#cb23-4"></a></span>
+<span id="cb23-5"><a href="#cb23-5"></a>efa_plot <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(efa_obs) <span class="sc">%&gt;%</span></span>
+<span id="cb23-6"><a href="#cb23-6"></a>  <span class="fu">pivot_longer</span>(PA2<span class="sc">:</span>PA4) <span class="sc">%&gt;%</span></span>
+<span id="cb23-7"><a href="#cb23-7"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>Complexity, <span class="sc">-</span>Uniqueness) <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="st">"Loadings"</span> <span class="ot">=</span> value, <span class="st">"Personality"</span> <span class="ot">=</span> name)</span>
+<span id="cb23-8"><a href="#cb23-8"></a></span>
+<span id="cb23-9"><a href="#cb23-9"></a></span>
+<span id="cb23-10"><a href="#cb23-10"></a><span class="co">#For each test, plot the loading as length and fill color of a bar</span></span>
+<span id="cb23-11"><a href="#cb23-11"></a><span class="co"># note that the length will be the absolute value of the loading but the </span></span>
+<span id="cb23-12"><a href="#cb23-12"></a><span class="co"># fill color will be the signed value, more on this below</span></span>
+<span id="cb23-13"><a href="#cb23-13"></a>efa_fact_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(efa_plot, <span class="fu">aes</span>(Variable, <span class="fu">abs</span>(Loadings), <span class="at">fill=</span>Loadings)) <span class="sc">+</span> </span>
+<span id="cb23-14"><a href="#cb23-14"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Personality, <span class="at">nrow=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="co">#place the factors in separate facets</span></span>
+<span id="cb23-15"><a href="#cb23-15"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>) <span class="sc">+</span> <span class="co">#make the bars</span></span>
+<span id="cb23-16"><a href="#cb23-16"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="co">#flip the axes so the test names can be horizontal  </span></span>
+<span id="cb23-17"><a href="#cb23-17"></a>  <span class="co">#define the fill color gradient: blue=positive, red=negative</span></span>
+<span id="cb23-18"><a href="#cb23-18"></a> <span class="fu">scale_fill_gradient2</span>(<span class="at">name =</span> <span class="st">"Loading"</span>, </span>
+<span id="cb23-19"><a href="#cb23-19"></a>                      <span class="at">high =</span> <span class="st">"blue"</span>, <span class="at">mid =</span> <span class="st">"white"</span>, <span class="at">low =</span> <span class="st">"red"</span>, </span>
+<span id="cb23-20"><a href="#cb23-20"></a>                     <span class="at">midpoint=</span><span class="dv">0</span>, <span class="at">guide=</span>F) <span class="sc">+</span></span>
+<span id="cb23-21"><a href="#cb23-21"></a>  <span class="fu">ylab</span>(<span class="st">"Loading Strength"</span>) <span class="sc">+</span> <span class="co">#improve y-axis label</span></span>
+<span id="cb23-22"><a href="#cb23-22"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size=</span><span class="dv">22</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>efa_fact_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="FA_files/figure-revealjs/unnamed-chunk-24-1.png" class="quarto-figure quarto-figure-center" width="1152"></p>
+<p><img data-src="FA_files/figure-revealjs/unnamed-chunk-23-1.png" class="quarto-figure quarto-figure-center" width="1152"></p>
 </figure>
 </div>
 </div>
@@ -4060,35 +3697,35 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <section id="table-fa" class="slide level2">
 <h2>Table FA</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">source</span>(<span class="st">"https://raw.githubusercontent.com/franciscowilhelm/r-collection/master/fa_table.R"</span>)</span>
-<span id="cb27-2"><a href="#cb27-2"></a></span>
-<span id="cb27-3"><a href="#cb27-3"></a>efa_obs <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate=</span><span class="st">"oblimin"</span>, <span class="at">fm=</span><span class="st">"pa"</span>)</span>
-<span id="cb27-4"><a href="#cb27-4"></a></span>
-<span id="cb27-5"><a href="#cb27-5"></a>table<span class="ot">&lt;-</span> <span class="fu">fa_table</span>(efa_obs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">source</span>(<span class="st">"https://raw.githubusercontent.com/franciscowilhelm/r-collection/master/fa_table.R"</span>)</span>
+<span id="cb24-2"><a href="#cb24-2"></a></span>
+<span id="cb24-3"><a href="#cb24-3"></a>efa_obs <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(data, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate=</span><span class="st">"oblimin"</span>, <span class="at">fm=</span><span class="st">"pa"</span>)</span>
+<span id="cb24-4"><a href="#cb24-4"></a></span>
+<span id="cb24-5"><a href="#cb24-5"></a>table<span class="ot">&lt;-</span> <span class="fu">fa_table</span>(efa_obs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="fa-table" class="slide level2">
 <h2>FA table</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>table<span class="sc">$</span>ind_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>table<span class="sc">$</span>ind_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="yavqvmzppz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#yavqvmzppz table {
+<div id="okhmosmsrq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#okhmosmsrq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#yavqvmzppz thead, #yavqvmzppz tbody, #yavqvmzppz tfoot, #yavqvmzppz tr, #yavqvmzppz td, #yavqvmzppz th {
+#okhmosmsrq thead, #okhmosmsrq tbody, #okhmosmsrq tfoot, #okhmosmsrq tr, #okhmosmsrq td, #okhmosmsrq th {
   border-style: none;
 }
 
-#yavqvmzppz p {
+#okhmosmsrq p {
   margin: 0;
   padding: 0;
 }
 
-#yavqvmzppz .gt_table {
+#okhmosmsrq .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -4114,12 +3751,12 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   border-left-color: #D3D3D3;
 }
 
-#yavqvmzppz .gt_caption {
+#okhmosmsrq .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#yavqvmzppz .gt_title {
+#okhmosmsrq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -4131,7 +3768,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   border-bottom-width: 0;
 }
 
-#yavqvmzppz .gt_subtitle {
+#okhmosmsrq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -4143,7 +3780,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   border-top-width: 0;
 }
 
-#yavqvmzppz .gt_heading {
+#okhmosmsrq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -4155,13 +3792,13 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   border-right-color: #D3D3D3;
 }
 
-#yavqvmzppz .gt_bottom_border {
+#okhmosmsrq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yavqvmzppz .gt_col_headings {
+#okhmosmsrq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4176,7 +3813,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   border-right-color: #D3D3D3;
 }
 
-#yavqvmzppz .gt_col_heading {
+#okhmosmsrq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4196,7 +3833,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   overflow-x: hidden;
 }
 
-#yavqvmzppz .gt_column_spanner_outer {
+#okhmosmsrq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4208,15 +3845,15 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   padding-right: 4px;
 }
 
-#yavqvmzppz .gt_column_spanner_outer:first-child {
+#okhmosmsrq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yavqvmzppz .gt_column_spanner_outer:last-child {
+#okhmosmsrq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yavqvmzppz .gt_column_spanner {
+#okhmosmsrq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -4228,11 +3865,11 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   width: 100%;
 }
 
-#yavqvmzppz .gt_spanner_row {
+#okhmosmsrq .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#yavqvmzppz .gt_group_heading {
+#okhmosmsrq .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4258,7 +3895,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   text-align: left;
 }
 
-#yavqvmzppz .gt_empty_group_heading {
+#okhmosmsrq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -4273,15 +3910,15 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   vertical-align: middle;
 }
 
-#yavqvmzppz .gt_from_md > :first-child {
+#okhmosmsrq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yavqvmzppz .gt_from_md > :last-child {
+#okhmosmsrq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yavqvmzppz .gt_row {
+#okhmosmsrq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4300,7 +3937,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   overflow-x: hidden;
 }
 
-#yavqvmzppz .gt_stub {
+#okhmosmsrq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4313,7 +3950,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   padding-right: 5px;
 }
 
-#yavqvmzppz .gt_stub_row_group {
+#okhmosmsrq .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4327,15 +3964,15 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   vertical-align: top;
 }
 
-#yavqvmzppz .gt_row_group_first td {
+#okhmosmsrq .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#yavqvmzppz .gt_row_group_first th {
+#okhmosmsrq .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#yavqvmzppz .gt_summary_row {
+#okhmosmsrq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4345,16 +3982,16 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   padding-right: 5px;
 }
 
-#yavqvmzppz .gt_first_summary_row {
+#okhmosmsrq .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#yavqvmzppz .gt_first_summary_row.thick {
+#okhmosmsrq .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#yavqvmzppz .gt_last_summary_row {
+#okhmosmsrq .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4364,7 +4001,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   border-bottom-color: #D3D3D3;
 }
 
-#yavqvmzppz .gt_grand_summary_row {
+#okhmosmsrq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4374,7 +4011,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   padding-right: 5px;
 }
 
-#yavqvmzppz .gt_first_grand_summary_row {
+#okhmosmsrq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4384,7 +4021,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   border-top-color: #D3D3D3;
 }
 
-#yavqvmzppz .gt_last_grand_summary_row_top {
+#okhmosmsrq .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4394,11 +4031,11 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   border-bottom-color: #D3D3D3;
 }
 
-#yavqvmzppz .gt_striped {
+#okhmosmsrq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yavqvmzppz .gt_table_body {
+#okhmosmsrq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4407,7 +4044,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   border-bottom-color: #D3D3D3;
 }
 
-#yavqvmzppz .gt_footnotes {
+#okhmosmsrq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4421,7 +4058,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   border-right-color: #D3D3D3;
 }
 
-#yavqvmzppz .gt_footnote {
+#okhmosmsrq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -4430,7 +4067,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   padding-right: 5px;
 }
 
-#yavqvmzppz .gt_sourcenotes {
+#okhmosmsrq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4444,7 +4081,7 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   border-right-color: #D3D3D3;
 }
 
-#yavqvmzppz .gt_sourcenote {
+#okhmosmsrq .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -4452,63 +4089,63 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
   padding-right: 5px;
 }
 
-#yavqvmzppz .gt_left {
+#okhmosmsrq .gt_left {
   text-align: left;
 }
 
-#yavqvmzppz .gt_center {
+#okhmosmsrq .gt_center {
   text-align: center;
 }
 
-#yavqvmzppz .gt_right {
+#okhmosmsrq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yavqvmzppz .gt_font_normal {
+#okhmosmsrq .gt_font_normal {
   font-weight: normal;
 }
 
-#yavqvmzppz .gt_font_bold {
+#okhmosmsrq .gt_font_bold {
   font-weight: bold;
 }
 
-#yavqvmzppz .gt_font_italic {
+#okhmosmsrq .gt_font_italic {
   font-style: italic;
 }
 
-#yavqvmzppz .gt_super {
+#okhmosmsrq .gt_super {
   font-size: 65%;
 }
 
-#yavqvmzppz .gt_footnote_marks {
+#okhmosmsrq .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#yavqvmzppz .gt_asterisk {
+#okhmosmsrq .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#yavqvmzppz .gt_indent_1 {
+#okhmosmsrq .gt_indent_1 {
   text-indent: 5px;
 }
 
-#yavqvmzppz .gt_indent_2 {
+#okhmosmsrq .gt_indent_2 {
   text-indent: 10px;
 }
 
-#yavqvmzppz .gt_indent_3 {
+#okhmosmsrq .gt_indent_3 {
   text-indent: 15px;
 }
 
-#yavqvmzppz .gt_indent_4 {
+#okhmosmsrq .gt_indent_4 {
   text-indent: 20px;
 }
 
-#yavqvmzppz .gt_indent_5 {
+#okhmosmsrq .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -4812,22 +4449,22 @@ KMO = \frac{\Sigma(r)^2}{\Sigma(r)^2 + \Sigma(r_p)^2}
 <li><p>Partition data training and test data</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co"># to have reproducible result, we will also set seed here so that similar</span></span>
-<span id="cb29-2"><a href="#cb29-2"></a><span class="co"># portions of the data are used each time we run the following code</span></span>
-<span id="cb29-3"><a href="#cb29-3"></a>partitions <span class="ot">&lt;-</span> datawizard<span class="sc">::</span><span class="fu">data_partition</span>(data, <span class="at">training_proportion =</span> <span class="fl">0.7</span>, <span class="at">seed =</span> <span class="dv">111</span>)</span>
-<span id="cb29-4"><a href="#cb29-4"></a>training <span class="ot">&lt;-</span> partitions<span class="sc">$</span>p_0<span class="fl">.7</span></span>
-<span id="cb29-5"><a href="#cb29-5"></a>test <span class="ot">&lt;-</span> partitions<span class="sc">$</span>test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># to have reproducible result, we will also set seed here so that similar</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="co"># portions of the data are used each time we run the following code</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a>partitions <span class="ot">&lt;-</span> datawizard<span class="sc">::</span><span class="fu">data_partition</span>(data, <span class="at">training_proportion =</span> <span class="fl">0.7</span>, <span class="at">seed =</span> <span class="dv">111</span>)</span>
+<span id="cb26-4"><a href="#cb26-4"></a>training <span class="ot">&lt;-</span> partitions<span class="sc">$</span>p_0<span class="fl">.7</span></span>
+<span id="cb26-5"><a href="#cb26-5"></a>test <span class="ot">&lt;-</span> partitions<span class="sc">$</span>test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="cfa-in-lavaan" class="slide level2">
 <h2>CFA in Lavaan</h2>
 <p>Let’s compare the big6 to the big5</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>structure_big5 <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(training, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate =</span> <span class="st">"oblimin"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb30-2"><a href="#cb30-2"></a>  <span class="fu">efa_to_cfa</span>()</span>
-<span id="cb30-3"><a href="#cb30-3"></a></span>
-<span id="cb30-4"><a href="#cb30-4"></a><span class="co"># Investigate how the models look</span></span>
-<span id="cb30-5"><a href="#cb30-5"></a>structure_big5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>structure_big5 <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(training, <span class="at">nfactors =</span> <span class="dv">5</span>, <span class="at">rotate =</span> <span class="st">"oblimin"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>  <span class="fu">efa_to_cfa</span>()</span>
+<span id="cb27-3"><a href="#cb27-3"></a></span>
+<span id="cb27-4"><a href="#cb27-4"></a><span class="co"># Investigate how the models look</span></span>
+<span id="cb27-5"><a href="#cb27-5"></a>structure_big5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Latent variables
 MR2 =~ N1 + N2 + N3 + N4 + N5
@@ -4841,10 +4478,10 @@ MR4 =~ O1 + O2 + O3 + O4</code></pre>
 <section id="cfa-in-lavaan-1" class="slide level2">
 <h2>CFA in Lavaan</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>structure_big6 <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(training, <span class="at">nfactors =</span> <span class="dv">6</span>, <span class="at">rotate =</span> <span class="st">"oblimin"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb32-2"><a href="#cb32-2"></a>  <span class="fu">efa_to_cfa</span>()</span>
-<span id="cb32-3"><a href="#cb32-3"></a></span>
-<span id="cb32-4"><a href="#cb32-4"></a>structure_big6</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>structure_big6 <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(training, <span class="at">nfactors =</span> <span class="dv">6</span>, <span class="at">rotate =</span> <span class="st">"oblimin"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a>  <span class="fu">efa_to_cfa</span>()</span>
+<span id="cb29-3"><a href="#cb29-3"></a></span>
+<span id="cb29-4"><a href="#cb29-4"></a>structure_big6</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Latent variables
 MR2 =~ N1 + N2 + N3 + N4 + N5
@@ -4859,11 +4496,10 @@ MR6 =~ .row_id</code></pre>
 <section id="fit-and-compare-models" class="slide level2">
 <h2>Fit and compare models</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>big5 <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(lavaan<span class="sc">::</span><span class="fu">cfa</span>(structure_big5, <span class="at">data =</span> test))</span>
-<span id="cb34-2"><a href="#cb34-2"></a>big6 <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(lavaan<span class="sc">::</span><span class="fu">cfa</span>(structure_big6, <span class="at">data =</span> test))</span>
-<span id="cb34-3"><a href="#cb34-3"></a></span>
-<span id="cb34-4"><a href="#cb34-4"></a>performance<span class="sc">::</span><span class="fu">compare_performance</span>(big5, big6, <span class="at">verbose =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb34-5"><a href="#cb34-5"></a>  <span class="fu">print_md</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>big5 <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(lavaan<span class="sc">::</span><span class="fu">cfa</span>(structure_big5, <span class="at">data =</span> test))</span>
+<span id="cb31-2"><a href="#cb31-2"></a>big6 <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(lavaan<span class="sc">::</span><span class="fu">cfa</span>(structure_big6, <span class="at">data =</span> test))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
 <div class="cell-output-display">
 <table style="width:100%;">
 <caption>Comparison of Model Performance Indices</caption>
@@ -4981,7 +4617,42 @@ MR6 =~ .row_id</code></pre>
 </tbody>
 </table>
 </div>
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">df</th>
+<th style="text-align: right;">df_diff</th>
+<th style="text-align: left;">Chi2</th>
+<th style="text-align: left;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">big5</td>
+<td style="text-align: left;">lavaan</td>
+<td style="text-align: left;">265</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">1434.67</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">big6</td>
+<td style="text-align: left;">lavaan</td>
+<td style="text-align: left;">261</td>
+<td style="text-align: right;"></td>
+<td style="text-align: left;">1456.83</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
 </div>
+</div>
+<ul>
+<li>Big 5 is preferred!</li>
+</ul>
 </section>
 <section id="information-to-include-in-paper" class="slide level2">
 <h2>Information to include in paper</h2>
@@ -5023,6 +4694,7 @@ MR6 =~ .row_id</code></pre>
 <ul>
 <li>Place in table or figure</li>
 </ul></li>
+<li><p>Correlation matrix!</p></li>
 </ul>
 </div>
 </div>
@@ -5054,7 +4726,7 @@ MR6 =~ .row_id</code></pre>
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>Several criteria were used to determine the number of components to extract: a priori theory, the scree test, the eigenvalue-greater-than-one criteria, and the interpretability of the solution. Kaiser’s eigenvalue-greater-than-one criteria suggested four components, and, in combination explained 49% of the variance. The inflexion (elbow) in the scree plot justified retaining four components. Based on the convergence of these decisions, four components were extracted. We investigated each with orthogonal (varimax) and oblique (oblimin) procedures. Given the non-significant correlations (ranging from -0.03 to 0.03) and the clear component loadings in the orthogonal rotation, we determined that an orthogonal solution was most appropriate.</p>
+<p>Several criteria were used to determine the number of components to extract: a priori theory, the scree test, the eigenvalue-greater-than-one criteria, and the interpretability of the solution. Kaiser’s eigenvalue-greater-than-one criteria suggested four components, and, in combination explained 49% of the variance. The inflection (elbow) in the scree plot justified retaining four components. Based on the convergence of these decisions, four components were extracted. We investigated each with orthogonal (varimax) and oblique (oblimin) procedures. Given the non-significant correlations (ranging from -0.03 to 0.03) and the clear component loadings in the orthogonal rotation, we determined that an orthogonal solution was most appropriate.</p>
 </div>
 </div>
 </div>
@@ -5068,22 +4740,25 @@ MR6 =~ .row_id</code></pre>
 </ul></li>
 <li><p>When:</p>
 <ul>
-<li>Your data has many measures. Almost too many to interpret</li>
+<li>Your data has many measures
+<ul>
+<li>Almost too many to interpret</li>
+</ul></li>
 <li>Measures are correlated</li>
-<li>Phenomenon cannot be directly tested</li>
+<li>Phenomena cannot be directly tested</li>
 </ul></li>
 <li><p>Why:</p>
 <ul>
-<li>Simplfy data</li>
+<li>Simplify data</li>
 <li>Identify/test underlying constructs (factors)</li>
 </ul></li>
 </ul>
 </section>
 <section id="class-announcements" class="slide level2">
-<h2>Class Announcements</h2>
+<h2>Class announcements</h2>
 <ul>
 <li><p>Wednesday is last lab of the semester</p></li>
-<li><p>All lab revisions due end of reading week (you will not get a final grade from me until they are turned in)</p></li>
+<li><p>All lab revisions due end of reading period</p></li>
 <li><p>Blog post due May 13th</p></li>
 </ul>
 <div class="footer footer-default">

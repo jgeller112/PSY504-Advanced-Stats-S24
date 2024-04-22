@@ -35,11 +35,21 @@ execute:
 
 ## Today
 
--   Common factor analysis and PCA
+-   Exploratory (common) factor analysis
+
+    -   What is it?
+
+    -   Why?
+
+    -   Variance
+
+    -   FA vs. PCA
+
 -   Carrying out exploratory factor analysis in R
-    -   Steps
+
 -   CFA
--   Reporting factor analysis
+
+-   Visualization and reporting factor analysis
 
 ## Packages
 
@@ -146,19 +156,22 @@ options(scipen = 999)
 :::
 :::
 
-## Partitioning Variance
+## Partitioning variance
 
 ::: columns
 ::: {.column width="50%"}
 1.  Variance common to other variables
+
     -   Communality $h^2$: **proportion of each variable's/item's variance that can be explained by the factors**
         -   How much an item is related to other items in the analysis
+
 2.  Variance specific to that variable (unique variance)
+
 3.  Random measurement error
 :::
 
 ::: {.column width="50%"}
-![](images/fapcavar.png){fig-align="center"}
+![](images/common.png)
 :::
 :::
 
@@ -204,11 +217,11 @@ options(scipen = 999)
 
 ## PCA
 
-![](images/IMG_2410-01.jpeg){fig-align="center"}
+-   Based on total variance!
 
--   Assumption: Components that explain the most total variance
+![](images/pca.png){fig-align="center"}
 
--   Goal: Find fewest components that account for the relationships among variables
+-   Goal: Find fewest components that accounts for the most varaiance among variables
 
 ## PCA vs. FA
 
@@ -238,9 +251,9 @@ options(scipen = 999)
 
 2.  Decide \# of factors
 
-3.  Extraction
+3.  Factor Extraction
 
-4.  Rotation (make factors more interpretable)
+4.  Factor Rotation (make factors more interpretable)
 
 5.  Interpret/name
 
@@ -281,12 +294,15 @@ data <- na.omit(data)
 ## Data visualization
 
 ```{r}
-#| echo: false
 #| fig.align: "center"
-d=cor(data)
+d=cor(data) # get corr
 
-corrplot(d, method = 'square', type = 'lower', diag = FALSE, outline = T, addgrid.col = "darkgray")
+corrplot(d, method = 'square', type = 'lower', diag = FALSE, outline = T, addgrid.col = "darkgray") # plot corr
 ```
+
+::: callout-note
+Always include correlation table in factor analysis!
+:::
 
 ## Is factor analysis warranted?
 
@@ -378,16 +394,6 @@ Several different ways:
 
 -   Cumulative percent variance extracted (75%)
 
-```{r}
-    #| eval: False
-    #| 
-    number_items <- fa.parallel(data, fm="pa", fa="fa")
-    #eigenvalues > 1 and > .7
-    sum(number_items$fa.values >= 1)
-
-
-```
-
 ## Fitting factor model: \# of factors
 
 <br>
@@ -422,17 +428,16 @@ fviz_screeplot(res.pca, addlabels=TRUE)
 ::: {.column width="50%"}
 -   Parallel analysis
 
-    -   More objective and reliable
-
-    -   Run simulations pulling eigenvalues from randomly generated datasets
+    -   Run simulations pulling eigenvalues from randomly generated datasets (with same sample size and number of variables)
 
     -   If eigenvalues \> eigenvalues from random datasets more likely to represent meaningful patterns in the data
 :::
 
 ::: {.column width="50%"}
 ```{r}
-
-fa.parallel(data, fm="pa", fa="fa")
+# use to perfrorm parallel analysis
+#psych package
+psych::fa.parallel(data, fm="pa", fa="fa")
 
 ```
 :::
@@ -463,7 +468,7 @@ parameters::n_factors(data) %>% plot()
 
             -   Squared multiple correlations (highest absolute correlation)
 
-        -   Take correlation matrix and replace diagonal elements with communalities
+        -   Take correlation matrix and replace diagonal elements with communalities (reduced matrix)
 :::
 
 ::: {.column width="50%"}
@@ -478,12 +483,14 @@ parameters::n_factors(data) %>% plot()
 # rotate rotation method 
 # fm is principle axis
 efa <- psych::fa(data, nfactors = 5, rotate="none", fm="pa")
+
+efa
 ```
 
 ## Factor loadings
 
 ::: panel-tabset
-## Factor Loadings
+## Factor loadings table/matrix
 
 -   Pattern matrix
 
@@ -528,7 +535,11 @@ parameters::model_parameters(efa) %>% kable() %>%
 
 ## Uniqueness
 
--   1-commonality
+-   1-communality
+
+$$
+u^2_i = \varepsilon_i = 1 - \sum_{j=1}^{m}\lambda_{ij}^2
+$$
 
 ```{r}
 #| echo: false
@@ -554,32 +565,37 @@ efa$Vaccounted %>%
 #| fig-width: 14
 #| fig-height: 12
 
-structure_big5 <- psych::fa(data, nfactors = 5, rotate = "none", fm="pa")%>%
-  parameters::efa_to_cfa() # get lavaan code for fa
+structure_big5 <- psych::fa(data, nfactors = 5, rotate = "none", fm="pa")
 
-big5 <- suppressWarnings(lavaan::cfa(structure_big5, data = data)) # fit sem 
-
-semPaths(big5, "std", layout="tree", nDigits = 3, label.cex=.5, edge.label.cex = .7, fade=FALSE) # plot the path model 
+fa.diagram(structure_big5)
 
 ```
 
 ## Rotation
 
-![](images/IMG_2403.png)
-
-## Rotation
-
+::: columns
+::: {.column width="50%"}
 -   Make more interpretable (understandable) without actually changing the relationships among the variables
 
     -   Makes high loadings higher and low/medium loadings lower
+
         -   *Simple structure*
-            -   High correlations and low correlations on each factor, but no medium correlations
+:::
+
+::: {.column width="50%"}
+1.   Each row contains at least one zero loading
+2.   for each column, there are at least as many zeros as there are columns (i.e., number of factors kept)
+3.  for any pair of factors, there are some variables with zero loadings on one factor and large loadings on the other factor
+4.  for any pair of factors, there is a sizable proportion of zero loadings
+5.  for any pair of factors, there is only a small number of large loadings
+:::
+:::
 
 ## Rotation
 
 -   Different types of rotation:
 
-    -   Orthogonal Rotation (e.g., Varimax)
+    -   Orthogonal rotation (e.g., Varimax)
 
         -   This method of rotation prevents the factors from being correlated with each other
 
@@ -591,6 +607,10 @@ semPaths(big5, "std", layout="tree", nDigits = 3, label.cex=.5, edge.label.cex =
 
         -   Allows factors to correlate (more common)
         -   Good idea to always use this
+
+## Rotation
+
+![](images/IMG_2403.png)
 
 ## Rotation
 
@@ -615,7 +635,7 @@ semPaths(big5, "std", layout="tree", nDigits = 3, label.cex=.5, edge.label.cex =
 ```{r}
 #change rotate arg to desired rotation
 #orthogonal rotation
-efa_or <- psych::fa(data, nfactors = 5, rotate="varimax", fm="pa") 
+efa_obs <- psych::fa(data, nfactors = 5, rotate="varimax", fm="pa") 
 
 # correlated factor rotation
 efa_obs <- psych::fa(data, nfactors = 5, rotate="oblimin", fm="pa")
@@ -627,12 +647,13 @@ efa_obs <- psych::fa(data, nfactors = 5, rotate="oblimin", fm="pa")
 
 ```{r}
 #| fig-align: "center"
-structure_big5 <- psych::fa(data, nfactors = 5, rotate = "oblimin", fm="pa")%>%
-  parameters::efa_to_cfa() # get lavaan code for fa
+#| fig-width: 12
+#| fig-height: 8
+structure_big5 <- psych::fa(data, nfactors = 5, rotate = "oblimin", fm="pa")
 
-big5 <- suppressWarnings(lavaan::cfa(structure_big5, data = data)) # fit sem 
+fa.diagram(structure_big5)
 
-semPaths(big5, "std", layout="tree", nDigits = 3, label.cex=.5, edge.label.cex = .7, fade=FALSE) # plot the path model 
+
 ```
 
 ## Rotation
@@ -646,10 +667,10 @@ semPaths(big5, "std", layout="tree", nDigits = 3, label.cex=.5, edge.label.cex =
 ```{r}
 #| eval: false
 # correlated factor rotation
-efa_obs %>% 
+structure_big5 %>% 
    model_parameters(sort = TRUE, threshold = .32)# can set to max if .3 does not lead to interpretable factors
 #msx
-efa_obs %>% 
+structure_big5  %>% 
    model_parameters(sort = TRUE, threshold = "max")# can set to max if .3 does not lead to interpretable factors
 ```
 
@@ -668,8 +689,8 @@ efa_obs %>%
 -   Setting threshold to max works pretty well
 
 ```{r}
-efa_obs %>% 
-   model_parameters(sort = TRUE, threshold = "max") %>% print_html()
+structure_big5 %>% 
+   model_parameters(sort=TRUE, threshold = "max") %>% print_md()
 
 ```
 
@@ -686,7 +707,8 @@ efa_obs %>%
         -   Contains either high or low loadings with few moderately sized loadings
         -   Lacks cross-loadings
             -   You don't have items that load equally onto more than 1 factor
-                -   Keep items \> .32 and delete items \< .32 (use max loadings)
+                -   Keep items \> .32 (or max loading)
+                -   Throw out items with $h^2$ \< .5
 
 -   3 or more indicators per latent factor
 
@@ -703,7 +725,6 @@ efa_obs %>%
 ```{r}
 
 efa_obs <- psych::fa(data, nfactors = 5, rotate="oblimin", fm="pa", scores="regression")
-
 ```
 
 ## Factor scores
@@ -720,7 +741,7 @@ Geller, J., Thye, M., & Mirman, D. (2019). Estimating effects of graded white ma
 
 # correlated rotation
 efa_obs <- psych::fa(data, nfactors = 5, rotate="oblimin", fm="pa") %>% 
-   model_parameters(sort = TRUE, threshold = "max")
+   model_parameters()
 
 efa_plot <- as.data.frame(efa_obs) %>%
   pivot_longer(PA2:PA4) %>%
@@ -735,11 +756,11 @@ efa_fact_plot <- ggplot(efa_plot, aes(Variable, abs(Loadings), fill=Loadings)) +
   geom_bar(stat="identity") + #make the bars
   coord_flip() + #flip the axes so the test names can be horizontal  
   #define the fill color gradient: blue=positive, red=negative
-  scale_fill_gradient2(name = "Loading", 
-                       high = "blue", mid = "white", low = "red", 
-                       midpoint=0, guide=F) +
+ scale_fill_gradient2(name = "Loading", 
+                      high = "blue", mid = "white", low = "red", 
+                     midpoint=0, guide=F) +
   ylab("Loading Strength") + #improve y-axis label
-  theme_lucid(base_size=18)
+  theme_bw(base_size=22)
 
 ```
 :::
@@ -747,8 +768,7 @@ efa_fact_plot <- ggplot(efa_plot, aes(Variable, abs(Loadings), fill=Loadings)) +
 ::: {.column width="50%"}
 ```{r}
 #| fig.align: "center"
-#| fig.width: 12
-#| fig.height: 8
+#| echo: false
 #| 
 efa_fact_plot
 ```
@@ -818,14 +838,23 @@ structure_big6
 ## Fit and compare models
 
 ```{r}
-
 big5 <- suppressWarnings(lavaan::cfa(structure_big5, data = test))
 big6 <- suppressWarnings(lavaan::cfa(structure_big6, data = test))
+
+```
+
+```{r}
+#| echo: false
 
 performance::compare_performance(big5, big6, verbose = FALSE) %>%
   print_md()
 
+performance::test_likelihoodratio(big5, big6) %>%
+  print_md()
+
 ```
+
+-   Big 5 is preferred!
 
 ## Information to include in paper
 
@@ -868,6 +897,8 @@ performance::compare_performance(big5, big6, verbose = FALSE) %>%
 -   Factor loadings
 
     -   Place in table or figure
+
+-   Correlation matrix!
 :::
 :::
 
@@ -880,7 +911,7 @@ First, data were screened to determine the suitability of the data for this anal
 ## Sample write-up
 
 ::: callout-note
-Several criteria were used to determine the number of components to extract: a priori theory, the scree test, the eigenvalue-greater-than-one criteria, and the interpretability of the solution. Kaiser's eigenvalue-greater-than-one criteria suggested four components, and, in combination explained 49% of the variance. The inflexion (elbow) in the scree plot justified retaining four components. Based on the convergence of these decisions, four components were extracted. We investigated each with orthogonal (varimax) and oblique (oblimin) procedures. Given the non-significant correlations (ranging from -0.03 to 0.03) and the clear component loadings in the orthogonal rotation, we determined that an orthogonal solution was most appropriate.
+Several criteria were used to determine the number of components to extract: a priori theory, the scree test, the eigenvalue-greater-than-one criteria, and the interpretability of the solution. Kaiser's eigenvalue-greater-than-one criteria suggested four components, and, in combination explained 49% of the variance. The inflection (elbow) in the scree plot justified retaining four components. Based on the convergence of these decisions, four components were extracted. We investigated each with orthogonal (varimax) and oblique (oblimin) procedures. Given the non-significant correlations (ranging from -0.03 to 0.03) and the clear component loadings in the orthogonal rotation, we determined that an orthogonal solution was most appropriate.
 :::
 
 ## Factor analysis: Summary
@@ -891,19 +922,20 @@ Several criteria were used to determine the number of components to extract: a p
 
 -   When:
 
-    -   Your data has many measures. Almost too many to interpret
+    -   Your data has many measures
+        -   Almost too many to interpret
     -   Measures are correlated
-    -   Phenomenon cannot be directly tested
+    -   Phenomena cannot be directly tested
 
 -   Why:
 
-    -   Simplfy data
+    -   Simplify data
     -   Identify/test underlying constructs (factors)
 
-## Class Announcements
+## Class announcements
 
 -   Wednesday is last lab of the semester
 
--   All lab revisions due end of reading week (you will not get a final grade from me until they are turned in)
+-   All lab revisions due end of reading period
 
 -   Blog post due May 13th

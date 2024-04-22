@@ -29,9 +29,9 @@ $body-bg: $white;
 $link-color: $green;
 $code-color: $magenta;
 $code-bg: $off-white;  // was $white
-$code-block-font-size: 0.8em;
+$code-block-font-size: 0.5em;
 $code-block-bg: $off-white;
-$presentation-font-size-root: 35px;
+$presentation-font-size-root: 30px;
 
 /*-- scss:rules --*/
 
@@ -43,7 +43,7 @@ strong, b {
 
 // table header font size
 th {
-font-size: 30px;
+font-size: 25px;
 }
 
 // table text font size
@@ -166,7 +166,7 @@ hr {
 
 // S body text
 .body-text-s {
-  font-size: 25px;
+  font-size: 20px;
 	line-height: 0.5em;
 }
 
