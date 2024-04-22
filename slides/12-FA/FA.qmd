@@ -225,13 +225,17 @@ options(scipen = 999)
 
 ## PCA vs. FA
 
-<br>
+::: columns
+::: {.column width="50%"}
+![](images/clipboard-1082020944.png)
+:::
 
-<br>
-
+::: {.column width="50%"}
 -   Run *factor analysis* if you assume or wish to test a theoretical model of *latent factors* causing observed variables
 
 -   Run PCA If you want to simply *reduce* your correlated observed variables to a smaller set of important independent composite variables
+:::
+:::
 
 ## Eigenvalues and Eigenvectors
 
@@ -812,8 +816,6 @@ table$ind_table
 partitions <- datawizard::data_partition(data, training_proportion = 0.7, seed = 111)
 training <- partitions$p_0.7
 test <- partitions$test
-
-
 ```
 
 ## CFA in Lavaan
