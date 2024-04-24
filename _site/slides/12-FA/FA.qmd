@@ -344,14 +344,15 @@ $$
 
 ## Is factor analysis warranted?
 
--   Check's Bartlett's
--   Checks KMO
--   Check MSA (should delete MSA \< .5)
-
 ```{r}
 #easystats
 performance::check_factorstructure(data)
+
 ```
+
+-   Check's Bartlett's
+-   Checks KMO
+-   Check MSA (should delete item MSA \< .5)
 
 ## Assumptions
 
@@ -365,7 +366,7 @@ performance::check_factorstructure(data)
 
 -   No missingness
 
--   No multicolinerarity
+-   No multicollinearity
 
 ## Assumptions: Outliers
 
@@ -456,7 +457,7 @@ psych::fa.parallel(data, fm="pa", fa="fa")
 ```{r}
 #| fig-align: "center"
 #| 
-parameters::n_factors(data) %>% plot()
+parameters::n_factors(data, type="FA",  algorithm = "pa") %>% plot() # set algo to principal axis factoring and rotation to none
 
 ```
 
@@ -464,14 +465,11 @@ parameters::n_factors(data) %>% plot()
 
 ::: columns
 ::: {.column width="50%"}
--    Runs another factor analysis to get the loading for each of the factors
+-   Runs another factor analysis to get the loading for each of the factors
 
     -   Principal axis factoring (PAF)
-
         -   Get initial estimates of communalities
-
-            -   Squared multiple correlations (highest absolute correlation)
-
+        -   Squared multiple correlations (highest absolute correlation)
         -   Take correlation matrix and replace diagonal elements with communalities (reduced matrix)
 :::
 
@@ -587,8 +585,8 @@ fa.diagram(structure_big5)
 :::
 
 ::: {.column width="50%"}
-1.   Each row contains at least one zero loading
-2.   for each column, there are at least as many zeros as there are columns (i.e., number of factors kept)
+1.  Each row contains at least one zero loading
+2.  for each column, there are at least as many zeros as there are columns (i.e., number of factors kept)
 3.  for any pair of factors, there are some variables with zero loadings on one factor and large loadings on the other factor
 4.  for any pair of factors, there is a sizable proportion of zero loadings
 5.  for any pair of factors, there is only a small number of large loadings
