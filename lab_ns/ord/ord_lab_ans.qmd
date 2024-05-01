@@ -156,6 +156,20 @@ ggplot(gb, aes(x=Gender, fill=Rank)) + geom_bar()
 
     ```
 
+### Latent Visualization
+
+::: callout-note
+ggeffects updated package to include latent viz.
+:::
+
+```{r}
+
+ols_clm = MASS::polr(Rank~Gender*Age, data=gb)
+
+ggeffect(ols_clm, c("Age[all]", "Gender"), latent=TRUE) %>% plot()
+
+```
+
 -   Use the Brant test to support or reject the hypothesis that the proportional odds assumption holds for your simplified model.
 
     ```{r}

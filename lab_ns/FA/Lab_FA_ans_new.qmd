@@ -1,0 +1,430 @@
+---
+title: "Lab8-FA"
+author:
+  - name: Jason Geller
+    date: last-modified
+    format:
+      html:
+        self-contained: true
+        anchor-sections: true
+        code-tools: true
+        code-fold: true
+        fig-width: 8
+        fig-height: 4
+        code-block-bg: "#f1f3f5"
+        code-block-border-left: "#31BAE9"
+        mainfont: Source Sans Pro
+        theme: journal
+        toc: true
+        toc-depth: 3
+        toc-location: left
+        captions: true
+        cap-location: margin
+        table-captions: true
+        tbl-cap-location: margin
+        reference-location: margin
+execute:
+  freeze: auto
+  echo: true
+  message: false
+  warning: false
+---
+
+## Lab 8 - Factor Analysis and SEM - ANS
+
+-   We are going to assess a scale that measures the anxiety that statistics provokes in students
+
+-   The dataset is from Andy Field with the following questions:
+
+    1.  Statistics makes me cry
+    2.  My friends will think I'm stupid for not being able to cope with R
+    3.  Standard deviations excite me
+    4.  I dream that Pearson is attacking me with correlation coefficients
+    5.  I don't understand statistics
+    6.  I have little experience of computers
+    7.  All computers hate me
+    8.  I have never been good at mathematics
+    9.  My friends are better at statistics than me
+    10. Computers are useful only for playing games
+    11. I did badly at mathematics at school
+    12. People try to tell you that R makes statistics easier to understand but it doesn't
+    13. I worry that I will cause irreparable damage because of my incompetence with computers
+    14. Computers have minds of their own and deliberately go wrong whenever I use them
+    15. Computers are out to get me
+    16. I weep openly at the mention of central tendency
+    17. I slip into a coma whenever I see an equation
+    18. R always crashes when I try to use it
+    19. Everybody looks at me when I use R
+    20. I can't sleep for thoughts of eigenvectors
+    21. I wake up under my duvet thinking that I am trapped under a normal distribution
+    22. My friends are better at R than I am
+    23. If I'm good at statistics my friends will think I'm a nerd
+
+```{r}
+#devtools::install_github("dr-JT/semoutput")
+
+library(semoutput)
+library(naniar) # for missingness visualization
+library(factoextra)
+library(knitr)
+
+library(corrplot) # nice correlation plots
+library(easystats) # paramaters
+library(tidyverse) # tidying visualization
+library(psych) # fa func
+library(gt) # for tables
+
+source("https://raw.githubusercontent.com/franciscowilhelm/r-collection/master/fa_table.R") # for FA tables
+```
+
+```{r}
+
+data <- read_csv("https://raw.githubusercontent.com/doomlab/learnSEM/master/vignettes/data/lecture_efa.csv", show_col_types = FALSE)
+
+```
+
+## Exploratory Factor Analysis
+
+1.  Explore the data. Make sure there are no missing data points and get rid of outliers. Look at a correlation matrix.
+
+```{r}
+# explore missingness
+vis_miss(data)
+```
+
+**It doesn't seem like there are any missing values in the data. I'll confirm that, just to be safe:**
+
+```{r}
+# remove any missing values
+missing = na.omit(data)
+# ensure the removal hasn't changed the number of rows in the data
+nrow(data) == nrow(missing)
+```
+
+```{r}
+# check outliers
+performance::check_outliers(data)
+```
+
+**There are outlines though. I'll remove those:**
+
+```{r}
+# remove outliers
+outliers = as.numeric(check_outliers(data)) 
+cleaned = data[!outliers, ]
+```
+
+```{r}
+# correlation matrix
+cormatrix = cor(cleaned)
+
+corrplot(cormatrix, method = 'color', type = 'lower', diag = FALSE,
+                 outline = T, addgrid.col = "white",col = COL1("YlGn", 6),
+                 tl.col = "black")
+```
+
+**Visually, it appears that there are a number of correlations between the items. Most are weakly negative or positive (\< +/- .33), while some are moderate and positive (between .33 and .67). Item 3 (Q03) is moderately negatively correlated with many of the other items (between -.67 and -.33). *The irony of an item on standard deviations being an outlier is not lost on me!***
+
+1.  Conduct and interpret the three diagnostic tests to determine if factor analysis is appropriate as an analysis.
+
+    ```{r}
+    det(cormatrix)
+    ```
+
+    **The determinant of the correlation matrix is .0004. This metric uses the correlation matrix to assess the level of multicolinearity among the items. Typically a value less than .00001 is taken to suggest that sever multicolinearity is present. As the determinant for the current data was above that threshold value, we can assume that multicolinearity will not be a problem for our analyses.**
+
+```{r}
+# Bartlett's test and Kaiser-Meyer-Olkin (KMO) test
+performance::check_factorstructure(cleaned)
+```
+
+**Results from Bartlett's test of sphericity suggest that the observed correlations are significantly different from those under the null (i.e., an identity matrix):** $\chi^2$ **(253) = 9,534.27, *p* \< .001. Additionally, the overall Kaiser-Meyer-Olkin (KMO) measure of sampling adequacy suggests the data are suitable for factor analyses; KMO = .93. All items in the data had a KMO \>= .79. As such, no items were excluded from our analyses.**
+
+1.  Determine how many factors to extract. Inspect and interpret eigenvalues, scree plot, parallel plot, and the consensus method. Do they all agree? Make a choice on as to how many factors you want to extract
+
+```{r}
+# parallel plot
+number_items <- fa.parallel(cleaned, fa="fa")
+```
+
+**The parallel plot suggests that there are 5 factors to extract, or 6 at a push (the 6th factor is bisected by the re-sampled data).**
+
+```{r}
+# Eigenvalues > 1
+sum(number_items$fa.values >= 1)
+```
+
+```{r}
+# Eigenvalues > .77
+sum(number_items$fa.values >= .7)
+```
+
+**Depending on the Eigenvalue threshold that we set, this method suggests that there is either one factor (one Eigenvalue \>= 1) or two factors (two Eigenvalues \>= .77) to extract.**
+
+```{r}
+# scree plot
+res.pca = prcomp(cleaned)
+fviz_screeplot(res.pca, addlabels = TRUE)
+```
+
+**From the scree plot, it is difficult to gauge how many factors ought to be extracted. Looking at the 'elbow' shape, we might say that the variance explained levels off after the 6th factor, suggesting we extract 6 factors.**
+
+```{r}
+# consensus method
+n_factors(cleaned) %>% plot()
+```
+
+**None of the methods appear to agree on the appropriate number of factors to use in our analyses, with values ranging from 1 to 6. The consensus method suggests that a 4-factor solution would suit the data best. Given that the consensus approach draws from multiple tests to reach its conclusion, we can have greater confidence in its recommendation. As such, we will extract 4 factors.**
+
+1.  Conduct a factor analysis (choose an extraction method and rotation).
+
+    ```{r}
+    
+library(GPArotation)
+    # extract factor loadings using principal axis factoring
+    # perform oblique rotation
+    efa = psych::fa(cleaned, nfactors = 4, rotate = "oblimin", fm = "pa")
+    ```
+
+2.  Look at the factor loadings. Which items appear to load on which factor? Are there any items that seem to load strongly on multiple factors (i.e., items that are cross-loaded)? Use `model_paramaters` and the `threshold` argument to get rid of loadings greater than .3. Does that help with interpretation? If not, try setting the `threshold` to max.
+
+```{r}
+table = fa_table(efa)
+table$ind_table
+```
+
+**Items 21, 4, 1, 16, 20, 12, and 5 appear to load onto our first factor. Items 6, 18, 7, 13, and 10 load onto a second factor. Three items, 8, 11, and 17, load onto the third factor. Items 9, 2, 22, 19, and 23 load onto the fourth and final factor. Three items are cross-loaded: 3, 14, and 15.**
+
+```{r}
+efa_thres3 = psych::fa(cleaned, nfactors = 4, rotate = "oblimin", fm = "pa") %>% 
+  model_parameters(sort = TRUE, threshold = .3) %>%
+  kable()
+
+efa_thres3
+```
+
+**Setting the threshold to .3 doesn't appear to enhance interpretation greatly. The same items as before appear to be cross-loaded.**
+
+```{r}
+efa_thres_max = psych::fa(cleaned, nfactors = 4, rotate = "oblimin", fm = "pa") %>% 
+  model_parameters(sort = TRUE, threshold = 'max') %>%
+  kable()
+
+efa_thres_max
+```
+
+**Setting the threshold value to 'max' on the other hand significantly aides interpretation by masking any cross-loadings and only showing the factors which each item maximally loads onto.**
+
+3.  Come up with names for the factors you extracted.
+
+| Factor | Item | Description                                                                            | Loading | Factor Name        |
+|-----------|-----------|----------------------------|-----------|-----------|
+| 1      | 21   | I wake up under my duvet thinking that I am trapped under a normal distribution        | .61     | Statistics anxiety |
+|        | 4    | I dream that Pearson is attacking me with correlation coefficients                     | .53     |                    |
+|        | 1    | Statistics makes me cry                                                                | .52     |                    |
+|        | 16   | I weep openly at the mention of central tendency                                       | .49     |                    |
+|        | 20   | I can't sleep for thoughts of eigenvectors                                             | .48     |                    |
+|        | 12   | People try to tell you that R makes statistics easier to understand but it doesn't     | .48     |                    |
+|        | 5    | I don't understand statistics                                                          | .45     |                    |
+|        | 3    | Standard deviations excite me                                                          | -.40    |                    |
+| 2      | 9    | My friends are better at statistics than me                                            | .61     | Social anxiety     |
+|        | 2    | My friends will think that I'm stupid for not being able to cope with R                | .53     |                    |
+|        | 22   | My friends are better at R than I am                                                   | .48     |                    |
+|        | 19   | Everybody looks at me when I use R                                                     | .37     |                    |
+|        | 23   | If I'm good at statistics my friends will think I'm a nerd                             | .34     |                    |
+| 3      | 6    | I have little experience of computers                                                  | .82     | Technology anxiety |
+|        | 18   | R always crashes when I try to use it                                                  | .56     |                    |
+|        | 7    | I slip into a coma whenever I see an equation                                          | .5      |                    |
+|        | 13   | I worry that I will cause irreparable damage because of my incompetence with computers | .49     |                    |
+|        | 14   | Computers have minds of their own and deliberately go wrong whenever I use them        | .38     |                    |
+|        | 10   | Computers are useful only for playing games                                            | .35     |                    |
+|        | 15   | Computers are out to get me                                                            | .28     |                    |
+| 4      | 8    | I have never been good at mathematics                                                  | .86     | Math anxiety       |
+|        | 11   | I did badly at mathematics ar school                                                   | .76     |                    |
+|        | 17   | I slip into a coma whenever I see an equation                                          | .69     |                    |
+
+## Confirmatory Factor Analysis
+
+3.  Split your data into a testing and training datasets.
+
+    ```{r}
+    partitions = datawizard::data_partition(cleaned, training_proportion = 0.7, seed = 111)
+    training = partitions$p_0.7
+    test = partitions$test
+    ```
+
+4.  Fit the model you created on the test data. How does it fit? Use \`semoutput
+
+    ```{r, results='asis'}
+    four_fac_mod = psych::fa(training, nfactors = 4, rotate = "oblimin", fm = "pa") %>% 
+      model_parameters(sort = TRUE, threshold = "max") %>%
+      efa_to_cfa()
+
+    four_fac_fit = suppressWarnings(lavaan::cfa(four_fac_mod, data = test))
+
+    sem_tables(four_fac_fit)
+    ```
+
+Below I use a table to summarize the goodness-of-fit metrics and interpret them in the context of the model:
+
+| Metric                                                                         | Interpretation                                                                                                                                                                                                                                                                                                                              |
+|------------------|------------------------------------------------------|
+| $\chi^2$ (246) = 945.09, *p* \< .001                                           | A significant $\chi^2$ test suggests that the model does not fit the data perfectly. The test is sensitive to sample size however, and with larger samples it is more likely to detect even small discrepancies between the model and the data. This might not be the best indicator of fit for our model and data as a result (*N* = 742). |
+| Comparative fit index (CFI) = .88                                              | As a general guideline, a CFI value close to or greater than .95 indicates a good fit (Hu & Bentler, 1999). Our model's CFI of .88 is below that threshold, suggesting a sub-optimal fit to the data.                                                                                                                                       |
+| Root mean square error of approximation (RMSEA) = .062, 95% CIs = \[.06, .07\] | RMSEA values between .05 and .08 indicate a reasonable model fit (Browne & Cudeck, 1993) and so we can say that our model fit the data reasonably well on this metric.                                                                                                                                                                      |
+| Standardized root mean square residual (SRMR) = 0.05                           | A SRMR of .08 or less is generally considered to indicate a good fit (Hu & Bentler, 1999). Thus, our model displays a good fit of the data on this metric                                                                                                                                                                                   |
+
+**The different model fit indices lead to conflicting conclusions. On the one hand, the** $\chi^2$ **test and CFI suggest a relatively poor fit. While the RMSEA and SRMR indicate a reasonable or good fit. Given the limitations with the** $\chi^2$ **test in terms of sample size (noted in the table), we ought to weight its result less than the others as we judge model fit. We are then left with two metrics indicating acceptable fit and one that suggests sub-optimal fit. Taking the consensus among the metrics then leads us to conclude that the model fits the data at least reasonably well.**
+
+3.  Fit a competing model. How does it fit? Use `semoutput`
+
+**Since the scree and parallel plots could both be read in such a way as to indicate a 6-factor solution, we'll aslo test a model that extracts 6 factors:**
+
+```{r, results='asis'}
+six_fac_mod = psych::fa(training, nfactors = 6, rotate = "oblimin", fm = "pa") %>% 
+  model_parameters(sort = TRUE, threshold = "max") %>%
+  efa_to_cfa()
+
+six_fac_fit = suppressWarnings(lavaan::cfa(six_fac_mod, data = test))
+
+sem_tables(six_fac_fit)
+```
+
+3.  Compare both models. Which one fits the data better?
+
+    ```{r}
+    performance::compare_performance(four_fac_fit, six_fac_fit, verbose = FALSE) %>%
+      kable(format="markdown", digits=2)
+    ```
+
+**According to the results of the** $\chi^2$ **test, the RMSEA values and the SRMR values, the six-factor model *marginally* out-performs the four-factor model in terms of goodness-of-fit.**
+
+3.  Write up the results. Be sure to include a figure of the final EFA and a table containing factor loadings, communality, uniqueness, and complexity.
+
+**My results write-up is another another document in the repo.**
+
+```{r, fig.width=10, fig.height=8}
+efa_viz = psych::fa(cleaned, nfactors = 4, rotate = "oblimin", fm = "pa") %>% 
+  model_parameters(sort = TRUE, threshold = "max")
+
+efa_plot <- as.data.frame(efa_viz) %>%
+  pivot_longer(starts_with("PA")) %>%
+  dplyr::select(-Complexity, -Uniqueness) %>% rename("Loadings" = value, "Factor" = name)
+
+custom_titles <- function(variable, value) {
+  titles <- c("PA1" = "Stats anxiety",
+              "PA2" = "Social anxiety",
+              "PA3" = "Tech anxiety ",
+              "PA4" = "Math anxiety")
+  return(titles[value])
+}
+
+remove_Q <- function(x) {
+  gsub("Q0?", "", x)
+}
+
+efa_fact_plot <- ggplot(efa_plot, aes(Variable, abs(Loadings), fill=Loadings)) + 
+  facet_wrap(~ Factor, nrow=1, labeller = labeller(Factor = custom_titles)) + 
+  geom_bar(stat="identity") + 
+  coord_flip() + 
+  scale_fill_distiller(
+    name = "",
+    palette = "RdBu",
+    direction = 1, 
+    limits = c(-.5, 1),
+    guide = guide_colorbar(barheight = unit(0.5, "npc"))
+  ) +
+  ylab("Loading Strength") + 
+  theme_bw(base_size=12) +
+  theme_modern() +
+  xlab("Item") +
+  theme(
+    strip.text = element_text(size = 14),
+    axis.title.x = element_text(size = 18),
+    axis.title.y = element_text(size = 18),
+    axis.text.y = element_text(size = 14),
+    axis.text.x = element_text(size = 14),
+    panel.grid.major.y = element_line()
+  ) +
+  scale_x_discrete(labels = remove_Q)
+
+ggsave("efa_fact_plot.png", plot = efa_fact_plot, width = 10, height = 8)
+
+efa_fact_plot
+```
+
+## Results
+
+# Method
+
+## Data Preparation
+
+First, the data were screened to determine their suitability for factor analyses. For our first test, we created a Pearson correlation matrix of the items of interest and measured the determinant of the matrix. We observed a number of correlations between the items. Most were weakly negative or positive (*R*s\<= +/- .33), while some were moderate and positive (*R*s = .33 to .67). One item ("Standard deviations excite me") was moderately negatively correlated with many of the other items (*R* between -.67 and -.33). The determinant of the correlation matrix was .0004, which is above the threshold of .00001 generally used to assess multicolinearity. As a result, we concluded that multicolinearty was not an issue in our data.
+
+The second test of suitability which we ran was Bartlett's test of sphericity (Bartlett, 1950). The results of which suggested that the observed correlations in our matrix were significantly different from those under the null (i.e., an identity matrix): $\chi^2$ (253) = 9,534.27, *p* \< .001. This result suggests that there is enough correlation in the data to warrant a factor analysis.
+
+We also conducted the Kaiser-Meyer-Olkin measure of sampling adequacy (KMO: Kaiser, 1970). KMO represents the ratio of the squared correlation between variables to the squared partial correlation between variables. KMO can range from 0.00 to 1.00, with values closer to 1.00 indicating that the observed patterns of correlations are relatively compact and that factor analysis should yield distinct and reliable factors (Field, 2012). The overall KMO value in our dataset was .93, suggesting the data is highly suitable for factor analysis. All items in our data had a KMO \>= .79. As such, no items were excluded from our analyses.
+
+Based on a composite outlier score (Lüdecke et al., 2021) obtained via the joint application of multiple outliers detection algorithms (Z-scores, Iglewicz, 1993; Interquartile range (IQR); Mahalanobis distance, Cabana, 2019; Robust Mahalanobis distance, Gnanadesikan and Kettenring, 1972; Minimum Covariance Determinant, Leys et al., 2018; Invariant Coordinate Selection, Archimbaud et al., 2018; OPTICS, Ankerst et al., 1999; Isolation Forest, Liu et al. 2008; and Local Outlier Factor, Breunig et al., 2000), we excluded 97 cases that were classified as outliers by at least half of the methods used.
+
+There were no missing values in the data.
+
+## Factor Extraction
+
+Several criteria were used to determine the number of factors to extract: a parallel plot, a scree test, the eigenvalue-greater-than-one and greater-than-.77 criteria, and a consensus method relying on multiple tests.
+
+Kaiser's eigenvalue-greater-than-one criteria suggested 1 factor while 2 factors were suggested by the eigenvalue-greater-than-.77 criteria. The inflexion (elbow) in the scree plot justified retaining 6 factors which the parallel plot also justified.
+
+We also used a consensus method using the R package parameters (Lüdecke et al., 2020). This method uses many existing produces for determining the number of factors to extract. It returns a final number of factors to extract which is based on the maximum consensus between the different procedures. This method suggested a four-factor solution, which more than 30% of the procedures tested recommended.
+
+Although we note the divergence among the suggested number of factors, we ultimately choose to proceed with the recommendation of the consensus method. It's a more powerful estimation of the appropriate number of factors because it relies on information across a great many different tests. As such, we extracted four factors using principal axis factoring and oblique rotation.
+
+All analyses were conducted using the R statistical programming language (version 4.2.2; R Core Team, 2022)
+
+# Results
+
+The results of the exploratory factor analysis are displayed in **Table 1**. The recovered four-factor structure suggested that the following components are involved in students' statistics anxiety: general statistics anxiety ("I don't understand statistics"; "statistics makes me cry"); technology anxiety or anxiety centered on the tools used to conduct statistical analyses ("R always crashes when I try to use it"; "computers are out to get me"); math anxiety ("I slip into a coma whenever I see an equation"; "I have never been good at mathematics"); and social anxiety or fear of social comparison in the domain of statistics ("my friends are better at statistics than me"; "everybody looks at me when I use R"). We also present the factor loadings visually in **Figure 1**.
+
+**Table 1**
+
+*Item Factor Loadings and Communality, Uniqueness, and Complexity Scores*
+
+| Factor             | Item | Description                                                                            | Statistics Anxiety   | Technology Anxiety  | Math Anxiety         | Social anxiety       | Communality        | Uniqueness         | Complexity         |
+|--------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| Statistics anxiety | 21   | I wake up under my duvet thinking that I am trapped under a normal distribution        | 0.612                | 0.050               | 0.032                | -0.081               | 0.48               | 0.52               | 1.05               |
+|                    | 4    | I dream that Pearson is attacking me with correlation coefficients                     | 0.531                | 0.087               | 0.136                | 0.044                | 0.42               | 0.58               | 1.20               |
+|                    | 1    | Statistics makes me cry                                                                | 0.515                | 0.028               | 0.192                | 0.089                | 0.39               | 0.61               | 1.34               |
+|                    | 16   | I weep openly at the mention of central tendency                                       | 0.490                | 0.083               | 0.155                | -0.083               | 0.46               | 0.54               | 1.32               |
+|                    | 20   | I can't sleep for thoughts of eigenvectors                                             | 0.480                | -0.164              | 0.041                | -0.184               | 0.28               | 0.72               | 1.56               |
+|                    | 12   | People try to tell you that R makes statistics easier to understand but it doesn't     | 0.479                | 0.262               | -0.029               | -0.088               | 0.46               | 0.54               | 1.64               |
+|                    | 5    | I don't understand statistics                                                          | 0.455                | 0.105               | 0.090                | 0.029                | 0.32               | 0.68               | 1.20               |
+|                    | 3    | Standard deviations excite me                                                          | [-0.403]{.underline} | [0.011]{.underline} | [-0.084]{.underline} | [0.377]{.underline}  | [0.48]{.underline} | [0.52]{.underline} | [2.08]{.underline} |
+| Technology anxiety | 6    | I have little experience of computers                                                  | -0.121               | 0.823               | 0.024                | -0.006               | 0.61               | 0.39               | 1.04               |
+|                    | 18   | R always crashes when I try to use it                                                  | 0.278                | 0.561               | 0.005                | -0.031               | 0.57               | 0.43               | 1.47               |
+|                    | 7    | I slip into a coma whenever I see an equation                                          | 0.276                | 0.501               | 0.038                | -0.016               | 0.51               | 0.49               | 1.57               |
+|                    | 13   | I worry that I will cause irreparable damage because of my incompetence with computers | 0.152                | 0.491               | 0.142                | -0.068               | 0.49               | 0.51               | 1.41               |
+|                    | 14   | Computers have minds of their own and deliberately go wrong whenever I use them        | [0.317]{.underline}  | [0.381]{.underline} | [0.037]{.underline}  | [-0.051]{.underline} | [0.42]{.underline} | [0.58]{.underline} | [2.00]{.underline} |
+|                    | 10   | Computers are useful only for playing games                                            | 0.061                | 0.354               | 0.060                | -0.052               | 0.20               | 0.80               | 1.16               |
+|                    | 15   | Computers are out to get me                                                            | [0.142]{.underline}  | [0.280]{.underline} | [0.198]{.underline}  | [-0.140]{.underline} | [0.33]{.underline} | [0.67]{.underline} | [2.92]{.underline} |
+| Math anxiety       | 8    | I have never been good at mathematics                                                  | 0.000                | -0.069              | 0.856                | 0.062                | 0.67               | 0.33               | 1.02               |
+|                    | 11   | I did badly at mathematics ar school                                                   | -0.033               | 0.072               | 0.761                | -0.097               | 0.65               | 0.35               | 1.05               |
+|                    | 17   | I slip into a coma whenever I see an equation                                          | 0.083                | 0.060               | 0.690                | 0.013                | 0.59               | 0.41               | 1.04               |
+| Social anxiety     | 9    | My friends are better at statistics than me                                            | 0.019                | -0.022              | 0.060                | 0.611                | 0.36               | 0.64               | 1.02               |
+|                    | 2    | My friends will think that I'm stupid for not being able to cope with R                | -0.088               | 0.066               | 0.025                | 0.532                | 0.30               | 0.70               | 1.09               |
+|                    | 22   | My friends are better at R than I am                                                   | 0.148                | -0.120              | -0.095               | 0.483                | 0.26               | 0.74               | 1.41               |
+|                    | 19   | Everybody looks at me when I use R                                                     | -0.174               | -0.055              | -0.031               | 0.366                | 0.26               | 0.74               | 1.50               |
+|                    | 23   | If I'm good at statistics my friends will think I'm a nerd                             | 0.151                | -0.005              | -0.110               | 0.337                | 0.11               | 0.89               | 1.63               |
+
+*Note*. Items with [underlined]{.underline} factor loadings loaded strongly onto multiple factors (i.e., were cross-loaded)
+
+**Figure 1**
+
+*Factor Loadings*
+
+![](efa_fact_plot.png){width="762"}
+
+*Note*. The descriptions corresponding to the items listed on the y-axis can be read in **Table 1**.
+
+To assess the goodness of fit of our model, we ran a number of tests. The results of a chi-square test suggested that the model did not fit the data well: $\chi^2$ (246) = 945.09, *p* \< .001. This test is sensitive to sample size however, and with larger samples it is more likely to detect even small discrepancies between the model and the data. This might not be the best indicator of fit for our model and data as a result (*N* = 742). We also computed the comparative fit index (CFI) as .88. As a general guideline, a CFI value close to or greater than .95 indicates a good fit (Hu & Bentler, 1999). Our model's CFI is below that threshold, suggesting a sub-optimal fit to the data. We also calculated the root mean square error of approximation (RMSEA) and the standardized root mean square residual (SRMR): RMSEA = .062, 95% CIs = \[.06, .07\]; SRMR = 0.05. RMSEA values between .05 and .08 indicate a reasonable model fit (Browne & Cudeck, 1993) and so we can say that our model fit the data reasonably well on this metric. A SRMR of .08 or less is generally considered to indicate good fit (Hu & Bentler, 1999). Thus, our model also displays a good fit of the data on this metric.
+
+The different model fit indices could lead to conflicting conclusions. On the one hand, the $\chi^2$ test and CFI suggest a relatively poor fit. While the RMSEA and SRMR indicate a reasonable or even good fit. Given the limitations with the $\chi^2$ test in terms of sample size, we ought to weight its result less than the others as we judge model fit. We are then left with two metrics indicating acceptable fit and one that suggests sub-optimal fit. Taking the consensus among the metrics would leads us to conclude that the model fits the data at least reasonably well.
