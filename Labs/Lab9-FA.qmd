@@ -1,0 +1,31 @@
+---
+title: "Lab 9"
+format: html
+editor: visual
+author: "Jason Geller, Ph.D."
+date: 2024 04 23
+toc: true
+toc_float: true
+---
+
+## Lab 9: Factor Analysis and SEM
+
+In this lab, you will evaluate a survey that measures anxiety towards statistics, which was created by Andy Field. The objective of this lab is to:
+
+-   Assess the suitability of factor analysis for the survey
+
+-   Decide on the number of factors to extract
+
+-   Choose an extraction and rotation method
+
+-   Interpret and name the factors
+
+-   Validate the model using CFA
+
+Through this lab, you will gain experience in performing EFA and SEM/CFA using R, as well as visualizing and writing up the results.
+
+To access Lab 9, please [click here](https://classroom.github.com/a/7Hpwn0sM).
+
+## Lab answers
+
+-   [Lab answers](/lab_ns/FA/Lab_FA_ans_new.qmd)
