@@ -27,26 +27,26 @@ Here's your roadmap for the semester!
 |  | 1/31/24 | Quarto: Blogging and Website <br>Multilevel modeling | [{{<    fa   book-open-reader >}}](/schedule/01-week-MLM.qmd) | [{{< fa laptop-code   >}}](/slides/02-Blog/quarto.html) [{{< fa laptop-code   >}}](/slides/02-MLM/MLM.html) |  | Jason |
 | 2 | 2/5/24 | Multilevel modeling | [{{<    fa   book-open-reader >}}](/schedule/02-week-MLM.qmd) | [{{< fa laptop-code   >}}](/slides/02-MLM/mlm-02.html)|  | Jason |
 |  | 2/7/24 | Lab 1 |  |  | [{{< fa pen-ruler >}}](/Labs/01-Lab1.qmd) |  |
-| 3 | 2/12/24 | Missing data | [{{<    fa   book-open-reader >}}](/schedule/03-week.qmd) | [{{< fa laptop-code   >}}](/slides/03-Missing_Data/03-Missing_data.html) |  |Ari|
+| 3 | 2/12/24 | Missing data | [{{<    fa   book-open-reader >}}](/schedule/03-week.qmd) | [{{< fa laptop-code   >}}](/slides/03-Missing_Data/03-Missing_data.html) |  |[Ari](/student_presentations/Ariadne_Missing_Data.pdf)|
 |  | 2/14/24 | Lab 2 |  |  | [{{< fa pen-ruler >}}](/Labs/Lab2.qmd) |  |
-| 4 | 2/19/24 | Logistic regression | [{{<    fa   book-open-reader >}}](/schedule/04-week-logistic.qmd) | [{{< fa laptop-code   >}}](/slides/04-logistic/logisticqmd.html) |  | Abby  |
+| 4 | 2/19/24 | Logistic regression | [{{<    fa   book-open-reader >}}](/schedule/04-week-logistic.qmd) | [{{< fa laptop-code   >}}](/slides/04-logistic/logisticqmd.html) |  | [Abby](/student_presentations/logistic_regression.pdf)  |
 |  | 2/21/24 | Lab 3 |  |  | [{{< fa pen-ruler >}}](/Labs/Lab3-logistic.qmd) |  |
-| 5 | 2/26/24 | Polytomous models: Ordinal regression | [{{<    fa   book-open-reader >}}](/schedule/05-week-ord.qmd) | [{{< fa laptop-code   >}}](/slides/Ordinal_Regression/05-ordinal-regression.html) |  | Faustine |
+| 5 | 2/26/24 | Polytomous models: Ordinal regression | [{{<    fa   book-open-reader >}}](/schedule/05-week-ord.qmd) | [{{< fa laptop-code   >}}](/slides/Ordinal_Regression/05-ordinal-regression.html) |  | [Faustine]((/student_presentations/Ordinal_Regression_Models_FC.pdf)) |
 |  | 2/28/24 | Lab 4 |  |  | [{{< fa pen-ruler >}}](/Labs/Lab4-Ord.qmd) |  |
-| 6 | 3/4/24 | Polytomous models:  Multinomial regression | [{{<    fa   book-open-reader >}}](/schedule/06-week-mult.qmd) | [{{< fa laptop-code   >}}](/slides/06-Multinom/06-multinom.html) |  | Nicole  |
+| 6 | 3/4/24 | Polytomous models:  Multinomial regression | [{{<    fa   book-open-reader >}}](/schedule/06-week-mult.qmd) | [{{< fa laptop-code   >}}](/slides/06-Multinom/06-multinom.html) |  | [Nicole](/student_presentations/Polytomous_Models_Multinomial_Regression.pdf)  |
 |  | 3/6/24 | Lab 5 |  |  | [{{< fa pen-ruler >}}](/Labs/Lab5-mult.qmd) |  |
 | 7 | Spring Break |   |  |  |  |  |
-| 8 | 3/18/24 | Poisson regression | [{{<    fa   book-open-reader >}}](/schedule/08-week-pos.qmd) | [{{< fa laptop-code   >}}](/slides/07-Poisson/07-Poisson.html) |  | Kennedy |
+| 8 | 3/18/24 | Poisson regression | [{{<    fa   book-open-reader >}}](/schedule/08-week-pos.qmd) | [{{< fa laptop-code   >}}](/slides/07-Poisson/07-Poisson.html) |  | [Kennedy](/student_presentations/poisson-regression.pdf) |
 |  | 3/20/24 | Lab 6  |  |  | [{{< fa pen-ruler >}}](/Labs/Lab6-Poi.qmd) |  |
-| 9 | 3/25/24 | Bayesian analysis | [{{<    fa   book-open-reader >}}](/schedule/09-week-bayes.qmd) | [{{< fa laptop-code   >}}](/slides/08-Bayes/08-Bayes.html) |  | Alex and Ham  |
+| 9 | 3/25/24 | Bayesian analysis | [{{<    fa   book-open-reader >}}](/schedule/09-week-bayes.qmd) | [{{< fa laptop-code   >}}](/slides/08-Bayes/08-Bayes.html) |  | [Alex and Ham](/student_presentations/Stat504_Bayesian.pdf)  |
 |  | 3/27/24 | Lab 7 | | | [{{< fa pen-ruler >}}](/Labs/Lab7-bayes.qmd) |  |
-| 10 | 4/1/24 | Beta regression | [{{<    fa   book-open-reader >}}](/schedule/10-week-beta.qmd) | [{{< fa video   >}}](https://www.youtube.com/watch?v=fCtHNMiTuV4) [{{< fa laptop-code   >}}](/slides/09-Beta/09-Betaqmd.html)  |  | Xiaoyi  |
+| 10 | 4/1/24 | Beta regression | [{{<    fa   book-open-reader >}}](/schedule/10-week-beta.qmd) | [{{< fa video   >}}](https://www.youtube.com/watch?v=fCtHNMiTuV4) [{{< fa laptop-code   >}}](/slides/09-Beta/09-Betaqmd.html)  |  | [Xiaoyi](/student_presentations/PSY504_Beta.pdf)  |
 |  | 4/3/24 | Lab 8  |  |  | {{< fa pen-ruler >}} |  |
 | 11 | 4/8/24 | Mediation | [{{<    fa   book-open-reader >}}](/schedule/10-week-med.qmd) |[{{< fa video   >}}](https://youtu.be/IWxmk06eyA8) [{{< fa laptop-code   >}}](/slides/10-mediation/mediation.html)  |  |Kristopher  |
 |  | 4/10/24 | Lab 8  |  |  | [{{< fa pen-ruler >}}](/Labs/Lab8-med.qmd) |  |
-| 12 | 4/15/24 | Path modeling/SEM | [{{<    fa   book-open-reader >}}](/schedule/12-week-sem.qmd) | [{{< fa video   >}}](https://youtu.be/DxolIiiB3RM) [{{< fa laptop-code   >}}](/slides/11-SEM/sem_intro_1.html) |  | Renata |
+| 12 | 4/15/24 | Path modeling/SEM | [{{<    fa   book-open-reader >}}](/schedule/12-week-sem.qmd) | [{{< fa video   >}}](https://youtu.be/DxolIiiB3RM) [{{< fa laptop-code   >}}](/slides/11-SEM/sem_intro_1.html) |  | [Renata](/student_presentations/Path_modeling_SEM_.pdf) |
 |  | 4/17/24 |  |  |  | {{< fa pen-ruler >}} |  |
-| 13 | 4/22/24 | Factor analysis | [{{<    fa   book-open-reader >}}](/schedule/13-week-fa.qmd) | [{{< fa video   >}}](https://youtu.be/jxf9cJz6Qfs) [{{< fa laptop-code   >}}](/slides/12-FA/FA.html) |  | Aditi and Brooke |
+| 13 | 4/22/24 | Factor analysis | [{{<    fa   book-open-reader >}}](/schedule/13-week-fa.qmd) | [{{< fa video   >}}](https://youtu.be/jxf9cJz6Qfs) [{{< fa laptop-code   >}}](/slides/12-FA/FA.html) |  | [Aditi and Brooke](/student_presentations/PSY_504_Factor_Analysis.pdf) |
 |  | 4/24/24 | Lab 9 |  |  | [{{< fa pen-ruler >}}](/Labs/Lab9-FA.qmd) |  |
 | 14 | Reading Week |   |  |  |  |  |
 | 15 | Finals |   |  |  |  |  |
